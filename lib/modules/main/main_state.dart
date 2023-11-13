@@ -1,3 +1,4 @@
+import 'package:ank_app/modules/setting/setting_view.dart';
 import 'package:ank_app/widget/keep_alive_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,7 +7,6 @@ class MainState {
   late PageController pageController;
   RxInt selectedIndex = 0.obs;
   late List<Widget> tabPage;
-  late List<BottomBarItem> tabBar;
 
   MainState() {
     pageController = PageController(initialPage: 0);
@@ -15,34 +15,7 @@ class MainState {
       keepAlivePage(Center(child: Text('开发中1'))),
       keepAlivePage(Center(child: Text('开发中2'))),
       keepAlivePage(Center(child: Text('开发中3'))),
-      keepAlivePage(Center(child: Text('开发中4'))),
-    ];
-    tabBar = [
-      BottomBarItem(
-        'assets/images/bottom_bar/home.png',
-        'assets/images/bottom_bar/home.png',
-        '首页',
-      ),
-      BottomBarItem(
-        'assets/images/bottom_bar/market.png',
-        'assets/images/bottom_bar/market.png',
-        '行情',
-      ),
-      BottomBarItem(
-        'assets/images/bottom_bar/books.png',
-        'assets/images/bottom_bar/books.png',
-        '订单流',
-      ),
-      BottomBarItem(
-        'assets/images/bottom_bar/chart.png',
-        'assets/images/bottom_bar/chart.png',
-        '图表',
-      ),
-      BottomBarItem(
-        'assets/images/bottom_bar/set.png',
-        'assets/images/bottom_bar/set.png',
-        '设置',
-      ),
+      keepAlivePage(SettingPage()),
     ];
   }
 }

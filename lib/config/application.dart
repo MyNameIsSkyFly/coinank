@@ -1,4 +1,4 @@
-import 'package:ank_app/store/store.dart';
+import 'package:ank_app/util/store.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Application {
@@ -12,7 +12,7 @@ class Application {
 
   Future<void> init() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? local = prefs.getString(SP.keyLocale);
-    StoreLogic.to.setLocal(local ?? '');
+    final String? locale = prefs.getString(SP.keyLocale);
+    StoreLogic.to.setLocale(locale ?? '');
   }
 }

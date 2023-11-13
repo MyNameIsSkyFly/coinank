@@ -1,3 +1,4 @@
+import 'package:ank_app/generated/l10n.dart';
 import 'package:ank_app/modules/main/main_state.dart';
 import 'package:ank_app/res/light_colors.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +10,7 @@ class MainPage extends StatelessWidget {
   MainPage({Key? key}) : super(key: key);
 
   final logic = Get.find<MainLogic>();
-  final state = Get
-      .find<MainLogic>()
-      .state;
+  final state = Get.find<MainLogic>().state;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +23,33 @@ class MainPage extends StatelessWidget {
       ),
       bottomNavigationBar: Obx(() {
         return MyBottomBar(
-          items: state.tabBar,
+          items: [
+            BottomBarItem(
+              'assets/images/bottom_bar/home.png',
+              'assets/images/bottom_bar/home.png',
+              S.current.s_home,
+            ),
+            BottomBarItem(
+              'assets/images/bottom_bar/market.png',
+              'assets/images/bottom_bar/market.png',
+              S.current.s_tickers,
+            ),
+            BottomBarItem(
+              'assets/images/bottom_bar/books.png',
+              'assets/images/bottom_bar/books.png',
+              S.current.s_order_flow,
+            ),
+            BottomBarItem(
+              'assets/images/bottom_bar/chart.png',
+              'assets/images/bottom_bar/chart.png',
+              S.current.s_chart,
+            ),
+            BottomBarItem(
+              'assets/images/bottom_bar/set.png',
+              'assets/images/bottom_bar/set.png',
+              S.current.s_setting,
+            ),
+          ],
           currentIndex: state.selectedIndex.value,
           onTap: (int index) => logic.selectTab(index),
         );
@@ -53,14 +78,10 @@ class MyBottomBar extends StatelessWidget {
         child: Row(
           children: List.generate(
             items.length,
-                (index) =>
-                _createItem(
-                  index,
-                  MediaQuery
-                      .of(context)
-                      .size
-                      .width / 5,
-                ),
+            (index) => _createItem(
+              index,
+              MediaQuery.of(context).size.width / 5,
+            ),
           ),
         ),
       ),
@@ -73,10 +94,10 @@ class MyBottomBar extends StatelessWidget {
     return InkWell(
       onTap: onTap != null
           ? () {
-        if (onTap != null) {
-          onTap!(i);
-        }
-      }
+              if (onTap != null) {
+                onTap!(i);
+              }
+            }
           : null,
       child: SizedBox(
         width: itemWidth,

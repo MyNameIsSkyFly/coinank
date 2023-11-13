@@ -1,4 +1,4 @@
-import 'package:ank_app/store/store.dart';
+import 'package:ank_app/util/store.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,9 +29,7 @@ class SettingPage extends StatelessWidget {
               onTap: () async {
                 final SharedPreferences prefs = await SharedPreferences.getInstance();
                 await prefs.setString(SP.keyLocale, 'en');
-                S.delegate.load(Locale('en'));
-
-                StoreLogic.to.setLocal('en');
+                StoreLogic.to.setLocale('en');
                 print(1);
               },
             ),
@@ -41,8 +39,7 @@ class SettingPage extends StatelessWidget {
               onTap: () async {
                 final SharedPreferences prefs = await SharedPreferences.getInstance();
                 await prefs.setString(SP.keyLocale, 'zh');
-                S.delegate.load(Locale('zh'));
-                StoreLogic.to.setLocal('zh');
+                StoreLogic.to.setLocale('zh');
                 print(1);
               },
             ),
