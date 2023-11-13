@@ -72,13 +72,16 @@ class MyBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SizedBox(
-        height: 49,
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(top: BorderSide(color: Colors.black.withOpacity(0.1),width: 1)),
+      ),
+      child: SafeArea(
         child: Row(
           children: List.generate(
             items.length,
-            (index) => _createItem(
+                (index) => _createItem(
               index,
               MediaQuery.of(context).size.width / 5,
             ),
@@ -94,13 +97,14 @@ class MyBottomBar extends StatelessWidget {
     return InkWell(
       onTap: onTap != null
           ? () {
-              if (onTap != null) {
-                onTap!(i);
-              }
-            }
+        if (onTap != null) {
+          onTap!(i);
+        }
+      }
           : null,
-      child: SizedBox(
+      child: Container(
         width: itemWidth,
+        padding: const EdgeInsets.symmetric(vertical: 6),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
@@ -130,6 +134,7 @@ class MyBottomBar extends StatelessWidget {
                 fontSize: 11,
                 fontWeight: FontWeight.w500,
                 color: selected ? LightColors.mainBlue : LightColors.colorText,
+                height: 1.4,
               ),
             ),
           ],
