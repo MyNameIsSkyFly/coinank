@@ -1,7 +1,9 @@
+import 'package:ank_app/util/store.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 
 import '../generated/l10n.dart';
 
@@ -28,17 +30,17 @@ class AppUtil {
     showToast(S.current.copied);
   }
 
-  // static void changeLocale(Locale? locale) {
-  //   if (locale == null) {
-  //     Get.updateLocale(Get.deviceLocale ?? const Locale('en'));
-  //   } else {
-  //     Get.updateLocale(locale);
-  //     try {
-  //       S.load(locale);
-  //     } catch (e) {
-  //       S.load(const Locale('en'));
-  //     }
-  //   }
-  //   SpData.saveLocale(locale?.languageCode ?? '');
-  // }
+  static void changeLocale(Locale? locale) {
+    if (locale == null) {
+      Get.updateLocale(Get.deviceLocale ?? const Locale('en'));
+    } else {
+      Get.updateLocale(locale);
+      try {
+        S.load(locale);
+      } catch (e) {
+        S.load(const Locale('en'));
+      }
+    }
+    StoreLogic.to.saveLocale(locale);
+  }
 }

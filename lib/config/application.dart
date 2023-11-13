@@ -11,8 +11,6 @@ class Application {
   }
 
   Future<void> init() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? locale = prefs.getString(SP.keyLocale);
-    StoreLogic.to.setLocale(locale ?? '');
+    await StoreLogic.init();
   }
 }

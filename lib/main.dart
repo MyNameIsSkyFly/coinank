@@ -41,28 +41,13 @@ class _MyAppState extends State<MyApp> {
             ],
             supportedLocales: S.delegate.supportedLocales,
             localeResolutionCallback: (locale, supportedLocales) {
-              String localStr = StoreLogic.to.locale.value;
-              if (localStr.isNotEmpty) {
-                if (localStr.contains('_')) {
-                  return const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant');
-                }
-                return Locale(localStr);
-              } else if (locale?.languageCode == 'zh' && locale?.scriptCode == 'Hant') {
-                return const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant');
-              } else if (locale?.languageCode == 'zh') {
-                return const Locale('zh');
-              } else if (locale?.languageCode == 'ja') {
-                return const Locale('ja');
-              } else if (locale?.languageCode == 'ko') {
-                return const Locale('ko');
+              if (supportedLocales.contains(locale) == true) {
+                return locale;
+              } else {
+                return const Locale('en');
               }
-              return const Locale('en');
             },
-            locale: StoreLogic.to.locale.isEmpty
-                ? null
-                : StoreLogic.to.locale.value.contains('_')
-                    ? const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant')
-                    : Locale(StoreLogic.to.locale.value),
+            locale: StoreLogic.to.locale,
             initialRoute: RouteConfig.main,
             getPages: RouteConfig.getPages,
             debugShowCheckedModeBanner: false,
@@ -72,7 +57,8 @@ class _MyAppState extends State<MyApp> {
               splashColor: Colors.transparent,
               splashFactory: NoSplash.splashFactory,
               scaffoldBackgroundColor: Colors.white,
-              bottomSheetTheme: const BottomSheetThemeData(backgroundColor: Colors.transparent),
+              bottomSheetTheme: const BottomSheetThemeData(
+                  backgroundColor: Colors.transparent),
             ),
             builder: EasyLoading.init(
               builder: (context, child) {

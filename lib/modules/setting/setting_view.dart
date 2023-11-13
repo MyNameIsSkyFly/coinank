@@ -1,3 +1,4 @@
+import 'package:ank_app/util/app_util.dart';
 import 'package:ank_app/util/store.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -27,19 +28,43 @@ class SettingPage extends StatelessWidget {
             InkWell(
               child: Text('英文切换'),
               onTap: () async {
-                final SharedPreferences prefs = await SharedPreferences.getInstance();
-                await prefs.setString(SP.keyLocale, 'en');
-                StoreLogic.to.setLocale('en');
+                AppUtil.changeLocale(const Locale('en'));
                 print(1);
               },
             ),
             const SizedBox(height: 20),
             InkWell(
-              child: Text('中文切换'),
+              child: Text('中文简体切换'),
               onTap: () async {
-                final SharedPreferences prefs = await SharedPreferences.getInstance();
-                await prefs.setString(SP.keyLocale, 'zh');
-                StoreLogic.to.setLocale('zh');
+                AppUtil.changeLocale(const Locale.fromSubtags(
+                    languageCode: 'zh', scriptCode: 'Hans'));
+                print(1);
+              },
+            ),
+            const SizedBox(height: 20),
+            InkWell(
+              child: Text('中文繁体切换'),
+              onTap: () async {
+                AppUtil.changeLocale(const Locale.fromSubtags(
+                    languageCode: 'zh', scriptCode: 'Hant'));
+                print(1);
+              },
+            ),
+            const SizedBox(height: 20),
+            InkWell(
+              child: Text('日文切换'),
+              onTap: () async {
+                AppUtil.changeLocale(
+                    const Locale.fromSubtags(languageCode: 'ja'));
+                print(1);
+              },
+            ),
+            const SizedBox(height: 20),
+            InkWell(
+              child: Text('韩文切换'),
+              onTap: () async {
+                AppUtil.changeLocale(
+                    const Locale.fromSubtags(languageCode: 'ko'));
                 print(1);
               },
             ),
