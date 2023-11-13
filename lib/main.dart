@@ -8,9 +8,6 @@ Future<void> main() async {
   /// 确保初始化完成
   WidgetsFlutterBinding.ensureInitialized();
 
-  /// sp初始化
-  await SpUtil.getInstance();
-
   /// getx初始化
   StoreBinding().dependencies();
   runApp(const MyApp());

@@ -261,5 +261,7 @@
   "s_ls_top_positions_ratio_k": "大户持仓量多空比K线",
   "s_liqmap": "清算地图",
   "s_liq_detail": "清算地图详情",
-  "s_order_flow": "订单流"
+  "s_order_flow": "订单流",
+  "copied": "已复制",
+  "theServerIsBusyPleaseTryAgainLater": "服务器繁忙,请稍后再试"
 }

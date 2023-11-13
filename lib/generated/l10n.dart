@@ -2555,6 +2555,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Copied`
+  String get copied {
+    return Intl.message(
+      'Copied',
+      name: 'copied',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The server is busy, please try again later`
+  String get theServerIsBusyPleaseTryAgainLater {
+    return Intl.message(
+      'The server is busy, please try again later',
+      name: 'theServerIsBusyPleaseTryAgainLater',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

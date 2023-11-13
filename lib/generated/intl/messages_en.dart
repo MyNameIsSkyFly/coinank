@@ -124,6 +124,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Floating window permission"),
         "common_permission_wireless_devices":
             MessageLookupByLibrary.simpleMessage("nearby device permissions"),
+        "copied": MessageLookupByLibrary.simpleMessage("Copied"),
         "customize_resources":
             MessageLookupByLibrary.simpleMessage("cus resources"),
         "has_no_data": MessageLookupByLibrary.simpleMessage("没有内容，刷新一下吧~"),
@@ -396,6 +397,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "s_vol_fr": MessageLookupByLibrary.simpleMessage(
             "Funding Rates(Volume Weighted)"),
         "s_week": MessageLookupByLibrary.simpleMessage("7 Day"),
-        "s_year": MessageLookupByLibrary.simpleMessage("1 Year")
+        "s_year": MessageLookupByLibrary.simpleMessage("1 Year"),
+        "theServerIsBusyPleaseTryAgainLater":
+            MessageLookupByLibrary.simpleMessage(
+                "The server is busy, please try again later")
       };
 }

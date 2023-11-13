@@ -104,6 +104,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("悬浮窗权限"),
         "common_permission_wireless_devices":
             MessageLookupByLibrary.simpleMessage("附近的设备权限"),
+        "copied": MessageLookupByLibrary.simpleMessage("已复制"),
         "customize_resources":
             MessageLookupByLibrary.simpleMessage("cus resources"),
         "has_no_data": MessageLookupByLibrary.simpleMessage("没有内容，刷新一下吧~"),
@@ -320,6 +321,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "s_vol": MessageLookupByLibrary.simpleMessage("VOL"),
         "s_vol_fr": MessageLookupByLibrary.simpleMessage("资金费率(成交量加权平均)"),
         "s_week": MessageLookupByLibrary.simpleMessage("7天"),
-        "s_year": MessageLookupByLibrary.simpleMessage("1年")
+        "s_year": MessageLookupByLibrary.simpleMessage("1年"),
+        "theServerIsBusyPleaseTryAgainLater":
+            MessageLookupByLibrary.simpleMessage("服务器繁忙,请稍后再试")
       };
 }
