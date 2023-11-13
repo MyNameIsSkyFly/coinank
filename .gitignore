@@ -45,3 +45,5 @@ app.*.map.json
 .metadata
 /ios/Podfile.lock
 pubspec.lock
+**.g.dart
+/lib/generated/
