@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+
+import 'app_theme.dart';
 
 class Styles {
   Styles._();
 
   static const cMain = Color(0xFF4363F2);
   static const cTextBlack = Color(0xFF0E1420);
+  static Color cUp(BuildContext context) =>
+      Theme.of(context).extension<StockColors>()!.up!;
+  static Color cDown(BuildContext context) =>
+      Theme.of(context).extension<StockColors>()!.down!;
 
+//====================正文======================
   static TextStyle tsBody_10(BuildContext context) =>
       Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 10);
 

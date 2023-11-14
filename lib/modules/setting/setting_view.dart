@@ -1,11 +1,8 @@
-import 'package:ank_app/res/app_theme.dart';
 import 'package:ank_app/util/app_util.dart';
-import 'package:ank_app/util/store.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../res/export.dart';
+import '../../res/styles.dart';
 import 'setting_logic.dart';
 
 class SettingPage extends StatelessWidget {
@@ -58,8 +55,7 @@ class SettingPage extends StatelessWidget {
             ),
             Text(
               '上涨颜色',
-              style: TextStyle(
-                  color: Theme.of(context).extension<StockColors>()?.up),
+              style: TextStyle(color: Styles.cUp(context)),
             ),
             const SizedBox(height: 20),
             InkWell(
