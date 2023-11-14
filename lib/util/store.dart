@@ -31,12 +31,45 @@ class StoreLogic extends GetxController {
       _ => null,
     };
   }
+
+  Future<bool?> saveDarkMode(bool? isDarkMode) {
+    return _SpUtil()._saveInt(
+        _SpKeys.darkMode,
+        isDarkMode == null
+            ? -1
+            : isDarkMode
+                ? 1
+                : 0);
+  }
+
+  bool? get isDarkMode {
+    return switch (_SpUtil()._getInt(_SpKeys.darkMode, defaultValue: -1)) {
+      1 => true,
+      0 => false,
+      _ => null,
+    };
+  }
+
+  Future<bool> saveUpGreen(bool isUpGreen) {
+    return _SpUtil()._saveBool(_SpKeys.upGreen, isUpGreen);
+  }
+
+  bool get isUpGreen {
+    var isGreen = _SpUtil()._getBool(_SpKeys.upGreen, defaultValue: false);
+    return isGreen;
+  }
 }
 
 class _SpKeys {
   _SpKeys._();
 
-  static const locale = 'language';
+  static const locale = 'locale';
+
+  ///是否深色主题
+  static const darkMode = 'darkMode';
+
+  ///是否绿色为涨
+  static const upGreen = 'upGreen';
 }
 
 class _SpUtil {

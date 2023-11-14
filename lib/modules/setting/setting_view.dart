@@ -1,3 +1,4 @@
+import 'package:ank_app/res/app_theme.dart';
 import 'package:ank_app/util/app_util.dart';
 import 'package:ank_app/util/store.dart';
 import 'package:flutter/material.dart';
@@ -16,13 +17,49 @@ class SettingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
+      backgroundColor: Colors.transparent,
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             InkWell(
-              child: Text('黑白主题切换'),
-              onTap: () {},
+              child: Text(
+                '暗主题',
+              ),
+              onTap: () {
+                AppUtil.changeTheme(true);
+              },
+            ),
+            const SizedBox(height: 20),
+            InkWell(
+              child: Text(
+                '亮主题',
+              ),
+              onTap: () {
+                AppUtil.changeTheme(false);
+              },
+            ),
+            const SizedBox(height: 20),
+            InkWell(
+              child: Text('系统主题'),
+              onTap: () {
+                AppUtil.changeTheme(null);
+              },
+            ),
+            const SizedBox(height: 20),
+            InkWell(
+              child: Text(
+                '切换上涨颜色',
+              ),
+              onTap: () {
+                AppUtil.toggleUpColor();
+              },
+            ),
+            Text(
+              '上涨颜色',
+              style: TextStyle(
+                  color: Theme.of(context).extension<StockColors>()?.up),
             ),
             const SizedBox(height: 20),
             InkWell(

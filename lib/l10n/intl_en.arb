@@ -6,7 +6,7 @@
   "passwordError": "Incorrect password",
   "loginSuccessfully": "Login successfully",
   "plsEnterCorrectEmail": "Please enter a correct email address",
-  "invalidPassword": "Incorrect Passsword Format",
+  "invalidPassword": "Incorrect Password Format",
   "sendSuccessfully": "Sent successfully",
   "regain": "Resend",
   "invalidCode": "Verification code format incorrect",

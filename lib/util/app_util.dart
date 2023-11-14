@@ -1,3 +1,4 @@
+import 'package:ank_app/res/app_theme.dart';
 import 'package:ank_app/util/store.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -42,5 +43,20 @@ class AppUtil {
       }
     }
     StoreLogic.to.saveLocale(locale);
+  }
+
+  static void changeTheme(bool? isDarkMode) {
+    StoreLogic.to.saveDarkMode(isDarkMode);
+    Get.changeThemeMode(isDarkMode == null
+        ? ThemeMode.system
+        : isDarkMode
+            ? ThemeMode.dark
+            : ThemeMode.light);
+  }
+
+  static void toggleUpColor() {
+    final original = StoreLogic.to.isUpGreen;
+    StoreLogic.to.saveUpGreen(!original);
+    Get.forceAppUpdate();
   }
 }

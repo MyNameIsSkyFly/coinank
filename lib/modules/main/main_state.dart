@@ -22,8 +22,12 @@ class MainState {
 
 class BottomBarItem {
   final String icon; //未选中状态图标
-  final String activeIcon; //选中状态图标
+  // final String activeIcon; //选中状态图标
   final String title; //文字
 
-  BottomBarItem(this.icon, this.activeIcon, this.title);
+  BottomBarItem(
+    this.icon,
+    //this.activeIcon,
+    this.title,
+  );
 }

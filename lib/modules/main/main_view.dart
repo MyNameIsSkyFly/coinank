@@ -1,6 +1,8 @@
+import 'package:ank_app/generated/assets.dart';
 import 'package:ank_app/generated/l10n.dart';
 import 'package:ank_app/modules/main/main_state.dart';
 import 'package:ank_app/res/light_colors.dart';
+import 'package:ank_app/res/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -25,28 +27,23 @@ class MainPage extends StatelessWidget {
         return MyBottomBar(
           items: [
             BottomBarItem(
-              'assets/images/bottom_bar/home.png',
-              'assets/images/bottom_bar/home.png',
+              Assets.bottomBarHome,
               S.current.s_home,
             ),
             BottomBarItem(
-              'assets/images/bottom_bar/market.png',
-              'assets/images/bottom_bar/market.png',
+              Assets.bottomBarMarket,
               S.current.s_tickers,
             ),
             BottomBarItem(
-              'assets/images/bottom_bar/books.png',
-              'assets/images/bottom_bar/books.png',
+              Assets.bottomBarBooks,
               S.current.s_order_flow,
             ),
             BottomBarItem(
-              'assets/images/bottom_bar/chart.png',
-              'assets/images/bottom_bar/chart.png',
+              Assets.bottomBarChart,
               S.current.s_chart,
             ),
             BottomBarItem(
-              'assets/images/bottom_bar/set.png',
-              'assets/images/bottom_bar/set.png',
+              Assets.bottomBarSet,
               S.current.s_setting,
             ),
           ],
@@ -73,34 +70,36 @@ class MyBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.only(bottom: Get.mediaQuery.padding.bottom),
       decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(top: BorderSide(color: Colors.black.withOpacity(0.1),width: 1)),
-      ),
-      child: SafeArea(
-        child: Row(
-          children: List.generate(
-            items.length,
-                (index) => _createItem(
-              index,
-              MediaQuery.of(context).size.width / 5,
-            ),
+          color: Theme.of(context).bottomAppBarTheme.color,
+          boxShadow: const [
+            BoxShadow(
+                color: Colors.black12, offset: Offset(0, -1), blurRadius: 4)
+          ]),
+      child: Row(
+        children: List.generate(
+          items.length,
+          (index) => _createItem(
+            index,
+            MediaQuery.of(context).size.width / 5,
+            context,
           ),
         ),
       ),
     );
   }
 
-  Widget _createItem(int i, double itemWidth) {
+  Widget _createItem(int i, double itemWidth, BuildContext context) {
     BottomBarItem item = items[i];
     bool selected = i == currentIndex;
     return InkWell(
       onTap: onTap != null
           ? () {
-        if (onTap != null) {
-          onTap!(i);
-        }
-      }
+              if (onTap != null) {
+                onTap!(i);
+              }
+            }
           : null,
       child: Container(
         width: itemWidth,
@@ -115,13 +114,13 @@ class MyBottomBar extends StatelessWidget {
                 item.icon,
                 width: 25,
                 height: 25,
-                color: LightColors.colorText,
+                color: Theme.of(context).colorScheme.onBackground,
               ),
             ),
             Offstage(
               offstage: !selected,
               child: Image.asset(
-                item.activeIcon,
+                item.icon,
                 width: 25,
                 height: 25,
                 color: LightColors.mainBlue,
@@ -130,12 +129,8 @@ class MyBottomBar extends StatelessWidget {
             const SizedBox(height: 3),
             Text(
               item.title,
-              style: TextStyle(
-                fontSize: 11,
-                fontWeight: FontWeight.w500,
-                color: selected ? LightColors.mainBlue : LightColors.colorText,
-                height: 1.4,
-              ),
+              style: Styles.tsBody_11(context)
+                  .copyWith(color: selected ? Styles.cMain : null),
             ),
           ],
         ),
