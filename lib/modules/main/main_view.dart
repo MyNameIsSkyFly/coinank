@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 import 'main_logic.dart';
 
 class MainPage extends StatelessWidget {
-  MainPage({Key? key}) : super(key: key);
+  MainPage({super.key});
 
   final logic = Get.find<MainLogic>();
   final state = Get.find<MainLogic>().state;

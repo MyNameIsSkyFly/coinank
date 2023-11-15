@@ -31,6 +31,9 @@ class AppThemes {
           bodyMedium: TextStyle(color: Styles.cTextBlack),
           bodySmall: TextStyle(color: Color(0xff616E85)),
         ),
+        inputDecorationTheme: const InputDecorationTheme(
+          fillColor: Color(0xFFEFF2F5),
+        ),
       );
 
   static ThemeData get darkTheme => baseTheme.copyWith(
@@ -60,13 +63,16 @@ class AppThemes {
           bodyMedium: TextStyle(color: Colors.white),
           bodySmall: TextStyle(color: Color(0xffA1A7BB)),
         ),
+        inputDecorationTheme: const InputDecorationTheme(
+          fillColor: Color(0xFF323546),
+        ),
       );
 
   static ThemeData get baseTheme => ThemeData(
         useMaterial3: true,
         fontFamily: 'PingFang SC',
         platform: TargetPlatform.iOS,
-        splashFactory: InkSparkle.splashFactory,
+        splashFactory: NoSplash.splashFactory,
         extensions: StoreLogic.to.isUpGreen
             ? [StockColors.upGreen]
             : [StockColors.upRed],

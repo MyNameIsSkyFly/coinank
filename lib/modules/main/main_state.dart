@@ -1,3 +1,4 @@
+import 'package:ank_app/modules/market/market_view.dart';
 import 'package:ank_app/modules/setting/setting_view.dart';
 import 'package:ank_app/widget/keep_alive_page.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,7 @@ class MainState {
     pageController = PageController(initialPage: 0);
     tabPage = [
       keepAlivePage(Center(child: Text('开发中0'))),
-      keepAlivePage(Center(child: Text('开发中1'))),
+      keepAlivePage(MarketPage()),
       keepAlivePage(Center(child: Text('开发中2'))),
       keepAlivePage(Center(child: Text('开发中3'))),
       keepAlivePage(SettingPage()),
