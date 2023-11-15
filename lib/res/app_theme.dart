@@ -49,7 +49,7 @@ class AppThemes {
               systemNavigationBarIconBrightness: Brightness.light,
               statusBarColor: Colors.transparent,
               statusBarIconBrightness: Brightness.light,
-              statusBarBrightness: Brightness.light,
+              statusBarBrightness: Brightness.dark,
             )),
         iconTheme: const IconThemeData(color: Colors.white),
         cardColor: const Color(0xff1F202C),

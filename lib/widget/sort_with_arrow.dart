@@ -26,6 +26,7 @@ class SortWithArrow extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
           if (icon != null) icon!,
           Text(

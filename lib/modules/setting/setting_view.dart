@@ -62,7 +62,6 @@ class SettingPage extends StatelessWidget {
               child: Text('英文切换'),
               onTap: () async {
                 AppUtil.changeLocale(const Locale('en'));
-                print(1);
               },
             ),
             const SizedBox(height: 20),
@@ -79,7 +78,6 @@ class SettingPage extends StatelessWidget {
               onTap: () async {
                 AppUtil.changeLocale(const Locale.fromSubtags(
                     languageCode: 'zh', scriptCode: 'Hant'));
-                print(1);
               },
             ),
             const SizedBox(height: 20),
@@ -88,7 +86,6 @@ class SettingPage extends StatelessWidget {
               onTap: () async {
                 AppUtil.changeLocale(
                     const Locale.fromSubtags(languageCode: 'ja'));
-                print(1);
               },
             ),
             const SizedBox(height: 20),
@@ -97,7 +94,6 @@ class SettingPage extends StatelessWidget {
               onTap: () async {
                 AppUtil.changeLocale(
                     const Locale.fromSubtags(languageCode: 'ko'));
-                print(1);
               },
             ),
           ],
