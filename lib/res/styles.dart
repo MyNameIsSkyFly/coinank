@@ -34,6 +34,11 @@ class Styles {
   static TextStyle tsBody_14(BuildContext context) =>
       Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14);
 
+  static TextStyle tsBody_14m(BuildContext context) => Theme.of(context)
+      .textTheme
+      .bodyMedium!
+      .copyWith(fontSize: 14, fontWeight: fontMedium);
+
   static TextStyle tsBody_15(BuildContext context) =>
       Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 15);
 
@@ -110,4 +115,16 @@ class Styles {
 
   static TextStyle tsSub_30(BuildContext context) =>
       Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 30);
+
+//====================主色======================
+  static const tsMain_12 = TextStyle(fontSize: 12, color: cMain);
+  static const tsMain_14 = TextStyle(fontSize: 14, color: cMain);
+  static final tsMain_14m =
+      TextStyle(fontSize: 14, color: cMain, fontWeight: fontMedium);
+  static const tsMain_15 = TextStyle(fontSize: 15, color: cMain);
+  static const tsMain_16 = TextStyle(fontSize: 16, color: cMain);
+  static const tsMain_18 = TextStyle(fontSize: 18, color: cMain);
+  static const tsMain_20 = TextStyle(fontSize: 20, color: cMain);
+  static const tsMain_22 = TextStyle(fontSize: 22, color: cMain);
+  static const tsMain_24 = TextStyle(fontSize: 24, color: cMain);
 }

@@ -3,6 +3,8 @@ import 'package:ank_app/widget/keep_alive_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../home/home_view.dart';
+
 class MainState {
   late PageController pageController;
   RxInt selectedIndex = 0.obs;
@@ -11,7 +13,7 @@ class MainState {
   MainState() {
     pageController = PageController(initialPage: 0);
     tabPage = [
-      keepAlivePage(Center(child: Text('开发中0'))),
+      keepAlivePage(HomePage()),
       keepAlivePage(Center(child: Text('开发中1'))),
       keepAlivePage(Center(child: Text('开发中2'))),
       keepAlivePage(Center(child: Text('开发中3'))),
