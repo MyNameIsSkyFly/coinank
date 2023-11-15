@@ -1,8 +1,8 @@
+import 'package:ank_app/res/export.dart';
 import 'package:ank_app/util/app_util.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../res/styles.dart';
 import 'setting_logic.dart';
 
 class SettingPage extends StatelessWidget {
@@ -14,7 +14,7 @@ class SettingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppTitleBar(title: '设置'),
       backgroundColor: Colors.transparent,
       body: Center(
         child: Column(
@@ -62,7 +62,6 @@ class SettingPage extends StatelessWidget {
               child: Text('英文切换'),
               onTap: () async {
                 AppUtil.changeLocale(const Locale('en'));
-                print(1);
               },
             ),
             const SizedBox(height: 20),
@@ -71,7 +70,6 @@ class SettingPage extends StatelessWidget {
               onTap: () async {
                 AppUtil.changeLocale(const Locale.fromSubtags(
                     languageCode: 'zh', scriptCode: 'Hans'));
-                print(1);
               },
             ),
             const SizedBox(height: 20),
@@ -80,7 +78,6 @@ class SettingPage extends StatelessWidget {
               onTap: () async {
                 AppUtil.changeLocale(const Locale.fromSubtags(
                     languageCode: 'zh', scriptCode: 'Hant'));
-                print(1);
               },
             ),
             const SizedBox(height: 20),
@@ -89,7 +86,6 @@ class SettingPage extends StatelessWidget {
               onTap: () async {
                 AppUtil.changeLocale(
                     const Locale.fromSubtags(languageCode: 'ja'));
-                print(1);
               },
             ),
             const SizedBox(height: 20),
@@ -98,7 +94,6 @@ class SettingPage extends StatelessWidget {
               onTap: () async {
                 AppUtil.changeLocale(
                     const Locale.fromSubtags(languageCode: 'ko'));
-                print(1);
               },
             ),
           ],

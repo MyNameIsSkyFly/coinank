@@ -9,6 +9,7 @@ class AppThemes {
           seedColor: Styles.cMain,
           brightness: Brightness.light,
           onBackground: Colors.black,
+          tertiary: Colors.white,
         ),
         appBarTheme: const AppBarTheme(
             backgroundColor: Colors.white,
@@ -31,6 +32,9 @@ class AppThemes {
           bodyMedium: TextStyle(color: Styles.cTextBlack),
           bodySmall: TextStyle(color: Color(0xff616E85)),
         ),
+        inputDecorationTheme: const InputDecorationTheme(
+          fillColor: Color(0xFFEFF2F5),
+        ),
       );
 
   static ThemeData get darkTheme => baseTheme.copyWith(
@@ -38,6 +42,7 @@ class AppThemes {
           seedColor: Styles.cMain,
           brightness: Brightness.dark,
           onBackground: Colors.white,
+          tertiary: Styles.cTextBlack,
         ),
         appBarTheme: const AppBarTheme(
             backgroundColor: Color(0xff171823),
@@ -46,7 +51,7 @@ class AppThemes {
               systemNavigationBarIconBrightness: Brightness.light,
               statusBarColor: Colors.transparent,
               statusBarIconBrightness: Brightness.light,
-              statusBarBrightness: Brightness.light,
+              statusBarBrightness: Brightness.dark,
             )),
         iconTheme: const IconThemeData(color: Colors.white),
         cardColor: const Color(0xff1F202C),
@@ -60,13 +65,16 @@ class AppThemes {
           bodyMedium: TextStyle(color: Colors.white),
           bodySmall: TextStyle(color: Color(0xffA1A7BB)),
         ),
+        inputDecorationTheme: const InputDecorationTheme(
+          fillColor: Color(0xFF323546),
+        ),
       );
 
   static ThemeData get baseTheme => ThemeData(
         useMaterial3: true,
         fontFamily: 'PingFang SC',
         platform: TargetPlatform.iOS,
-        splashFactory: InkSparkle.splashFactory,
+        splashFactory: NoSplash.splashFactory,
         extensions: StoreLogic.to.isUpGreen
             ? [StockColors.upGreen]
             : [StockColors.upRed],
