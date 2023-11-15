@@ -9,6 +9,7 @@ class AppThemes {
           seedColor: Styles.cMain,
           brightness: Brightness.light,
           onBackground: Colors.black,
+          tertiary: Colors.white,
         ),
         appBarTheme: const AppBarTheme(
             backgroundColor: Colors.white,
@@ -41,6 +42,7 @@ class AppThemes {
           seedColor: Styles.cMain,
           brightness: Brightness.dark,
           onBackground: Colors.white,
+          tertiary: Styles.cTextBlack,
         ),
         appBarTheme: const AppBarTheme(
             backgroundColor: Color(0xff171823),

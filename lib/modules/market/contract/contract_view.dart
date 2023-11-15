@@ -12,7 +12,7 @@ class ContractPage extends StatelessWidget {
     final logic = Get.put(ContractLogic());
     final state = Get.find<ContractLogic>().state;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+      padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Column(
         children: [
           Container(
@@ -32,8 +32,7 @@ class ContractPage extends StatelessWidget {
                 const Gap(10),
                 Text(
                   S.current.s_search,
-                  style: Styles.tsBody_12(context).copyWith(
-                      color: Theme.of(context).textTheme.bodySmall?.color),
+                  style: Styles.tsSub_12(context),
                 ),
               ],
             ),
@@ -60,8 +59,7 @@ class ContractPage extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 2),
                   child: Text(
                     '/',
-                    style: Styles.tsBody_12m(context).copyWith(
-                        color: Theme.of(context).textTheme.bodySmall?.color),
+                    style: Styles.tsSub_12m(context),
                   ),
                 ),
                 SortWithArrow(
@@ -136,20 +134,14 @@ class _DataItem extends StatelessWidget {
             children: [
               Text(
                 'BTC',
-                style: Styles.tsBody_12m(context).copyWith(
-                  color: Theme.of(context).textTheme.bodyMedium?.color,
-                  height: 1.4,
-                ),
+                style: Styles.tsBody_12m(context).copyWith(height: 1.4),
               ),
               const Gap(5),
               Row(
                 children: [
                   Text(
                     '65.65亿',
-                    style: Styles.tsBody_12(context).copyWith(
-                      color: Theme.of(context).textTheme.bodySmall?.color,
-                      height: 1.4,
-                    ),
+                    style: Styles.tsSub_12(context).copyWith(height: 1.4),
                   ),
                   const SizedBox(width: 2),
                   Text(

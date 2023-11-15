@@ -31,9 +31,7 @@ class SortWithArrow extends StatelessWidget {
           if (icon != null) icon!,
           Text(
             title,
-            style: Styles.tsBody_12(context).copyWith(
-              color: Theme.of(context).textTheme.bodySmall?.color,
-            ),
+            style: Styles.tsSub_12(context),
           ),
           const SizedBox(width: 2),
           if (status == SortStatus.normal)
