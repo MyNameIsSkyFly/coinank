@@ -15,7 +15,7 @@ class RateWithArrow extends StatelessWidget {
   final int precise;
 
   String get rateString {
-    final s = '${(rate * 100).toStringAsFixed(precise)}%';
+    final s = '${rate.toStringAsFixed(precise)}%';
     if (s.startsWith('-')) return s.substring(1);
     return s;
   }

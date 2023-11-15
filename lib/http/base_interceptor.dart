@@ -10,7 +10,7 @@ class BaseInterceptor extends Interceptor {
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     final code = response.data?['code'];
     //todo 确定是否需要
-    if ('$code' != '0') {
+    if ('$code' != '1') {
       if (!_handleCode('$code')) {
         AppUtil.showToast((response.data?['msg'] ?? '').toString());
       }

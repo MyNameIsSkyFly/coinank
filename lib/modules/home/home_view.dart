@@ -1,15 +1,17 @@
 import 'package:ank_app/generated/assets.dart';
 import 'package:ank_app/res/styles.dart';
+import 'package:ank_app/util/app_util.dart';
+import 'package:ank_app/util/image_util.dart';
 import 'package:ank_app/widget/rate_with_sign.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import '../../generated/l10n.dart';
 import '../../widget/rate_with_arrow.dart';
 import 'home_logic.dart';
+import 'package:easy_refresh/easy_refresh.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
@@ -69,303 +71,339 @@ class HomePage extends StatelessWidget {
           const Gap(10),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            ///第一行
-            Row(
+      body: EasyRefresh(
+        onRefresh: logic.onRefresh,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          child: Obx(() {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                _FirstLineItem(
-                  title: S.of(context).s_total_oi,
-                  //todo 数据
-                  value: '123',
-                  rate: 0.4,
-                ),
-                const Gap(9),
-                _FirstLineItem(
-                    title: S.of(context).s_futures_vol_24h,
-                    //todo 数据
-                    rate: -0.3,
-                    value: '123123'),
-              ],
-            ),
-            const Gap(10),
-
-            ///清算地图
-            _CheckDetailRow(
-              title: S.of(context).s_liqmap,
-              onTap: () {},
-            ),
-            const Gap(20),
-
-            ///热门行情
-            Text(
-              S.of(context).hotMarket,
-              style: Styles.tsBody_16m(context),
-            ),
-            const Gap(15),
-            Row(
-              children: [
-                Expanded(
-                  child: _OutlinedContainer(
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              S.of(context).s_oi_chg,
-                              style: Styles.tsBody_12m(context),
-                            ),
-                            Text(
-                              ' (24H)',
-                              style: Styles.tsBody_12m(context),
-                            ),
-                          ],
-                        ),
-                        //todo 换成接口数据
-                        _DataWithIcon(title: 'BTC', icon: 'BTC', value: 0.0433),
-                        _DataWithIcon(title: 'BTC', icon: 'BTC', value: 0.0433),
-                        _DataWithIcon(title: 'BTC', icon: 'BTC', value: 0.0433),
-                      ],
+                ///第一行
+                Row(
+                  children: [
+                    _FirstLineItem(
+                      title: S.of(context).s_total_oi,
+                      value: AppUtil.getLargeFormatString(
+                          logic.homeInfoData.value?.openInterest ?? '0',
+                          Get.locale.toString()),
+                      rate: double.tryParse(
+                              logic.homeInfoData.value?.oiChange ?? '0') ??
+                          0,
                     ),
-                  ),
+                    const Gap(9),
+                    _FirstLineItem(
+                        title: S.of(context).s_futures_vol_24h,
+                        rate: double.tryParse(
+                                logic.homeInfoData.value?.tickerChange ??
+                                    '0') ??
+                            0,
+                        value: AppUtil.getLargeFormatString(
+                            logic.homeInfoData.value?.ticker ?? '0',
+                            Get.locale.toString())),
+                  ],
                 ),
-                const Gap(9),
-                Expanded(
-                  child: _OutlinedContainer(
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              S.of(context).s_price_chg,
-                              style: Styles.tsBody_12m(context),
-                            ),
-                            Text(
-                              ' (24H)',
-                              style: Styles.tsBody_12m(context),
-                            ),
-                          ],
-                        ),
-                        //todo 换成接口数据
-                        _DataWithIcon(
-                            title: 'BTC', icon: 'BTC', value: -0.0433),
-                        _DataWithIcon(title: 'BTC', icon: 'BTC', value: 0.0433),
-                        _DataWithIcon(title: 'BTC', icon: 'BTC', value: 0.0433),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const Gap(10),
+                const Gap(10),
 
-            ///爆仓数据
-            Row(
-              children: [
-                Expanded(
-                  child: _OutlinedContainer(
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              S.of(context).s_liquidation_data,
-                              style: Styles.tsBody_12m(context),
-                            ),
-                            Text(
-                              ' (24H)',
-                              style: Styles.tsBody_12m(context),
-                            ),
-                          ],
-                        ),
-                        //todo 换成接口数据
-                        _DataWithQuantity(title: '24H', value: '1亿'),
-                        _DataWithQuantity(
-                            title: S.of(context).s_longs,
-                            value: '123万',
-                            isLong: true),
-                        _DataWithQuantity(
-                            title: S.of(context).s_shorts,
-                            value: '456万',
-                            isLong: false),
-                      ],
-                    ),
-                  ),
-                ),
-                const Gap(9),
-                Expanded(
-                  child: _OutlinedContainer(
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              S.of(context).s_funding_rate,
-                              style: Styles.tsBody_12m(context),
-                            ),
-                            Text(
-                              ' (24H)',
-                              style: Styles.tsBody_12m(context),
-                            ),
-                          ],
-                        ),
-                        //todo 换成接口数据
-                        _DataWithoutIcon(title: 'demo1', value: -0.0433),
-                        _DataWithoutIcon(title: 'demo2', value: 0.0433),
-                        _DataWithoutIcon(title: 'demo3', value: 0.0433),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const Gap(20),
-
-            ///持仓分布
-            Row(
-              children: [
-                Expanded(
-                    child: Text('持仓分布', style: Styles.tsBody_16m(context))),
-                _FilledContainer(
+                ///清算地图
+                _CheckDetailRow(
+                  title: S.of(context).s_liqmap,
                   onTap: () {},
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                ),
+                const Gap(20),
+
+                ///热门行情
+                Text(
+                  S.of(context).hotMarket,
+                  style: Styles.tsBody_16m(context),
+                ),
+                const Gap(15),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _OutlinedContainer(
+                        child: Obx(() {
+                          return Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    S.of(context).s_oi_chg,
+                                    style: Styles.tsBody_12m(context),
+                                  ),
+                                  Text(
+                                    ' (24H)',
+                                    style: Styles.tsBody_12m(context),
+                                  ),
+                                ],
+                              ),
+                              ...List.generate(
+                                3,
+                                (index) => _DataWithIcon(
+                                    title: logic.oiList?[index].baseCoin ?? '',
+                                    icon: logic.oiList?[index].coinImage ?? '',
+                                    value:
+                                        logic.oiList?[index].priceChangeH24 ??
+                                            0),
+                              )
+                            ],
+                          );
+                        }),
+                      ),
+                    ),
+                    const Gap(9),
+                    Expanded(
+                      child: _OutlinedContainer(
+                        child: Obx(() {
+                          return Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    S.of(context).s_price_chg,
+                                    style: Styles.tsBody_12m(context),
+                                  ),
+                                  Text(
+                                    ' (24H)',
+                                    style: Styles.tsBody_12m(context),
+                                  ),
+                                ],
+                              ),
+                              ...List.generate(
+                                3,
+                                (index) => _DataWithIcon(
+                                    title:
+                                        logic.priceList?[index].baseCoin ?? '',
+                                    icon:
+                                        logic.priceList?[index].coinImage ?? '',
+                                    value: logic
+                                            .priceList?[index].priceChangeH24 ??
+                                        0),
+                              )
+                            ],
+                          );
+                        }),
+                      ),
+                    ),
+                  ],
+                ),
+                const Gap(10),
+
+                ///爆仓数据
+                Row(
+                  children: [
+                    Expanded(
+                      child: _OutlinedContainer(
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  S.of(context).s_liquidation_data,
+                                  style: Styles.tsBody_12m(context),
+                                ),
+                                Text(
+                                  ' (24H)',
+                                  style: Styles.tsBody_12m(context),
+                                ),
+                              ],
+                            ),
+                            //todo 换成接口数据
+                            _DataWithQuantity(title: '24H', value: '1亿'),
+                            _DataWithQuantity(
+                                title: S.of(context).s_longs,
+                                value: '123万',
+                                isLong: true),
+                            _DataWithQuantity(
+                                title: S.of(context).s_shorts,
+                                value: '456万',
+                                isLong: false),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const Gap(9),
+                    Expanded(
+                      child: _OutlinedContainer(
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  S.of(context).s_funding_rate,
+                                  style: Styles.tsBody_12m(context),
+                                ),
+                                Text(
+                                  ' (24H)',
+                                  style: Styles.tsBody_12m(context),
+                                ),
+                              ],
+                            ),
+                            //todo 换成接口数据
+                            _DataWithoutIcon(title: 'demo1', value: -0.0433),
+                            _DataWithoutIcon(title: 'demo2', value: 0.0433),
+                            _DataWithoutIcon(title: 'demo3', value: 0.0433),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const Gap(20),
+
+                ///持仓分布
+                Row(
+                  children: [
+                    Expanded(
+                        child: Text(S.of(context).oiDistribution,
+                            style: Styles.tsBody_16m(context))),
+                    _FilledContainer(
+                      onTap: () {},
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.baseline,
+                        textBaseline: TextBaseline.alphabetic,
+                        children: [
+                          Text(
+                            S.of(context).s_buysel_longshort_ratio,
+                            style: Styles.tsBody_12m(context),
+                          ),
+                          const Gap(7),
+                          //todo 换成接口数据
+                          Text(
+                            logic.buySellLongShortRatio,
+                            style: Styles.tsMain_14m
+                                .copyWith(decoration: TextDecoration.underline),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+                const Gap(15),
+
+                ///多空持仓人数比
+                _LongShortRatio(
+                    title: S.of(context).s_bn_longshort_person_ratio,
+                    long: double.parse(
+                        logic.homeInfoData.value?.binancePersonValue ?? '0'),
+                    // short: 9,
+                    rate: double.parse(
+                        logic.homeInfoData.value?.binancePersonChange ?? '0')),
+                const Gap(10),
+                _LongShortRatio(
+                    title: S.of(context).s_ok_longshort_person_ratio,
+                    long: double.parse(
+                        logic.homeInfoData.value?.okexPersonValue ?? '0'),
+                    rate: double.parse(
+                        logic.homeInfoData.value?.okexPersonChange ?? '0')),
+                const Gap(20),
+
+                ///btc市值占比
+                _OutlinedContainer(
                   child: Row(
                     children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                const Placeholder(
+                                  fallbackHeight: 18,
+                                  fallbackWidth: 18,
+                                ),
+                                const Gap(5),
+                                Text(
+                                  S.of(context).s_marketcap_ratio,
+                                  style: Styles.tsBody_12m(context),
+                                ),
+                                const Icon(CupertinoIcons.chevron_right,
+                                    size: 12),
+                              ],
+                            ),
+                            const Gap(6),
+                            //todo 换成接口数据
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  '123%',
+                                  style: Styles.tsMain_18.copyWith(
+                                      fontWeight: FontWeight.w600, height: 1),
+                                ),
+                                const Gap(5),
+                                const RateWithArrow(rate: -0.22)
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 30, child: VerticalDivider()),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  const Placeholder(
+                                    fallbackHeight: 18,
+                                    fallbackWidth: 18,
+                                  ),
+                                  const Gap(5),
+                                  Text(
+                                    S.of(context).s_btc_profit,
+                                    style: Styles.tsBody_12m(context),
+                                  ),
+                                  const Icon(CupertinoIcons.chevron_right,
+                                      size: 12),
+                                ],
+                              ),
+                              const Gap(6),
+                              //todo 换成接口数据
+                              Text(
+                                '123%',
+                                style: Styles.tsMain_18.copyWith(
+                                    fontWeight: FontWeight.w600, height: 1),
+                              )
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                const Gap(10),
+                //todo 换成接口数据
+                _OutlinedContainer(
+                  child: Row(
+                    children: [
+                      Text(S.of(context).s_greed_index,
+                          style: Styles.tsBody_12m(context)),
+                      const Gap(10),
                       Text(
-                        S.of(context).s_buysel_longshort_ratio,
+                        S.of(context).s_greed,
+                        style:
+                            TextStyle(fontSize: 12, color: Styles.cUp(context)),
+                      ),
+                      Spacer(),
+                      Text(
+                        '75',
                         style: Styles.tsBody_12m(context),
                       ),
                       const Gap(7),
-                      //todo 换成接口数据
-                      Text(
-                        '接口数据',
-                        style: Styles.tsMain_14m
-                            .copyWith(decoration: TextDecoration.underline),
-                      ),
+                      RateWithArrow(rate: 0.123)
                     ],
                   ),
-                )
+                ),
+                const Gap(10),
+                _CheckDetailRow(title: S.of(context).s_grayscale_data)
               ],
-            ),
-            const Gap(15),
-
-            ///多空持仓人数比
-            _LongShortRatio(
-                title: S.of(context).s_bn_longshort_person_ratio,
-                long: 10,
-                short: 9,
-                rate: -0.3),
-            const Gap(10),
-            _LongShortRatio(
-                title: S.of(context).s_ok_longshort_person_ratio,
-                long: 10,
-                short: 9,
-                rate: -0.3),
-            const Gap(20),
-
-            ///btc市值占比
-            _OutlinedContainer(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            const Placeholder(
-                              fallbackHeight: 18,
-                              fallbackWidth: 18,
-                            ),
-                            const Gap(5),
-                            Text(
-                              S.of(context).s_marketcap_ratio,
-                              style: Styles.tsBody_12m(context),
-                            ),
-                            const Icon(CupertinoIcons.chevron_right, size: 12),
-                          ],
-                        ),
-                        const Gap(6),
-                        //todo 换成接口数据
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              '123%',
-                              style: Styles.tsMain_18.copyWith(
-                                  fontWeight: FontWeight.w600, height: 1),
-                            ),
-                            const Gap(5),
-                            const RateWithArrow(rate: -0.22)
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 30, child: VerticalDivider()),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              const Placeholder(
-                                fallbackHeight: 18,
-                                fallbackWidth: 18,
-                              ),
-                              const Gap(5),
-                              Text(
-                                S.of(context).s_marketcap_ratio,
-                                style: Styles.tsBody_12m(context),
-                              ),
-                              const Icon(CupertinoIcons.chevron_right,
-                                  size: 12),
-                            ],
-                          ),
-                          const Gap(6),
-                          //todo 换成接口数据
-                          Text(
-                            '123%',
-                            style: Styles.tsMain_18.copyWith(
-                                fontWeight: FontWeight.w600, height: 1),
-                          )
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            const Gap(10),
-            //todo 换成接口数据
-            _OutlinedContainer(
-              child: Row(
-                children: [
-                  Text(S.of(context).s_greed_index,
-                      style: Styles.tsBody_12m(context)),
-                  const Gap(10),
-                  Text(
-                    S.of(context).s_greed,
-                    style: TextStyle(fontSize: 12, color: Styles.cUp(context)),
-                  ),
-                  Spacer(),
-                  Text(
-                    '75',
-                    style: Styles.tsBody_12m(context),
-                  ),
-                  const Gap(7),
-                  RateWithArrow(rate: 0.123)
-                ],
-              ),
-            ),
-            const Gap(10),
-            _CheckDetailRow(title: S.of(context).s_grayscale_data)
-          ],
+            );
+          }),
         ),
       ),
     );
@@ -411,15 +449,17 @@ class _LongShortRatio extends StatelessWidget {
     super.key,
     required this.title,
     required this.long,
-    required this.short,
+    // required this.short,
     required this.rate,
   });
 
   final String title;
   final double long;
-  final double short;
+  // final double short;
   final double rate;
 
+  double get actualLong => long / (1 + long);
+  double get short => 1 - actualLong;
   @override
   Widget build(BuildContext context) {
     return _FilledContainer(
@@ -433,11 +473,11 @@ class _LongShortRatio extends StatelessWidget {
                   style: Styles.tsBody_12m(context),
                 ),
               ),
-              //todo 换成接口数据
-              Text((long / short).toStringAsFixed(2),
+              Text((actualLong / short).toStringAsFixed(2),
                   style: Styles.tsBody_14m(context)),
               const Gap(5),
-              RateWithArrow(rate: 0.11)
+              //todo 换成接口数据
+              RateWithArrow(rate: rate * 100)
             ],
           ),
           const Gap(17),
@@ -445,7 +485,7 @@ class _LongShortRatio extends StatelessWidget {
             height: 6,
             child: Row(children: [
               Expanded(
-                  flex: long.toInt(),
+                  flex: (actualLong * 1000).toInt(),
                   child: Container(
                     decoration: BoxDecoration(
                       color: Styles.cUp(context),
@@ -454,7 +494,7 @@ class _LongShortRatio extends StatelessWidget {
                   )),
               const Gap(2),
               Expanded(
-                  flex: short.toInt(),
+                  flex: (short * 1000).toInt(),
                   child: Container(
                     decoration: BoxDecoration(
                       color: Styles.cDown(context),
@@ -480,7 +520,7 @@ class _LongShortRatio extends StatelessWidget {
                   ),
                   const Gap(5),
                   Text(
-                    '${(long / (long + short) * 100).toStringAsFixed(2)}%',
+                    '${(actualLong * 100).toStringAsFixed(2)}%',
                     style: TextStyle(
                         fontSize: 12,
                         fontWeight: Styles.fontMedium,
@@ -503,7 +543,7 @@ class _LongShortRatio extends StatelessWidget {
                   ),
                   const Gap(5),
                   Text(
-                    '${(short / (long + short) * 100).toStringAsFixed(2)}%',
+                    '${(short * 100).toStringAsFixed(2)}%',
                     style: TextStyle(
                         fontSize: 12,
                         fontWeight: Styles.fontMedium,
@@ -537,10 +577,7 @@ class _DataWithIcon extends StatelessWidget {
       padding: const EdgeInsets.only(top: 10),
       child: Row(
         children: [
-          const Placeholder(
-            fallbackHeight: 18,
-            fallbackWidth: 18,
-          ),
+          ImageUtil.networkImage(icon, height: 18, width: 18),
           const Gap(5),
           Expanded(
             child: Text(
@@ -577,7 +614,7 @@ class _DataWithoutIcon extends StatelessWidget {
               style: Styles.tsBody_12m(context),
             ),
           ),
-          RateWithSign(rate: value, precise: 4),
+          RateWithSign(rate: value, precision: 4),
         ],
       ),
     );
@@ -646,7 +683,6 @@ class _FirstLineItem extends StatelessWidget {
               style: Styles.tsSub_12(context),
             ),
             const Gap(5),
-            //todo 合约总持仓数据
             Row(
               children: [
                 Text(
@@ -654,7 +690,7 @@ class _FirstLineItem extends StatelessWidget {
                   style: Styles.tsBody_12m(context),
                 ),
                 const Gap(5),
-                RateWithArrow(rate: rate ?? 0),
+                RateWithArrow(rate: (rate ?? 0) * 100),
               ],
             ),
           ],

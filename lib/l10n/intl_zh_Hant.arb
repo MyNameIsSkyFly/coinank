@@ -266,5 +266,6 @@
   "s_liq_detail": "清算地圖詳情",
   "s_order_flow": "訂單流",
   "viewDetail": "查看详情",
-  "hotMarket": "热门行情"
+  "hotMarket": "热门行情",
+  "oiDistribution": "持仓分布"
 }

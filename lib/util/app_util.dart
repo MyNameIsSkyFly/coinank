@@ -1,9 +1,11 @@
+import 'package:ank_app/util/format_util.dart';
 import 'package:ank_app/util/store.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../generated/l10n.dart';
 
@@ -18,7 +20,7 @@ class AppUtil {
       timeInSecForIosWeb: 3,
       backgroundColor: Colors.black,
       textColor: Colors.white,
-      webBgColor: "linear-gradient(to right, #000000, #000000)",
+      webBgColor: 'linear-gradient(to right, #000000, #000000)',
       gravity: ToastGravity.BOTTOM,
       webPosition: 'center',
       fontSize: 16.0,
@@ -57,5 +59,24 @@ class AppUtil {
     final original = StoreLogic.to.isUpGreen;
     StoreLogic.to.saveUpGreen(!original);
     Get.forceAppUpdate();
+  }
+
+  static String getLargeFormatString(String val, String locale) {
+    var amount = double.parse(val);
+    if (locale.isCaseInsensitiveContains('zh')) {
+      return FormatUtil.amountConversion(amount);
+    }
+    final mFormat = NumberFormat('#,##0.0', 'en_US');
+    if (amount < 1000000) {
+      // Don't format if it's less than 1000000
+      return amount.toString();
+    } else if (amount < 1000000000) {
+      // Format as millions (M) if it's less than 1000000000
+      return '${mFormat.format(amount / 1000000)}M';
+    } else {
+      // Format as billions (B) if it's greater than or equal to 1000000000
+      return '${mFormat.format(amount / 1000000000)}B';
+    }
+    return mFormat.format(amount);
   }
 }
