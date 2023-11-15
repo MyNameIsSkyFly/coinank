@@ -48,6 +48,8 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/images/bottom_bar/
+    - assets/images/common/
     - assets/images/
 
 flutter_assets_generator:
