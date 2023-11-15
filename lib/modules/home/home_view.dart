@@ -13,10 +13,31 @@ import '../../widget/rate_with_arrow.dart';
 import 'home_logic.dart';
 import 'package:easy_refresh/easy_refresh.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   final logic = Get.put(HomeLogic());
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addObserver(this);
+    super.initState();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      logic.appVisible = true;
+    } else if (state == AppLifecycleState.paused) {
+      logic.appVisible = false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
