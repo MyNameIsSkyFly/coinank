@@ -10,6 +10,7 @@ import 'package:talker_dio_logger/talker_dio_logger.dart';
 
 import '../entity/futures_big_data_entity.dart';
 import '../entity/head_statistics_entity.dart';
+import '../entity/home_fund_rate_entity.dart';
 
 part 'apis.g.dart';
 
@@ -47,4 +48,7 @@ abstract class Apis {
       @Query('size') required int size,
       @Query('sortBy') required String sortBy,
       @Query('sortType') required String sortType});
+
+  @GET('/api/fundingRate/top?type=LAST&size=3')
+  Future<List<HomeFundRateEntity>?> getHomeFundRateData();
 }

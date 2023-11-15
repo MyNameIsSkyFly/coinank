@@ -85,8 +85,7 @@ class HomePage extends StatelessWidget {
                     _FirstLineItem(
                       title: S.of(context).s_total_oi,
                       value: AppUtil.getLargeFormatString(
-                          logic.homeInfoData.value?.openInterest ?? '0',
-                          Get.locale.toString()),
+                          logic.homeInfoData.value?.openInterest ?? '0'),
                       rate: double.tryParse(
                               logic.homeInfoData.value?.oiChange ?? '0') ??
                           0,
@@ -99,8 +98,7 @@ class HomePage extends StatelessWidget {
                                     '0') ??
                             0,
                         value: AppUtil.getLargeFormatString(
-                            logic.homeInfoData.value?.ticker ?? '0',
-                            Get.locale.toString())),
+                            logic.homeInfoData.value?.ticker ?? '0')),
                   ],
                 ),
                 const Gap(10),
@@ -208,15 +206,23 @@ class HomePage extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            //todo 换成接口数据
-                            _DataWithQuantity(title: '24H', value: '1亿'),
+                            _DataWithQuantity(
+                                title: '24H',
+                                value: AppUtil.getLargeFormatString(
+                                    logic.homeInfoData.value?.liquidation ??
+                                        '0'),
+                                isLong: true),
                             _DataWithQuantity(
                                 title: S.of(context).s_longs,
-                                value: '123万',
+                                value: AppUtil.getLargeFormatString(
+                                    logic.homeInfoData.value?.liquidationLong ??
+                                        '0'),
                                 isLong: true),
                             _DataWithQuantity(
                                 title: S.of(context).s_shorts,
-                                value: '456万',
+                                value: AppUtil.getLargeFormatString(logic
+                                        .homeInfoData.value?.liquidationShort ??
+                                    '0'),
                                 isLong: false),
                           ],
                         ),
@@ -240,9 +246,15 @@ class HomePage extends StatelessWidget {
                               ],
                             ),
                             //todo 换成接口数据
-                            _DataWithoutIcon(title: 'demo1', value: -0.0433),
-                            _DataWithoutIcon(title: 'demo2', value: 0.0433),
-                            _DataWithoutIcon(title: 'demo3', value: 0.0433),
+                            ...List.generate(
+                              logic.fundRateList.length,
+                              (index) {
+                                var item = logic.fundRateList[index];
+                                return _DataWithoutIcon(
+                                    title: item.symbol ?? '',
+                                    value: item.fundingRate ?? 0);
+                              },
+                            ),
                           ],
                         ),
                       ),
@@ -310,9 +322,10 @@ class HomePage extends StatelessWidget {
                           children: [
                             Row(
                               children: [
-                                const Placeholder(
-                                  fallbackHeight: 18,
-                                  fallbackWidth: 18,
+                                Image.asset(
+                                  Assets.imagesIcCoinBtc,
+                                  height: 18,
+                                  width: 18,
                                 ),
                                 const Gap(5),
                                 Text(
@@ -324,23 +337,27 @@ class HomePage extends StatelessWidget {
                               ],
                             ),
                             const Gap(6),
-                            //todo 换成接口数据
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(
-                                  '123%',
+                                  '${((double.tryParse(logic.homeInfoData.value?.marketCpaValue ?? '') ?? 0) * 100).toStringAsFixed(2)}%',
                                   style: Styles.tsMain_18.copyWith(
                                       fontWeight: FontWeight.w600, height: 1),
                                 ),
                                 const Gap(5),
-                                const RateWithArrow(rate: -0.22)
+                                RateWithArrow(
+                                    rate: (double.tryParse(logic.homeInfoData
+                                                    .value?.marketCpaChange ??
+                                                '') ??
+                                            0) *
+                                        100),
                               ],
                             )
                           ],
                         ),
                       ),
-                      SizedBox(height: 30, child: VerticalDivider()),
+                      const SizedBox(height: 30, child: VerticalDivider()),
                       Expanded(
                         child: Padding(
                           padding: const EdgeInsets.only(left: 20),
@@ -349,9 +366,10 @@ class HomePage extends StatelessWidget {
                             children: [
                               Row(
                                 children: [
-                                  const Placeholder(
-                                    fallbackHeight: 18,
-                                    fallbackWidth: 18,
+                                  Image.asset(
+                                    Assets.imagesIcCoinBtc,
+                                    height: 18,
+                                    width: 18,
                                   ),
                                   const Gap(5),
                                   Text(
@@ -363,9 +381,8 @@ class HomePage extends StatelessWidget {
                                 ],
                               ),
                               const Gap(6),
-                              //todo 换成接口数据
                               Text(
-                                '123%',
+                                '${((double.tryParse(logic.homeInfoData.value?.btcProfit ?? '') ?? 0)).toStringAsFixed(2)}%',
                                 style: Styles.tsMain_18.copyWith(
                                     fontWeight: FontWeight.w600, height: 1),
                               )
@@ -385,17 +402,39 @@ class HomePage extends StatelessWidget {
                           style: Styles.tsBody_12m(context)),
                       const Gap(10),
                       Text(
-                        S.of(context).s_greed,
-                        style:
-                            TextStyle(fontSize: 12, color: Styles.cUp(context)),
+                        switch (double.tryParse(
+                                logic.homeInfoData.value?.cnnValue ?? '') ??
+                            -1) {
+                          >= 0 && <= 25 => S.of(context).s_extreme_fear,
+                          > 25 && <= 50 => S.of(context).s_fear,
+                          > 50 && <= 75 => S.of(context).s_greed,
+                          > 75 && <= 100 => S.of(context).s_extreme_greed,
+                          _ => '',
+                        },
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: switch (double.tryParse(
+                                    logic.homeInfoData.value?.cnnValue ?? '') ??
+                                -1) {
+                              >= 0 && <= 50 => Styles.cDown(context),
+                              _ => Styles.cUp(context),
+                            }),
                       ),
                       Spacer(),
                       Text(
-                        '75',
+                        (double.tryParse(
+                                    logic.homeInfoData.value?.cnnValue ?? '') ??
+                                0)
+                            .toStringAsFixed(0),
                         style: Styles.tsBody_12m(context),
                       ),
                       const Gap(7),
-                      RateWithArrow(rate: 0.123)
+                      RateWithArrow(
+                          rate: (double.tryParse(
+                                      logic.homeInfoData.value?.cnnChange ??
+                                          '') ??
+                                  0) *
+                              100)
                     ],
                   ),
                 ),
@@ -611,10 +650,12 @@ class _DataWithoutIcon extends StatelessWidget {
           Expanded(
             child: Text(
               title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: Styles.tsBody_12m(context),
             ),
           ),
-          RateWithSign(rate: value, precision: 4),
+          RateWithSign(rate: value * 100, precision: 4),
         ],
       ),
     );
@@ -642,6 +683,8 @@ class _DataWithQuantity extends StatelessWidget {
           Expanded(
             child: Text(
               title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: Styles.tsBody_12m(context),
             ),
           ),
@@ -680,6 +723,8 @@ class _FirstLineItem extends StatelessWidget {
           children: [
             Text(
               title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: Styles.tsSub_12(context),
             ),
             const Gap(5),
@@ -687,6 +732,8 @@ class _FirstLineItem extends StatelessWidget {
               children: [
                 Text(
                   value,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: Styles.tsBody_12m(context),
                 ),
                 const Gap(5),
