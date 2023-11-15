@@ -1,5 +1,4 @@
 import 'package:ank_app/config/application.dart';
-import 'package:ank_app/generated/l10n.dart';
 import 'package:ank_app/res/app_theme.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/util/store.dart';
