@@ -2,7 +2,6 @@ import 'package:ank_app/res/styles.dart';
 import 'package:ank_app/util/store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 
 class AppThemes {
   static ThemeData get lightTheme => baseTheme.copyWith(
@@ -12,12 +11,15 @@ class AppThemes {
           onBackground: Colors.black,
         ),
         appBarTheme: const AppBarTheme(
+            backgroundColor: Colors.white,
             systemOverlayStyle: SystemUiOverlayStyle(
-          systemNavigationBarColor: Colors.transparent,
-          systemNavigationBarIconBrightness: Brightness.dark,
-          statusBarIconBrightness: Brightness.dark,
-          statusBarBrightness: Brightness.light,
-        )),
+              systemNavigationBarColor: Colors.transparent,
+              statusBarColor: Colors.transparent,
+              systemNavigationBarIconBrightness: Brightness.dark,
+              statusBarIconBrightness: Brightness.dark,
+              statusBarBrightness: Brightness.light,
+            )),
+        iconTheme: const IconThemeData(color: Styles.cTextBlack),
         cardColor: const Color(0xffF8FAFD),
         bottomAppBarTheme: const BottomAppBarTheme(color: Colors.white),
         shadowColor: Colors.black12,
@@ -38,12 +40,15 @@ class AppThemes {
           onBackground: Colors.white,
         ),
         appBarTheme: const AppBarTheme(
+            backgroundColor: Color(0xff171823),
             systemOverlayStyle: SystemUiOverlayStyle(
-          systemNavigationBarColor: Colors.transparent,
-          systemNavigationBarIconBrightness: Brightness.light,
-          statusBarIconBrightness: Brightness.light,
-          statusBarBrightness: Brightness.light,
-        )),
+              systemNavigationBarColor: Colors.transparent,
+              systemNavigationBarIconBrightness: Brightness.light,
+              statusBarColor: Colors.transparent,
+              statusBarIconBrightness: Brightness.light,
+              statusBarBrightness: Brightness.light,
+            )),
+        iconTheme: const IconThemeData(color: Colors.white),
         cardColor: const Color(0xff1F202C),
         bottomAppBarTheme: const BottomAppBarTheme(color: Color(0xff1F202C)),
         shadowColor: Colors.black12,
@@ -59,6 +64,9 @@ class AppThemes {
 
   static ThemeData get baseTheme => ThemeData(
         useMaterial3: true,
+        fontFamily: 'PingFang SC',
+        platform: TargetPlatform.iOS,
+        splashFactory: InkSparkle.splashFactory,
         extensions: StoreLogic.to.isUpGreen
             ? [StockColors.upGreen]
             : [StockColors.upRed],
@@ -82,12 +90,12 @@ class StockColors extends ThemeExtension<StockColors> {
 
   @override
   StockColors copyWith({
-    Color? success,
-    Color? info,
+    Color? up,
+    Color? down,
   }) {
     return StockColors(
-      up: success ?? up,
-      down: info ?? down,
+      up: up,
+      down: down,
     );
   }
 
@@ -102,4 +110,38 @@ class StockColors extends ThemeExtension<StockColors> {
 
   @override
   String toString() => 'StatusColors(up: $up, down: $down)';
+}
+
+///自定义颜色
+class CustomColors extends ThemeExtension<CustomColors> {
+  static const light = CustomColors(
+    homeFilledColor: Color(0xff5CC389),
+  );
+  static const dark = CustomColors(
+    homeFilledColor: Color(0xffD8494A),
+  );
+
+  const CustomColors({required this.homeFilledColor});
+
+  final Color? homeFilledColor;
+
+  @override
+  CustomColors copyWith({
+    Color? homeFilledColor,
+  }) {
+    return CustomColors(
+      homeFilledColor: homeFilledColor,
+    );
+  }
+
+  @override
+  CustomColors lerp(ThemeExtension<CustomColors>? other, double t) {
+    if (other is! CustomColors) return this;
+    return CustomColors(
+      homeFilledColor: Color.lerp(homeFilledColor, other.homeFilledColor, t),
+    );
+  }
+
+  @override
+  String toString() => 'StatusColors(homeFilledColor: $homeFilledColor)';
 }

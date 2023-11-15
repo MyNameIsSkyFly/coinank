@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'app_theme.dart';
@@ -11,6 +13,8 @@ class Styles {
       Theme.of(context).extension<StockColors>()!.up!;
   static Color cDown(BuildContext context) =>
       Theme.of(context).extension<StockColors>()!.down!;
+  static final fontMedium =
+      Platform.isAndroid ? FontWeight.w600 : FontWeight.w500;
 
 //====================正文======================
   static TextStyle tsBody_10(BuildContext context) =>
@@ -22,6 +26,11 @@ class Styles {
   static TextStyle tsBody_12(BuildContext context) =>
       Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 12);
 
+  static TextStyle tsBody_12m(BuildContext context) => Theme.of(context)
+      .textTheme
+      .bodyMedium!
+      .copyWith(fontSize: 12, fontWeight: fontMedium);
+
   static TextStyle tsBody_14(BuildContext context) =>
       Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14);
 
@@ -30,6 +39,11 @@ class Styles {
 
   static TextStyle tsBody_16(BuildContext context) =>
       Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16);
+
+  static TextStyle tsBody_16m(BuildContext context) => Theme.of(context)
+      .textTheme
+      .bodyMedium!
+      .copyWith(fontSize: 16, fontWeight: fontMedium);
 
   static TextStyle tsBody_18(BuildContext context) =>
       Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 18);
@@ -61,6 +75,11 @@ class Styles {
 
   static TextStyle tsSub_12(BuildContext context) =>
       Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12);
+
+  static TextStyle tsSub_12m(BuildContext context) => Theme.of(context)
+      .textTheme
+      .bodySmall!
+      .copyWith(fontSize: 12, fontWeight: fontMedium);
 
   static TextStyle tsSub_14(BuildContext context) =>
       Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 14);
