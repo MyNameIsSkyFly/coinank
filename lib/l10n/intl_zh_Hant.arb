@@ -264,5 +264,7 @@
   "s_ls_top_positions_ratio_k": "大戶持倉量多空比K線",
   "s_liqmap": "清算地圖",
   "s_liq_detail": "清算地圖詳情",
-  "s_order_flow": "訂單流"
+  "s_order_flow": "訂單流",
+  "viewDetail": "查看详情",
+  "hotMarket": "热门行情"
 }

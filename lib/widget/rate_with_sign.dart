@@ -2,11 +2,12 @@ import 'package:ank_app/res/styles.dart';
 import 'package:flutter/material.dart';
 
 class RateWithSign extends StatelessWidget {
-  const RateWithSign({super.key, required this.rate});
+  const RateWithSign({super.key, required this.rate, this.precise = 2});
 
   final double rate;
+  final int precise;
   String get rateString {
-    final s = '${(rate * 100).toStringAsFixed(2)}%';
+    final s = '${(rate * 100).toStringAsFixed(precise)}%';
     if (s.startsWith('-')) return s.substring(1);
     return s;
   }

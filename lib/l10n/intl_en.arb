@@ -266,5 +266,7 @@
   "s_liq_detail": "Liq Map Detail",
   "s_order_flow": "OrderFlow",
   "copied": "Copied",
-  "theServerIsBusyPleaseTryAgainLater": "The server is busy, please try again later"
+  "theServerIsBusyPleaseTryAgainLater": "The server is busy, please try again later",
+  "viewDetail": "查看详情",
+  "hotMarket": "热门行情"
 }

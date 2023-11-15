@@ -4,6 +4,7 @@ import 'package:ank_app/modules/main/main_state.dart';
 import 'package:ank_app/res/light_colors.dart';
 import 'package:ank_app/res/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import 'main_logic.dart';
@@ -126,7 +127,7 @@ class MyBottomBar extends StatelessWidget {
                 color: LightColors.mainBlue,
               ),
             ),
-            const SizedBox(height: 3),
+            const Gap(3),
             Text(
               item.title,
               style: Styles.tsBody_11(context)

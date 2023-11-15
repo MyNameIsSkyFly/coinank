@@ -32,7 +32,8 @@ dependencies:
   json_serializable: ^6.7.1
   permission_handler: ^11.0.1
   url_launcher: ^6.2.1
-
+  gap: ^3.0.1
+  font_awesome_flutter: ^10.6.0
 
 
 dev_dependencies:
@@ -47,9 +48,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/bottom_bar/
-    - assets/images/common/
-
+    - assets/images/
 
 flutter_assets_generator:
   output_filename: assets

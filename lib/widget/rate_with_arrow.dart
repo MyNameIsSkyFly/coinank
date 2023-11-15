@@ -1,12 +1,21 @@
 import 'package:ank_app/res/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class RateWithArrow extends StatelessWidget {
-  const RateWithArrow({super.key, required this.rate});
+  const RateWithArrow({
+    super.key,
+    required this.rate,
+    this.fontSize,
+    this.precise = 2,
+  });
 
   final double rate;
+  final double? fontSize;
+  final int precise;
+
   String get rateString {
-    final s = '${(rate * 100).toStringAsFixed(2)}%';
+    final s = '${(rate * 100).toStringAsFixed(precise)}%';
     if (s.startsWith('-')) return s.substring(1);
     return s;
   }
@@ -16,16 +25,14 @@ class RateWithArrow extends StatelessWidget {
     return Row(
       children: [
         Icon(
-          rate >= 0
-              ? Icons.arrow_drop_up_rounded
-              : Icons.arrow_drop_down_rounded,
+          rate >= 0 ? FontAwesomeIcons.caretUp : FontAwesomeIcons.caretDown,
           color: rate >= 0 ? Styles.cUp(context) : Styles.cDown(context),
-          size: 18,
+          size: (fontSize ?? 12) * 0.85,
         ),
         Text(
           rateString,
           style: TextStyle(
-              fontSize: 12,
+              fontSize: fontSize ?? 12,
               fontWeight: Styles.fontMedium,
               color: rate >= 0 ? Styles.cUp(context) : Styles.cDown(context)),
         ),
