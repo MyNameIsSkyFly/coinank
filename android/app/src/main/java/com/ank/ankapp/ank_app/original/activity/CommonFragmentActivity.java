@@ -9,6 +9,8 @@ import com.ank.ankapp.ank_app.R;
 import com.ank.ankapp.ank_app.original.Config;
 import com.ank.ankapp.ank_app.original.Global;
 import com.ank.ankapp.ank_app.original.fragment.ExchangeOIFragment;
+import com.ank.ankapp.ank_app.original.fragment.LongsShortAccountsRatioFragment;
+import com.ank.ankapp.ank_app.original.fragment.TakerBuyLongShortFragment;
 
 
 public class CommonFragmentActivity extends BaseActivity {
@@ -66,12 +68,12 @@ public class CommonFragmentActivity extends BaseActivity {
 			case Config.TYPE_EXCHANGE_OI_FRAGMENT:
 				ft.add(R.id.fragment_view, ExchangeOIFragment.getInstance(mBundle = new Bundle()));
 				break;
-//			case Config.TYPE_TAKERBUY_LONGSSHORTS_FRAGMENT:
-//				ft.add(R.id.fragment_view, TakerBuyLongShortFragment.getInstance(mBundle = new Bundle()));
-//				break;
-//			case Config.TYPE_LONGSHORT_ACCOUNTS_RATIO_FRAGMENT:
-//				ft.add(R.id.fragment_view, LongsShortAccountsRatioFragment.getInstance(mBundle = new Bundle()));
-//				break;
+			case Config.TYPE_TAKERBUY_LONGSSHORTS_FRAGMENT:
+				ft.add(R.id.fragment_view, TakerBuyLongShortFragment.getInstance(mBundle = new Bundle()));
+				break;
+			case Config.TYPE_LONGSHORT_ACCOUNTS_RATIO_FRAGMENT:
+				ft.add(R.id.fragment_view, LongsShortAccountsRatioFragment.getInstance(mBundle = new Bundle()));
+				break;
 		}
 		ft.commit();
 

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+
+
+        <com.ank.ankapp.ank_app.original.widget.refresh.PullToRefreshLayout
+            android:id="@+id/pullToRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.ank.ankapp.ank_app.original.widget.refresh.PullScrollView
+                android:id="@+id/ll_pullscrollview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/rl_oi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/setting_item_padding">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+
+                        <com.ruffian.library.widget.RTextView
+                            android:id="@+id/chart_title01"
+                            android:layout_width="0.0dp"
+                            android:layout_height="@dimen/btn_height"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:paddingRight="10dp"
+                            android:text="@string/s_buysel_longshort_ratio"
+                            android:textColor="@color/blackgray"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <com.ruffian.library.widget.RTextView
+                            android:id="@+id/tv_interval01"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/btn_height"
+                            android:layout_marginLeft="10dp"
+                            android:gravity="center"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            android:text="4h"
+                            android:textColor="@color/blackgray"
+                            android:textSize="14sp"
+                            app:background_normal="@color/btn_color"
+                            app:corner_radius="8dp" />
+
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:id="@+id/fg_chart01"
+                        android:layout_width="match_parent"
+                        android:layout_height="280dp"
+                         />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <com.ruffian.library.widget.RTextView
+                            android:id="@+id/chart_title02"
+                            android:layout_width="0.0dp"
+                            android:layout_height="@dimen/btn_height"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:paddingRight="10dp"
+                            android:text="@string/s_takerbuy_longshort_ratio_chart"
+                            android:textColor="@color/blackgray"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <com.ruffian.library.widget.RTextView
+                            android:id="@+id/tv_exchange"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/btn_height"
+                            android:layout_marginLeft="10dp"
+                            android:gravity="center"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            android:text="ALL"
+                            android:visibility="gone"
+                            android:textColor="@color/blackgray"
+                            android:textSize="14sp"
+                            app:background_normal="@color/btn_color"
+                            app:corner_radius="8dp" />
+
+                        <com.ruffian.library.widget.RTextView
+                            android:id="@+id/tv_interval02"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/btn_height"
+                            android:layout_marginLeft="10dp"
+                            android:gravity="center"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            android:text="4h"
+                            android:textColor="@color/blackgray"
+                            android:textSize="14sp"
+                            app:background_normal="@color/btn_color"
+                            app:corner_radius="8dp" />
+
+                        <com.ruffian.library.widget.RTextView
+                            android:id="@+id/tv_type"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/btn_height"
+                            android:layout_marginLeft="10dp"
+                            android:gravity="center"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            android:text="USD"
+                            android:visibility="gone"
+                            android:textColor="@color/blackgray"
+                            android:textSize="14sp"
+                            app:background_normal="@color/btn_color"
+                            app:corner_radius="8dp" />
+
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:id="@+id/fg_chart02"
+                        android:layout_width="match_parent"
+                        android:layout_height="280dp"
+                        android:layout_marginBottom="10dp" />
+
+                </LinearLayout>
+
+            </com.ank.ankapp.ank_app.original.widget.refresh.PullScrollView>
+        </com.ank.ankapp.ank_app.original.widget.refresh.PullToRefreshLayout>
+
+
+    </LinearLayout>
+</LinearLayout>
