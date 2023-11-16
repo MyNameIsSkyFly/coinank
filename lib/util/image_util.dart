@@ -7,7 +7,8 @@ class ImageUtil {
       imageUrl: url,
       width: width,
       height: height,
-      errorWidget: (context, url, error) => Icon(Icons.error_outline_rounded),
+      fadeInDuration: const Duration(milliseconds: 100),
+      errorWidget: (context, url, error) => const Icon(Icons.hourglass_empty),
     );
   }
 }

@@ -47,3 +47,7 @@ app.*.map.json
 pubspec.lock
 **.g.dart
 /lib/generated/
+/android/app/src/main/java/com/ank/ankapp/ank_app/pigeon_plugin/
+/ios/Classes/messages.h
+/ios/Classes/messages.m
+/ios/Runner/Messages.g.swift

@@ -17,6 +17,7 @@ class HomeLogic extends GetxController {
   final fundRateList = RxList<HomeFundRateEntity>();
   bool appVisible = true;
   Timer? pollingTimer;
+  bool isRefreshing = false;
 
   List<MarkerTickerEntity>? get priceList => priceChangeData.value?.list;
 
@@ -37,19 +38,24 @@ class HomeLogic extends GetxController {
     pollingTimer = Timer.periodic(
       const Duration(seconds: 5),
       (timer) {
-        if (!appVisible || mainLogic.state.selectedIndex.value != 0) return;
+        if (!appVisible ||
+            mainLogic.state.selectedIndex.value != 0 ||
+            isRefreshing) return;
         onRefresh();
       },
     );
   }
 
   Future<void> onRefresh() async {
+    isRefreshing = true;
     await Future.wait([
       loadPriceChgData(),
       loadOIChgData(),
       loadHomeData(),
       loadFundRateData()
-    ]);
+    ]).whenComplete(() {
+      isRefreshing = false;
+    });
   }
 
   Future<void> loadPriceChgData() async {

@@ -14,7 +14,7 @@ import 'home_logic.dart';
 import 'package:easy_refresh/easy_refresh.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({super.key});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -96,377 +96,448 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         onRefresh: logic.onRefresh,
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-          child: Obx(() {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                ///第一行
-                Row(
-                  children: [
-                    _FirstLineItem(
-                      title: S.of(context).s_total_oi,
-                      value: AppUtil.getLargeFormatString(
-                          logic.homeInfoData.value?.openInterest ?? '0'),
-                      rate: double.tryParse(
-                              logic.homeInfoData.value?.oiChange ?? '0') ??
-                          0,
-                    ),
-                    const Gap(9),
-                    _FirstLineItem(
-                        title: S.of(context).s_futures_vol_24h,
-                        rate: double.tryParse(
-                                logic.homeInfoData.value?.tickerChange ??
-                                    '0') ??
-                            0,
-                        value: AppUtil.getLargeFormatString(
-                            logic.homeInfoData.value?.ticker ?? '0')),
-                  ],
-                ),
-                const Gap(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _TotalOiAndFuturesVol(logic: logic),
+              const Gap(10),
 
-                ///清算地图
-                _CheckDetailRow(
-                  title: S.of(context).s_liqmap,
-                  onTap: () {},
-                ),
-                const Gap(20),
+              ///清算地图
+              _CheckDetailRow(title: S.of(context).s_liqmap, onTap: () {}),
+              const Gap(20),
+              _HotMarket(logic: logic),
+              const Gap(20),
+              _OiDistribution(logic: logic),
+              const Gap(20),
+              _BtcInfo(logic: logic),
+              const Gap(10),
+              _FearGreedInfo(logic: logic),
+              const Gap(10),
 
-                ///热门行情
-                Text(
-                  S.of(context).hotMarket,
-                  style: Styles.tsBody_16m(context),
-                ),
-                const Gap(15),
-                Row(
-                  children: [
-                    Expanded(
-                      child: _OutlinedContainer(
-                        child: Obx(() {
-                          return Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    S.of(context).s_oi_chg,
-                                    style: Styles.tsBody_12m(context),
-                                  ),
-                                  Text(
-                                    ' (24H)',
-                                    style: Styles.tsBody_12m(context),
-                                  ),
-                                ],
-                              ),
-                              ...List.generate(
-                                3,
-                                (index) => _DataWithIcon(
-                                    title: logic.oiList?[index].baseCoin ?? '',
-                                    icon: logic.oiList?[index].coinImage ?? '',
-                                    value:
-                                        logic.oiList?[index].priceChangeH24 ??
-                                            0),
-                              )
-                            ],
-                          );
-                        }),
-                      ),
-                    ),
-                    const Gap(9),
-                    Expanded(
-                      child: _OutlinedContainer(
-                        child: Obx(() {
-                          return Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    S.of(context).s_price_chg,
-                                    style: Styles.tsBody_12m(context),
-                                  ),
-                                  Text(
-                                    ' (24H)',
-                                    style: Styles.tsBody_12m(context),
-                                  ),
-                                ],
-                              ),
-                              ...List.generate(
-                                3,
-                                (index) => _DataWithIcon(
-                                    title:
-                                        logic.priceList?[index].baseCoin ?? '',
-                                    icon:
-                                        logic.priceList?[index].coinImage ?? '',
-                                    value: logic
-                                            .priceList?[index].priceChangeH24 ??
-                                        0),
-                              )
-                            ],
-                          );
-                        }),
-                      ),
-                    ),
-                  ],
-                ),
-                const Gap(10),
-
-                ///爆仓数据
-                Row(
-                  children: [
-                    Expanded(
-                      child: _OutlinedContainer(
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  S.of(context).s_liquidation_data,
-                                  style: Styles.tsBody_12m(context),
-                                ),
-                                Text(
-                                  ' (24H)',
-                                  style: Styles.tsBody_12m(context),
-                                ),
-                              ],
-                            ),
-                            _DataWithQuantity(
-                                title: '24H',
-                                value: AppUtil.getLargeFormatString(
-                                    logic.homeInfoData.value?.liquidation ??
-                                        '0'),
-                                isLong: true),
-                            _DataWithQuantity(
-                                title: S.of(context).s_longs,
-                                value: AppUtil.getLargeFormatString(
-                                    logic.homeInfoData.value?.liquidationLong ??
-                                        '0'),
-                                isLong: true),
-                            _DataWithQuantity(
-                                title: S.of(context).s_shorts,
-                                value: AppUtil.getLargeFormatString(logic
-                                        .homeInfoData.value?.liquidationShort ??
-                                    '0'),
-                                isLong: false),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const Gap(9),
-                    Expanded(
-                      child: _OutlinedContainer(
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  S.of(context).s_funding_rate,
-                                  style: Styles.tsBody_12m(context),
-                                ),
-                                Text(
-                                  ' (24H)',
-                                  style: Styles.tsBody_12m(context),
-                                ),
-                              ],
-                            ),
-                            //todo 换成接口数据
-                            ...List.generate(
-                              logic.fundRateList.length,
-                              (index) {
-                                var item = logic.fundRateList[index];
-                                return _DataWithoutIcon(
-                                    title: item.symbol ?? '',
-                                    value: item.fundingRate ?? 0);
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const Gap(20),
-
-                ///持仓分布
-                Row(
-                  children: [
-                    Expanded(
-                        child: Text(S.of(context).oiDistribution,
-                            style: Styles.tsBody_16m(context))),
-                    _FilledContainer(
-                      onTap: () {},
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 5),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.baseline,
-                        textBaseline: TextBaseline.alphabetic,
-                        children: [
-                          Text(
-                            S.of(context).s_buysel_longshort_ratio,
-                            style: Styles.tsBody_12m(context),
-                          ),
-                          const Gap(7),
-                          //todo 换成接口数据
-                          Text(
-                            logic.buySellLongShortRatio,
-                            style: Styles.tsMain_14m
-                                .copyWith(decoration: TextDecoration.underline),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-                const Gap(15),
-
-                ///多空持仓人数比
-                _LongShortRatio(
-                    title: S.of(context).s_bn_longshort_person_ratio,
-                    long: double.parse(
-                        logic.homeInfoData.value?.binancePersonValue ?? '0'),
-                    // short: 9,
-                    rate: double.parse(
-                        logic.homeInfoData.value?.binancePersonChange ?? '0')),
-                const Gap(10),
-                _LongShortRatio(
-                    title: S.of(context).s_ok_longshort_person_ratio,
-                    long: double.parse(
-                        logic.homeInfoData.value?.okexPersonValue ?? '0'),
-                    rate: double.parse(
-                        logic.homeInfoData.value?.okexPersonChange ?? '0')),
-                const Gap(20),
-
-                ///btc市值占比
-                _OutlinedContainer(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Image.asset(
-                                  Assets.imagesIcCoinBtc,
-                                  height: 18,
-                                  width: 18,
-                                ),
-                                const Gap(5),
-                                Text(
-                                  S.of(context).s_marketcap_ratio,
-                                  style: Styles.tsBody_12m(context),
-                                ),
-                                const Icon(CupertinoIcons.chevron_right,
-                                    size: 12),
-                              ],
-                            ),
-                            const Gap(6),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  '${((double.tryParse(logic.homeInfoData.value?.marketCpaValue ?? '') ?? 0) * 100).toStringAsFixed(2)}%',
-                                  style: Styles.tsMain_18.copyWith(
-                                      fontWeight: FontWeight.w600, height: 1),
-                                ),
-                                const Gap(5),
-                                RateWithArrow(
-                                    rate: (double.tryParse(logic.homeInfoData
-                                                    .value?.marketCpaChange ??
-                                                '') ??
-                                            0) *
-                                        100),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 30, child: VerticalDivider()),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Image.asset(
-                                    Assets.imagesIcCoinBtc,
-                                    height: 18,
-                                    width: 18,
-                                  ),
-                                  const Gap(5),
-                                  Text(
-                                    S.of(context).s_btc_profit,
-                                    style: Styles.tsBody_12m(context),
-                                  ),
-                                  const Icon(CupertinoIcons.chevron_right,
-                                      size: 12),
-                                ],
-                              ),
-                              const Gap(6),
-                              Text(
-                                '${((double.tryParse(logic.homeInfoData.value?.btcProfit ?? '') ?? 0)).toStringAsFixed(2)}%',
-                                style: Styles.tsMain_18.copyWith(
-                                    fontWeight: FontWeight.w600, height: 1),
-                              )
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                const Gap(10),
-                //todo 换成接口数据
-                _OutlinedContainer(
-                  child: Row(
-                    children: [
-                      Text(S.of(context).s_greed_index,
-                          style: Styles.tsBody_12m(context)),
-                      const Gap(10),
-                      Text(
-                        switch (double.tryParse(
-                                logic.homeInfoData.value?.cnnValue ?? '') ??
-                            -1) {
-                          >= 0 && <= 25 => S.of(context).s_extreme_fear,
-                          > 25 && <= 50 => S.of(context).s_fear,
-                          > 50 && <= 75 => S.of(context).s_greed,
-                          > 75 && <= 100 => S.of(context).s_extreme_greed,
-                          _ => '',
-                        },
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: switch (double.tryParse(
-                                    logic.homeInfoData.value?.cnnValue ?? '') ??
-                                -1) {
-                              >= 0 && <= 50 => Styles.cDown(context),
-                              _ => Styles.cUp(context),
-                            }),
-                      ),
-                      Spacer(),
-                      Text(
-                        (double.tryParse(
-                                    logic.homeInfoData.value?.cnnValue ?? '') ??
-                                0)
-                            .toStringAsFixed(0),
-                        style: Styles.tsBody_12m(context),
-                      ),
-                      const Gap(7),
-                      RateWithArrow(
-                          rate: (double.tryParse(
-                                      logic.homeInfoData.value?.cnnChange ??
-                                          '') ??
-                                  0) *
-                              100)
-                    ],
-                  ),
-                ),
-                const Gap(10),
-                _CheckDetailRow(title: S.of(context).s_grayscale_data)
-              ],
-            );
-          }),
+              ///灰度数据
+              _CheckDetailRow(title: S.of(context).s_grayscale_data)
+            ],
+          ),
         ),
       ),
     );
+  }
+}
+
+class _FearGreedInfo extends StatelessWidget {
+  const _FearGreedInfo({
+    super.key,
+    required this.logic,
+  });
+
+  final HomeLogic logic;
+
+  @override
+  Widget build(BuildContext context) {
+    return _OutlinedContainer(
+      child: Obx(() {
+        return Row(
+          children: [
+            Text(S.of(context).s_greed_index,
+                style: Styles.tsBody_12m(context)),
+            const Gap(10),
+            Text(
+              switch (
+                  double.tryParse(logic.homeInfoData.value?.cnnValue ?? '') ??
+                      -1) {
+                >= 0 && <= 25 => S.of(context).s_extreme_fear,
+                > 25 && <= 50 => S.of(context).s_fear,
+                > 50 && <= 75 => S.of(context).s_greed,
+                > 75 && <= 100 => S.of(context).s_extreme_greed,
+                _ => '',
+              },
+              style: TextStyle(
+                  fontSize: 12,
+                  color: switch (double.tryParse(
+                          logic.homeInfoData.value?.cnnValue ?? '') ??
+                      -1) {
+                    <= 50 => Styles.cDown(context),
+                    _ => Styles.cUp(context),
+                  }),
+            ),
+            const Spacer(),
+            Text(
+              (double.tryParse(logic.homeInfoData.value?.cnnValue ?? '') ?? 0)
+                  .toStringAsFixed(0),
+              style: Styles.tsBody_12m(context),
+            ),
+            const Gap(7),
+            RateWithArrow(
+                rate: (double.tryParse(
+                            logic.homeInfoData.value?.cnnChange ?? '') ??
+                        0) *
+                    100)
+          ],
+        );
+      }),
+    );
+  }
+}
+
+///btc市值占比+投资回报率
+class _BtcInfo extends StatelessWidget {
+  const _BtcInfo({
+    super.key,
+    required this.logic,
+  });
+
+  final HomeLogic logic;
+
+  @override
+  Widget build(BuildContext context) {
+    return _OutlinedContainer(
+      child: Obx(() {
+        return Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Image.asset(
+                        Assets.imagesIcCoinBtc,
+                        height: 18,
+                        width: 18,
+                      ),
+                      const Gap(5),
+                      Text(
+                        S.of(context).s_marketcap_ratio,
+                        style: Styles.tsBody_12m(context),
+                      ),
+                      const Icon(CupertinoIcons.chevron_right, size: 12),
+                    ],
+                  ),
+                  const Gap(6),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        '${((double.tryParse(logic.homeInfoData.value?.marketCpaValue ?? '') ?? 0) * 100).toStringAsFixed(2)}%',
+                        style: Styles.tsMain_18
+                            .copyWith(fontWeight: FontWeight.w600, height: 1),
+                      ),
+                      const Gap(5),
+                      RateWithArrow(
+                          rate: (double.tryParse(logic.homeInfoData.value
+                                          ?.marketCpaChange ??
+                                      '') ??
+                                  0) *
+                              100),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(height: 30, child: VerticalDivider()),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Image.asset(
+                          Assets.imagesIcCoinBtc,
+                          height: 18,
+                          width: 18,
+                        ),
+                        const Gap(5),
+                        Text(
+                          S.of(context).s_btc_profit,
+                          style: Styles.tsBody_12m(context),
+                        ),
+                        const Icon(CupertinoIcons.chevron_right, size: 12),
+                      ],
+                    ),
+                    const Gap(6),
+                    Text(
+                      '${((double.tryParse(logic.homeInfoData.value?.btcProfit ?? '') ?? 0)).toStringAsFixed(2)}%',
+                      style: Styles.tsMain_18
+                          .copyWith(fontWeight: FontWeight.w600, height: 1),
+                    )
+                  ],
+                ),
+              ),
+            )
+          ],
+        );
+      }),
+    );
+  }
+}
+
+///持仓分布
+class _OiDistribution extends StatelessWidget {
+  const _OiDistribution({
+    super.key,
+    required this.logic,
+  });
+
+  final HomeLogic logic;
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      return Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                  child: Text(S.of(context).oiDistribution,
+                      style: Styles.tsBody_16m(context))),
+              _FilledContainer(
+                onTap: () {},
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.baseline,
+                  textBaseline: TextBaseline.alphabetic,
+                  children: [
+                    Text(
+                      S.of(context).s_buysel_longshort_ratio,
+                      style: Styles.tsBody_12m(context),
+                    ),
+                    const Gap(7),
+                    //todo 换成接口数据
+                    Text(
+                      logic.buySellLongShortRatio,
+                      style: Styles.tsMain_14m
+                          .copyWith(decoration: TextDecoration.underline),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+          const Gap(15),
+
+          ///多空持仓人数比
+          _LongShortRatio(
+              title: S.of(context).s_bn_longshort_person_ratio,
+              long: double.parse(
+                  logic.homeInfoData.value?.binancePersonValue ?? '0'),
+              // short: 9,
+              rate: double.parse(
+                  logic.homeInfoData.value?.binancePersonChange ?? '0')),
+          const Gap(10),
+          _LongShortRatio(
+              title: S.of(context).s_ok_longshort_person_ratio,
+              long: double.parse(
+                  logic.homeInfoData.value?.okexPersonValue ?? '0'),
+              rate: double.parse(
+                  logic.homeInfoData.value?.okexPersonChange ?? '0')),
+        ],
+      );
+    });
+  }
+}
+
+///热门行情
+class _HotMarket extends StatelessWidget {
+  const _HotMarket({
+    super.key,
+    required this.logic,
+  });
+
+  final HomeLogic logic;
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            S.of(context).hotMarket,
+            style: Styles.tsBody_16m(context),
+          ),
+          const Gap(15),
+          Row(
+            children: [
+              Expanded(
+                child: _OutlinedContainer(
+                  child: Obx(() {
+                    return Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              S.of(context).s_oi_chg,
+                              style: Styles.tsBody_12m(context),
+                            ),
+                            Text(
+                              ' (24H)',
+                              style: Styles.tsBody_12m(context),
+                            ),
+                          ],
+                        ),
+                        ...List.generate(
+                          3,
+                          (index) => _DataWithIcon(
+                              title: logic.oiList?[index].baseCoin ?? '',
+                              icon: logic.oiList?[index].coinImage ?? '',
+                              value: logic.oiList?[index].priceChangeH24 ?? 0),
+                        )
+                      ],
+                    );
+                  }),
+                ),
+              ),
+              const Gap(9),
+              Expanded(
+                child: _OutlinedContainer(
+                  child: Obx(() {
+                    return Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              S.of(context).s_price_chg,
+                              style: Styles.tsBody_12m(context),
+                            ),
+                            Text(
+                              ' (24H)',
+                              style: Styles.tsBody_12m(context),
+                            ),
+                          ],
+                        ),
+                        ...List.generate(
+                          3,
+                          (index) => _DataWithIcon(
+                              title: logic.priceList?[index].baseCoin ?? '',
+                              icon: logic.priceList?[index].coinImage ?? '',
+                              value:
+                                  logic.priceList?[index].priceChangeH24 ?? 0),
+                        )
+                      ],
+                    );
+                  }),
+                ),
+              ),
+            ],
+          ),
+          const Gap(10),
+
+          ///爆仓数据
+          Row(
+            children: [
+              Expanded(
+                child: _OutlinedContainer(
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            S.of(context).s_liquidation_data,
+                            style: Styles.tsBody_12m(context),
+                          ),
+                          Text(
+                            ' (24H)',
+                            style: Styles.tsBody_12m(context),
+                          ),
+                        ],
+                      ),
+                      _DataWithQuantity(
+                          title: '24H',
+                          value: AppUtil.getLargeFormatString(
+                              logic.homeInfoData.value?.liquidation ?? '0'),
+                          isLong: true),
+                      _DataWithQuantity(
+                          title: S.of(context).s_longs,
+                          value: AppUtil.getLargeFormatString(
+                              logic.homeInfoData.value?.liquidationLong ?? '0'),
+                          isLong: true),
+                      _DataWithQuantity(
+                          title: S.of(context).s_shorts,
+                          value: AppUtil.getLargeFormatString(
+                              logic.homeInfoData.value?.liquidationShort ??
+                                  '0'),
+                          isLong: false),
+                    ],
+                  ),
+                ),
+              ),
+              const Gap(9),
+              Expanded(
+                child: _OutlinedContainer(
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            S.of(context).s_funding_rate,
+                            style: Styles.tsBody_12m(context),
+                          ),
+                          Text(
+                            ' (24H)',
+                            style: Styles.tsBody_12m(context),
+                          ),
+                        ],
+                      ),
+                      //todo 换成接口数据
+                      ...List.generate(
+                        3,
+                        (index) {
+                          if (logic.fundRateList.isEmpty) {
+                            return const _DataWithoutIcon(title: '', value: 0);
+                          }
+                          var item = logic.fundRateList[index];
+                          return _DataWithoutIcon(
+                              title: item.symbol ?? '',
+                              value: item.fundingRate ?? 0);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      );
+    });
+  }
+}
+
+///合约总持仓+合约成交量
+class _TotalOiAndFuturesVol extends StatelessWidget {
+  const _TotalOiAndFuturesVol({
+    super.key,
+    required this.logic,
+  });
+
+  final HomeLogic logic;
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      return Row(
+        children: [
+          _FirstLineItem(
+            title: S.of(context).s_total_oi,
+            value: AppUtil.getLargeFormatString(
+                logic.homeInfoData.value?.openInterest ?? '0'),
+            rate:
+                double.tryParse(logic.homeInfoData.value?.oiChange ?? '0') ?? 0,
+          ),
+          const Gap(9),
+          _FirstLineItem(
+              title: S.of(context).s_futures_vol_24h,
+              rate: double.tryParse(
+                      logic.homeInfoData.value?.tickerChange ?? '0') ??
+                  0,
+              value: AppUtil.getLargeFormatString(
+                  logic.homeInfoData.value?.ticker ?? '0')),
+        ],
+      );
+    });
   }
 }
 
@@ -515,11 +586,14 @@ class _LongShortRatio extends StatelessWidget {
 
   final String title;
   final double long;
+
   // final double short;
   final double rate;
 
   double get actualLong => long / (1 + long);
+
   double get short => 1 - actualLong;
+
   @override
   Widget build(BuildContext context) {
     return _FilledContainer(
