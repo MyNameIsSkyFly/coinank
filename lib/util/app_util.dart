@@ -61,7 +61,8 @@ class AppUtil {
     Get.forceAppUpdate();
   }
 
-  static String getLargeFormatString(String val, String locale) {
+  static String getLargeFormatString(String val) {
+    final locale = Get.locale.toString();
     var amount = double.parse(val);
     if (locale.isCaseInsensitiveContains('zh')) {
       return FormatUtil.amountConversion(amount);

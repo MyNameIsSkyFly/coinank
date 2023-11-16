@@ -1,13 +1,22 @@
+import 'dart:async';
+
 import 'package:ank_app/entity/body/futures_big_data_body.dart';
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/entity/head_statistics_entity.dart';
+import 'package:ank_app/entity/home_fund_rate_entity.dart';
 import 'package:ank_app/http/apis.dart';
 import 'package:get/get.dart';
 
+import '../main/main_logic.dart';
+
 class HomeLogic extends GetxController {
+  final mainLogic = Get.find<MainLogic>();
   final priceChangeData = Rxn<TickersDataEntity>();
   final oiChangeData = Rxn<TickersDataEntity>();
   final homeInfoData = Rxn<HomeInfoEntity>();
+  final fundRateList = RxList<HomeFundRateEntity>();
+  bool appVisible = true;
+  Timer? pollingTimer;
 
   List<MarkerTickerEntity>? get priceList => priceChangeData.value?.list;
 
@@ -21,10 +30,26 @@ class HomeLogic extends GetxController {
   @override
   void onReady() {
     onRefresh();
+    startPolling();
+  }
+
+  void startPolling() {
+    pollingTimer = Timer.periodic(
+      const Duration(seconds: 5),
+      (timer) {
+        if (!appVisible || mainLogic.state.selectedIndex.value != 0) return;
+        onRefresh();
+      },
+    );
   }
 
   Future<void> onRefresh() async {
-    await Future.wait([loadPriceChgData(), loadOIChgData(), loadHomeData()]);
+    await Future.wait([
+      loadPriceChgData(),
+      loadOIChgData(),
+      loadHomeData(),
+      loadFundRateData()
+    ]);
   }
 
   Future<void> loadPriceChgData() async {
@@ -47,5 +72,10 @@ class HomeLogic extends GetxController {
   Future<void> loadHomeData() async {
     final data = await Apis().getHeadStatistics();
     homeInfoData.value = data;
+  }
+
+  Future<void> loadFundRateData() async {
+    final data = await Apis().getHomeFundRateData();
+    fundRateList.assignAll(data ?? []);
   }
 }
