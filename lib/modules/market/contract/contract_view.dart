@@ -134,14 +134,14 @@ class _DataItem extends StatelessWidget {
             children: [
               Text(
                 'BTC',
-                style: Styles.tsBody_12m(context).copyWith(height: 1.4),
+                style: Styles.tsBody_12m(context),
               ),
               const Gap(5),
               Row(
                 children: [
                   Text(
                     '65.65亿',
-                    style: Styles.tsSub_12(context).copyWith(height: 1.4),
+                    style: Styles.tsSub_12(context),
                   ),
                   const SizedBox(width: 2),
                   Text(

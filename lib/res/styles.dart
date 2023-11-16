@@ -9,8 +9,10 @@ class Styles {
 
   static const cMain = Color(0xFF4363F2);
   static const cTextBlack = Color(0xFF0E1420);
+
   static Color cUp(BuildContext context) =>
       Theme.of(context).extension<StockColors>()!.up!;
+
   static Color cDown(BuildContext context) =>
       Theme.of(context).extension<StockColors>()!.down!;
   static final fontMedium =
@@ -117,14 +119,14 @@ class Styles {
       Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 30);
 
 //====================主色======================
-  static const tsMain_12 = TextStyle(fontSize: 12, color: cMain);
-  static const tsMain_14 = TextStyle(fontSize: 14, color: cMain);
-  static final tsMain_14m =
-      TextStyle(fontSize: 14, color: cMain, fontWeight: fontMedium);
-  static const tsMain_15 = TextStyle(fontSize: 15, color: cMain);
-  static const tsMain_16 = TextStyle(fontSize: 16, color: cMain);
-  static const tsMain_18 = TextStyle(fontSize: 18, color: cMain);
-  static const tsMain_20 = TextStyle(fontSize: 20, color: cMain);
-  static const tsMain_22 = TextStyle(fontSize: 22, color: cMain);
-  static const tsMain_24 = TextStyle(fontSize: 24, color: cMain);
+  static const tsMain_12 = TextStyle(fontSize: 12, color: cMain, height: 1.4);
+  static const tsMain_14 = TextStyle(fontSize: 14, color: cMain, height: 1.4);
+  static final tsMain_14m = TextStyle(
+      fontSize: 14, color: cMain, fontWeight: fontMedium, height: 1.4);
+  static const tsMain_15 = TextStyle(fontSize: 15, color: cMain, height: 1.4);
+  static const tsMain_16 = TextStyle(fontSize: 16, color: cMain, height: 1.4);
+  static const tsMain_18 = TextStyle(fontSize: 18, color: cMain, height: 1.4);
+  static const tsMain_20 = TextStyle(fontSize: 20, color: cMain, height: 1.4);
+  static const tsMain_22 = TextStyle(fontSize: 22, color: cMain, height: 1.4);
+  static const tsMain_24 = TextStyle(fontSize: 24, color: cMain, height: 1.4);
 }

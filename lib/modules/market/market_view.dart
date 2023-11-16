@@ -44,10 +44,10 @@ class MarketPage extends StatelessWidget {
         child: TabBarView(
           controller: state.tabController,
           children: [
-            keepAlivePage(ContractPage()),
-            keepAlivePage(ContractMarketPage()),
+            keepAlivePage(const ContractPage()),
+            keepAlivePage(const ContractMarketPage()),
             keepAlivePage(LiquidationDataPage()),
-            keepAlivePage(FundingRatePage()),
+            keepAlivePage(const FundingRatePage()),
             keepAlivePage(ProtfolioPage()),
           ],
         ),
