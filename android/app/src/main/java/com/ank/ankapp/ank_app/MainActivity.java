@@ -61,5 +61,10 @@ public class MainActivity extends FlutterActivity {
                 }
             }
         }
+
+        @Override
+        public void changeUpColor(@NonNull Boolean isGreenUp) {
+            Config.getMMKV(getActivity()).putBoolean(Config.IS_GREEN_UP, isGreenUp);
+        }
     }
 }

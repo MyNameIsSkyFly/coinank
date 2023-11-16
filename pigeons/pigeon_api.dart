@@ -8,6 +8,8 @@ abstract class MessageHostApi {
   void changeDarkMode(bool isDark);
 
   void changeLanguage(String languageCode);
+
+  void changeUpColor(bool isGreenUp);
 }
 
 @FlutterApi()

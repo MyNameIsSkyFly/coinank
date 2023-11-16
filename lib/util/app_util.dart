@@ -62,6 +62,7 @@ class AppUtil {
   static void toggleUpColor() {
     final original = StoreLogic.to.isUpGreen;
     StoreLogic.to.saveUpGreen(!original);
+    MessageHostApi().changeUpColor(!original);
     Get.forceAppUpdate();
   }
 
