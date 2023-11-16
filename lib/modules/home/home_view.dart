@@ -1,4 +1,5 @@
 import 'package:ank_app/generated/assets.dart';
+import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/styles.dart';
 import 'package:ank_app/util/app_util.dart';
 import 'package:ank_app/util/image_util.dart';
@@ -813,6 +814,7 @@ class _FirstLineItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: _OutlinedContainer(
+        onTap: () => MessageHostApi().toTotalOi(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

@@ -1,0 +1,47 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="font_sz_setting">16sp</dimen>
+    <dimen name="font_title">18sp</dimen>
+    <dimen name="setting_next_padding">3dp</dimen>
+    <dimen name="setting_item_height">45dp</dimen>
+    <dimen name="setting_item_padding">10dp</dimen>
+    <dimen name="font_floatview_price">11sp</dimen>
+    <dimen name="font_floatview_sybol">6sp</dimen>
+    <dimen name="font_12sp">12sp</dimen>
+
+    <dimen name="d_selsymbol_margin">8dp</dimen>
+    <dimen name="symbol_hlistview">30dp</dimen>
+
+    <dimen name="font_index_curr_value">10sp</dimen>
+
+    <dimen name="font_highlight_view">9sp</dimen>
+    <dimen name="font_home_second">12sp</dimen>
+    <dimen name="font_home_rekt_val">14sp</dimen>
+    <dimen name="font_home_title">14sp</dimen>
+    <dimen name="activity_horizontal_margin">0dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="font_size_small">11sp</dimen>
+    <dimen name="font_size_small_symbol">6sp</dimen>
+    <dimen name="font_size_mid">12sp</dimen>
+    <dimen name="font_size_mid_symbol">7sp</dimen>
+    <dimen name="font_size_big">13sp</dimen>
+    <dimen name="font_size_big_symbol">8sp</dimen>
+
+    <dimen name="item_height">58dp</dimen>
+    <dimen name="btn_height">28dp</dimen>
+    <dimen name="first_row_item_height">30dp</dimen>
+    <dimen name="item_fixed_column_width">100dp</dimen>
+    <dimen name="item_slide_column_width">90dp</dimen>
+    <dimen name="item_content_for_fr">82dp</dimen>
+    <dimen name="item_title_with_sort_width">98dp</dimen>
+    <dimen name="item_slide_column_refresh_width">100dp</dimen>
+
+    <dimen name="board_item_title_height">42dp</dimen>
+    <dimen name="board_item_normal_height">80dp</dimen>
+    <dimen name="board_item_fixed_column_width">130dp</dimen>
+    <dimen name="board_item_slide_column_width">100dp</dimen>
+
+
+</resources>

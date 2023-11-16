@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="?android:actionBarSize"
+    android:background="@color/colorPrimary">
+
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_centerVertical="true"
+        android:scaleType="center"
+        android:src="@drawable/btn_back_light" />
+
+    <ImageView
+        android:id="@+id/iv_favorite"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="8dp"
+        android:clickable="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/favorite_light"
+        android:visibility="gone"
+         />
+
+    <ImageView
+        android:id="@+id/iv_mul_kline"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_toLeftOf="@+id/iv_favorite"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="18dp"
+        android:clickable="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/mul_kline_icon_light"
+        android:visibility="gone"
+        />
+
+    <com.ruffian.library.widget.RRelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        app:background_normal="@color/transparent_color"
+        app:background_pressed="@color/gray_dashline">
+
+        <ImageView
+            android:id="@+id/iv_switch_symbol"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="4dp"
+            android:visibility="gone"
+            android:scaleType="centerInside"
+            android:src="@drawable/switch_symbol_light" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/iv_switch_symbol"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.ruffian.library.widget.RTextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:singleLine="true"
+                android:text="@string/app_name"
+                android:textColor="@color/blackgray"
+                android:textSize="18sp" />
+
+            <com.ruffian.library.widget.RTextView
+                android:id="@+id/tv_swap_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="SWAP"
+                android:visibility="gone"
+                android:textColor="@color/lv_second_color"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </com.ruffian.library.widget.RRelativeLayout>
+
+</RelativeLayout>
+
+

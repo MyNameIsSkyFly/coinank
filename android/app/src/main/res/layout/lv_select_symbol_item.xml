@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/setting_item_padding"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <RelativeLayout
+            android:id="@+id/rl_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:id="@+id/tv_symbol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="BTCUSDT"
+                android:textColor="@color/blackgray"
+                android:textSize="@dimen/font_sz_setting" />
+            <TextView
+                android:id="@+id/tv_symbol_ext_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@+id/tv_symbol"
+                android:text="SWAP"
+                android:textColor="@color/blackgray"
+                android:textSize="@dimen/font_sz_setting" />
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/tv_exchange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="Binance"
+            android:textColor="@color/lv_second_color"
+            android:textSize="@dimen/font_12sp" />
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/iv_cksel"
+        android:layout_width="20dp"
+        android:layout_height="35dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/lv_btn_del" />
+</RelativeLayout>

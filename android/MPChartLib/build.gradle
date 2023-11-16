@@ -1,0 +1,63 @@
+apply plugin: 'com.android.library'
+//apply plugin: 'com.github.dcendents.android-maven'
+
+
+group='com.github.philjay'
+
+android {
+    signingConfigs {
+        release {
+        storeFile file('/Users/dengjianning/Desktop/vpro/coinsohoapp/coinsohoapp/keystore/uukr.key')
+            storePassword 'uukr.com'
+            keyAlias 'uukr'
+            keyPassword 'uukr.com'
+        }
+    }
+    compileSdkVersion 33
+    defaultConfig {
+        minSdkVersion 21//old 14
+        targetSdkVersion 33
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    testOptions {
+        unitTests.returnDefaultValues = true // this prevents "not mocked" error
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    namespace 'com.github.mikephil.charting'
+}
+
+
+dependencies {
+    implementation 'androidx.annotation:annotation:1.5.0'
+    testImplementation 'junit:junit:4.12'
+}
+
+//task sourcesJar(type: Jar) {
+//    from android.sourceSets.main.java.srcDirs
+//    classifier = 'sources'
+//}
+
+task javadoc(type: Javadoc) {
+    options.charSet = 'UTF-8'
+    failOnError  false
+    source = android.sourceSets.main.java.sourceFiles
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+//task javadocJar(type: Jar, dependsOn: javadoc) {
+//    classifier = 'javadoc'
+//    from javadoc.destinationDir
+//}
+
+//artifacts {
+//    archives sourcesJar
+//    archives javadocJar
+//}

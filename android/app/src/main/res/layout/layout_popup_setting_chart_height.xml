@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.ruffian.library.widget.RLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:background_normal="@color/highlight_view_bg"
+    app:shadow_color="@color/gray_dashline"
+    app:shadow_radius="2dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <SeekBar
+            android:id="@+id/seek_height"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:max="200"
+            android:progress="80"
+            android:progressBackgroundTint="@color/blackgray"
+             />
+
+    </LinearLayout>
+
+</com.ruffian.library.widget.RLinearLayout>

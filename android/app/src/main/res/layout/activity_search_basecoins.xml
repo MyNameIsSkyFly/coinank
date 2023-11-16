@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
+
+    <include android:id="@+id/toolbar2" layout="@layout/toolbar_main"></include>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingRight="@dimen/setting_item_padding"
+        android:paddingLeft="@dimen/setting_item_padding"
+        >
+
+        <com.ruffian.library.widget.REditText
+            android:id="@+id/et_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:hint="@string/s_search"
+            android:paddingLeft="5dp"
+            android:inputType="textEmailAddress"
+            android:singleLine="true"
+            android:textColor="@color/lv_second_color"
+            android:textColorHint="@color/lv_second_color"
+            android:textSize="@dimen/font_sz_setting"
+            app:background_normal="@color/gray_dashline"
+            app:corner_radius="2dp" />
+
+    </RelativeLayout>
+
+    <com.ank.ankapp.ank_app.original.widget.refresh.PullToRefreshLayout
+        android:id="@+id/pullToRefreshLayout"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <com.ank.ankapp.ank_app.original.widget.refresh.PullListView
+            android:id="@+id/lv_floatview_ticker"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            android:cacheColorHint="@color/colorPrimary"
+            android:dividerHeight="1dp"
+            android:divider="@color/lv_line" />
+
+    </com.ank.ankapp.ank_app.original.widget.refresh.PullToRefreshLayout>
+
+</LinearLayout>

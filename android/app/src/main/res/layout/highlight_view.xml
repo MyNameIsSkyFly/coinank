@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_highlightview"
+    android:layout_below="@+id/tv_klLineInfo"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginTop="8dp"
+    android:orientation="vertical"
+    >
+    <com.ruffian.library.widget.RLinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        app:background_normal="@color/highlight_view_bg"
+        app:shadow_color="@color/gray_dashline"
+        app:shadow_radius="2dp"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="3dp"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_datetime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2022-06-06 8:00"
+                android:textColor="@color/lv_second_color"
+                android:textSize="@dimen/font_highlight_view"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="3dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/s_open"
+                android:textColor="@color/lv_second_color"
+                android:textSize="@dimen/font_highlight_view" />
+            <TextView
+                android:id="@+id/tv_open"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:gravity="right"
+                android:textColor="@color/lv_second_color"
+                android:textSize="@dimen/font_highlight_view" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="3dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/s_high"
+                android:textColor="@color/lv_second_color"
+                android:textSize="@dimen/font_highlight_view"
+                />
+            <TextView
+                android:id="@+id/tv_high"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:gravity="right"
+                android:textColor="@color/lv_second_color"
+                android:textSize="@dimen/font_highlight_view"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="3dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/s_low"
+                android:textColor="@color/lv_second_color"
+                android:textSize="@dimen/font_highlight_view"
+                />
+            <TextView
+                android:id="@+id/tv_low"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:gravity="right"
+                android:textColor="@color/lv_second_color"
+                android:textSize="@dimen/font_highlight_view"
+                />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="3dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/s_close"
+                android:gravity="right"
+                android:textColor="@color/lv_second_color"
+                android:textSize="@dimen/font_highlight_view"
+                />
+            <TextView
+                android:id="@+id/tv_close"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:gravity="right"
+                android:textColor="@color/lv_second_color"
+                android:textSize="@dimen/font_highlight_view"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="3dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/s_chg"
+                android:textColor="@color/lv_second_color"
+                android:textSize="@dimen/font_highlight_view"
+                />
+            <TextView
+                android:id="@+id/tv_chg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:gravity="right"
+                android:singleLine="true"
+                android:textColor="@color/lv_second_color"
+                android:textSize="@dimen/font_highlight_view"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="3dp"
+            android:visibility="gone"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/s_ampl"
+                android:textColor="@color/lv_second_color"
+                android:textSize="@dimen/font_highlight_view"
+                />
+            <TextView
+                android:id="@+id/tv_ampl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:gravity="right"
+                android:textColor="@color/lv_second_color"
+                android:textSize="@dimen/font_highlight_view"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/s_vol"
+                android:textColor="@color/lv_second_color"
+                android:textSize="@dimen/font_highlight_view"
+                />
+            <TextView
+                android:id="@+id/tv_highlight_vol"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:gravity="right"
+                android:textColor="@color/lv_second_color"
+                android:textSize="@dimen/font_highlight_view"
+                />
+
+        </LinearLayout>
+    </com.ruffian.library.widget.RLinearLayout>
+</LinearLayout>

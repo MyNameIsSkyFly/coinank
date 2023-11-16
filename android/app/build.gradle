@@ -24,7 +24,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.ank.ankapp.ank_app"
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -37,8 +37,8 @@ android {
         applicationId "com.ank.ankapp.ank_app"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion flutter.minSdkVersion
-        targetSdkVersion flutter.targetSdkVersion
+        minSdkVersion 21
+        targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -54,4 +54,57 @@ android {
 
 flutter {
     source '../..'
+}
+
+dependencies {
+    api fileTree(include: ['*.jar','*.aar'], dir: 'libs')
+
+    implementation 'com.lcodecorex:tkrefreshlayout:1.0.7'
+    implementation 'com.github.lzyzsd:jsbridge:1.0.4'
+    implementation 'com.tencent.sonic:sdk:2.0.0'
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.3'
+    implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.3'
+    implementation 'com.coolindicator.sdk:coolindicator:1.0.0-beta'
+    implementation 'com.github.Justson:dispatch-queue:v1.0.5'
+
+
+    implementation project(':agentweb-core')
+    implementation project(':MPChartLib')
+    implementation project(':library-hslistview')
+
+    implementation 'com.squareup.okhttp3:okhttp:3.12.13'
+    //implementation 'com.squareup.okhttp3:okhttp:4.1.0'
+
+    implementation 'com.getkeepsafe.relinker:relinker:1.4.5'
+    //implementation 'com.tencent:mmkv:1.2.15'
+
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.9'
+
+    implementation 'com.android.support:multidex:1.0.3'
+
+    //主通道依赖
+    implementation 'com.aliyun.ams:alicloud-android-push:3.8.0'
+    //辅助通道基础依赖
+    implementation 'com.aliyun.ams:alicloud-android-third-push:3.8.0'
+    implementation 'com.aliyun.ams:alicloud-android-third-push-huawei:3.8.0'
+    implementation 'com.aliyun.ams:alicloud-android-third-push-fcm:3.8.0'
+
+    //google分析 崩溃分析
+    implementation platform('com.google.firebase:firebase-bom:31.1.0')
+    implementation 'com.google.firebase:firebase-crashlytics'
+    implementation 'com.google.firebase:firebase-analytics'
+
+    // 权限请求框架：https://github.com/getActivity/XXPermissions
+    implementation 'com.github.getActivity:XXPermissions:16.2'
+    implementation 'com.github.getActivity:ToastUtils:11.2'
+    //implementation 'com.huxq17.xrefreshview:xrefreshview:3.6.9'
+
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.10.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
+
+    //chrome webview
+    implementation 'androidx.webkit:webkit:1.8.0'
+
 }

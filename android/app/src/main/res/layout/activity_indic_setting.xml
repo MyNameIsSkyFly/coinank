@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorPrimary"
+    android:layout_height="match_parent">
+
+    <include android:id="@+id/toolbar2" layout="@layout/toolbar_main"></include>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/setting_item_height"
+        android:orientation="horizontal"
+        android:padding="@dimen/setting_item_padding"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/s_indic_setting"
+            android:textColor="@color/blackgray"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+    <com.ruffian.library.widget.RView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        app:background_normal="@color/lv_line"
+        >
+    </com.ruffian.library.widget.RView>
+
+    <RelativeLayout
+        android:id="@+id/rl_ma"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/setting_item_height"
+        android:orientation="horizontal"
+        android:padding="@dimen/setting_item_padding"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="MA"
+            android:textColor="@color/blackgray"
+            android:textSize="@dimen/font_sz_setting" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:drawableRight="@drawable/next"
+            android:text=""
+            android:textColor="@color/blackgray"
+            android:textSize="@dimen/font_sz_setting" />
+    </RelativeLayout>
+    <com.ruffian.library.widget.RView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        app:background_normal="@color/lv_line"
+        >
+    </com.ruffian.library.widget.RView>
+    <RelativeLayout
+        android:id="@+id/rl_boll"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/setting_item_height"
+        android:orientation="horizontal"
+        android:padding="@dimen/setting_item_padding"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="BOLL"
+            android:textColor="@color/blackgray"
+            android:textSize="@dimen/font_sz_setting" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:drawableRight="@drawable/next"
+            android:text=""
+            android:textColor="@color/blackgray"
+            android:textSize="@dimen/font_sz_setting" />
+    </RelativeLayout>
+    <com.ruffian.library.widget.RView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        app:background_normal="@color/lv_line"
+        >
+    </com.ruffian.library.widget.RView>
+    <RelativeLayout
+        android:id="@+id/rl_ema"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/setting_item_height"
+        android:orientation="horizontal"
+        android:padding="@dimen/setting_item_padding"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="EMA"
+            android:textColor="@color/blackgray"
+            android:textSize="@dimen/font_sz_setting" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:drawableRight="@drawable/next"
+            android:text=""
+            android:textColor="@color/blackgray"
+            android:textSize="@dimen/font_sz_setting" />
+    </RelativeLayout>
+    <com.ruffian.library.widget.RView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        app:background_normal="@color/lv_line"
+        >
+    </com.ruffian.library.widget.RView>
+
+    <RelativeLayout
+        android:id="@+id/rl_macd"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/setting_item_height"
+        android:orientation="horizontal"
+        android:padding="@dimen/setting_item_padding"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="MACD"
+            android:textColor="@color/blackgray"
+            android:textSize="@dimen/font_sz_setting" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:drawableRight="@drawable/next"
+            android:text=""
+            android:textColor="@color/blackgray"
+            android:textSize="@dimen/font_sz_setting" />
+    </RelativeLayout>
+    <com.ruffian.library.widget.RView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        app:background_normal="@color/lv_line"
+        >
+    </com.ruffian.library.widget.RView>
+    <RelativeLayout
+        android:id="@+id/rl_kdj"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/setting_item_height"
+        android:orientation="horizontal"
+        android:padding="@dimen/setting_item_padding"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="KDJ"
+            android:textColor="@color/blackgray"
+            android:textSize="@dimen/font_sz_setting" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:drawableRight="@drawable/next"
+            android:text=""
+            android:textColor="@color/blackgray"
+            android:textSize="@dimen/font_sz_setting" />
+    </RelativeLayout>
+    <com.ruffian.library.widget.RView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        app:background_normal="@color/lv_line"
+        >
+    </com.ruffian.library.widget.RView>
+    <RelativeLayout
+        android:id="@+id/rl_rsi"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/setting_item_height"
+        android:orientation="horizontal"
+        android:padding="@dimen/setting_item_padding"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="RSI"
+            android:textColor="@color/blackgray"
+            android:textSize="@dimen/font_sz_setting" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:drawableRight="@drawable/next"
+            android:text=""
+            android:textColor="@color/blackgray"
+            android:textSize="@dimen/font_sz_setting" />
+    </RelativeLayout>
+    <com.ruffian.library.widget.RView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        app:background_normal="@color/lv_line"
+        >
+    </com.ruffian.library.widget.RView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/setting_item_height"
+        android:orientation="horizontal"
+        android:padding="@dimen/setting_item_padding"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/s_other_setting"
+            android:textColor="@color/blackgray"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+    <com.ruffian.library.widget.RView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        app:background_normal="@color/lv_line"
+        >
+    </com.ruffian.library.widget.RView>
+    <RelativeLayout
+        android:id="@+id/rl_adjust_kchart_height"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/setting_item_height"
+        android:orientation="horizontal"
+        android:padding="@dimen/setting_item_padding"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/s_adjust_kchart_height"
+            android:textColor="@color/blackgray"
+            android:textSize="@dimen/font_sz_setting" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:drawableRight="@drawable/next"
+            android:text=""
+            android:textColor="@color/blackgray"
+            android:textSize="@dimen/font_sz_setting" />
+    </RelativeLayout>
+    <com.ruffian.library.widget.RView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        app:background_normal="@color/lv_line"
+        >
+    </com.ruffian.library.widget.RView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/setting_item_height"
+        android:orientation="horizontal"
+        android:padding="@dimen/setting_item_padding"
+        >
+
+        <TextView
+            android:id="@+id/tv_01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:text="@string/s_up_candle"
+            android:textColor="@color/blackgray"
+            android:textSize="@dimen/font_sz_setting" />
+
+        <RadioGroup
+            android:id="@+id/main_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tv_01"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal">
+
+            <com.ruffian.library.widget.RRadioButton
+                android:id="@+id/rb_hollow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:text="@string/s_hollow"
+                android:textColor="@color/blackgray"
+                android:button="@null"
+                app:icon_src_normal="@drawable/ckbox_default_l"
+                app:icon_src_checked="@drawable/ckbox_sel_n"
+                app:icon_width="20dp"
+                app:icon_height="20dp"
+                android:textSize="@dimen/font_sz_setting"
+                />
+
+            <com.ruffian.library.widget.RRadioButton
+                android:id="@+id/rb_solid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/s_solid"
+                android:button="@null"
+                app:icon_src_normal="@drawable/ckbox_default_l"
+                app:icon_src_checked="@drawable/ckbox_sel_n"
+                app:icon_width="20dp"
+                app:icon_height="20dp"
+                android:textColor="@color/blackgray"
+                android:textSize="@dimen/font_sz_setting" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:drawableRight="@drawable/next"
+            android:text=""
+            android:visibility="gone"
+            android:textColor="@color/blackgray"
+            android:textSize="@dimen/font_sz_setting" />
+    </RelativeLayout>
+    <com.ruffian.library.widget.RView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        app:background_normal="@color/lv_line"
+        >
+    </com.ruffian.library.widget.RView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/setting_item_height"
+        android:orientation="horizontal"
+        android:padding="@dimen/setting_item_padding"
+        >
+
+        <TextView
+            android:id="@+id/tv_02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="15dp"
+            android:text="@string/s_ma_line_width"
+            android:textColor="@color/blackgray"
+            android:textSize="@dimen/font_sz_setting" />
+
+        <RadioGroup
+            android:id="@+id/line_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tv_02"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal">
+
+            <com.ruffian.library.widget.RRadioButton
+                android:id="@+id/rb_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:text="@string/s_font_small"
+                android:textColor="@color/blackgray"
+                android:button="@null"
+                app:icon_src_normal="@drawable/ckbox_default_l"
+                app:icon_src_checked="@drawable/ckbox_sel_n"
+                app:icon_width="20dp"
+                app:icon_height="20dp"
+                android:textSize="@dimen/font_sz_setting"
+                />
+
+            <com.ruffian.library.widget.RRadioButton
+                android:id="@+id/rb_middle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/s_font_middle"
+                android:button="@null"
+                app:icon_src_normal="@drawable/ckbox_default_l"
+                app:icon_src_checked="@drawable/ckbox_sel_n"
+                app:icon_width="20dp"
+                app:icon_height="20dp"
+                android:textColor="@color/blackgray"
+                android:layout_marginRight="15dp"
+                android:textSize="@dimen/font_sz_setting" />
+
+            <com.ruffian.library.widget.RRadioButton
+                android:id="@+id/rb_large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/s_font_large"
+                android:button="@null"
+                app:icon_src_normal="@drawable/ckbox_default_l"
+                app:icon_src_checked="@drawable/ckbox_sel_n"
+                app:icon_width="20dp"
+                app:icon_height="20dp"
+                android:textColor="@color/blackgray"
+                android:textSize="@dimen/font_sz_setting" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:drawableRight="@drawable/next"
+            android:text=""
+            android:visibility="gone"
+            android:textColor="@color/blackgray"
+            android:textSize="@dimen/font_sz_setting" />
+    </RelativeLayout>
+    <com.ruffian.library.widget.RView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        app:background_normal="@color/lv_line"
+        >
+    </com.ruffian.library.widget.RView>
+
+</LinearLayout>
