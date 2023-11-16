@@ -47,4 +47,5 @@ abstract class Apis {
       @Query('size') required int size,
       @Query('sortBy') required String sortBy,
       @Query('sortType') required String sortType});
+
 }

@@ -14,11 +14,13 @@ class SortWithArrow extends StatelessWidget {
     required this.title,
     this.status = SortStatus.normal,
     this.onTap,
+    this.style,
   });
 
   final Widget? icon;
   final String title;
   final SortStatus status;
+  final TextStyle? style;
   final GestureTapCallback? onTap;
 
   @override
@@ -31,7 +33,7 @@ class SortWithArrow extends StatelessWidget {
           if (icon != null) icon!,
           Text(
             title,
-            style: Styles.tsSub_12(context),
+            style: style ?? Styles.tsSub_12(context),
           ),
           const SizedBox(width: 2),
           if (status == SortStatus.normal)

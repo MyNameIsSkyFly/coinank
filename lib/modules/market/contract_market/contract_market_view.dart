@@ -5,13 +5,12 @@ import 'package:get/get.dart';
 import 'contract_market_logic.dart';
 
 class ContractMarketPage extends StatelessWidget {
-  ContractMarketPage({Key? key}) : super(key: key);
-
-  final logic = Get.put(ContractMarketLogic());
-  final state = Get.find<ContractMarketLogic>().state;
+  const ContractMarketPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final logic = Get.put(ContractMarketLogic());
+    final state = Get.find<ContractMarketLogic>().state;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -38,8 +37,8 @@ class ContractMarketPage extends StatelessWidget {
                         child: Text(
                           'BTC',
                           style: index == 0
-                              ? Styles.tsMain_14m.copyWith(height: 1.4)
-                              : Styles.tsSub_14(context).copyWith(height: 1.4),
+                              ? Styles.tsMain_14m
+                              : Styles.tsSub_14(context),
                         ),
                       ),
                     ),
@@ -68,7 +67,7 @@ class ContractMarketPage extends StatelessWidget {
             children: [
               Text(
                 'Coin',
-                style: Styles.tsSub_14(context).copyWith(height: 1.4),
+                style: Styles.tsSub_14(context),
               ),
               const Spacer(),
               SortWithArrow(title: S.current.s_price),
@@ -116,16 +115,12 @@ class ContractMarketPage extends StatelessWidget {
                       children: [
                         Text(
                           'Okex',
-                          style:
-                              Styles.tsBody_12m(context).copyWith(height: 1.4),
+                          style: Styles.tsBody_12m(context),
                         ),
                         const Gap(5),
                         Text(
                           'BTC-USDC-240329',
-                          style: Styles.tsSub_10(context).copyWith(
-                            fontSize: 9,
-                            height: 1.4,
-                          ),
+                          style: Styles.tsSub_10(context).copyWith(fontSize: 9),
                         ),
                       ],
                     ),
@@ -135,13 +130,13 @@ class ContractMarketPage extends StatelessWidget {
                       children: [
                         Text(
                           '\$35388.2',
-                          style: Styles.tsBody_12(context).copyWith(height: 1.4),
+                          style:
+                              Styles.tsBody_12(context),
                         ),
                         const Gap(3),
                         Text(
                           '\$1.23万',
-                          style:
-                          Styles.tsSub_12(context).copyWith(height: 1.4),
+                          style: Styles.tsSub_12(context),
                         ),
                       ],
                     ),
@@ -152,13 +147,14 @@ class ContractMarketPage extends StatelessWidget {
                         children: [
                           Text(
                             '\$55.79万',
-                            style: Styles.tsBody_12(context).copyWith(height: 1.4),
+                            style:
+                                Styles.tsBody_12(context),
                           ),
                           const Gap(3),
                           Text(
                             '0.0000%',
                             style:
-                                Styles.tsSub_12(context).copyWith(height: 1.4),
+                                Styles.tsSub_12(context),
                           ),
                         ],
                       ),
