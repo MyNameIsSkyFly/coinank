@@ -5,5 +5,5 @@ JetBrain的IDE需要使用FlutterAssetGenerator来生成资源文件引用 ，VS
 1.  dart run build_runner build --delete-conflicting-outputs 
     或者
     dart run build_runner watch
-2.  sh pigeons/run_pigeon.s
+2.  sh pigeons/run_pigeon.sh
 
