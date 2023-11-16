@@ -1,3 +1,4 @@
+import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/util/format_util.dart';
 import 'package:ank_app/util/store.dart';
 import 'package:flutter/foundation.dart';
@@ -43,6 +44,7 @@ class AppUtil {
         S.load(const Locale('en'));
       }
     }
+    MessageHostApi().changeLanguage((locale ?? Get.deviceLocale).toString());
     StoreLogic.to.saveLocale(locale);
   }
 
@@ -53,6 +55,8 @@ class AppUtil {
         : isDarkMode
             ? ThemeMode.dark
             : ThemeMode.light);
+    MessageHostApi().changeDarkMode(
+        isDarkMode ?? Get.mediaQuery.platformBrightness == Brightness.dark);
   }
 
   static void toggleUpColor() {

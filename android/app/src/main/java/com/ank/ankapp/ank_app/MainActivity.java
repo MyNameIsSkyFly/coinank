@@ -3,10 +3,13 @@ package com.ank.ankapp.ank_app;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.ank.ankapp.ank_app.original.Config;
 import com.ank.ankapp.ank_app.original.Global;
 import com.ank.ankapp.ank_app.original.activity.CommonFragmentActivity;
+import com.ank.ankapp.ank_app.original.language.LanguageUtil;
 import com.ank.ankapp.ank_app.pigeon_plugin.Messages;
 
 import io.flutter.embedding.android.FlutterActivity;
@@ -32,6 +35,31 @@ public class MainActivity extends FlutterActivity {
             i.putExtra(Config.INDEX_TYPE, Config.TYPE_EXCHANGE_OI_FRAGMENT);
             i.putExtra(Config.TYPE_TITLE, getResources().getString(R.string.s_open_interest));
             Global.showActivity(getActivity(), i);
+        }
+
+        @Override
+        public void changeDarkMode(@NonNull Boolean isDark) {
+            Config.getMMKV(getActivity()).putBoolean(Config.DAY_NIGHT_MODE, isDark);
+            AppCompatDelegate.setDefaultNightMode(isDark ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+
+            Config.getMMKV(getActivity()).async();
+        }
+
+        @Override
+        public void changeLanguage(@NonNull String languageCode) {
+            if (languageCode.contains("en")) {
+                LanguageUtil.changeAppLanguage(getContext(), "en");
+            } else if (languageCode.contains("ja")) {
+                LanguageUtil.changeAppLanguage(getContext(), "ja");
+            } else if (languageCode.contains("ko")) {
+                LanguageUtil.changeAppLanguage(getContext(), "ko");
+            } else if (languageCode.contains("zh")) {
+                if (languageCode.contains("Hans")) {
+                    LanguageUtil.changeAppLanguage(getContext(), "zh_rCN");
+                } else {
+                    LanguageUtil.changeAppLanguage(getContext(), "zh_rTW");
+                }
+            }
         }
     }
 }

@@ -4,6 +4,10 @@ import 'package:pigeon/pigeon.dart';
 abstract class MessageHostApi {
   ///合约总持仓
   void toTotalOi();
+
+  void changeDarkMode(bool isDark);
+
+  void changeLanguage(String languageCode);
 }
 
 @FlutterApi()
