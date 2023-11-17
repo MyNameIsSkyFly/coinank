@@ -39,18 +39,15 @@ class MarketPage extends StatelessWidget {
               Tab(text: S.current.s_portfolio),
             ]),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 15),
-        child: TabBarView(
-          controller: state.tabController,
-          children: [
-            keepAlivePage(const ContractPage()),
-            keepAlivePage(const ContractMarketPage()),
-            keepAlivePage(LiquidationDataPage()),
-            keepAlivePage(const FundingRatePage()),
-            keepAlivePage(ProtfolioPage()),
-          ],
-        ),
+      body: TabBarView(
+        controller: state.tabController,
+        children: [
+          keepAlivePage(const ContractPage()),
+          keepAlivePage(const ContractMarketPage()),
+          keepAlivePage(LiquidationDataPage()),
+          keepAlivePage(const FundingRatePage()),
+          keepAlivePage(ProtfolioPage()),
+        ],
       ),
     );
   }

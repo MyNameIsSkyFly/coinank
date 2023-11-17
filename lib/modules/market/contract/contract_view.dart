@@ -14,7 +14,7 @@ class ContractPage extends StatelessWidget {
     final logic = Get.put(ContractLogic());
     final state = Get.find<ContractLogic>().state;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
+      padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -101,7 +101,7 @@ class ContractPage extends StatelessWidget {
           Expanded(
             child: EasyRefresh(
               refreshOnStart: true,
-              onRefresh: logic.onRefresh,
+              onRefresh: logic.startTimer,
               child: GetBuilder<ContractLogic>(
                   id: 'data',
                   builder: (_) {

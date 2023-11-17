@@ -1,6 +1,5 @@
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/res/export.dart';
-import 'package:ank_app/widget/gestureDetector_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';

@@ -73,9 +73,12 @@ class AppUtil {
       return FormatUtil.amountConversion(amount);
     }
     final mFormat = NumberFormat('#,##0.0', 'en_US');
-    if (amount < 1000000) {
+    if (amount < 1000) {
       // Don't format if it's less than 1000000
       return amount.toString();
+    } else if (amount < 1000000) {
+      // Don't format if it's less than 1000000
+      return '${mFormat.format(amount / 1000)}K';
     } else if (amount < 1000000000) {
       // Format as millions (M) if it's less than 1000000000
       return '${mFormat.format(amount / 1000000)}M';

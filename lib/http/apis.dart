@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:ank_app/entity/body/futures_big_data_body.dart';
 import 'package:ank_app/entity/body/test_body.dart';
+import 'package:ank_app/entity/contract_market_entity.dart';
 import 'package:ank_app/entity/test_entity.dart';
 import 'package:ank_app/http/base_interceptor.dart';
 import 'package:dio/dio.dart';
@@ -18,8 +19,8 @@ part 'apis.g.dart';
 abstract class Apis {
   static final Dio dio = Dio()
     ..interceptors.addAll([
-      TalkerDioLogger(
-          settings: const TalkerDioLoggerSettings(printRequestHeaders: true)),
+      // TalkerDioLogger(
+      //     settings: const TalkerDioLoggerSettings(printRequestHeaders: true)),
       BaseInterceptor(),
     ])
     ..options.headers.addAll({'client': Platform.isAndroid ? 'android' : 'ios'})
@@ -51,4 +52,13 @@ abstract class Apis {
 
   @GET('/api/fundingRate/top?type=LAST&size=3')
   Future<List<HomeFundRateEntity>?> getHomeFundRateData();
+
+  @GET('/api/baseCoin')
+  Future<List<String>?> getMarketAllCurrencyData();
+
+  @GET('/api/tickers')
+  Future<List<ContractMarketEntity>?> getContractMarketData(
+      {@Query('baseCoin') required String baseCoin,
+      @Query('sortBy') String? sortBy,
+      @Query('sortType') required String sortType});
 }

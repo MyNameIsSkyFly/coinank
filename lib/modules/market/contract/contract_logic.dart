@@ -12,6 +12,8 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
   final ContractState state = ContractState();
 
   void tapSort(SortType type) {
+    String sortBy = '';
+    String sortType = '';
     switch (type) {
       case SortType.openInterest:
         state.oiSort =
@@ -19,6 +21,8 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
         state.oiChangeSort = SortStatus.normal;
         state.priceSort = SortStatus.normal;
         state.priceChangSort = SortStatus.normal;
+        sortBy = 'openInterest';
+        sortType = state.oiSort == SortStatus.down ? 'descend' : 'ascend';
       case SortType.openInterestCh24:
         state.oiChangeSort = state.oiChangeSort == SortStatus.down
             ? SortStatus.up
@@ -26,6 +30,8 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
         state.oiSort = SortStatus.normal;
         state.priceSort = SortStatus.normal;
         state.priceChangSort = SortStatus.normal;
+        sortBy = 'openInterestCh24';
+        sortType = state.oiChangeSort == SortStatus.down ? 'descend' : 'ascend';
       case SortType.price:
         state.priceSort = state.priceSort == SortStatus.down
             ? SortStatus.up
@@ -33,6 +39,8 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
         state.oiSort = SortStatus.normal;
         state.oiChangeSort = SortStatus.normal;
         state.priceChangSort = SortStatus.normal;
+        sortBy = 'price';
+        sortType = state.priceSort == SortStatus.down ? 'descend' : 'ascend';
       case SortType.priceChangeH24:
         state.priceChangSort = state.priceChangSort == SortStatus.down
             ? SortStatus.up
@@ -40,10 +48,16 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
         state.oiSort = SortStatus.normal;
         state.oiChangeSort = SortStatus.normal;
         state.priceSort = SortStatus.normal;
-      case SortType.liquidationH24:
+        sortBy = 'priceChangeH24';
+        sortType =
+            state.priceChangSort == SortStatus.down ? 'descend' : 'ascend';
+      default:
         break;
     }
     update(['sort']);
+    if (state.sortBy == sortBy && state.sortType == sortType) return;
+    state.sortType = sortType;
+    state.sortBy = sortBy;
     startTimer();
   }
 
@@ -132,4 +146,6 @@ enum SortType {
   price, // 价格
   priceChangeH24, // 价格变化
   liquidationH24, // 爆仓变化
+  volH24, //24小时成交额
+  fundingRate, //资金费率
 }
