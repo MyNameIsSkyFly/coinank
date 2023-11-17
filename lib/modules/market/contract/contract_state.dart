@@ -1,13 +1,28 @@
+import 'dart:async';
+
+import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/widget/sort_with_arrow.dart';
 
 class ContractState {
-
-  SortStatus oiSort = SortStatus.normal;
+  SortStatus oiSort = SortStatus.down;
   SortStatus oiChangeSort = SortStatus.normal;
   SortStatus priceSort = SortStatus.normal;
   SortStatus priceChangSort = SortStatus.normal;
 
-  ContractState() {
-    ///Initialize variables
-  }
+  //openInterestCh24 持仓变化
+  //openInterest 持仓
+  //price 价格
+  //priceChangeH24 价格变化
+  //liquidationH24 爆仓变化
+  String sortBy = 'openInterest';
+
+  //descend 降序
+  //ascend 升序
+  String sortType = 'descend';
+  TickersDataEntity? data;
+  Timer? pollingTimer;
+  bool isRefresh = false;
+  bool appVisible  = true;
+
+  ContractState() {}
 }

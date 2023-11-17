@@ -9,6 +9,7 @@ class Styles {
 
   static const cMain = Color(0xFF4363F2);
   static const cTextBlack = Color(0xFF0E1420);
+  static const cYellow = Color(0xFFFEB76E);
 
   static Color cUp(BuildContext context) =>
       Theme.of(context).extension<StockColors>()!.up!;

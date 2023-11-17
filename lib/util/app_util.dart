@@ -85,4 +85,10 @@ class AppUtil {
     }
     return mFormat.format(amount);
   }
+
+  static String getRate({required double rate, required int precision}) {
+    final s = '${rate.toStringAsFixed(precision)}%';
+    if (s.startsWith('-')) return s;
+    return '+$s';
+  }
 }
