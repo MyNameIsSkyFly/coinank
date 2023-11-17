@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +10,10 @@ class ImageUtil {
       width: width,
       height: height,
       fadeInDuration: const Duration(milliseconds: 100),
-      errorWidget: (context, url, error) => const Icon(Icons.hourglass_empty),
+      errorWidget: (context, url, error) => Icon(
+        Icons.hourglass_empty,
+        size: min(width ?? 0, height ?? 0),
+      ),
     );
   }
 }

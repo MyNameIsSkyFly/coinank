@@ -1,9 +1,9 @@
 import 'package:ank_app/generated/assets.dart';
-import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/styles.dart';
 import 'package:ank_app/util/app_util.dart';
 import 'package:ank_app/util/image_util.dart';
 import 'package:ank_app/widget/rate_with_sign.dart';
+import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -12,7 +12,6 @@ import 'package:get/get.dart';
 import '../../generated/l10n.dart';
 import '../../widget/rate_with_arrow.dart';
 import 'home_logic.dart';
-import 'package:easy_refresh/easy_refresh.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -42,82 +41,88 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 44,
-        leadingWidth: 150,
-        centerTitle: false,
-        leading: Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 15),
-            child: Text(
-              'Coinank',
-              style: Styles.tsBody_20(context)
-                  .copyWith(fontWeight: FontWeight.w700),
+    return Theme(
+      data: Theme.of(context).copyWith(splashFactory: InkSparkle.splashFactory),
+      child: Scaffold(
+        appBar: AppBar(
+          toolbarHeight: 44,
+          leadingWidth: 150,
+          centerTitle: false,
+          leading: Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 15),
+              child: Text(
+                'Coinank',
+                style: Styles.tsBody_20(context)
+                    .copyWith(fontWeight: FontWeight.w700),
+              ),
             ),
           ),
+          actions: [
+            IconButton(
+                visualDensity: VisualDensity.compact,
+                onPressed: () {},
+                icon: Image.asset(
+                  Assets.imagesIcSearch,
+                  height: 20,
+                  width: 20,
+                  color: Theme.of(context).iconTheme.color,
+                )),
+            IconButton(
+                visualDensity: VisualDensity.compact,
+                onPressed: () {},
+                icon: Stack(
+                  children: [
+                    Image.asset(
+                      Assets.imagesIcBell,
+                      height: 20,
+                      width: 20,
+                      color: Theme.of(context).iconTheme.color,
+                    ),
+                    Positioned(
+                        top: 0,
+                        right: 0,
+                        child: Container(
+                          height: 4,
+                          width: 4,
+                          decoration: const BoxDecoration(
+                              color: Color(0xffD8494A), shape: BoxShape.circle),
+                        ))
+                  ],
+                )),
+            const Gap(10),
+          ],
         ),
-        actions: [
-          IconButton(
-              visualDensity: VisualDensity.compact,
-              onPressed: () {},
-              icon: Image.asset(
-                Assets.imagesIcSearch,
-                height: 20,
-                width: 20,
-                color: Theme.of(context).iconTheme.color,
-              )),
-          IconButton(
-              visualDensity: VisualDensity.compact,
-              onPressed: () {},
-              icon: Stack(
-                children: [
-                  Image.asset(
-                    Assets.imagesIcBell,
-                    height: 20,
-                    width: 20,
-                    color: Theme.of(context).iconTheme.color,
-                  ),
-                  Positioned(
-                      top: 0,
-                      right: 0,
-                      child: Container(
-                        height: 4,
-                        width: 4,
-                        decoration: const BoxDecoration(
-                            color: Color(0xffD8494A), shape: BoxShape.circle),
-                      ))
-                ],
-              )),
-          const Gap(10),
-        ],
-      ),
-      body: EasyRefresh(
-        onRefresh: logic.onRefresh,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _TotalOiAndFuturesVol(logic: logic),
-              const Gap(10),
+        body: EasyRefresh(
+          onRefresh: logic.onRefresh,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _TotalOiAndFuturesVol(logic: logic),
+                const Gap(10),
 
-              ///清算地图
-              _CheckDetailRow(title: S.of(context).s_liqmap, onTap: () {}),
-              const Gap(20),
-              _HotMarket(logic: logic),
-              const Gap(20),
-              _OiDistribution(logic: logic),
-              const Gap(20),
-              _BtcInfo(logic: logic),
-              const Gap(10),
-              _FearGreedInfo(logic: logic),
-              const Gap(10),
+                ///清算地图
+                _CheckDetailRow(
+                  title: S.of(context).s_liqmap,
+                  onTap: () => logic.hostApi.toLiqMap(),
+                ),
+                const Gap(20),
+                _HotMarket(logic: logic),
+                const Gap(20),
+                _OiDistribution(logic: logic),
+                const Gap(20),
+                _BtcInfo(logic: logic),
+                const Gap(10),
+                _FearGreedInfo(logic: logic),
+                const Gap(10),
 
-              ///灰度数据
-              _CheckDetailRow(title: S.of(context).s_grayscale_data)
-            ],
+                ///灰度数据
+                _CheckDetailRow(title: S.of(context).s_grayscale_data)
+              ],
+            ),
           ),
         ),
       ),
@@ -127,7 +132,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
 class _FearGreedInfo extends StatelessWidget {
   const _FearGreedInfo({
-    super.key,
     required this.logic,
   });
 
@@ -136,6 +140,7 @@ class _FearGreedInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _OutlinedContainer(
+      onTap: logic.hostApi.toGreedIndex,
       child: Obx(() {
         return Row(
           children: [
@@ -183,7 +188,6 @@ class _FearGreedInfo extends StatelessWidget {
 ///btc市值占比+投资回报率
 class _BtcInfo extends StatelessWidget {
   const _BtcInfo({
-    super.key,
     required this.logic,
   });
 
@@ -196,49 +200,8 @@ class _BtcInfo extends StatelessWidget {
         return Row(
           children: [
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Image.asset(
-                        Assets.imagesIcCoinBtc,
-                        height: 18,
-                        width: 18,
-                      ),
-                      const Gap(5),
-                      Text(
-                        S.of(context).s_marketcap_ratio,
-                        style: Styles.tsBody_12m(context),
-                      ),
-                      const Icon(CupertinoIcons.chevron_right, size: 12),
-                    ],
-                  ),
-                  const Gap(6),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        '${((double.tryParse(logic.homeInfoData.value?.marketCpaValue ?? '') ?? 0) * 100).toStringAsFixed(2)}%',
-                        style: Styles.tsMain_18
-                            .copyWith(fontWeight: FontWeight.w600, height: 1),
-                      ),
-                      const Gap(5),
-                      RateWithArrow(
-                          rate: (double.tryParse(logic.homeInfoData.value
-                                          ?.marketCpaChange ??
-                                      '') ??
-                                  0) *
-                              100),
-                    ],
-                  )
-                ],
-              ),
-            ),
-            const SizedBox(height: 30, child: VerticalDivider()),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 20),
+              child: InkWell(
+                onTap: logic.hostApi.toBtcMarketRatio,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -251,19 +214,66 @@ class _BtcInfo extends StatelessWidget {
                         ),
                         const Gap(5),
                         Text(
-                          S.of(context).s_btc_profit,
+                          S.of(context).s_marketcap_ratio,
                           style: Styles.tsBody_12m(context),
                         ),
                         const Icon(CupertinoIcons.chevron_right, size: 12),
                       ],
                     ),
                     const Gap(6),
-                    Text(
-                      '${((double.tryParse(logic.homeInfoData.value?.btcProfit ?? '') ?? 0)).toStringAsFixed(2)}%',
-                      style: Styles.tsMain_18
-                          .copyWith(fontWeight: FontWeight.w600, height: 1),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          '${((double.tryParse(logic.homeInfoData.value?.marketCpaValue ?? '') ?? 0) * 100).toStringAsFixed(2)}%',
+                          style: Styles.tsMain_18
+                              .copyWith(fontWeight: FontWeight.w600, height: 1),
+                        ),
+                        const Gap(5),
+                        RateWithArrow(
+                            rate: (double.tryParse(logic.homeInfoData.value
+                                            ?.marketCpaChange ??
+                                        '') ??
+                                    0) *
+                                100),
+                      ],
                     )
                   ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 30, child: VerticalDivider()),
+            Expanded(
+              child: InkWell(
+                onTap: logic.hostApi.toBtcProfitRate,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Image.asset(
+                            Assets.imagesIcCoinBtc,
+                            height: 18,
+                            width: 18,
+                          ),
+                          const Gap(5),
+                          Text(
+                            S.of(context).s_btc_profit,
+                            style: Styles.tsBody_12m(context),
+                          ),
+                          const Icon(CupertinoIcons.chevron_right, size: 12),
+                        ],
+                      ),
+                      const Gap(6),
+                      Text(
+                        '${((double.tryParse(logic.homeInfoData.value?.btcProfit ?? '') ?? 0)).toStringAsFixed(2)}%',
+                        style: Styles.tsMain_18
+                            .copyWith(fontWeight: FontWeight.w600, height: 1),
+                      )
+                    ],
+                  ),
                 ),
               ),
             )
@@ -277,7 +287,6 @@ class _BtcInfo extends StatelessWidget {
 ///持仓分布
 class _OiDistribution extends StatelessWidget {
   const _OiDistribution({
-    super.key,
     required this.logic,
   });
 
@@ -294,7 +303,7 @@ class _OiDistribution extends StatelessWidget {
                   child: Text(S.of(context).oiDistribution,
                       style: Styles.tsBody_16m(context))),
               _FilledContainer(
-                onTap: () {},
+                onTap: logic.hostApi.toTakerBuyLongShortRatio,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 child: Row(
@@ -306,7 +315,6 @@ class _OiDistribution extends StatelessWidget {
                       style: Styles.tsBody_12m(context),
                     ),
                     const Gap(7),
-                    //todo 换成接口数据
                     Text(
                       logic.buySellLongShortRatio,
                       style: Styles.tsMain_14m
@@ -321,6 +329,7 @@ class _OiDistribution extends StatelessWidget {
 
           ///多空持仓人数比
           _LongShortRatio(
+              onTap: logic.hostApi.toLongShortAccountRatio,
               title: S.of(context).s_bn_longshort_person_ratio,
               long: double.parse(
                   logic.homeInfoData.value?.binancePersonValue ?? '0'),
@@ -329,6 +338,7 @@ class _OiDistribution extends StatelessWidget {
                   logic.homeInfoData.value?.binancePersonChange ?? '0')),
           const Gap(10),
           _LongShortRatio(
+              onTap: logic.hostApi.toLongShortAccountRatio,
               title: S.of(context).s_ok_longshort_person_ratio,
               long: double.parse(
                   logic.homeInfoData.value?.okexPersonValue ?? '0'),
@@ -343,7 +353,6 @@ class _OiDistribution extends StatelessWidget {
 ///热门行情
 class _HotMarket extends StatelessWidget {
   const _HotMarket({
-    super.key,
     required this.logic,
   });
 
@@ -364,6 +373,7 @@ class _HotMarket extends StatelessWidget {
             children: [
               Expanded(
                 child: _OutlinedContainer(
+                  onTap: logic.hostApi.toOiChange,
                   child: Obx(() {
                     return Column(
                       children: [
@@ -394,6 +404,7 @@ class _HotMarket extends StatelessWidget {
               const Gap(9),
               Expanded(
                 child: _OutlinedContainer(
+                  onTap: logic.hostApi.toPriceChange,
                   child: Obx(() {
                     return Column(
                       children: [
@@ -510,7 +521,6 @@ class _HotMarket extends StatelessWidget {
 ///合约总持仓+合约成交量
 class _TotalOiAndFuturesVol extends StatelessWidget {
   const _TotalOiAndFuturesVol({
-    super.key,
     required this.logic,
   });
 
@@ -522,6 +532,7 @@ class _TotalOiAndFuturesVol extends StatelessWidget {
       return Row(
         children: [
           _FirstLineItem(
+            onTap: logic.hostApi.toTotalOi,
             title: S.of(context).s_total_oi,
             value: AppUtil.getLargeFormatString(
                 logic.homeInfoData.value?.openInterest ?? '0'),
@@ -530,6 +541,7 @@ class _TotalOiAndFuturesVol extends StatelessWidget {
           ),
           const Gap(9),
           _FirstLineItem(
+              onTap: logic.hostApi.toFuturesVolume,
               title: S.of(context).s_futures_vol_24h,
               rate: double.tryParse(
                       logic.homeInfoData.value?.tickerChange ?? '0') ??
@@ -544,7 +556,6 @@ class _TotalOiAndFuturesVol extends StatelessWidget {
 
 class _CheckDetailRow extends StatelessWidget {
   const _CheckDetailRow({
-    super.key,
     required this.title,
     this.onTap,
   });
@@ -578,18 +589,16 @@ class _CheckDetailRow extends StatelessWidget {
 
 class _LongShortRatio extends StatelessWidget {
   const _LongShortRatio({
-    super.key,
     required this.title,
     required this.long,
-    // required this.short,
     required this.rate,
+    this.onTap,
   });
 
   final String title;
   final double long;
-
-  // final double short;
   final double rate;
+  final VoidCallback? onTap;
 
   double get actualLong => long / (1 + long);
 
@@ -598,6 +607,7 @@ class _LongShortRatio extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _FilledContainer(
+      onTap: onTap,
       child: Column(
         children: [
           Row(
@@ -696,7 +706,6 @@ class _LongShortRatio extends StatelessWidget {
 
 class _DataWithIcon extends StatelessWidget {
   const _DataWithIcon({
-    super.key,
     required this.icon,
     required this.title,
     required this.value,
@@ -729,7 +738,6 @@ class _DataWithIcon extends StatelessWidget {
 
 class _DataWithoutIcon extends StatelessWidget {
   const _DataWithoutIcon({
-    super.key,
     required this.title,
     required this.value,
   });
@@ -760,7 +768,6 @@ class _DataWithoutIcon extends StatelessWidget {
 
 class _DataWithQuantity extends StatelessWidget {
   const _DataWithQuantity({
-    super.key,
     required this.title,
     required this.value,
     this.isLong,
@@ -804,17 +811,18 @@ class _FirstLineItem extends StatelessWidget {
     required this.title,
     required this.value,
     this.rate,
+    this.onTap,
   });
 
   final String title;
   final String value;
   final double? rate;
-
+  final VoidCallback? onTap;
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: _OutlinedContainer(
-        onTap: () => MessageHostApi().toTotalOi(),
+        onTap: onTap,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -846,7 +854,6 @@ class _FirstLineItem extends StatelessWidget {
 
 class _OutlinedContainer extends StatelessWidget {
   const _OutlinedContainer({
-    super.key,
     this.child,
     this.onTap,
   });
@@ -860,7 +867,7 @@ class _OutlinedContainer extends StatelessWidget {
       borderRadius: BorderRadius.circular(8),
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
@@ -872,7 +879,7 @@ class _OutlinedContainer extends StatelessWidget {
 }
 
 class _FilledContainer extends StatelessWidget {
-  const _FilledContainer({super.key, this.child, this.padding, this.onTap});
+  const _FilledContainer({this.child, this.padding, this.onTap});
 
   final Widget? child;
   final EdgeInsets? padding;
