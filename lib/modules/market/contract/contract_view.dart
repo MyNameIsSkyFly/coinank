@@ -1,5 +1,6 @@
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -17,26 +18,30 @@ class ContractPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            height: 32,
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            decoration: BoxDecoration(
-              color: Theme.of(context).inputDecorationTheme.fillColor,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Row(
-              children: [
-                Image.asset(
-                  Assets.commonIconSearch,
-                  width: 16,
-                  color: Theme.of(context).textTheme.bodySmall?.color,
-                ),
-                const Gap(10),
-                Text(
-                  S.current.s_search,
-                  style: Styles.tsSub_12(context),
-                ),
-              ],
+          InkWell(
+            onTap: () => Get.toNamed(RouteConfig.contractSearch,
+                arguments: state.data?.list ?? []),
+            child: Container(
+              height: 32,
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              decoration: BoxDecoration(
+                color: Theme.of(context).inputDecorationTheme.fillColor,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Row(
+                children: [
+                  Image.asset(
+                    Assets.commonIconSearch,
+                    width: 16,
+                    color: Theme.of(context).textTheme.bodySmall?.color,
+                  ),
+                  const Gap(10),
+                  Text(
+                    S.current.s_search,
+                    style: Styles.tsSub_12(context),
+                  ),
+                ],
+              ),
             ),
           ),
           GetBuilder<ContractLogic>(
@@ -96,7 +101,7 @@ class ContractPage extends StatelessWidget {
           Expanded(
             child: EasyRefresh(
               refreshOnStart: true,
-              onRefresh: logic.startTimer,
+              onRefresh: logic.onRefresh,
               child: GetBuilder<ContractLogic>(
                   id: 'data',
                   builder: (_) {
@@ -175,14 +180,11 @@ class _DataItem extends StatelessWidget {
                 const Gap(5),
                 Row(
                   children: [
-                    SizedBox(
-                      width: 60,
-                      child: Text(
-                        AppUtil.getLargeFormatString(
-                            '${item.openInterest ?? 0}'),
-                        style: Styles.tsSub_12(context),
-                      ),
+                    Text(
+                      AppUtil.getLargeFormatString('${item.openInterest ?? 0}'),
+                      style: Styles.tsSub_12(context),
                     ),
+                    const Gap(5),
                     Text(
                       AppUtil.getRate(
                           rate: (item.openInterestCh24 ?? 0) * 100,
@@ -198,11 +200,16 @@ class _DataItem extends StatelessWidget {
                 ),
               ],
             ),
-            const Spacer(),
-            Text(
-              '\$${item.price}',
-              style: Styles.tsBody_14(context).copyWith(
-                color: Theme.of(context).textTheme.bodyMedium?.color,
+            Expanded(
+              child: AutoSizeText(
+                '\$${item.price}',
+                style: Styles.tsBody_14(context).copyWith(
+                  color: Theme.of(context).textTheme.bodyMedium?.color,
+                ),
+                maxFontSize: 14,
+                minFontSize: 10,
+                maxLines: 1,
+                textAlign: TextAlign.right,
               ),
             ),
             const Gap(25),

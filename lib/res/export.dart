@@ -6,6 +6,7 @@ export 'package:ank_app/res/styles.dart';
 export 'package:ank_app/util/app_util.dart';
 export 'package:ank_app/util/image_util.dart';
 export 'package:ank_app/http/apis.dart';
+export 'package:ank_app/util/input_formatter.dart';
 
 export 'package:ank_app/widget/loading.dart';
 export 'package:ank_app/widget/keep_alive_page.dart';
