@@ -18,6 +18,50 @@ import Flutter
 }
 
 class MessageHostApi: NSObject,FLTMessageHostApi {
+    func toLiqMapWithError(_ error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
+        
+    }
+    
+    func toLongShortAccountRatioWithError(_ error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
+        
+    }
+    
+    func toTakerBuyLongShortRatioWithError(_ error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
+        
+    }
+    
+    func toOiChangeWithError(_ error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
+        
+    }
+    
+    func toPriceChangeWithError(_ error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
+        
+    }
+    
+    func toGreedIndexWithError(_ error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
+        
+    }
+    
+    func toBtcMarketRatioWithError(_ error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
+        
+    }
+    
+    func toFuturesVolumeWithError(_ error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
+        
+    }
+    
+    func toBtcProfitRateWithError(_ error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
+        
+    }
+    
+    func toGrayScaleDataWithError(_ error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
+        
+    }
+    
+    func toFundRateWithError(_ error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
+        
+    }
+    
     func toTotalOiWithError(_ error: AutoreleasingUnsafeMutablePointer<FlutterError?>) {
         print("toTotalOiWithError")
     }
