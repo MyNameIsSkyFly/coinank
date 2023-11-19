@@ -89,9 +89,34 @@ class AppUtil {
     return mFormat.format(amount);
   }
 
-  static String getRate({required double rate, required int precision}) {
-    final s = '${rate.toStringAsFixed(precision)}%';
-    if (s.startsWith('-')) return s;
-    return '+$s';
+  static String getRate(
+      {double? rate,
+      required int precision,
+      bool mul = true,
+      bool showAdd = true}) {
+    if (rate != null) {
+      String s = '';
+      if (mul) {
+        s = '${(rate * 100).toStringAsFixed(precision)}%';
+      } else {
+        s = '${rate.toStringAsFixed(precision)}%';
+      }
+      if (s.startsWith('-')) return s;
+      return showAdd ? '+$s' : s;
+    }
+    return '-';
+  }
+
+  static Color? getColorWithFundRate(double? rate) {
+    if (rate != null) {
+      if (rate * 100 > 0.01) {
+        return const Color(0xffD8494A);
+      }
+      if (rate * 100 < 0.01) {
+        return const Color(0xff5CC389);
+      }
+      return Theme.of(Get.context!).textTheme.bodyMedium!.color;
+    }
+    return Theme.of(Get.context!).textTheme.bodyMedium!.color;
   }
 }

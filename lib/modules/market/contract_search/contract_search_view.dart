@@ -177,8 +177,7 @@ class _DataItem extends StatelessWidget {
                     const Gap(5),
                     Text(
                       AppUtil.getRate(
-                          rate: (item.openInterestCh24 ?? 0) * 100,
-                          precision: 2),
+                          rate: item.openInterestCh24, precision: 2),
                       style: TextStyle(
                         fontSize: 12,
                         color: (item.openInterestCh24 ?? 0) >= 0
@@ -203,7 +202,11 @@ class _DataItem extends StatelessWidget {
                 ),
                 const Gap(5),
                 Text(
-                  AppUtil.getRate(rate: item.priceChangeH24 ?? 0, precision: 2),
+                  AppUtil.getRate(
+                    rate: item.priceChangeH24,
+                    precision: 2,
+                    mul: false,
+                  ),
                   style: TextStyle(
                     fontSize: 12,
                     color: (item.priceChangeH24 ?? 0) >= 0

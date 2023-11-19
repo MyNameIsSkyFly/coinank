@@ -78,6 +78,9 @@ class AppThemes {
         extensions: StoreLogic.to.isUpGreen
             ? [StockColors.upGreen]
             : [StockColors.upRed],
+        bottomSheetTheme: const BottomSheetThemeData(
+          backgroundColor: Colors.transparent,
+        ),
       );
 }
 

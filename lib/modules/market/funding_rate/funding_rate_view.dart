@@ -1,3 +1,4 @@
+import 'package:ank_app/entity/marker_funding_rate_entity.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,20 +16,27 @@ class FundingRatePage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
+          padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
           child: Row(
             children: [
-              _Segment(
-                titles: [S.current.s_show_pre_fr, S.current.s_hide],
-                isFirst: state.isHide,
-              ),
+              Obx(() {
+                return _Segment(
+                  titles: [S.current.s_show_pre_fr, S.current.s_hide],
+                  isFirst: !state.isHide.value,
+                  onTap: (v) => logic.tapHide(v),
+                );
+              }),
               const Gap(10),
-              _Segment(
-                titles: [S.current.s_u_fr, S.current.s_coin_fr],
-                isFirst: state.isCmap,
-              ),
+              Obx(() {
+                return _Segment(
+                  titles: [S.current.s_u_fr, S.current.s_coin_fr],
+                  isFirst: !state.isCmap.value,
+                  onTap: (v) => logic.tapCmap(v),
+                );
+              }),
               const Gap(10),
               InkWell(
+                onTap: () => logic.tapTime(),
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   height: 32,
@@ -38,10 +46,14 @@ class FundingRatePage extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      Text(
-                        S.current.s_current,
-                        style: Styles.tsBody_14m(context),
-                      ),
+                      Obx(() {
+                        return Text(
+                          state.time.isEmpty
+                              ? S.current.s_current
+                              : state.time.value,
+                          style: Styles.tsBody_14m(context),
+                        );
+                      }),
                       const Gap(5),
                       Icon(
                         Icons.keyboard_arrow_down,
@@ -87,124 +99,164 @@ class FundingRatePage extends StatelessWidget {
                 child: SingleChildScrollView(
                   controller: state.titleController,
                   scrollDirection: Axis.horizontal,
-                  child: Wrap(
-                    children: List.generate(
-                      state.topList.length,
-                      (index) => Container(
-                        width: 100,
-                        child: SortWithArrow(
-                          icon: Padding(
-                            padding: const EdgeInsets.only(right: 5),
-                            child: ClipOval(
-                              child: Image.asset(
-                                'assets/images/platform/${state.topList[index]}.png',
-                                width: 15,
+                  child: Obx(() {
+                    return Wrap(
+                      children: List.generate(
+                        state.topList.length,
+                        (index) => Container(
+                          width: 100,
+                          child: SortWithArrow(
+                            icon: Padding(
+                              padding: const EdgeInsets.only(right: 5),
+                              child: ClipOval(
+                                child: Image.asset(
+                                  'assets/images/platform/${state.topList[index]}.png',
+                                  width: 15,
+                                ),
                               ),
                             ),
+                            title: state.topList.toList()[index],
+                            style: Styles.tsBody_12m(context),
                           ),
-                          title: state.topList[index],
-                          style: Styles.tsBody_12m(context),
                         ),
                       ),
-                    ),
-                  ),
+                    );
+                  }),
                 ),
               ),
             ],
           ),
         ),
         Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+          child: EasyRefresh(
+            onRefresh: logic.onRefresh,
+            child: Obx(() {
+              return SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.only(left: 15),
-                      width: 100,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        padding: EdgeInsets.zero,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemExtent: 48,
-                        itemBuilder: (cnt, idx) {
-                          return Row(
-                            children: [
-                              ClipOval(
-                                child: Placeholder(
-                                  fallbackWidth: 24,
-                                  fallbackHeight: 24,
-                                ),
-                              ),
-                              Gap(10),
-                              Text(
-                                'Coin$idx',
-                                style: Styles.tsBody_12m(context),
-                              ),
-                            ],
-                          );
-                        },
-                        itemCount: 40,
-                      ),
-                    ),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        controller: state.contentController,
-                        scrollDirection: Axis.horizontal,
-                        child: Wrap(
-                          children: List.generate(
-                            state.topList.length,
-                            (index) => Container(
-                              padding: const EdgeInsets.only(left: 15),
-                              width: 100,
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                padding: EdgeInsets.zero,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemBuilder: (cnt, idx) {
-                                  return Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Coin$idx',
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Styles.cUp(context),
-                                            height: 1.4,
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(top: 4),
-                                          child: Text(
-                                            'Coin$idx',
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: Styles.cUp(context),
-                                              height: 1.4,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.only(left: 15),
+                          width: 100,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            padding: EdgeInsets.zero,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemExtent: 48,
+                            itemCount: state.contentDataList.length,
+                            itemBuilder: (cnt, idx) {
+                              MarkerFundingRateEntity item =
+                                  state.contentDataList.toList()[idx];
+                              return Row(
+                                children: [
+                                  ClipOval(
+                                    child: ImageUtil.networkImage(
+                                      AppConst.imageHost(item.symbol ?? ''),
+                                      width: 24,
+                                      height: 24,
                                     ),
-                                  );
-                                },
-                                itemExtent: 48,
-                                itemCount: 40,
+                                  ),
+                                  const Gap(10),
+                                  Expanded(
+                                    child: Text(
+                                      item.symbol ?? '',
+                                      style: Styles.tsBody_12m(context),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            controller: state.contentController,
+                            scrollDirection: Axis.horizontal,
+                            child: Wrap(
+                              children: List.generate(
+                                state.topList.length,
+                                (index) => Container(
+                                  padding: const EdgeInsets.only(left: 15),
+                                  width: 100,
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    padding: EdgeInsets.zero,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemExtent: 48,
+                                    itemCount: state.contentDataList.length,
+                                    itemBuilder: (cnt, idx) {
+                                      MarkerFundingRateEntity item =
+                                          state.contentDataList.toList()[idx];
+                                      String mapKey =
+                                          state.topList.toList()[index];
+                                      return Obx(() {
+                                        Exchange? exchangeItem =
+                                            item.cmap![mapKey];
+                                        if (!state.isCmap.value) {
+                                          exchangeItem = item.umap![mapKey];
+                                        }
+                                        return Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                AppUtil.getRate(
+                                                    rate: exchangeItem
+                                                        ?.fundingRate,
+                                                    precision: 4,
+                                                    showAdd: false),
+                                                style: Styles.tsBody_12(context)
+                                                    .copyWith(
+                                                  color: AppUtil
+                                                      .getColorWithFundRate(
+                                                          exchangeItem
+                                                              ?.fundingRate),
+                                                ),
+                                              ),
+                                              if (!state.isHide.value)
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 4),
+                                                  child: Text(
+                                                    AppUtil.getRate(
+                                                        rate: exchangeItem
+                                                            ?.estimatedRate,
+                                                        precision: 4,
+                                                        showAdd: false),
+                                                    style: Styles.tsBody_12(
+                                                            context)
+                                                        .copyWith(
+                                                      color: AppUtil
+                                                          .getColorWithFundRate(
+                                                              exchangeItem
+                                                                  ?.estimatedRate),
+                                                    ),
+                                                  ),
+                                                ),
+                                            ],
+                                          ),
+                                        );
+                                      });
+                                    },
+                                  ),
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
                   ],
                 ),
-              ],
-            ),
+              );
+            }),
           ),
         ),
       ],

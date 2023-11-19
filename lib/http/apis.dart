@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:ank_app/entity/body/futures_big_data_body.dart';
 import 'package:ank_app/entity/body/test_body.dart';
 import 'package:ank_app/entity/contract_market_entity.dart';
+import 'package:ank_app/entity/marker_funding_rate_entity.dart';
 import 'package:ank_app/entity/test_entity.dart';
 import 'package:ank_app/http/base_interceptor.dart';
 import 'package:dio/dio.dart';
@@ -61,4 +62,8 @@ abstract class Apis {
       {@Query('baseCoin') required String baseCoin,
       @Query('sortBy') String? sortBy,
       @Query('sortType') required String sortType});
+
+  @GET('/api/fundingRate/current')
+  Future<List<MarkerFundingRateEntity>?> getMarketFundingRateData(
+      {@Query('type') required String type});
 }
