@@ -42,11 +42,11 @@ class StoreLogic extends GetxController {
                 : 0);
   }
 
-  bool? get isDarkMode {
+  bool get isDarkMode {
     return switch (_SpUtil()._getInt(_SpKeys.darkMode, defaultValue: -1)) {
       1 => true,
       0 => false,
-      _ => null,
+      _ => Get.mediaQuery.platformBrightness == Brightness.dark,
     };
   }
 

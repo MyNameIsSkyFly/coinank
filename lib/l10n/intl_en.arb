@@ -269,5 +269,6 @@
   "theServerIsBusyPleaseTryAgainLater": "The server is busy, please try again later",
   "viewDetail": "查看详情",
   "hotMarket": "热门行情",
-  "oiDistribution": "持仓分布"
+  "oiDistribution": "持仓分布",
+  "languageName": "English"
 }

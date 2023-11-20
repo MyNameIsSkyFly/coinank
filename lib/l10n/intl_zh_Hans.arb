@@ -29,7 +29,7 @@
   "s_oi": "持仓",
   "s_floatviewsetting": "悬浮窗设置",
   "s_themesetting": "主题设置",
-  "s_klinecolor": "颜色配置",
+  "s_klinecolor": "颜色设置",
   "s_language": "语言设置",
   "s_default_home": "默认首页",
   "s_conditions_of_privacy": "隐私政策",
@@ -266,5 +266,6 @@
   "theServerIsBusyPleaseTryAgainLater": "服务器繁忙,请稍后再试",
   "viewDetail": "查看详情",
   "hotMarket": "热门行情",
-  "oiDistribution": "持仓分布"
+  "oiDistribution": "持仓分布",
+  "languageName": "简体中文"
 }
