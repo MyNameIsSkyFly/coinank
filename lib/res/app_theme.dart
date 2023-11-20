@@ -74,12 +74,15 @@ class AppThemes {
         useMaterial3: true,
         fontFamily: 'PingFang SC',
         platform: TargetPlatform.iOS,
+        highlightColor: Colors.transparent,
+        splashColor: Colors.transparent,
         splashFactory: NoSplash.splashFactory,
         extensions: StoreLogic.to.isUpGreen
             ? [StockColors.upGreen]
             : [StockColors.upRed],
         bottomSheetTheme: const BottomSheetThemeData(
           backgroundColor: Colors.transparent,
+          modalBackgroundColor: Colors.transparent,
         ),
       );
 }
