@@ -33,7 +33,6 @@ class ContractMarketLogic extends FullLifeCycleController
         duration: const Duration(milliseconds: 500),
       );
       startTimer();
-
     }
   }
 
@@ -85,9 +84,14 @@ class ContractMarketLogic extends FullLifeCycleController
   }
 
   Future<void> getAllData() async {
-    await Future.wait([getHeaderData(), startTimer()]).then((value) {
-      update();
-    });
+    if (state.isLoading) {
+      await Future.wait([getHeaderData(), startTimer()]).then((value) {
+        state.isLoading = false;
+        update();
+      });
+    } else {
+      startTimer();
+    }
   }
 
   Future<void> getHeaderData() async {

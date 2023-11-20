@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:ank_app/entity/marker_funding_rate_entity.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
@@ -71,7 +73,7 @@ class FundingRatePage extends StatelessWidget {
                 child: IconButton(
                   visualDensity: VisualDensity.compact,
                   padding: EdgeInsets.zero,
-                  onPressed: () {},
+                  onPressed: () => logic.tapSearch(),
                   icon: Image.asset(
                     Assets.commonIconSearch,
                     height: 14,
@@ -83,59 +85,65 @@ class FundingRatePage extends StatelessWidget {
             ],
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 15),
-          child: Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.only(left: 15),
-                width: 100,
-                child: Text(
-                  'Coin',
-                  style: Styles.tsSub_14(context),
-                ),
+        Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.only(left: 15),
+              width: 100,
+              child: Text(
+                'Coin',
+                style: Styles.tsSub_14(context),
               ),
-              Expanded(
-                child: SingleChildScrollView(
-                  controller: state.titleController,
-                  scrollDirection: Axis.horizontal,
-                  child: Obx(() {
-                    return Wrap(
-                      children: List.generate(
-                        state.topList.length,
-                        (index) => Container(
+            ),
+            Expanded(
+              child: SizedBox(
+                height: 48,
+                child: Obx(() {
+                  return ListView.builder(
+                      controller: state.titleController,
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      physics: const ClampingScrollPhysics(),
+                      itemCount: state.topList.length,
+                      itemBuilder: (cnt, idx) {
+                        return SizedBox(
                           width: 100,
-                          child: SortWithArrow(
-                            icon: Padding(
-                              padding: const EdgeInsets.only(right: 5),
-                              child: ClipOval(
-                                child: Image.asset(
-                                  'assets/images/platform/${state.topList[index]}.png',
-                                  width: 15,
+                          child: Obx(() {
+                            return SortWithArrow(
+                              icon: Padding(
+                                padding: const EdgeInsets.only(right: 5),
+                                child: ClipOval(
+                                  child: Image.asset(
+                                    'assets/images/platform/${state.topList[idx]}.png',
+                                    width: 15,
+                                  ),
                                 ),
                               ),
-                            ),
-                            title: state.topList.toList()[index],
-                            style: Styles.tsBody_12m(context),
-                          ),
-                        ),
-                      ),
-                    );
-                  }),
-                ),
+                              title: state.topList.toList()[idx],
+                              style: Styles.tsBody_12m(context),
+                              status: state.topStatusList.toList()[idx],
+                              onTap: () => logic.tapSort(idx),
+                            );
+                          }),
+                        );
+                      });
+                }),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
         Expanded(
           child: EasyRefresh(
-            onRefresh: logic.onRefresh,
+            onRefresh: logic.startTimer,
+            refreshOnStart: true,
             child: Obx(() {
               return SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
                           padding: const EdgeInsets.only(left: 15),
@@ -171,14 +179,17 @@ class FundingRatePage extends StatelessWidget {
                           ),
                         ),
                         Expanded(
-                          child: SingleChildScrollView(
-                            controller: state.contentController,
-                            scrollDirection: Axis.horizontal,
-                            child: Wrap(
-                              children: List.generate(
-                                state.topList.length,
-                                (index) => Container(
-                                  padding: const EdgeInsets.only(left: 15),
+                          child: SizedBox(
+                            height: max(state.contentDataList.length * 48, 480),
+                            child: ListView.builder(
+                              padding: EdgeInsets.zero,
+                              controller: state.contentController,
+                              scrollDirection: Axis.horizontal,
+                              physics: const ClampingScrollPhysics(),
+                              itemCount: state.topList.length,
+                              shrinkWrap: true,
+                              itemBuilder: (cnt, index) {
+                                return SizedBox(
                                   width: 100,
                                   child: ListView.builder(
                                     shrinkWrap: true,
@@ -246,8 +257,8 @@ class FundingRatePage extends StatelessWidget {
                                       });
                                     },
                                   ),
-                                ),
-                              ),
+                                );
+                              },
                             ),
                           ),
                         ),

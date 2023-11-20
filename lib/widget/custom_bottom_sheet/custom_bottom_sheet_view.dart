@@ -16,7 +16,7 @@ class CustomBottomSheetPage extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
         color: Theme.of(context).appBarTheme.backgroundColor,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
       ),
       child: CustomScrollView(
         shrinkWrap: true,

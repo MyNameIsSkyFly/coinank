@@ -140,7 +140,8 @@ class ContractMarketPage extends StatelessWidget {
               builder: (_) {
                 return Expanded(
                   child: EasyRefresh(
-                    onRefresh: logic.onRefresh,
+                    onRefresh: logic.getAllData,
+                    refreshOnStart: true,
                     child: ListView.builder(
                       padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
                       itemCount: state.dataList?.length ?? 0,

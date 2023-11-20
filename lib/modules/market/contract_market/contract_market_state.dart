@@ -17,6 +17,7 @@ class ContractMarketState {
   String type = 'BTC';
   String? sortBy;
   Timer? pollingTimer;
+  bool isLoading = true;
   bool isRefresh = false;
   bool appVisible = true;
   ItemScrollController itemScrollController = ItemScrollController();
