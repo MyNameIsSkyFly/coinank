@@ -41,91 +41,85 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: Theme.of(context).copyWith(splashFactory: InkSparkle.splashFactory),
-      child: Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 44,
-          leadingWidth: 150,
-          centerTitle: false,
-          leading: Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 15),
-              child: Text(
-                'Coinank',
-                style: Styles.tsBody_20(context)
-                    .copyWith(fontWeight: FontWeight.w700),
-              ),
+    return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 44,
+        leadingWidth: 150,
+        centerTitle: false,
+        leading: Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 15),
+            child: Text(
+              'Coinank',
+              style: Styles.tsBody_20(context)
+                  .copyWith(fontWeight: FontWeight.w700),
             ),
           ),
-          actions: [
-            IconButton(
-                visualDensity: VisualDensity.compact,
-                onPressed: () {},
-                icon: Image.asset(
-                  Assets.imagesIcSearch,
-                  height: 20,
-                  width: 20,
-                  color: Theme.of(context).iconTheme.color,
-                )),
-            IconButton(
-                visualDensity: VisualDensity.compact,
-                onPressed: () {},
-                icon: Stack(
-                  children: [
-                    Image.asset(
-                      Assets.imagesIcBell,
-                      height: 20,
-                      width: 20,
-                      color: Theme.of(context).iconTheme.color,
-                    ),
-                    Positioned(
-                        top: 0,
-                        right: 0,
-                        child: Container(
-                          height: 4,
-                          width: 4,
-                          decoration: const BoxDecoration(
-                              color: Color(0xffD8494A), shape: BoxShape.circle),
-                        ))
-                  ],
-                )),
-            const Gap(10),
-          ],
         ),
-        body: EasyRefresh(
-          onRefresh: logic.onRefresh,
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _TotalOiAndFuturesVol(logic: logic),
-                const Gap(10),
+        actions: [
+          IconButton(
+              visualDensity: VisualDensity.compact,
+              onPressed: () {},
+              icon: Image.asset(
+                Assets.imagesIcSearch,
+                height: 20,
+                width: 20,
+                color: Theme.of(context).iconTheme.color,
+              )),
+          IconButton(
+              visualDensity: VisualDensity.compact,
+              onPressed: () {},
+              icon: Stack(
+                children: [
+                  Image.asset(
+                    Assets.imagesIcBell,
+                    height: 20,
+                    width: 20,
+                    color: Theme.of(context).iconTheme.color,
+                  ),
+                  Positioned(
+                      top: 0,
+                      right: 0,
+                      child: Container(
+                        height: 4,
+                        width: 4,
+                        decoration: const BoxDecoration(
+                            color: Color(0xffD8494A), shape: BoxShape.circle),
+                      ))
+                ],
+              )),
+          const Gap(10),
+        ],
+      ),
+      body: EasyRefresh(
+        onRefresh: logic.onRefresh,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _TotalOiAndFuturesVol(logic: logic),
+              const Gap(10),
 
-                ///清算地图
-                _CheckDetailRow(
-                  title: S.of(context).s_liqmap,
-                  onTap: () => logic.hostApi.toLiqMap(),
-                ),
-                const Gap(20),
-                _HotMarket(logic: logic),
-                const Gap(20),
-                _OiDistribution(logic: logic),
-                const Gap(20),
-                _BtcInfo(logic: logic),
-                const Gap(10),
-                _FearGreedInfo(logic: logic),
-                const Gap(10),
+              ///清算地图
+              _CheckDetailRow(
+                title: S.of(context).s_liqmap,
+                onTap: () => logic.hostApi.toLiqMap(),
+              ),
+              const Gap(20),
+              _HotMarket(logic: logic),
+              const Gap(20),
+              _OiDistribution(logic: logic),
+              const Gap(20),
+              _BtcInfo(logic: logic),
+              const Gap(10),
+              _FearGreedInfo(logic: logic),
+              const Gap(10),
 
-                ///灰度数据
-                _CheckDetailRow(
-                  title: S.of(context).s_grayscale_data,
-                  onTap: logic.hostApi.toGrayScaleData,
-                )
-              ],
-            ),
+              ///灰度数据
+              _CheckDetailRow(title: S.of(context).s_grayscale_data)
+            ],
           ),
         ),
       ),
@@ -823,7 +817,6 @@ class _FirstLineItem extends StatelessWidget {
   final String value;
   final double? rate;
   final VoidCallback? onTap;
-
   @override
   Widget build(BuildContext context) {
     return Expanded(

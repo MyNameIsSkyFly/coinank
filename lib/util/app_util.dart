@@ -1,14 +1,18 @@
 import 'package:ank_app/modules/chart/chart_drawer/chart_drawer_logic.dart';
 import 'package:ank_app/modules/chart/chart_logic.dart';
+import 'dart:convert';
+
 import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/util/format_util.dart';
 import 'package:ank_app/util/store.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../generated/l10n.dart';
 
@@ -113,7 +117,7 @@ class AppUtil {
     }
   }
 
-  static String getWebLanguage() {
+  static String get webLanguage {
     final locale = StoreLogic.to.locale;
     return switch (locale) {
       const Locale('en') => '',
@@ -122,6 +126,19 @@ class AppUtil {
         'zh-tw/',
       const Locale('ja') => 'ja/',
       const Locale('ko') => 'ko/',
+      _ => ''
+    };
+  }
+
+  static String get shortLanguageName {
+    final locale = StoreLogic.to.locale;
+    return switch (locale) {
+      const Locale('en') => 'en',
+      const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans') => 'zh',
+      const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant') =>
+        'zh-tw',
+      const Locale('ja') => 'ja',
+      const Locale('ko') => 'ko',
       _ => ''
     };
   }
@@ -155,5 +172,17 @@ class AppUtil {
       return Theme.of(Get.context!).textTheme.bodyMedium!.color;
     }
     return Theme.of(Get.context!).textTheme.bodyMedium!.color;
+  }
+
+  static Future<({bool isNeed, String jumpUrl})> needUpdate() async {
+    final packageInfo = await PackageInfo.fromPlatform();
+    final res = await Dio().get(
+        'https://coinsoho.s3.us-east-2.amazonaws.com/app/androidwebversion.txt');
+    final data = jsonDecode(res.data as String? ?? '{}');
+    return (
+      isNeed: (int.tryParse(packageInfo.buildNumber) ?? 10000) <
+          (int.tryParse('${data['data']['ank_versionCode']}') ?? 0),
+      jumpUrl: '${data['data']['ank_url']}'
+    );
   }
 }

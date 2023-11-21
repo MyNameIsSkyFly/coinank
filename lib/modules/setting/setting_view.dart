@@ -1,68 +1,141 @@
+import 'package:ank_app/constants/urls.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:ank_app/util/app_nav.dart';
 import 'package:ank_app/util/app_util.dart';
 import 'package:ank_app/util/store.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'setting_logic.dart';
 
-class SettingPage extends StatelessWidget {
+class SettingPage extends StatefulWidget {
   SettingPage({super.key});
 
+  @override
+  State<SettingPage> createState() => _SettingPageState();
+}
+
+class _SettingPageState extends State<SettingPage> {
   final logic = Get.put(SettingLogic());
+
   final state = Get.find<SettingLogic>().state;
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: Theme.of(context).copyWith(splashFactory: InkSparkle.splashFactory),
-      child: Scaffold(
-        appBar: AppTitleBar(title: S.of(context).s_setting),
-        backgroundColor: Colors.transparent,
-        body: ListView(
-          children: [
-            const Gap(10),
-            const _ThemeChangeLine(),
-            _SettingLine(
-                onTap: () {
-                  showCupertinoModalPopup(
+    return Scaffold(
+      appBar: AppTitleBar(title: S.of(context).s_setting),
+      backgroundColor: Colors.transparent,
+      body: ListView(
+        children: [
+          const Gap(10),
+          const _ThemeChangeLine(),
+          _SettingLine(
+              onTap: () {
+                showCupertinoModalPopup(
+                    context: context,
+                    builder: (context) => const _KLineColorSelector());
+              },
+              title: S.of(context).s_klinecolor,
+              value: StoreLogic.to.isUpGreen
+                  ? S.of(context).s_green_up
+                  : S.of(context).s_red_up),
+          _SettingLine(
+              onTap: () {
+                showCupertinoModalPopup(
+                    context: context,
+                    builder: (context) => const _LanguageSelector());
+              },
+              title: S.of(context).s_language,
+              value: S.of(context).languageName),
+          _SettingLine(
+            onTap: () {
+              AppNav.openWebUrl(
+                url: Urls.urlPrivacy,
+                title: S.of(context).privacyPolicy,
+              );
+            },
+            title: S.of(context).s_conditions_of_privacy,
+          ),
+          _SettingLine(
+            onTap: () {
+              AppNav.openWebUrl(
+                url: Urls.urlDisclaimer,
+                title: S.of(context).s_disclaimer,
+              );
+            },
+            title: S.of(context).s_disclaimer,
+          ),
+          _SettingLine(
+            onTap: () {
+              AppNav.openWebUrl(
+                url: Urls.urlAbout,
+                title: S.of(context).s_about_us,
+              );
+            },
+            title: S.of(context).s_about_us,
+          ),
+          Obx(() {
+            Widget adaptiveAction(
+                {required VoidCallback onPressed, required Widget child}) {
+              final ThemeData theme = Theme.of(context);
+              switch (theme.platform) {
+                case TargetPlatform.android:
+                case TargetPlatform.fuchsia:
+                case TargetPlatform.linux:
+                case TargetPlatform.windows:
+                  return TextButton(onPressed: onPressed, child: child);
+                case TargetPlatform.iOS:
+                case TargetPlatform.macOS:
+                  return CupertinoDialogAction(
+                      onPressed: onPressed, child: child);
+              }
+            }
+
+            return _SettingLine(
+                onTap: () async {
+                  var result =
+                      await Loading.wrap(() async => AppUtil.needUpdate());
+                  if (result.isNeed) {
+                    if (!mounted) return;
+                    showAdaptiveDialog(
                       context: context,
-                      builder: (context) => const _KLineColorSelector());
+                      builder: (context) {
+                        return AlertDialog.adaptive(
+                          title: Text(
+                            S.of(context).s_is_upgrade,
+                            style: TextStyle(
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .color),
+                          ),
+                          backgroundColor: Theme.of(context).cardColor,
+                          actions: [
+                            adaptiveAction(
+                                child: Text(S.of(context).s_cancel),
+                                onPressed: () {
+                                  Get.back();
+                                }),
+                            adaptiveAction(
+                                child: Text(S.of(context).s_ok),
+                                onPressed: () async {
+                                  await launchUrl(Uri.parse(result.jumpUrl),
+                                      mode: LaunchMode.externalApplication);
+                                  Get.back();
+                                }),
+                          ],
+                        );
+                      },
+                    );
+                  }
                 },
-                title: S.of(context).s_klinecolor,
-                value: StoreLogic.to.isUpGreen
-                    ? S.of(context).s_green_up
-                    : S.of(context).s_red_up),
-            _SettingLine(
-                onTap: () {
-                  showCupertinoModalPopup(
-                      context: context,
-                      builder: (context) => const _LanguageSelector());
-                },
-                title: S.of(context).s_language,
-                value: S.of(context).languageName),
-            _SettingLine(
-              onTap: () {},
-              title: S.of(context).s_conditions_of_privacy,
-            ),
-            _SettingLine(
-              onTap: () {},
-              title: S.of(context).s_disclaimer,
-            ),
-            _SettingLine(
-              onTap: () {},
-              title: S.of(context).s_about_us,
-            ),
-            Obx(() {
-              return _SettingLine(
-                  onTap: () {},
-                  title: S.of(context).s_check_update,
-                  value: logic.versionName.value);
-            }),
-          ],
-        ),
+                title: S.of(context).s_check_update,
+                value: logic.versionName.value);
+          }),
+        ],
       ),
     );
   }
@@ -70,7 +143,6 @@ class SettingPage extends StatelessWidget {
 
 class _SettingLine extends StatelessWidget {
   const _SettingLine({
-    super.key,
     required this.onTap,
     required this.title,
     this.value,
@@ -107,9 +179,7 @@ class _SettingLine extends StatelessWidget {
 }
 
 class _ThemeChangeLine extends StatelessWidget {
-  const _ThemeChangeLine({
-    super.key,
-  });
+  const _ThemeChangeLine();
 
   @override
   Widget build(BuildContext context) {
@@ -181,7 +251,7 @@ class _ThemeChangeLine extends StatelessWidget {
 }
 
 class _LanguageSelector extends StatelessWidget {
-  const _LanguageSelector({super.key});
+  const _LanguageSelector();
 
   @override
   Widget build(BuildContext context) {
@@ -250,7 +320,7 @@ class _LanguageSelector extends StatelessWidget {
 }
 
 class _KLineColorSelector extends StatelessWidget {
-  const _KLineColorSelector({super.key});
+  const _KLineColorSelector();
 
   @override
   Widget build(BuildContext context) {
