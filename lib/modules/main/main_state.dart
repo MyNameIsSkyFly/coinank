@@ -1,3 +1,4 @@
+import 'package:ank_app/modules/chart/chart_view.dart';
 import 'package:ank_app/modules/market/market_view.dart';
 import 'package:ank_app/modules/setting/setting_view.dart';
 import 'package:ank_app/widget/keep_alive_page.dart';
@@ -16,10 +17,10 @@ class MainState {
   MainState() {
     pageController = PageController(initialPage: 0);
     tabPage = [
-      keepAlivePage(HomePage()),
+      keepAlivePage(const HomePage()),
       keepAlivePage(MarketPage()),
-      keepAlivePage(OrderFlowPage()),
-      keepAlivePage(ChartPage()),
+      keepAlivePage(const OrderFlowPage()),
+      keepAlivePage(const ChartPage()),
       keepAlivePage(SettingPage()),
     ];
   }
