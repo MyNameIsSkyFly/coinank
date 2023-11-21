@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../home/home_view.dart';
+import '../order_flow/order_flow_view.dart';
 
 class MainState {
   late PageController pageController;
@@ -16,7 +17,7 @@ class MainState {
     tabPage = [
       keepAlivePage(HomePage()),
       keepAlivePage(MarketPage()),
-      keepAlivePage(Center(child: Text('开发中2'))),
+      keepAlivePage(OrderFlowPage()),
       keepAlivePage(Center(child: Text('开发中3'))),
       keepAlivePage(SettingPage()),
     ];
