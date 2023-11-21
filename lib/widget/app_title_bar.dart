@@ -23,6 +23,7 @@ class AppTitleBar extends StatelessWidget implements PreferredSizeWidget {
     this.customWidget, //完全自定义appbar
     this.hideBackBtn = false, //隐藏返回键
     this.systemOverlayStyle,
+    this.leftWidget,
   });
 
   final Color? backgroundColor;
@@ -39,6 +40,7 @@ class AppTitleBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? actionWidget;
   final PreferredSizeWidget? bottomWidget;
   final Widget? customWidget;
+  final Widget? leftWidget;
   final bool hideBackBtn;
   final SystemUiOverlayStyle? systemOverlayStyle;
 
@@ -57,22 +59,24 @@ class AppTitleBar extends StatelessWidget implements PreferredSizeWidget {
             backgroundColor:
                 backgroundColor ?? Theme.of(context).scaffoldBackgroundColor,
             leadingWidth: leadingWidth ?? 56,
-            leading: Navigator.canPop(context) && !hideBackBtn
-                ? InkWell(
-                    onTap: onBack ?? Get.back,
-                    child: Container(
-                      height: double.infinity,
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: backImg ??
-                          Image.asset(
-                            Assets.bottomBarMarket,
-                            width: 20,
-                            height: 20,
-                            color: Theme.of(context).iconTheme.color,
-                          ),
-                    ),
-                  )
-                : null,
+            leading: leftWidget != null
+                ? leftWidget!
+                : Navigator.canPop(context) && !hideBackBtn
+                    ? InkWell(
+                        onTap: onBack ?? Get.back,
+                        child: Container(
+                          height: double.infinity,
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: backImg ??
+                              Image.asset(
+                                Assets.commonIconArrowLeft,
+                                width: 20,
+                                height: 20,
+                                color: Theme.of(context).iconTheme.color,
+                              ),
+                        ),
+                      )
+                    : null,
             title: Text(
               title,
               maxLines: 1,

@@ -12,14 +12,16 @@ class AppThemes {
           tertiary: Colors.white,
         ),
         appBarTheme: const AppBarTheme(
-            backgroundColor: Colors.white,
-            systemOverlayStyle: SystemUiOverlayStyle(
-              systemNavigationBarColor: Colors.transparent,
-              statusBarColor: Colors.transparent,
-              systemNavigationBarIconBrightness: Brightness.dark,
-              statusBarIconBrightness: Brightness.dark,
-              statusBarBrightness: Brightness.light,
-            )),
+          backgroundColor: Colors.white,
+          scrolledUnderElevation: 0,
+          systemOverlayStyle: SystemUiOverlayStyle(
+            systemNavigationBarColor: Colors.transparent,
+            statusBarColor: Colors.transparent,
+            systemNavigationBarIconBrightness: Brightness.dark,
+            statusBarIconBrightness: Brightness.dark,
+            statusBarBrightness: Brightness.light,
+          ),
+        ),
         iconTheme: const IconThemeData(color: Styles.cTextBlack),
         cardColor: const Color(0xffF8FAFD),
         bottomAppBarTheme: const BottomAppBarTheme(color: Colors.white),
@@ -46,6 +48,7 @@ class AppThemes {
         ),
         appBarTheme: const AppBarTheme(
             backgroundColor: Color(0xff171823),
+            scrolledUnderElevation: 0,
             systemOverlayStyle: SystemUiOverlayStyle(
               systemNavigationBarColor: Colors.transparent,
               systemNavigationBarIconBrightness: Brightness.light,

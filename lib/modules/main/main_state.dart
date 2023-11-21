@@ -1,3 +1,4 @@
+import 'package:ank_app/modules/chart/chart_view.dart';
 import 'package:ank_app/modules/market/market_view.dart';
 import 'package:ank_app/modules/setting/setting_view.dart';
 import 'package:ank_app/widget/keep_alive_page.dart';
@@ -10,6 +11,7 @@ class MainState {
   late PageController pageController;
   RxInt selectedIndex = 0.obs;
   late List<Widget> tabPage;
+  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   MainState() {
     pageController = PageController(initialPage: 0);
@@ -17,7 +19,7 @@ class MainState {
       keepAlivePage(HomePage()),
       keepAlivePage(MarketPage()),
       keepAlivePage(Center(child: Text('开发中2'))),
-      keepAlivePage(Center(child: Text('开发中3'))),
+      keepAlivePage(ChartPage()),
       keepAlivePage(SettingPage()),
     ];
   }
