@@ -1,4 +1,3 @@
-import 'package:ank_app/modules/chart/chart_view.dart';
 import 'package:ank_app/modules/market/market_view.dart';
 import 'package:ank_app/modules/setting/setting_view.dart';
 import 'package:ank_app/widget/keep_alive_page.dart';
@@ -6,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../home/home_view.dart';
+import '../order_flow/order_flow_view.dart';
 
 class MainState {
   late PageController pageController;
@@ -18,7 +18,7 @@ class MainState {
     tabPage = [
       keepAlivePage(HomePage()),
       keepAlivePage(MarketPage()),
-      keepAlivePage(Center(child: Text('开发中2'))),
+      keepAlivePage(OrderFlowPage()),
       keepAlivePage(ChartPage()),
       keepAlivePage(SettingPage()),
     ];

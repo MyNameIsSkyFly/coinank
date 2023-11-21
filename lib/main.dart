@@ -53,7 +53,10 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: AppThemes.lightTheme,
       darkTheme: AppThemes.darkTheme,
-      themeMode: StoreLogic.to.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+      themeMode: StoreLogic.to.isDarkMode ??
+              MediaQuery.of(context).platformBrightness == Brightness.dark
+          ? ThemeMode.dark
+          : ThemeMode.light,
       builder: EasyLoading.init(
         builder: (context, child) {
           return MediaQuery(

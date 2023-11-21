@@ -123,7 +123,8 @@ class _ThemeChangeLine extends StatelessWidget {
             style: Styles.tsBody_16(context),
           )),
           GestureDetector(
-            onTap: () => AppUtil.changeTheme(!StoreLogic.to.isDarkMode),
+            onTap: () => AppUtil.changeTheme(!(StoreLogic.to.isDarkMode ??
+                Get.mediaQuery.platformBrightness == Brightness.dark)),
             child: Stack(
               children: [
                 AnimatedContainer(
@@ -131,13 +132,18 @@ class _ThemeChangeLine extends StatelessWidget {
                   height: 20,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30),
-                      color: StoreLogic.to.isDarkMode
+                      color: StoreLogic.to.isDarkMode ??
+                              Get.mediaQuery.platformBrightness ==
+                                  Brightness.dark
                           ? const Color(0xffA1A7BB)
                           : Styles.cMain),
                   duration: const Duration(milliseconds: 200),
                 ),
                 AnimatedPositioned(
-                    left: StoreLogic.to.isDarkMode ? 0 : 20,
+                    left: StoreLogic.to.isDarkMode ??
+                            Get.mediaQuery.platformBrightness == Brightness.dark
+                        ? 0
+                        : 20,
                     duration: const Duration(milliseconds: 200),
                     child: Container(
                       width: 20,
@@ -149,7 +155,9 @@ class _ThemeChangeLine extends StatelessWidget {
                       child: AnimatedSwitcher(
                           key: const ValueKey('DarkBtnAnimatedSwitcher'),
                           duration: const Duration(milliseconds: 200),
-                          child: StoreLogic.to.isDarkMode
+                          child: StoreLogic.to.isDarkMode ??
+                                  Get.mediaQuery.platformBrightness ==
+                                      Brightness.dark
                               ? const Icon(
                                   key: ValueKey('iconMoon'),
                                   CupertinoIcons.moon_fill,
