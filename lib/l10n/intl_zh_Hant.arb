@@ -267,5 +267,6 @@
   "s_order_flow": "訂單流",
   "viewDetail": "查看详情",
   "hotMarket": "热门行情",
-  "oiDistribution": "持仓分布"
+  "oiDistribution": "持仓分布",
+  "languageName": "繁體中文"
 }

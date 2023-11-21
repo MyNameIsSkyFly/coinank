@@ -95,19 +95,27 @@ class AppUtil {
     }
     final mFormat = NumberFormat('#,##0.0', 'en_US');
     if (amount < 1000) {
-      // Don't format if it's less than 1000000
       return amount.toString();
     } else if (amount < 1000000) {
-      // Don't format if it's less than 1000000
       return '${mFormat.format(amount / 1000)}K';
     } else if (amount < 1000000000) {
-      // Format as millions (M) if it's less than 1000000000
       return '${mFormat.format(amount / 1000000)}M';
     } else {
-      // Format as billions (B) if it's greater than or equal to 1000000000
       return '${mFormat.format(amount / 1000000000)}B';
     }
-    return mFormat.format(amount);
+  }
+
+  static String getWebLanguage() {
+    final locale = StoreLogic.to.locale;
+    return switch (locale) {
+      const Locale('en') => '',
+      const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans') => 'zh/',
+      const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant') =>
+        'zh-tw/',
+      const Locale('ja') => 'ja/',
+      const Locale('ko') => 'ko/',
+      _ => ''
+    };
   }
 
   static String getRate(

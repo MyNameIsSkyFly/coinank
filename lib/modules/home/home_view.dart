@@ -259,9 +259,11 @@ class _BtcInfo extends StatelessWidget {
                             width: 18,
                           ),
                           const Gap(5),
-                          Text(
-                            S.of(context).s_btc_profit,
-                            style: Styles.tsBody_12m(context),
+                          Flexible(
+                            child: Text(
+                              S.of(context).s_btc_profit,
+                              style: Styles.tsBody_12m(context),
+                            ),
                           ),
                           const Icon(CupertinoIcons.chevron_right, size: 12),
                         ],
