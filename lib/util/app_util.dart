@@ -1,3 +1,5 @@
+import 'package:ank_app/modules/chart/chart_drawer/chart_drawer_logic.dart';
+import 'package:ank_app/modules/chart/chart_logic.dart';
 import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/util/format_util.dart';
 import 'package:ank_app/util/store.dart';
@@ -46,6 +48,12 @@ class AppUtil {
     }
     MessageHostApi().changeLanguage((locale ?? Get.deviceLocale).toString());
     StoreLogic.to.saveLocale(locale);
+    if (Get.isRegistered<ChartLogic>()) {
+      Get.find<ChartLogic>().onRefresh();
+    }
+    if (Get.isRegistered<ChartDrawerLogic>()) {
+      Get.find<ChartDrawerLogic>().onRefresh();
+    }
   }
 
   static String getLanguageSir() {
