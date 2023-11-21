@@ -11,6 +11,7 @@ class MainState {
   late PageController pageController;
   RxInt selectedIndex = 0.obs;
   late List<Widget> tabPage;
+  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   MainState() {
     pageController = PageController(initialPage: 0);
@@ -18,7 +19,7 @@ class MainState {
       keepAlivePage(HomePage()),
       keepAlivePage(MarketPage()),
       keepAlivePage(OrderFlowPage()),
-      keepAlivePage(Center(child: Text('开发中3'))),
+      keepAlivePage(ChartPage()),
       keepAlivePage(SettingPage()),
     ];
   }

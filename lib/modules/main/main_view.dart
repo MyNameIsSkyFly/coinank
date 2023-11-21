@@ -1,5 +1,6 @@
 import 'package:ank_app/generated/assets.dart';
 import 'package:ank_app/generated/l10n.dart';
+import 'package:ank_app/modules/chart/chart_drawer/chart_drawer_view.dart';
 import 'package:ank_app/modules/main/main_state.dart';
 import 'package:ank_app/res/light_colors.dart';
 import 'package:ank_app/res/styles.dart';
@@ -18,12 +19,15 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: state.scaffoldKey,
       body: PageView.builder(
         physics: const NeverScrollableScrollPhysics(),
         controller: state.pageController,
         itemCount: state.tabPage.length,
         itemBuilder: (context, index) => state.tabPage[index],
       ),
+      drawer: const ChartDrawerPage(),
+      drawerEnableOpenDragGesture: false,
       bottomNavigationBar: Obx(() {
         return MyBottomBar(
           items: [

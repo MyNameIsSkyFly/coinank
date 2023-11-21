@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:ank_app/entity/body/futures_big_data_body.dart';
 import 'package:ank_app/entity/body/test_body.dart';
+import 'package:ank_app/entity/chart_entity.dart';
+import 'package:ank_app/entity/chart_left_entity.dart';
 import 'package:ank_app/entity/contract_market_entity.dart';
 import 'package:ank_app/entity/marker_funding_rate_entity.dart';
 import 'package:ank_app/entity/test_entity.dart';
@@ -20,8 +22,8 @@ part 'apis.g.dart';
 abstract class Apis {
   static final Dio dio = Dio()
     ..interceptors.addAll([
-      // TalkerDioLogger(
-      //     settings: const TalkerDioLoggerSettings(printRequestHeaders: true)),
+      TalkerDioLogger(
+          settings: const TalkerDioLoggerSettings(printRequestHeaders: true)),
       BaseInterceptor(),
     ])
     ..options.headers.addAll({'client': Platform.isAndroid ? 'android' : 'ios'})
@@ -66,4 +68,12 @@ abstract class Apis {
   @GET('/api/fundingRate/current')
   Future<List<MarkerFundingRateEntity>?> getMarketFundingRateData(
       {@Query('type') required String type});
+
+  @GET('/api/app/indicationMain')
+  Future<List<ChartEntity>?> getChartData(
+      {@Query('locale') required String locale});
+
+  @GET('/api/app/indicationNavs')
+  Future<List<ChartLeftEntity>?> getChartLeftData(
+      {@Query('locale') required String locale});
 }

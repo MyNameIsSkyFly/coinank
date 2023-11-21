@@ -174,7 +174,7 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin{
   startTimer({bool showLoading = false}) async {
     cancelTimer();
     await _onRefresh(showLoading: showLoading);
-    state.pollingTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
+    state.pollingTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
       timer.cancel();
       if (Get.find<MainLogic>().state.selectedIndex.value == 1 &&
           !state.isRefresh &&

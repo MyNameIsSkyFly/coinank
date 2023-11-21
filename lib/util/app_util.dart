@@ -48,6 +48,27 @@ class AppUtil {
     StoreLogic.to.saveLocale(locale);
   }
 
+  static String getLanguageSir() {
+    if (StoreLogic.to.locale == const Locale('en')) {
+      return 'en';
+    }
+    if (StoreLogic.to.locale ==
+        const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant')) {
+      return 'zh-tw';
+    }
+    if (StoreLogic.to.locale ==
+        const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans')) {
+      return 'zh';
+    }
+    if (StoreLogic.to.locale == const Locale('ja')) {
+      return 'ja';
+    }
+    if (StoreLogic.to.locale == const Locale('ko')) {
+      return 'ko';
+    }
+    return 'zh';
+  }
+
   static void changeTheme(bool? isDarkMode) {
     StoreLogic.to.saveDarkMode(isDarkMode);
     Get.changeThemeMode(isDarkMode == null
