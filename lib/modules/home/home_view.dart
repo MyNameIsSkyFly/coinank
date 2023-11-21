@@ -120,7 +120,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 const Gap(10),
 
                 ///灰度数据
-                _CheckDetailRow(title: S.of(context).s_grayscale_data)
+                _CheckDetailRow(
+                  title: S.of(context).s_grayscale_data,
+                  onTap: logic.hostApi.toGrayScaleData,
+                )
               ],
             ),
           ),
@@ -820,6 +823,7 @@ class _FirstLineItem extends StatelessWidget {
   final String value;
   final double? rate;
   final VoidCallback? onTap;
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
