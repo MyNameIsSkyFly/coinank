@@ -51,3 +51,4 @@ pubspec.lock
 /ios/Classes/messages.h
 /ios/Classes/messages.m
 /ios/Runner/Messages.g.swift
+/.fvm/

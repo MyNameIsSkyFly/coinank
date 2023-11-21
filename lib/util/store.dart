@@ -55,7 +55,7 @@ class StoreLogic extends GetxController {
   }
 
   bool get isUpGreen {
-    var isGreen = _SpUtil()._getBool(_SpKeys.upGreen, defaultValue: false);
+    var isGreen = _SpUtil()._getBool(_SpKeys.upGreen, defaultValue: true);
     return isGreen;
   }
 }

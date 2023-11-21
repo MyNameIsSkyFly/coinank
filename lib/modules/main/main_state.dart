@@ -4,8 +4,10 @@ import 'package:ank_app/widget/keep_alive_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../constants/urls.dart';
+import '../../widget/common_webview.dart';
+import '../chart/chart_view.dart';
 import '../home/home_view.dart';
-import '../order_flow/order_flow_view.dart';
 
 class MainState {
   late PageController pageController;
@@ -16,10 +18,10 @@ class MainState {
   MainState() {
     pageController = PageController(initialPage: 0);
     tabPage = [
-      keepAlivePage(HomePage()),
+      keepAlivePage(const HomePage()),
       keepAlivePage(MarketPage()),
-      keepAlivePage(OrderFlowPage()),
-      keepAlivePage(ChartPage()),
+      keepAlivePage(CommonWebView(title: null, url: Urls.urlProChart)),
+      keepAlivePage(const ChartPage()),
       keepAlivePage(SettingPage()),
     ];
   }

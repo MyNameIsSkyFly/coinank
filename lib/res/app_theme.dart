@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ank_app/res/styles.dart';
 import 'package:ank_app/util/store.dart';
 import 'package:flutter/material.dart';
@@ -76,7 +78,6 @@ class AppThemes {
   static ThemeData get baseTheme => ThemeData(
         useMaterial3: true,
         fontFamily: 'PingFang SC',
-        platform: TargetPlatform.iOS,
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
         splashFactory: NoSplash.splashFactory,
