@@ -29,7 +29,7 @@
       "scale" : "2x"
     },
     {
-      "filename" : "fanhui-4.png",
+      "filename" : "back.png",
       "idiom" : "universal",
       "scale" : "3x"
     },
@@ -40,7 +40,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "fanhui-3.png",
+      "filename" : "back_dark.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
