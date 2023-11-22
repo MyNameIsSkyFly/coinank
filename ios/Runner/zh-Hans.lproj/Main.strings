@@ -1,0 +1,12 @@
+
+/* Class = "UIButton"; normalTitle = "USD"; ObjectID = "1gm-Ss-RJh"; */
+"1gm-Ss-RJh.normalTitle" = "USD";
+
+/* Class = "UIButton"; normalTitle = "1d"; ObjectID = "RZ0-Wd-hM1"; */
+"RZ0-Wd-hM1.normalTitle" = "1d";
+
+/* Class = "UIButton"; normalTitle = "ALL"; ObjectID = "ZC1-5x-FY3"; */
+"ZC1-5x-FY3.normalTitle" = "ALL";
+
+/* Class = "UILabel"; text = "交易所持仓量(BTC)"; ObjectID = "bEO-wZ-QgA"; */
+"bEO-wZ-QgA.text" = "交易所持仓量(BTC)";

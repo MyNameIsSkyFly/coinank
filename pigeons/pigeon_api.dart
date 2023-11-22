@@ -43,6 +43,9 @@ abstract class MessageHostApi {
 
   ///资金费率
   void toFundRate();
+
+  ///图表模块跳转
+  void toChartWeb(String url, String title);
 }
 
 @FlutterApi()

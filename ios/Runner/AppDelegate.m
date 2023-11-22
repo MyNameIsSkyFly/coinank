@@ -3,6 +3,9 @@
 #import "messages.h"
 #import "BaseNavigationController.h"
 #import "XHLanguageTool.h"
+#import "XHOpenInterestVC.h"
+#import "XHPriceChangesVC2.h"
+#import "XHLongsShortRatioVC.h"
 
 @interface AppDelegate ()<FLTMessageHostApi,UINavigationControllerDelegate>
 @property (strong, nonatomic)UINavigationController *navigationController;
@@ -76,8 +79,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 }
 
 - (void)toLiqMapWithError:(FlutterError * _Nullable __autoreleasing * _Nonnull)error {
-    NSLog(@"toLiqMapWithError");
-    
+    [self pushWebVCWithTitle:MyLocalized(@"s_liqmap") urlStr:WEB_LIQ_MAP_CHAR_URL];
 }
 
 - (void)toLongShortAccountRatioWithError:(FlutterError * _Nullable __autoreleasing * _Nonnull)error {
@@ -85,29 +87,41 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 }
 
 - (void)toOiChangeWithError:(FlutterError * _Nullable __autoreleasing * _Nonnull)error {
-    NSLog(@"toOiChangeWithError");
-    
+    XHPriceChangesVC2 *controller = [XHPriceChangesVC2 new];
+    controller.isPriceCharge = NO;
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)toPriceChangeWithError:(FlutterError * _Nullable __autoreleasing * _Nonnull)error {
-    NSLog(@"toPriceChangeWithError");
-    
+    XHPriceChangesVC2 *controller = [XHPriceChangesVC2 new];
+    controller.isPriceCharge = YES;
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)toTakerBuyLongShortRatioWithError:(FlutterError * _Nullable __autoreleasing * _Nonnull)error {
-    NSLog(@"toTakerBuyLongShortRatioWithError");
-}
+    XHLongsShortRatioVC *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"XHLongsShortRatioVC"];
+    [self.navigationController pushViewController:controller animated:YES];}
 
 - (void)toTotalOiWithError:(FlutterError * _Nullable __autoreleasing * _Nonnull)error {
-    [self pushWebVCWithTitle:MyLocalized(@"s_liqmap") urlStr:WEB_LIQ_MAP_CHAR_URL];
+    XHOpenInterestVC *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"XHOpenInterestVC"];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
--(void) pushWebVCWithTitle:(NSString* )title urlStr:(NSString* )urlStr {
+- (void)toChartWebUrl:(nonnull NSString *)url title:(nonnull NSString *)title error:(FlutterError * _Nullable __autoreleasing * _Nonnull)error { 
+    XHWebViewController *controller = [[XHWebViewController alloc] init];
+    controller.urlStr = [NSString stringWithFormat:@"%@%@",kH5Prefix,url];
+    controller.title = title;
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+
+-(void)pushWebVCWithTitle:(NSString* )title urlStr:(NSString* )urlStr {
     XHWebViewController *controller = [[XHWebViewController alloc] init];
     controller.urlStr = [NSString stringWithFormat:@"%@/%@%@",kH5Prefix,[NSString getLanguageSir],urlStr];
     controller.title = title;
     [self.navigationController pushViewController:controller animated:YES];
 }
+
 
 @end
 

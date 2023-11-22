@@ -16,11 +16,21 @@
 #import "NSString+XH.h"
 #import "MJRefresh.h"
 #import "KeyHeader.h"
+#import "Singleton.h"
 #import "BaseViewController.h"
+#import "BaseAlertController.h"
 #import "XHWebViewController.h"
 #import <AVFoundation/AVFoundation.h>
 #import "NSBundle+XH.h"
 #import "XHWebViewController.h"
 #import "HttpHeader.h"
+#import "XHWebView.h"
+#import "YYKit.h"
+#import "XHHttpTool.h"
+#import "XHHudTool.h"
+#import "XHToast.h"
+#import "AppDelegate.h"
+#import "XHTools.h"
+#import "UIImageView+WebCache.h"
 
 #endif /* PrefixHeader_pch */

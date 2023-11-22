@@ -1,5 +1,5 @@
 # Uncomment this line to define a global platform for your project
-# platform :ios, '11.0'
+ platform :ios, '13.0'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
@@ -33,7 +33,13 @@ target 'Runner' do
   pod 'JHUD'#hud
   pod 'FDFullscreenPopGesture'#滑动返回
   pod 'Masonry'
-  
+  pod 'YYKit'
+  pod 'AFNetworking'
+  pod 'MBProgressHUD'
+  pod 'WHToast'
+  pod 'JDStatusBarNotification' #顶部提示框
+  pod 'SDWebImage'
+
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
   target 'RunnerTests' do
     inherit! :search_paths

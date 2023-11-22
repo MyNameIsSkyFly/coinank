@@ -118,7 +118,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               const Gap(10),
 
               ///灰度数据
-              _CheckDetailRow(title: S.of(context).s_grayscale_data)
+              _CheckDetailRow(
+                title: S.of(context).s_grayscale_data,
+                onTap: () => logic.hostApi.toGrayScaleData(),
+              )
             ],
           ),
         ),
@@ -441,6 +444,7 @@ class _HotMarket extends StatelessWidget {
             children: [
               Expanded(
                 child: _OutlinedContainer(
+                  onTap: () => logic.toMarketModule(2),
                   child: Column(
                     children: [
                       Row(
@@ -478,6 +482,7 @@ class _HotMarket extends StatelessWidget {
               const Gap(9),
               Expanded(
                 child: _OutlinedContainer(
+                  onTap: () => logic.toMarketModule(3),
                   child: Column(
                     children: [
                       Row(
@@ -817,6 +822,7 @@ class _FirstLineItem extends StatelessWidget {
   final String value;
   final double? rate;
   final VoidCallback? onTap;
+
   @override
   Widget build(BuildContext context) {
     return Expanded(

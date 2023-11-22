@@ -26,7 +26,7 @@ class MainPage extends StatelessWidget {
         itemCount: state.tabPage.length,
         itemBuilder: (context, index) => state.tabPage[index],
       ),
-      drawer: const ChartDrawerPage(),
+      drawer:  ChartDrawerPage(),
       drawerEnableOpenDragGesture: false,
       bottomNavigationBar: Obx(() {
         return MyBottomBar(

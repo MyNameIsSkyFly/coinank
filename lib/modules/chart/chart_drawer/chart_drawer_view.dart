@@ -8,12 +8,13 @@ import 'dart:math' as math;
 import 'chart_drawer_logic.dart';
 
 class ChartDrawerPage extends StatelessWidget {
-  const ChartDrawerPage({super.key});
+  ChartDrawerPage({super.key});
+
+  final logic = Get.put(ChartDrawerLogic());
+  final state = Get.find<ChartDrawerLogic>().state;
 
   @override
   Widget build(BuildContext context) {
-    final logic = Get.put(ChartDrawerLogic());
-    final state = Get.find<ChartDrawerLogic>().state;
     return Drawer(
       elevation: 0,
       backgroundColor: Theme.of(context).colorScheme.tertiary,
@@ -95,13 +96,16 @@ class ChartDrawerPage extends StatelessWidget {
                         itemBuilder: (cnt, index) {
                           Subs sub = item.subs![index];
                           return sub.subs == null
-                              ? Container(
-                                  height: 48,
-                                  padding: const EdgeInsets.only(left: 45),
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    sub.title ?? '',
-                                    style: Styles.tsSub_14(context),
+                              ? InkWell(
+                                  onTap: () => logic.tapItem(sub),
+                                  child: Container(
+                                    height: 48,
+                                    padding: const EdgeInsets.only(left: 45),
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      sub.title ?? '',
+                                      style: Styles.tsSub_14(context),
+                                    ),
                                   ),
                                 )
                               : _lastItem(sub, context);
@@ -161,11 +165,14 @@ class ChartDrawerPage extends StatelessWidget {
           itemExtent: 48,
           itemBuilder: (cnt, index) {
             Subs last = sub.subs![index];
-            return ListTile(
-              contentPadding: const EdgeInsets.only(left: 30),
-              title: Text(
-                last.title ?? '',
-                style: Styles.tsSub_12(context),
+            return InkWell(
+              onTap: () => logic.tapItem(last),
+              child: ListTile(
+                contentPadding: const EdgeInsets.only(left: 30),
+                title: Text(
+                  last.title ?? '',
+                  style: Styles.tsSub_12(context),
+                ),
               ),
             );
           },
