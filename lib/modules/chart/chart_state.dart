@@ -1,5 +1,4 @@
 import 'package:ank_app/entity/chart_entity.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ChartState {

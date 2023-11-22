@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 
 import 'funding_rate_state.dart';
 
-class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin{
+class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin {
   final FundingRateState state = FundingRateState();
 
   void tapHide(bool v) {
@@ -56,7 +56,7 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin{
       if (time == result) return;
       state.time.value = result as String;
       state.timeType = timeMap[state.time.value] as String;
-      startTimer(showLoading: true);
+      onRefresh(showLoading: true);
     }
   }
 
@@ -156,7 +156,7 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin{
     }
   }
 
-  Future<void> _onRefresh({bool showLoading = false}) async {
+  Future<void> onRefresh({bool showLoading = false}) async {
     if (showLoading) {
       Loading.show();
     }
@@ -171,23 +171,15 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin{
     }
   }
 
-  startTimer({bool showLoading = false}) async {
-    cancelTimer();
-    await _onRefresh(showLoading: showLoading);
+  _startTimer() async {
     state.pollingTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
-      timer.cancel();
       if (Get.find<MainLogic>().state.selectedIndex.value == 1 &&
           !state.isRefresh &&
           Get.find<MarketLogic>().state.tabController?.index == 3 &&
           state.appVisible) {
-        startTimer(showLoading: false);
+        onRefresh(showLoading: false);
       }
     });
-  }
-
-  cancelTimer() {
-    state.pollingTimer?.cancel();
-    state.pollingTimer = null;
   }
 
   @override
@@ -196,15 +188,16 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin{
     WidgetsBinding.instance.addObserver(this);
     state.titleController.addListener(_updateContent);
     state.contentController.addListener(_updateTitle);
+    _startTimer();
   }
-
 
   @override
   void onClose() {
     state.titleController.removeListener(_updateContent);
     state.contentController.removeListener(_updateTitle);
     WidgetsBinding.instance.removeObserver(this);
-    cancelTimer();
+    state.pollingTimer?.cancel();
+    state.pollingTimer = null;
     super.onClose();
   }
 
@@ -221,15 +214,11 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin{
   void onPaused() {
     //应用程序不可见，后台
     state.appVisible = false;
-    cancelTimer();
   }
 
   @override
   void onResumed() {
     //应用程序可见，前台
     state.appVisible = true;
-    if (!state.appVisible) {
-      startTimer();
-    }
   }
 }

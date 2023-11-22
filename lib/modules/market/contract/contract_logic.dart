@@ -59,7 +59,6 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
     if (state.sortBy == sortBy && state.sortType == sortType) return;
     state.sortType = sortType;
     state.sortBy = sortBy;
-    startTimer();
   }
 
   void tapItem(MarkerTickerEntity item) {
@@ -84,35 +83,29 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
     StoreLogic.to.setContractData(data?.list ?? []);
   }
 
-  startTimer() async {
-    cancelTimer();
-    await onRefresh();
-    state.pollingTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
-      timer.cancel();
+  _startTimer() async {
+    state.pollingTimer = Timer.periodic(const Duration(seconds: 5), (timer) async{
       if (Get.find<MainLogic>().state.selectedIndex.value == 1 &&
           !state.isRefresh &&
           Get.find<MarketLogic>().state.tabController?.index == 0 &&
           state.appVisible) {
-        startTimer();
+        await onRefresh();
       }
     });
-  }
-
-  cancelTimer() {
-    state.pollingTimer?.cancel();
-    state.pollingTimer = null;
   }
 
   @override
   void onInit() {
     super.onInit();
     WidgetsBinding.instance.addObserver(this);
+    _startTimer();
   }
 
   @override
   void onClose() {
     WidgetsBinding.instance.removeObserver(this);
-    cancelTimer();
+    state.pollingTimer?.cancel();
+    state.pollingTimer = null;
     super.onClose();
   }
 
@@ -129,16 +122,12 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
   void onPaused() {
     //应用程序不可见，后台
     state.appVisible = false;
-    cancelTimer();
   }
 
   @override
   void onResumed() {
     //应用程序可见，前台
     state.appVisible = true;
-    if (!state.appVisible) {
-      startTimer();
-    }
   }
 }
 

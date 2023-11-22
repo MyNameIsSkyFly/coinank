@@ -100,7 +100,7 @@ class ContractPage extends StatelessWidget {
           Expanded(
             child: EasyRefresh(
               refreshOnStart: true,
-              onRefresh: logic.startTimer,
+              onRefresh: logic.onRefresh,
               child: GetBuilder<ContractLogic>(
                   id: 'data',
                   builder: (_) {

@@ -17,7 +17,7 @@ class ContractMarketLogic extends FullLifeCycleController
     if (type == state.type) return;
     state.type = type;
     update(['header']);
-    await startTimer();
+    await onRefresh();
   }
 
   toSearch() async {
@@ -32,7 +32,7 @@ class ContractMarketLogic extends FullLifeCycleController
         alignment: 0.5,
         duration: const Duration(milliseconds: 500),
       );
-      startTimer();
+      await onRefresh();
     }
   }
 
@@ -80,17 +80,17 @@ class ContractMarketLogic extends FullLifeCycleController
     if (state.sortBy == sortBy && state.sortType == sortType) return;
     state.sortType = sortType;
     state.sortBy = sortBy;
-    startTimer();
+    onRefresh();
   }
 
   Future<void> getAllData() async {
     if (state.isLoading) {
-      await Future.wait([getHeaderData(), startTimer()]).then((value) {
+      await Future.wait([getHeaderData(), _getContentData()]).then((value) {
         state.isLoading = false;
         update();
       });
     } else {
-      startTimer();
+      await onRefresh();
     }
   }
 
@@ -99,7 +99,7 @@ class ContractMarketLogic extends FullLifeCycleController
     state.headerTitles = data;
   }
 
-  Future<void> getContentData() async {
+  Future<void> _getContentData() async {
     state.isRefresh = true;
     final data = await Apis().getContractMarketData(
         baseCoin: state.type, sortType: state.sortType, sortBy: state.sortBy);
@@ -108,27 +108,20 @@ class ContractMarketLogic extends FullLifeCycleController
   }
 
   Future<void> onRefresh() async {
-    await getContentData();
+    await _getContentData();
     update(['content']);
   }
 
-  Future<void> startTimer() async {
-    cancelTimer();
-    await onRefresh();
-    state.pollingTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
-      timer.cancel();
+  Future<void> _startTimer() async {
+    state.pollingTimer =
+        Timer.periodic(const Duration(seconds: 5), (timer) async {
       if (Get.find<MainLogic>().state.selectedIndex.value == 1 &&
           !state.isRefresh &&
           Get.find<MarketLogic>().state.tabController?.index == 1 &&
           state.appVisible) {
-        startTimer();
+        await onRefresh();
       }
     });
-  }
-
-  cancelTimer() {
-    state.pollingTimer?.cancel();
-    state.pollingTimer = null;
   }
 
   @override
@@ -141,12 +134,14 @@ class ContractMarketLogic extends FullLifeCycleController
   void onInit() {
     super.onInit();
     WidgetsBinding.instance.addObserver(this);
+    _startTimer();
   }
 
   @override
   void onClose() {
     WidgetsBinding.instance.removeObserver(this);
-    cancelTimer();
+    state.pollingTimer?.cancel();
+    state.pollingTimer = null;
     super.onClose();
   }
 
@@ -163,15 +158,11 @@ class ContractMarketLogic extends FullLifeCycleController
   void onPaused() {
     //应用程序不可见，后台
     state.appVisible = false;
-    cancelTimer();
   }
 
   @override
   void onResumed() {
     //应用程序可见，前台
     state.appVisible = true;
-    if (!state.appVisible) {
-      startTimer();
-    }
   }
 }

@@ -135,7 +135,7 @@ class FundingRatePage extends StatelessWidget {
         ),
         Expanded(
           child: EasyRefresh(
-            onRefresh: logic.startTimer,
+            onRefresh: () => logic.onRefresh(showLoading: false),
             refreshOnStart: true,
             child: Obx(() {
               return SingleChildScrollView(
@@ -143,7 +143,7 @@ class FundingRatePage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
                           padding: const EdgeInsets.only(left: 15),

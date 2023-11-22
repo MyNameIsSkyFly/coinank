@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 
 import '../../constants/urls.dart';
 import '../../widget/common_webview.dart';
-import '../chart/chart_view.dart';
 import '../home/home_view.dart';
 
 class MainState {
