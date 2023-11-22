@@ -1,9 +1,5 @@
+
 import 'package:ank_app/res/export.dart';
-import 'package:ank_app/modules/market/contract/contract_view.dart';
-import 'package:ank_app/modules/market/contract_market/contract_market_view.dart';
-import 'package:ank_app/modules/market/funding_rate/funding_rate_view.dart';
-import 'package:ank_app/modules/market/liquidation_data/liquidation_data_view.dart';
-import 'package:ank_app/modules/market/protfolio/protfolio_view.dart';
 import 'package:ank_app/widget/custom_underliner_tab_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -41,13 +37,7 @@ class MarketPage extends StatelessWidget {
       ),
       body: TabBarView(
         controller: state.tabController,
-        children: [
-          keepAlivePage(const ContractPage()),
-          keepAlivePage(const ContractMarketPage()),
-          keepAlivePage(LiquidationDataPage()),
-          keepAlivePage(const FundingRatePage()),
-          keepAlivePage(ProtfolioPage()),
-        ],
+        children: state.tabPage,
       ),
     );
   }

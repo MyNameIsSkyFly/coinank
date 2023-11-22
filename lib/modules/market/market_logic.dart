@@ -7,6 +7,7 @@ class MarketLogic extends GetxController
     with GetSingleTickerProviderStateMixin {
   final MarketState state = MarketState();
 
+
   @override
   void onInit() {
     super.onInit();

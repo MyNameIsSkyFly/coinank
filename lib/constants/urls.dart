@@ -15,4 +15,7 @@ class Urls {
   static String get urlDisclaimer => '$h5Prefix/${webLanguage}disclaimer';
 
   static String get urlAbout => '$h5Prefix/${webLanguage}about';
+  //爆仓数据
+  static String get urlLiquidation => 'https://$uniappDomain/index.html#/pages/liquidation/index';
+
 }
