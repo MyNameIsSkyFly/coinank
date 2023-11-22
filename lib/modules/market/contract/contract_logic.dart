@@ -3,6 +3,7 @@ import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/modules/main/main_logic.dart';
 import 'package:ank_app/modules/market/market_logic.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:ank_app/util/store.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -80,6 +81,7 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
     state.data = data;
     update(['data']);
     state.isRefresh = false;
+    StoreLogic.to.setContractData(data?.list ?? []);
   }
 
   startTimer() async {

@@ -19,8 +19,7 @@ class ContractPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           InkWell(
-            onTap: () => Get.toNamed(RouteConfig.contractSearch,
-                arguments: state.data?.list ?? []),
+            onTap: () => Get.toNamed(RouteConfig.contractSearch),
             child: Container(
               height: 32,
               padding: const EdgeInsets.symmetric(horizontal: 15),

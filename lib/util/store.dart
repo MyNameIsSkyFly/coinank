@@ -1,3 +1,4 @@
+import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -57,6 +58,12 @@ class StoreLogic extends GetxController {
   bool get isUpGreen {
     var isGreen = _SpUtil()._getBool(_SpKeys.upGreen, defaultValue: true);
     return isGreen;
+  }
+
+  RxList<MarkerTickerEntity> contractData = RxList.empty();
+
+  void setContractData(List<MarkerTickerEntity> v) {
+    contractData.value = v;
   }
 }
 

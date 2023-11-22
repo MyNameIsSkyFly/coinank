@@ -1,4 +1,5 @@
 import 'package:ank_app/entity/futures_big_data_entity.dart';
+import 'package:ank_app/util/store.dart';
 import 'package:get/get.dart';
 
 class ContractSearchState {
@@ -6,7 +7,7 @@ class ContractSearchState {
   late List<MarkerTickerEntity> originalList;
 
   ContractSearchState() {
-    originalList = Get.arguments as List<MarkerTickerEntity>;
+    originalList = StoreLogic.to.contractData.toList();
     list.value = List.from(originalList);
   }
 }

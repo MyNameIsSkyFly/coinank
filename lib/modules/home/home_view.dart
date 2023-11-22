@@ -1,15 +1,9 @@
-import 'package:ank_app/generated/assets.dart';
-import 'package:ank_app/res/styles.dart';
-import 'package:ank_app/util/app_util.dart';
-import 'package:ank_app/util/image_util.dart';
+import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/rate_with_sign.dart';
-import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-import '../../generated/l10n.dart';
 import '../../widget/rate_with_arrow.dart';
 import 'home_logic.dart';
 
@@ -60,7 +54,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         actions: [
           IconButton(
               visualDensity: VisualDensity.compact,
-              onPressed: () {},
+              onPressed: () => Get.toNamed(RouteConfig.contractSearch),
               icon: Image.asset(
                 Assets.imagesIcSearch,
                 height: 20,
