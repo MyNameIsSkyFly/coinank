@@ -7,6 +7,7 @@ import 'package:ank_app/entity/chart_left_entity.dart';
 import 'package:ank_app/entity/contract_market_entity.dart';
 import 'package:ank_app/entity/marker_funding_rate_entity.dart';
 import 'package:ank_app/entity/test_entity.dart';
+import 'package:ank_app/entity/user_info_entity.dart';
 import 'package:ank_app/http/base_interceptor.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
@@ -76,4 +77,22 @@ abstract class Apis {
   @GET('/api/app/indicationNavs')
   Future<List<ChartLeftEntity>?> getChartLeftData(
       {@Query('locale') required String locale});
+
+  @POST('/api/User/login')
+  @MultiPart()
+  Future<UserInfoEntity?> login(@Part(name: 'userName') String userName,
+      @Part(name: 'passWord') String passWord);
+
+  @POST('/api/User/register')
+  @MultiPart()
+  Future register(
+      @Part(name: 'userName') String userName,
+      @Part(name: 'passWord') String passWord,
+      @Part(name: 'code') String code,
+      @Part(name: 'type') String type);
+
+  @POST('/api/User/sendVerifyCode')
+  @MultiPart()
+  Future sendCode(
+      @Part(name: 'userName') String userName, @Part(name: 'type') String type);
 }

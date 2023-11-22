@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:ank_app/entity/futures_big_data_entity.dart';
+import 'package:ank_app/entity/user_info_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -6,14 +9,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 class StoreLogic extends GetxController {
   static StoreLogic get to => Get.find();
 
+  static bool isLogin = false;
   static Future<void> init() async {
     await _SpUtil().init();
+    isLogin = StoreLogic.to.loginUserInfo?.token != null &&
+        StoreLogic.to.loginUserInfo!.token!.isNotEmpty;
   }
 
   Future<bool> saveLocale(Locale? locale) {
     final language = switch (locale) {
       Locale(languageCode: 'en') => 0,
-      Locale(languageCode: 'zh', scriptCode: 'Hans') => 1,
       Locale(languageCode: 'zh', scriptCode: 'Hant') => 2,
       Locale(languageCode: 'ja') => 3,
       Locale(languageCode: 'ko') => 4,
@@ -65,6 +70,47 @@ class StoreLogic extends GetxController {
   void setContractData(List<MarkerTickerEntity> v) {
     contractData.value = v;
   }
+
+  Future<bool> saveLoginPassword(String password) {
+    return _SpUtil()._saveString(_SpKeys.loginPassword, password);
+  }
+
+  String get loginPassword {
+    return _SpUtil()._getString(_SpKeys.loginPassword, defaultValue: '');
+  }
+
+  Future<bool> saveLoginUsername(String username) {
+    return _SpUtil()._saveString(_SpKeys.loginUsername, username);
+  }
+
+  String get loginUsername {
+    return _SpUtil()._getString(_SpKeys.loginUsername, defaultValue: '');
+  }
+
+  Future<bool> saveLoginUserInfo(UserInfoEntity? userInfo) {
+    return _SpUtil()._saveString(_SpKeys.loginUserInfo,
+        userInfo == null ? '' : jsonEncode(userInfo.toJson()));
+  }
+
+  UserInfoEntity? get loginUserInfo {
+    var userInfo =
+        _SpUtil()._getString(_SpKeys.loginUserInfo, defaultValue: '');
+    if (userInfo.isEmpty) return null;
+    return UserInfoEntity.fromJson(
+        jsonDecode(userInfo) as Map<String, dynamic>);
+  }
+
+  Future<bool> saveLastSendCodeTime() {
+    final time = DateTime.now();
+    return _SpUtil()
+        ._saveInt(_SpKeys.lastSendCodeTime, time.millisecondsSinceEpoch);
+  }
+
+  DateTime get lastSendCodeTime {
+    final time = _SpUtil()._getInt(_SpKeys.lastSendCodeTime, defaultValue: 0);
+    if (time == 0) return DateTime.fromMillisecondsSinceEpoch(0);
+    return DateTime.fromMillisecondsSinceEpoch(time);
+  }
 }
 
 class _SpKeys {
@@ -77,6 +123,10 @@ class _SpKeys {
 
   ///是否绿色为涨
   static const upGreen = 'upGreen';
+  static const loginPassword = 'loginPassword';
+  static const loginUsername = 'loginUsername';
+  static const loginUserInfo = 'loginUserInfo';
+  static const lastSendCodeTime = 'lastSendCodeTime';
 }
 
 class _SpUtil {

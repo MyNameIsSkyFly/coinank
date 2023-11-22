@@ -185,4 +185,18 @@ class AppUtil {
       jumpUrl: '${data['data']['ank_url']}'
     );
   }
+
+  static bool isEmailValid(String input) {
+    final regex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    return regex.hasMatch(input);
+  }
+
+  static bool isPwdValid(String input) {
+    final regex = RegExp(r'[^\u4E00-\u9FA5]{6,20}');
+    return regex.hasMatch(input);
+  }
+
+  static String encodeBase64(String data) => base64.encode(utf8.encode(data));
+
+  static String decodeBase64(String data) => utf8.decode(base64.decode(data));
 }

@@ -1,4 +1,5 @@
 import 'package:ank_app/config/application.dart';
+import 'package:ank_app/modules/login/login_view.dart';
 import 'package:ank_app/res/app_theme.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/util/store.dart';
@@ -47,6 +48,7 @@ class _MyAppState extends State<MyApp> {
           return const Locale('en');
         }
       },
+      defaultTransition: Transition.cupertino,
       locale: StoreLogic.to.locale,
       initialRoute: RouteConfig.main,
       getPages: RouteConfig.getPages,

@@ -268,5 +268,7 @@
   "viewDetail": "查看详情",
   "hotMarket": "热门行情",
   "oiDistribution": "持仓分布",
-  "languageName": "한국인"
+  "languageName": "한국인",
+  "welcomeBack": "欢迎回来！",
+  "email": "电子邮箱"
 }

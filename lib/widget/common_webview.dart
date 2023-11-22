@@ -20,7 +20,12 @@ class CommonWebView extends StatefulWidget {
             ? 'dark'
             : 'light'
       ),
-      ('COINSOHO_KEY', ' '),
+      (
+        'COINSOHO_KEY',
+        StoreLogic.to.loginUserInfo == null
+            ? ' '
+            : (StoreLogic.to.loginUserInfo!.token ?? ' ')
+      ),
       ('green-up', StoreLogic.to.isUpGreen ? 'true' : 'false'),
     ]);
     await _syncCookie(domain: Urls.strDomain, cookies: cookieList);

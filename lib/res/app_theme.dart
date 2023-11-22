@@ -1,4 +1,3 @@
-
 import 'package:ank_app/res/styles.dart';
 import 'package:ank_app/util/store.dart';
 import 'package:flutter/material.dart';
@@ -35,8 +34,15 @@ class AppThemes {
           bodyMedium: TextStyle(color: Styles.cTextBlack, height: 1.4),
           bodySmall: TextStyle(color: Color(0xff616E85), height: 1.4),
         ),
-        inputDecorationTheme: const InputDecorationTheme(
-          fillColor: Color(0xFFEFF2F5),
+        inputDecorationTheme: InputDecorationTheme(
+          fillColor: const Color(0xFFEFF2F5),
+          border: const OutlineInputBorder(),
+          enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: Color(0xFFEFF2F5))),
+          focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: Styles.cMain)),
         ),
       );
 
@@ -69,8 +75,15 @@ class AppThemes {
           bodyMedium: TextStyle(color: Colors.white, height: 1.4),
           bodySmall: TextStyle(color: Color(0xffA1A7BB), height: 1.4),
         ),
-        inputDecorationTheme: const InputDecorationTheme(
-          fillColor: Color(0xFF323546),
+        inputDecorationTheme: InputDecorationTheme(
+          fillColor: const Color(0xFF323546),
+          border: const OutlineInputBorder(),
+          enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: Color(0xFF252733))),
+          focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: Styles.cMain)),
         ),
       );
 
@@ -83,6 +96,13 @@ class AppThemes {
         extensions: StoreLogic.to.isUpGreen
             ? [StockColors.upGreen]
             : [StockColors.upRed],
+        filledButtonTheme: FilledButtonThemeData(
+            style: FilledButton.styleFrom(
+                minimumSize: const Size.fromHeight(44),
+                foregroundColor: Colors.white,
+                backgroundColor: Styles.cMain,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30)))),
         bottomSheetTheme: const BottomSheetThemeData(
           backgroundColor: Colors.transparent,
           modalBackgroundColor: Colors.transparent,

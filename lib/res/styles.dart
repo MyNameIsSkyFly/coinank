@@ -16,6 +16,12 @@ class Styles {
 
   static Color cDown(BuildContext context) =>
       Theme.of(context).extension<StockColors>()!.down!;
+
+  static Color cBody(BuildContext context) =>
+      Theme.of(context).textTheme.bodyMedium!.color!;
+
+  static Color cSub(BuildContext context) =>
+      Theme.of(context).textTheme.bodySmall!.color!;
   static final fontMedium =
       Platform.isAndroid ? FontWeight.w600 : FontWeight.w500;
 

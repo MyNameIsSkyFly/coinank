@@ -1,6 +1,6 @@
 import 'package:ank_app/constants/urls.dart';
 import 'package:ank_app/res/export.dart';
-import 'package:ank_app/util/app_nav.dart';
+import 'package:ank_app/route/app_nav.dart';
 import 'package:ank_app/util/app_util.dart';
 import 'package:ank_app/util/store.dart';
 import 'package:collection/collection.dart';
@@ -12,7 +12,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'setting_logic.dart';
 
 class SettingPage extends StatefulWidget {
-  SettingPage({super.key});
+  const SettingPage({super.key});
 
   @override
   State<SettingPage> createState() => _SettingPageState();
@@ -28,113 +28,138 @@ class _SettingPageState extends State<SettingPage> {
     return Scaffold(
       appBar: AppTitleBar(title: S.of(context).s_setting),
       backgroundColor: Colors.transparent,
-      body: ListView(
+      body: Column(
         children: [
-          const Gap(10),
-          const _ThemeChangeLine(),
-          _SettingLine(
-              onTap: () {
-                showCupertinoModalPopup(
-                    context: context,
-                    builder: (context) => const _KLineColorSelector());
-              },
-              title: S.of(context).s_klinecolor,
-              value: StoreLogic.to.isUpGreen
-                  ? S.of(context).s_green_up
-                  : S.of(context).s_red_up),
-          _SettingLine(
-              onTap: () {
-                showCupertinoModalPopup(
-                    context: context,
-                    builder: (context) => const _LanguageSelector());
-              },
-              title: S.of(context).s_language,
-              value: S.of(context).languageName),
-          _SettingLine(
-            onTap: () {
-              AppNav.openWebUrl(
-                url: Urls.urlPrivacy,
-                title: S.of(context).privacyPolicy,
-              );
-            },
-            title: S.of(context).s_conditions_of_privacy,
-          ),
-          _SettingLine(
-            onTap: () {
-              AppNav.openWebUrl(
-                url: Urls.urlDisclaimer,
-                title: S.of(context).s_disclaimer,
-              );
-            },
-            title: S.of(context).s_disclaimer,
-          ),
-          _SettingLine(
-            onTap: () {
-              AppNav.openWebUrl(
-                url: Urls.urlAbout,
-                title: S.of(context).s_about_us,
-              );
-            },
-            title: S.of(context).s_about_us,
-          ),
-          Obx(() {
-            Widget adaptiveAction(
-                {required VoidCallback onPressed, required Widget child}) {
-              final ThemeData theme = Theme.of(context);
-              switch (theme.platform) {
-                case TargetPlatform.android:
-                case TargetPlatform.fuchsia:
-                case TargetPlatform.linux:
-                case TargetPlatform.windows:
-                  return TextButton(onPressed: onPressed, child: child);
-                case TargetPlatform.iOS:
-                case TargetPlatform.macOS:
-                  return CupertinoDialogAction(
-                      onPressed: onPressed, child: child);
-              }
-            }
-
-            return _SettingLine(
-                onTap: () async {
-                  var result =
-                      await Loading.wrap(() async => AppUtil.needUpdate());
-                  if (result.isNeed) {
-                    if (!mounted) return;
-                    showAdaptiveDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog.adaptive(
-                          title: Text(
-                            S.of(context).s_is_upgrade,
-                            style: TextStyle(
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium!
-                                    .color),
-                          ),
-                          backgroundColor: Theme.of(context).cardColor,
-                          actions: [
-                            adaptiveAction(
-                                child: Text(S.of(context).s_cancel),
-                                onPressed: () {
-                                  Get.back();
-                                }),
-                            adaptiveAction(
-                                child: Text(S.of(context).s_ok),
-                                onPressed: () async {
-                                  await launchUrl(Uri.parse(result.jumpUrl),
-                                      mode: LaunchMode.externalApplication);
-                                  Get.back();
-                                }),
-                          ],
-                        );
-                      },
+          Expanded(
+            child: ListView(
+              children: [
+                const Gap(10),
+                const _ThemeChangeLine(),
+                _SettingLine(
+                    onTap: () {
+                      showCupertinoModalPopup(
+                          context: context,
+                          builder: (context) => const _KLineColorSelector());
+                    },
+                    title: S.of(context).s_klinecolor,
+                    value: StoreLogic.to.isUpGreen
+                        ? S.of(context).s_green_up
+                        : S.of(context).s_red_up),
+                _SettingLine(
+                    onTap: () {
+                      showCupertinoModalPopup(
+                          context: context,
+                          builder: (context) => const _LanguageSelector());
+                    },
+                    title: S.of(context).s_language,
+                    value: S.of(context).languageName),
+                _SettingLine(
+                  onTap: () {
+                    AppNav.openWebUrl(
+                      url: Urls.urlPrivacy,
+                      title: S.of(context).privacyPolicy,
                     );
+                  },
+                  title: S.of(context).s_conditions_of_privacy,
+                ),
+                _SettingLine(
+                  onTap: () {
+                    AppNav.openWebUrl(
+                      url: Urls.urlDisclaimer,
+                      title: S.of(context).s_disclaimer,
+                    );
+                  },
+                  title: S.of(context).s_disclaimer,
+                ),
+                _SettingLine(
+                  onTap: () {
+                    AppNav.openWebUrl(
+                      url: Urls.urlAbout,
+                      title: S.of(context).s_about_us,
+                    );
+                  },
+                  title: S.of(context).s_about_us,
+                ),
+                Obx(() {
+                  Widget adaptiveAction(
+                      {required VoidCallback onPressed,
+                      required Widget child}) {
+                    final ThemeData theme = Theme.of(context);
+                    switch (theme.platform) {
+                      case TargetPlatform.android:
+                      case TargetPlatform.fuchsia:
+                      case TargetPlatform.linux:
+                      case TargetPlatform.windows:
+                        return TextButton(onPressed: onPressed, child: child);
+                      case TargetPlatform.iOS:
+                      case TargetPlatform.macOS:
+                        return CupertinoDialogAction(
+                            onPressed: onPressed, child: child);
+                    }
                   }
-                },
-                title: S.of(context).s_check_update,
-                value: logic.versionName.value);
-          }),
+
+                  return _SettingLine(
+                      onTap: () async {
+                        var result = await Loading.wrap(
+                            () async => AppUtil.needUpdate());
+                        if (result.isNeed) {
+                          if (!mounted) return;
+                          showAdaptiveDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog.adaptive(
+                                title: Text(
+                                  S.of(context).s_is_upgrade,
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .color),
+                                ),
+                                backgroundColor: Theme.of(context).cardColor,
+                                actions: [
+                                  adaptiveAction(
+                                      child: Text(S.of(context).s_cancel),
+                                      onPressed: () {
+                                        Get.back();
+                                      }),
+                                  adaptiveAction(
+                                      child: Text(S.of(context).s_ok),
+                                      onPressed: () async {
+                                        await launchUrl(
+                                            Uri.parse(result.jumpUrl),
+                                            mode:
+                                                LaunchMode.externalApplication);
+                                        Get.back();
+                                      }),
+                                ],
+                              );
+                            },
+                          );
+                        }
+                      },
+                      title: S.of(context).s_check_update,
+                      value: logic.versionName.value);
+                }),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: StoreLogic.isLogin
+                ? FilledButton(
+                    style: FilledButton.styleFrom(
+                        backgroundColor: Theme.of(context).dividerTheme.color),
+                    onPressed: () {},
+                    child: Text(
+                      S.of(context).s_exit_login,
+                      style: Styles.tsBody_16(context),
+                    ))
+                : FilledButton(
+                    onPressed: AppNav.toLogin,
+                    child: Text(S.of(context).s_login)),
+          ),
+          const Gap(44),
         ],
       ),
     );

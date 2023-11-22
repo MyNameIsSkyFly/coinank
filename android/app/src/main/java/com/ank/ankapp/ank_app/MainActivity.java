@@ -182,5 +182,15 @@ public class MainActivity extends FlutterActivity {
         public void toFundRate() {
 
         }
+
+        @Override
+        public void toChartWeb(@NonNull String url, @NonNull String title) {
+            Intent i = new Intent();
+            i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            i.setClass(getActivity(), CommonWebActivity.class);
+            i.putExtra(Config.TYPE_URL, Config.h5Prefix + url);
+            i.putExtra(Config.TYPE_TITLE, getResources().getString(R.string.s_chart));
+            Global.showActivity(getActivity(), i);
+        }
     }
 }
