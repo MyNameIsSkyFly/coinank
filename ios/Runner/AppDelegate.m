@@ -1,6 +1,5 @@
 #import "AppDelegate.h"
 #import "GeneratedPluginRegistrant.h"
-#import "messages.h"
 #import "BaseNavigationController.h"
 #import "XHLanguageTool.h"
 #import "XHOpenInterestVC.h"
@@ -27,6 +26,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.navigationController.delegate = self;
     [self.window makeKeyWindow];
     SetUpFLTMessageHostApi(controller.binaryMessenger, self);
+    self.flutterApi = [[FLTMessageFlutterApi alloc] initWithBinaryMessenger:controller.binaryMessenger];
     return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 

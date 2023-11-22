@@ -260,13 +260,12 @@
     NSLog(@"选中");
     
     XHContractModel *model = self.listArray[indexPath.row];
-//    XHKLineViewController *kLineVC = [[UIStoryboard storyboardWithName:@"Main" bundle:nil]instantiateViewControllerWithIdentifier:@"XHKLineViewController"];
-//    kLineVC.chooseModel = model;
-//    kLineVC.hidesBottomBarWhenPushed = YES;
-//    [self.navigationController pushViewController:kLineVC animated:YES];
-    
-    [kNotificationCenter postNotificationName:@"kPushKlineWebVCNotice" object:nil userInfo:@{@"exchangeName":model.exchangeName,@"symbol":model.symbol}];
-    self.tabBarController.selectedIndex = 2;
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate.flutterApi toKLineExchangeName:model.exchangeName symbol:model.symbol completion:^(FlutterError * error) {
+        NSLog(@"flutter - toKLine");
+    }];
+    [self.navigationController popViewControllerAnimated:false];
+
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

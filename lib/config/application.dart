@@ -1,3 +1,4 @@
+import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/util/store.dart';
 
 class Application {
@@ -11,5 +12,13 @@ class Application {
 
   Future<void> init() async {
     await StoreLogic.init();
+    MessageFlutterApi.setup(FlutterApiManager());
+  }
+}
+
+class FlutterApiManager extends MessageFlutterApi {
+  @override
+  void toKLine(String exchangeName, String symbol) {
+    print('exchangeName:$exchangeName--$symbol');
   }
 }

@@ -50,5 +50,6 @@ abstract class MessageHostApi {
 
 @FlutterApi()
 abstract class MessageFlutterApi {
-  String flutterMethodExample(String? example);
+
+  void toKLine(String exchangeName, String symbol);
 }
