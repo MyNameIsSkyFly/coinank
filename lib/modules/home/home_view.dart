@@ -1,4 +1,7 @@
+import 'package:ank_app/constants/urls.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:ank_app/route/app_nav.dart';
+import 'package:ank_app/util/store.dart';
 import 'package:ank_app/widget/rate_with_sign.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +66,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               )),
           IconButton(
               visualDensity: VisualDensity.compact,
-              onPressed: () {},
+              onPressed: () => StoreLogic.isLogin
+                  ? AppNav.openWebUrl(
+                      title: S.current.s_add_alert, url: Urls.urlNotification)
+                  : AppNav.toLogin(),
               icon: Stack(
                 children: [
                   Image.asset(
