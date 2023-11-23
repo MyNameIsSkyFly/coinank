@@ -5,5 +5,5 @@ flutter pub run pigeon \
   --objc_header_out ios/Classes/messages.h \
   --objc_source_out ios/Classes/messages.m \
   --objc_prefix FLT \
-  --java_out android/app/src/main/java/com/ank/ankapp/ank_app/pigeon_plugin/Messages.java \
+  --java_out android/app/src/main/java/com/ank/ankapp/pigeon_plugin/Messages.java \
   --java_package "com.ank.ankapp.ank_app.pigeon_plugin"
