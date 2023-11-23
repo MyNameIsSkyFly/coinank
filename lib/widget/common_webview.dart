@@ -13,10 +13,14 @@ import '../entity/event/logged_event.dart';
 import '../util/store.dart';
 
 class CommonWebView extends StatefulWidget {
-  const CommonWebView({super.key, this.title, required this.url});
+  const CommonWebView(
+      {super.key, this.title, required this.url, this.urlGetter});
+
+  final String? title;
+  final String url;
+  final String Function()? urlGetter;
 
   static Future<void> setCookieValue() async {
-    final cookieManager = CookieManager.instance();
     final cookieList = <(String, String)>[];
     cookieList.addAll([
       (
@@ -57,9 +61,6 @@ class CommonWebView extends StatefulWidget {
     cookieManager.setCookie(url: WebUri(domain), name: 'Path', value: '/');
   }
 
-  final String? title;
-  final String url;
-
   @override
   State<CommonWebView> createState() => _CommonWebViewState();
 }
@@ -75,13 +76,17 @@ class _CommonWebViewState extends State<CommonWebView> {
         AppConst.eventBus.on<ThemeChangeEvent>().listen((event) async {
       await webCtrl?.clearCache();
       await CommonWebView.setCookieValue();
-      webCtrl?.reload();
+      webCtrl?.loadUrl(
+          urlRequest:
+              URLRequest(url: WebUri(widget.urlGetter?.call() ?? widget.url)));
     });
     _loginStatusSubscription =
         AppConst.eventBus.on<LoginStatusChangeEvent>().listen((event) async {
       await webCtrl?.clearCache();
       await CommonWebView.setCookieValue();
-      webCtrl?.reload();
+      webCtrl?.loadUrl(
+          urlRequest:
+              URLRequest(url: WebUri(widget.urlGetter?.call() ?? widget.url)));
     });
     super.initState();
   }
@@ -103,7 +108,8 @@ class _CommonWebViewState extends State<CommonWebView> {
             ),
       body: SafeArea(
         child: InAppWebView(
-          initialUrlRequest: URLRequest(url: WebUri(widget.url)),
+          initialUrlRequest:
+              URLRequest(url: WebUri(widget.urlGetter?.call() ?? widget.url)),
           initialSettings: InAppWebViewSettings(
               userAgent: 'CoinsohoWeb-flutter',
               javaScriptEnabled: true,
