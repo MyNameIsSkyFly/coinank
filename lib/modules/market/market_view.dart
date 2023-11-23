@@ -37,6 +37,7 @@ class MarketPage extends StatelessWidget {
       ),
       body: TabBarView(
         controller: state.tabController,
+        physics: const NeverScrollableScrollPhysics(),
         children: state.tabPage,
       ),
     );

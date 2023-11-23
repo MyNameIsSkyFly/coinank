@@ -1,4 +1,6 @@
+import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:ank_app/route/app_nav.dart';
 import 'package:ank_app/util/store.dart';
 import 'package:get/get.dart';
 
@@ -31,5 +33,20 @@ class ContractSearchLogic extends GetxController {
     state.originalList = data?.list ?? [];
     state.list.value = List.from(state.originalList);
     StoreLogic.to.setContractData(data?.list ?? []);
+  }
+
+  tapCollect(MarkerTickerEntity item) async {
+    if (!StoreLogic.isLogin) {
+      AppNav.toLogin();
+    } else {
+      if (item.follow == true) {
+        final data = await Apis().getDelFollow(baseCoin: item.baseCoin!);
+        item.follow = false;
+      } else {
+        final data = await Apis().getAddFollow(baseCoin: item.baseCoin!);
+        item.follow = true;
+      }
+      state.list.refresh();
+    }
   }
 }

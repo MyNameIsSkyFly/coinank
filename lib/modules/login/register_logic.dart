@@ -37,6 +37,15 @@ class RegisterLogic extends GetxController {
     Get.back();
   }
 
+  Future<void> forgetPwd() async {
+    final mail = mailCtrl.text;
+    final pwd = pwdCtrl.text;
+    final verifyCode = verifyCodeCtrl.text;
+    final userInfo = await Apis().register(mail, pwd, verifyCode, strType);
+    AppUtil.showToast('SUCCESS');
+    Get.back();
+  }
+
   String? validVerifyCode(String? value) {
     if (value == null ||
         value.isEmpty ||
@@ -57,6 +66,7 @@ class RegisterLogic extends GetxController {
     sendBtnCounter.value = 60;
     startCounter();
   }
+
 
   void startCounter() {
     Timer.periodic(const Duration(seconds: 1), (timer) {

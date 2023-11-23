@@ -1,11 +1,19 @@
 import 'dart:io';
 
+import 'package:ank_app/util/store.dart';
 import 'package:dio/dio.dart';
 
 import '../generated/l10n.dart';
 import '../util/app_util.dart';
 
 class BaseInterceptor extends Interceptor {
+  @override
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    if (StoreLogic.isLogin) {
+      options.headers['token'] = StoreLogic.to.loginUserInfo?.token;
+    }
+    super.onRequest(options, handler);
+  }
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     final code = response.data?['code'];

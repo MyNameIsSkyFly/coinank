@@ -46,7 +46,7 @@ class MarkerTickerEntity {
   final double? openInterestCh24;
   final String? symbol;
   final String? exchangeName;
-  final bool? follow;
+  bool? follow;
   factory MarkerTickerEntity.fromJson(Map<String, dynamic> json) {
     return _$MarkerTickerEntityFromJson(json);
   }

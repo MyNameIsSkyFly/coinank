@@ -9,6 +9,7 @@ import 'package:ank_app/entity/marker_funding_rate_entity.dart';
 import 'package:ank_app/entity/test_entity.dart';
 import 'package:ank_app/entity/user_info_entity.dart';
 import 'package:ank_app/http/base_interceptor.dart';
+import 'package:ank_app/util/store.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:talker_dio_logger/talker_dio_logger.dart';
@@ -109,4 +110,18 @@ abstract class Apis {
     @Part(name: 'passWord') String passWord,
     @Part(name: 'code') String code,
   );
+
+  //行情添加关注
+  @GET('/api/userFollow/addOrUpdateFollow')
+  Future getAddFollow({
+    @Query('baseCoin') required String baseCoin,
+    @Query('type') String type = '1',
+  });
+
+//行情删除关注
+  @GET('/api/userFollow/delFollow')
+  Future getDelFollow({
+    @Query('baseCoin') required String baseCoin,
+    @Query('type') String type = '1',
+  });
 }

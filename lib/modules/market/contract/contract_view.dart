@@ -50,15 +50,29 @@ class ContractPage extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(0, 15, 0, 10),
                   child: Row(
                     children: [
-                      InkWell(
-                        onTap: () {},
-                        child: Image.asset(
-                          Assets.commonIconStar,
-                          width: 17,
-                          height: 17,
-                          color: Theme.of(context).textTheme.bodySmall?.color,
-                        ),
-                      ),
+                      GetBuilder<ContractLogic>(
+                          id: 'collect',
+                          builder: (_) {
+                            return InkWell(
+                              onTap: () => logic.tapAllCollect(),
+                              child: state.isCollect
+                                  ? Image.asset(
+                                      Assets.commonIconStarFill,
+                                      width: 17,
+                                      height: 17,
+                                      color: Styles.cYellow,
+                                    )
+                                  : Image.asset(
+                                      Assets.commonIconStar,
+                                      width: 17,
+                                      height: 17,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.color,
+                                    ),
+                            );
+                          }),
                       const Gap(15),
                       SortWithArrow(
                         title: S.current.s_oi_vol,
@@ -107,14 +121,14 @@ class ContractPage extends StatelessWidget {
                     return ListView.builder(
                       padding: const EdgeInsets.only(bottom: 10),
                       itemBuilder: (cnt, idx) {
-                        MarkerTickerEntity item = state.data!.list![idx];
+                        MarkerTickerEntity item = state.data![idx];
                         return _DataItem(
                           item: item,
                           onTap: () => logic.tapItem(item),
                           onTapCollect: () => logic.tapCollect(item),
                         );
                       },
-                      itemCount: state.data?.list?.length ?? 0,
+                      itemCount: state.data?.length ?? 0,
                     );
                   }),
             ),

@@ -3,6 +3,7 @@ import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/modules/main/main_logic.dart';
 import 'package:ank_app/modules/market/market_logic.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:ank_app/route/app_nav.dart';
 import 'package:ank_app/util/store.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,7 +13,25 @@ import 'contract_state.dart';
 class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
   final ContractState state = ContractState();
 
-  void tapSort(SortType type) {
+  void tapAllCollect() {
+    state.isCollect = !state.isCollect;
+    update(['collect']);
+    sortCollect();
+  }
+
+  sortCollect() {
+    if (state.isCollect) {
+      state.data = List<MarkerTickerEntity>.from(state.originalData ?? [])
+          .where((element) => element.follow == true)
+          .toList();
+    } else {
+      state.data = List.from(state.originalData ?? []);
+    }
+
+    update(['data']);
+  }
+
+  Future<void> tapSort(SortType type) async {
     String sortBy = '';
     String sortType = '';
     switch (type) {
@@ -59,14 +78,26 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
     if (state.sortBy == sortBy && state.sortType == sortType) return;
     state.sortType = sortType;
     state.sortBy = sortBy;
+    await onRefresh();
   }
 
   void tapItem(MarkerTickerEntity item) {
     /// TODO 跳转订单流 并传参 item.symbol item.exchangeName
   }
 
-  void tapCollect(MarkerTickerEntity item) {
-    /// TODO 收藏需登录
+  tapCollect(MarkerTickerEntity item) async {
+    if (!StoreLogic.isLogin) {
+      AppNav.toLogin();
+    } else {
+      if (item.follow == true) {
+        final data = await Apis().getDelFollow(baseCoin: item.baseCoin!);
+        item.follow = false;
+      } else {
+        final data = await Apis().getAddFollow(baseCoin: item.baseCoin!);
+        item.follow = true;
+      }
+      sortCollect();
+    }
   }
 
   Future<void> onRefresh() async {
@@ -77,14 +108,15 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
       sortBy: state.sortBy,
       sortType: state.sortType,
     );
-    state.data = data;
-    update(['data']);
+    state.originalData = data?.list;
+    sortCollect();
     state.isRefresh = false;
     StoreLogic.to.setContractData(data?.list ?? []);
   }
 
   _startTimer() async {
-    state.pollingTimer = Timer.periodic(const Duration(seconds: 5), (timer) async{
+    state.pollingTimer =
+        Timer.periodic(const Duration(seconds: 5), (timer) async {
       if (Get.find<MainLogic>().state.selectedIndex.value == 1 &&
           !state.isRefresh &&
           Get.find<MarketLogic>().state.tabController?.index == 0 &&

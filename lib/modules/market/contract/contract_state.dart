@@ -19,7 +19,10 @@ class ContractState {
   //descend 降序
   //ascend 升序
   String sortType = 'descend';
-  TickersDataEntity? data;
+  List<MarkerTickerEntity>? data;
+  List<MarkerTickerEntity>? originalData;
+
+  bool isCollect = false;
   Timer? pollingTimer;
   bool isRefresh = false;
   bool appVisible  = true;

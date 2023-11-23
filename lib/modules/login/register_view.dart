@@ -183,9 +183,12 @@ class _RegisterPageState extends State<RegisterPage> {
               const Gap(30),
               FilledButton(
                   onPressed: () {
-                    formKey.currentState?.validate();
+                    if (!(formKey.currentState?.validate() ?? false)) return;
+                    Loading.wrap(() async => logic.register());
                   },
-                  child: Text(S.of(context).s_login))
+                  child: Text(logic.isFindPwd
+                      ? S.of(context).s_ok
+                      : S.current.s_register))
             ],
           ),
         ),
