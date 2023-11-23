@@ -85,12 +85,20 @@ class StoreLogic extends GetxController {
     return _SpUtil()._getString(_SpKeys.loginPassword, defaultValue: '');
   }
 
+  Future<bool> removeLoginPassword() {
+    return _SpUtil()._remove(_SpKeys.loginPassword);
+  }
+
   Future<bool> saveLoginUsername(String username) {
     return _SpUtil()._saveString(_SpKeys.loginUsername, username);
   }
 
   String get loginUsername {
     return _SpUtil()._getString(_SpKeys.loginUsername, defaultValue: '');
+  }
+
+  Future<bool> removeLoginUsername() {
+    return _SpUtil()._remove(_SpKeys.loginUsername);
   }
 
   Future<bool> saveLoginUserInfo(UserInfoEntity? userInfo) {

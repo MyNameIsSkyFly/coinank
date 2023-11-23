@@ -25,5 +25,6 @@ class Urls {
   static String get urlPortfolio => '$h5Prefix/${webLanguage}users/portfolio';
 
   //首页提醒
-  static String get urlNotification => '$h5Prefix/${webLanguage}users/noticeConfig';
+  static String get urlNotification =>
+      '$h5Prefix/${webLanguage}users/noticeConfig';
 }

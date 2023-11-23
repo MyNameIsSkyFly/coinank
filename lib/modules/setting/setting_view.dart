@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:ank_app/constants/urls.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/route/app_nav.dart';
@@ -26,6 +28,7 @@ class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppTitleBar(title: S.of(context).s_setting),
       backgroundColor: Colors.transparent,
       body: Column(
@@ -39,7 +42,7 @@ class _SettingPageState extends State<SettingPage> {
                     onTap: () {
                       showCupertinoModalPopup(
                           context: context,
-                          builder: (context) => const _KLineColorSelector());
+                          builder: (context) => const _DeleteAccountDialog());
                     },
                     title: AppUtil.decodeBase64(StoreLogic.to.loginUsername),
                   ),
@@ -165,7 +168,8 @@ class _SettingPageState extends State<SettingPage> {
                               AdaptiveDialogAction(
                                   child: Text(S.of(context).s_ok),
                                   onPressed: () async {
-                                    logic.logout();
+                                    await Loading.wrap(
+                                        () async => logic.logout());
                                     Get.back();
                                   }),
                             ],
@@ -444,6 +448,179 @@ class _KLineColorSelector extends StatelessWidget {
             ),
           ),
           Gap(MediaQuery.of(context).padding.bottom + 20)
+        ],
+      ),
+    );
+  }
+}
+
+class _DeleteAccountDialog extends StatelessWidget {
+  const _DeleteAccountDialog();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          borderRadius: BorderRadius.circular(16)),
+      width: double.infinity,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Gap(10),
+          Row(
+            children: [
+              const Gap(15),
+              Text(S.of(context).s_setting),
+              const Spacer(),
+              CloseButton(
+                color: Theme.of(context).textTheme.bodySmall!.color,
+                onPressed: Get.back,
+              ),
+            ],
+          ),
+          const Gap(20),
+          InkWell(
+              onTap: () async {
+                Loading.wrap(() async {
+                  await Apis()
+                      .sendCode(StoreLogic.to.loginUsername, 'logOff')
+                      .whenComplete(() {
+                    Get.back();
+                    showCupertinoModalPopup(
+                      context: context,
+                      builder: (context) => _DeleteAccountInputDialog(),
+                    );
+                  });
+                });
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(15),
+                child: Row(
+                  children: [
+                    Expanded(child: Text(S.of(context).s_deleteAccount)),
+                    CupertinoListTileChevron(),
+                  ],
+                ),
+              )),
+          Gap(MediaQuery.of(context).padding.bottom + 20)
+        ],
+      ),
+    );
+  }
+}
+
+class _DeleteAccountInputDialog extends StatefulWidget {
+  const _DeleteAccountInputDialog();
+
+  @override
+  State<_DeleteAccountInputDialog> createState() =>
+      _DeleteAccountInputDialogState();
+}
+
+class _DeleteAccountInputDialogState extends State<_DeleteAccountInputDialog> {
+  final formKey = GlobalKey<FormState>();
+  final pwdCtrl = TextEditingController();
+  final verifyCodeCtrl = TextEditingController();
+
+  String? validVerifyCode(String? value) {
+    if (value == null ||
+        value.isEmpty ||
+        value.contains(' ') ||
+        value.length != 6) {
+      return S.current.s_verify_code_error;
+    }
+    return null;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          borderRadius: BorderRadius.circular(16)),
+      width: double.infinity,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Gap(10),
+          Row(
+            children: [
+              const Gap(15),
+              Text(S.of(context).s_deleteAccount),
+              const Spacer(),
+              CloseButton(
+                color: Theme.of(context).textTheme.bodySmall!.color,
+                onPressed: Get.back,
+              ),
+            ],
+          ),
+          const Gap(20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: verifyCodeCtrl,
+                      validator: (value) => validVerifyCode(value),
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        filled: true,
+                        hintText: S.of(context).s_verify_code,
+                        hintStyle: Styles.tsSub_14(context),
+                        contentPadding: const EdgeInsets.all(15),
+                        prefixIconColor: Styles.cBody(context),
+                        prefixIcon: const SizedBox.square(
+                          dimension: 48,
+                          child: Center(
+                            child: ImageIcon(
+                              AssetImage(Assets.imagesIcVerifyCode),
+                              size: 24,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Gap(20),
+                    TextFormField(
+                      controller: pwdCtrl,
+                      validator: (value) => AppUtil.isPwdValid(value ?? '')
+                          ? null
+                          : S.of(context).s_valid_password,
+                      keyboardType: TextInputType.visiblePassword,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        hintText: S.of(context).s_enter_password,
+                        filled: true,
+                        prefixIconColor: Styles.cBody(context),
+                        hintStyle: Styles.tsSub_14(context),
+                        contentPadding: const EdgeInsets.all(15),
+                        prefixIcon: const Icon(
+                          Icons.lock_outline_rounded,
+                        ),
+                      ),
+                    ),
+                  ],
+                )),
+          ),
+          const Gap(30),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: FilledButton(
+                onPressed: () async {
+                  if (!(formKey.currentState?.validate() ?? false)) return;
+                  await Apis().deleteAccount(StoreLogic.to.loginUsername,
+                      pwdCtrl.text, verifyCodeCtrl.text);
+
+                  Get.find<SettingLogic>().clearUserInfo();
+                },
+                child: Text(S.of(context).s_login)),
+          ),
+          Gap(max(MediaQuery.of(context).viewInsets.bottom,
+                  MediaQuery.of(context).padding.bottom) +
+              20)
         ],
       ),
     );

@@ -101,4 +101,12 @@ abstract class Apis {
   @MultiPart()
   Future sendCode(
       @Part(name: 'userName') String userName, @Part(name: 'type') String type);
+
+  @POST('/api/User/logOff')
+  @MultiPart()
+  Future deleteAccount(
+    @Part(name: 'userName') String userName,
+    @Part(name: 'passWord') String passWord,
+    @Part(name: 'code') String code,
+  );
 }
