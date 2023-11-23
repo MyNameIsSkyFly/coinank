@@ -204,9 +204,6 @@ public class MainActivity extends FlutterActivity {
         @Override
         public void saveLoginInfo(@NonNull String userInfoWithBaseEntityJson) {
             Config.getMMKV(getContext()).putString(Config.CONF_LOGIN_USER_INFO, userInfoWithBaseEntityJson);
-            JsonVo<UserInfoVo> a = AppUtils.getLoginInfo(getContext());
-            
-            System.out.println(a);
             AppUtils.setCookieValue(getContext());
         }
     }

@@ -24,7 +24,7 @@ class LoginLogic extends GetxController {
     StoreLogic.to.saveLoginUserInfo(userInfo);
     await CommonWebView.setCookieValue();
     StoreLogic.updateLoginStatus();
-    AppConst.eventBus.fire(LoggedInEvent());
+    AppConst.eventBus.fire(LoginStatusChangeEvent(isLogin: true));
     final json = {
       'success': true,
       'code': 1,

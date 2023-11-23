@@ -1,3 +1,5 @@
+import 'package:ank_app/constants/app_const.dart';
+import 'package:ank_app/entity/event/theme_event.dart';
 import 'package:ank_app/modules/chart/chart_drawer/chart_drawer_logic.dart';
 import 'package:ank_app/modules/chart/chart_logic.dart';
 import 'dart:convert';
@@ -15,6 +17,7 @@ import 'package:intl/intl.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../generated/l10n.dart';
+import '../widget/common_webview.dart';
 
 class AppUtil {
   AppUtil._();
@@ -51,7 +54,9 @@ class AppUtil {
       }
     }
     MessageHostApi().changeLanguage((locale ?? Get.deviceLocale).toString());
+    AppConst.eventBus.fire(ThemeChangeEvent(type: ThemeChangeType.locale));
     StoreLogic.to.saveLocale(locale);
+    CommonWebView.setCookieValue();
     if (Get.isRegistered<ChartLogic>()) {
       Get.find<ChartLogic>().onRefresh();
     }
@@ -90,13 +95,17 @@ class AppUtil {
             : ThemeMode.light);
     MessageHostApi().changeDarkMode(
         isDarkMode ?? Get.mediaQuery.platformBrightness == Brightness.dark);
+    AppConst.eventBus.fire(ThemeChangeEvent(type: ThemeChangeType.dark));
+    CommonWebView.setCookieValue();
   }
 
   static void toggleUpColor() {
     final original = StoreLogic.to.isUpGreen;
     StoreLogic.to.saveUpGreen(!original);
     MessageHostApi().changeUpColor(!original);
+    AppConst.eventBus.fire(ThemeChangeEvent(type: ThemeChangeType.upColor));
     Get.forceAppUpdate();
+    CommonWebView.setCookieValue();
   }
 
   static String getLargeFormatString(String val) {

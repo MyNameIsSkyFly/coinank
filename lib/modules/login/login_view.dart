@@ -95,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
               FilledButton(
                   onPressed: () {
                     if (!(formKey.currentState?.validate() ?? false)) return;
-                    logic.login();
+                    Loading.wrap(() async => logic.login());
                   },
                   child: Text(S.of(context).s_login))
             ],

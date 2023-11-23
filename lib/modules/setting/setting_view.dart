@@ -35,6 +35,15 @@ class _SettingPageState extends State<SettingPage> {
             child: ListView(
               children: [
                 const Gap(10),
+                if (StoreLogic.isLogin)
+                  _SettingLine(
+                    onTap: () {
+                      showCupertinoModalPopup(
+                          context: context,
+                          builder: (context) => const _KLineColorSelector());
+                    },
+                    title: AppUtil.decodeBase64(StoreLogic.to.loginUsername),
+                  ),
                 const _ThemeChangeLine(),
                 _SettingLine(
                     onTap: () {

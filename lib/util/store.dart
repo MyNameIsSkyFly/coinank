@@ -24,6 +24,7 @@ class StoreLogic extends GetxController {
   Future<bool> saveLocale(Locale? locale) {
     final language = switch (locale) {
       Locale(languageCode: 'en') => 0,
+      Locale(languageCode: 'zh', scriptCode: 'Hans') => 1,
       Locale(languageCode: 'zh', scriptCode: 'Hant') => 2,
       Locale(languageCode: 'ja') => 3,
       Locale(languageCode: 'ko') => 4,
