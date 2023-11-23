@@ -6,7 +6,7 @@
     android:paddingLeft="15dp"
     android:layout_height="wrap_content">
 
-    <com.ank.ankapp.ank_app.original.widget.CustomExpandableListView
+    <com.ank.ankapp.original.widget.CustomExpandableListView
         android:id="@+id/ex_submenu"
         android:layout_alignParentLeft="true"
         android:layout_width="match_parent"

@@ -34,7 +34,7 @@
         app:cardCornerRadius="5dp"
         app:cardElevation="0px">
 
-        <com.ank.ankapp.ank_app.original.widget.SmartTextView
+        <com.ank.ankapp.original.widget.SmartTextView
             android:id="@+id/tv_menu_cancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
