@@ -1,7 +1,7 @@
 package com.ank.ankapp.original.widget.refresh;
 
 
-import com.ank.ankapp.ank_app.R;
+import com.ank.ankapp.R;
 
 /**
  * customize image resources and text resources

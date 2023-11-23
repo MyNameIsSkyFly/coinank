@@ -39,7 +39,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
 
 
-import com.ank.ankapp.ank_app.R;
+import com.ank.ankapp.R;
 import com.ank.ankapp.original.dialog.base.action.ActivityAction;
 import com.ank.ankapp.original.dialog.base.action.AnimAction;
 import com.ank.ankapp.original.dialog.base.action.ClickAction;

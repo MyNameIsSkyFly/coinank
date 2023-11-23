@@ -5,7 +5,7 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
 
-import com.ank.ankapp.ank_app.R;
+import com.ank.ankapp.R;
 import com.ank.ankapp.original.Config;
 import com.ank.ankapp.original.Global;
 import com.ank.ankapp.original.activity.CommonFragmentActivity;

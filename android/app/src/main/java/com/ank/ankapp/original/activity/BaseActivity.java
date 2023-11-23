@@ -27,7 +27,7 @@ import androidx.core.content.ContextCompat;
 
 
 import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
-import com.ank.ankapp.ank_app.R;
+import com.ank.ankapp.R;
 import com.ank.ankapp.original.App;
 import com.ank.ankapp.original.Config;
 import com.ank.ankapp.original.language.LanguageUtil;

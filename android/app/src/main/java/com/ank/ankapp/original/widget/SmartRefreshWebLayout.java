@@ -8,7 +8,7 @@ import android.webkit.WebView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.ank.ankapp.ank_app.R;
+import com.ank.ankapp.R;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import com.just.agentweb.IWebLayout;

@@ -1,7 +1,7 @@
 package com.ank.ankapp.original.dialog.base.action;
 
 
-import com.ank.ankapp.ank_app.R;
+import com.ank.ankapp.R;
 
 /**
  *    author : Android 轮子哥

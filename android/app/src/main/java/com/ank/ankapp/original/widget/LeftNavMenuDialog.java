@@ -20,7 +20,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.ank.ankapp.original.Config;
 import com.ank.ankapp.original.Global;
-import com.ank.ankapp.ank_app.R;
+import com.ank.ankapp.R;
 import com.ank.ankapp.original.activity.CommonWebActivity;
 import com.ank.ankapp.original.adapter.LeftNavMenuAdapter;
 import com.ank.ankapp.original.bean.JsonVo;

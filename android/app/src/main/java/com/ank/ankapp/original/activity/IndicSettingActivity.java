@@ -7,7 +7,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
-import com.ank.ankapp.ank_app.R;
+import com.ank.ankapp.R;
 import com.ank.ankapp.original.Config;
 import com.ank.ankapp.original.Global;
 

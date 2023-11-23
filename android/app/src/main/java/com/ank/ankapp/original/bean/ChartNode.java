@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
-import com.ank.ankapp.ank_app.R;
+import com.ank.ankapp.R;
 import com.ank.ankapp.original.chart.CoupleChartGestureListener;
 import com.ank.ankapp.original.chart.CoupleChartValueSelectedListener;
 import com.github.mikephil.charting.charts.CombinedChart;

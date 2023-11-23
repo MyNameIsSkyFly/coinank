@@ -16,7 +16,7 @@ import android.widget.ImageView;
 
 import androidx.fragment.app.FragmentActivity;
 
-import com.ank.ankapp.ank_app.R;
+import com.ank.ankapp.R;
 
 /**
  * 加载中对话框

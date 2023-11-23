@@ -6,7 +6,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.webkit.JavascriptInterface;
 
-import com.ank.ankapp.ank_app.R;
+import com.ank.ankapp.R;
 import com.ank.ankapp.original.Config;
 import com.ank.ankapp.original.Global;
 import com.ank.ankapp.original.activity.CommonFragmentActivity;

@@ -11,7 +11,7 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
 
-import com.ank.ankapp.ank_app.R;
+import com.ank.ankapp.R;
 
 import java.util.HashMap;
 import java.util.Locale;

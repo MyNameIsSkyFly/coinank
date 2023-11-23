@@ -5,7 +5,7 @@
     <application
         android:name="com.ank.ankapp.original.App"
         android:icon="@mipmap/ic_launcher"
-        android:label="ank_app"
+        android:label="Coinank"
         android:theme="@style/LightTheme"
         tools:replace="android:label">
         <activity

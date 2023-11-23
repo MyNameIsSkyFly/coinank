@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ank.ankapp.ank_app.R;
+import com.ank.ankapp.R;
 import com.ank.ankapp.original.bean.BaseCoinVo;
 import com.ruffian.library.widget.RRelativeLayout;
 import com.ruffian.library.widget.RTextView;

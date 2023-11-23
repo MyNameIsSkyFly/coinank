@@ -32,7 +32,7 @@
 //import android.widget.LinearLayout;
 //import android.widget.TextView;
 //
-//import com.ank.ankapp.ank_app.R;
+//import com.ank.ankapp.R;
 //import com.ruffian.library.widget.RLinearLayout;
 //
 //import androidx.annotation.RequiresApi;

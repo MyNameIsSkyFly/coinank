@@ -9,7 +9,7 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.ank.ankapp.ank_app.R;
+import com.ank.ankapp.R;
 import com.ank.ankapp.original.Config;
 import com.ank.ankapp.original.Global;
 import com.ank.ankapp.original.adapter.PriceChgScrollAdapter;

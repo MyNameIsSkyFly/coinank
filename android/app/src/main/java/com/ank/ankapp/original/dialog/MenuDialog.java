@@ -14,7 +14,7 @@ import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.ank.ankapp.ank_app.R;
+import com.ank.ankapp.R;
 import com.ank.ankapp.original.dialog.base.BaseAdapter;
 import com.ank.ankapp.original.dialog.base.BaseDialog;
 

@@ -20,7 +20,7 @@ import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 
-import com.ank.ankapp.ank_app.R;
+import com.ank.ankapp.R;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 /**

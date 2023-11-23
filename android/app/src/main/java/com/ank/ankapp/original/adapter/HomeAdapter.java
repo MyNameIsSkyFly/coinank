@@ -12,7 +12,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 
-import com.ank.ankapp.ank_app.R;
+import com.ank.ankapp.R;
 import com.ank.ankapp.original.Config;
 import com.ank.ankapp.original.bean.LiquidationVo;
 import com.ank.ankapp.original.bean.LongShortTakerBuySellVo;

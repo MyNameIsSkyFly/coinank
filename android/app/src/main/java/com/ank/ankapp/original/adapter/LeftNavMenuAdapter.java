@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 
-import com.ank.ankapp.ank_app.R;
+import com.ank.ankapp.R;
 import com.ank.ankapp.original.bean.NavMenuBean;
 import com.ank.ankapp.original.callback.OnExpandListViewClickListener;
 import com.ank.ankapp.original.widget.CustomExpandableListView;

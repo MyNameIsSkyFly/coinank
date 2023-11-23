@@ -21,7 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 
-import com.ank.ankapp.ank_app.R;
+import com.ank.ankapp.R;
 
 import java.util.Timer;
 import java.util.TimerTask;

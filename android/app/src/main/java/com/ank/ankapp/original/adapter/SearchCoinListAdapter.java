@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.ank.ankapp.ank_app.R;
+import com.ank.ankapp.R;
 import com.ruffian.library.widget.RRelativeLayout;
 import com.ruffian.library.widget.RTextView;
 

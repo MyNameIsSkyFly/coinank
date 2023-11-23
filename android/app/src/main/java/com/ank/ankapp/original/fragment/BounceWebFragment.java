@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.ank.ankapp.ank_app.R;
+import com.ank.ankapp.R;
 import com.ank.ankapp.original.activity.BaseActivity;
 import com.ank.ankapp.original.common.AndroidInterface;
 import com.ank.ankapp.original.common.UIController;
