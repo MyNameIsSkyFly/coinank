@@ -23,7 +23,7 @@ class CommonWebView extends StatefulWidget {
         'theme',
         StoreLogic.to.isDarkMode ??
                 Get.mediaQuery.platformBrightness == Brightness.dark
-            ? 'dark'
+            ? 'night'
             : 'light'
       ),
       (
@@ -34,16 +34,12 @@ class CommonWebView extends StatefulWidget {
       ),
       ('green-up', StoreLogic.to.isUpGreen ? 'true' : 'false'),
     ]);
-    await _syncCookie(domain: Urls.strDomain, cookies: cookieList);
     cookieList.add(('i18n_redirected', AppUtil.shortLanguageName));
+
+    await _syncCookie(domain: Urls.strDomain, cookies: cookieList);
     //实时挂单数据url cookie
     await _syncCookie(domain: Urls.depthOrderDomain, cookies: cookieList);
     await _syncCookie(domain: Urls.uniappDomain, cookies: cookieList);
-    final a = await cookieManager.getCookies(url: WebUri(Urls.strDomain));
-    final b =
-        await cookieManager.getCookies(url: WebUri(Urls.depthOrderDomain));
-    final c = await cookieManager.getCookies(url: WebUri(Urls.uniappDomain));
-    print(a);
   }
 
   static Future<void> _syncCookie(
