@@ -11,7 +11,7 @@
         android:id="@+id/toolbar2"
         layout="@layout/toolbar_main"></include>
 
-    <com.ank.ankapp.ank_app.original.widget.MyScrollView
+    <com.ank.ankapp.original.widget.MyScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
         >
     </FrameLayout>
         </LinearLayout>
-    </com.ank.ankapp.ank_app.original.widget.MyScrollView>
+    </com.ank.ankapp.original.widget.MyScrollView>
 
 
 </LinearLayout>

@@ -8,12 +8,12 @@
 
     <include android:id="@+id/toolbar2" layout="@layout/toolbar_main"></include>
 
-    <com.ank.ankapp.ank_app.original.widget.refresh.PullToRefreshLayout
+    <com.ank.ankapp.original.widget.refresh.PullToRefreshLayout
         android:id="@+id/pullToRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
-         <com.ank.ankapp.ank_app.original.widget.refresh.PullScrollView
+         <com.ank.ankapp.original.widget.refresh.PullScrollView
              android:id="@+id/ll_pullscrollview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -294,6 +294,6 @@
 
         </LinearLayout>
 
-        </com.ank.ankapp.ank_app.original.widget.refresh.PullScrollView>
-    </com.ank.ankapp.ank_app.original.widget.refresh.PullToRefreshLayout>
+        </com.ank.ankapp.original.widget.refresh.PullScrollView>
+    </com.ank.ankapp.original.widget.refresh.PullToRefreshLayout>
 </LinearLayout>

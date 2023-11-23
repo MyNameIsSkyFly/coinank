@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.ank.ankapp.ank_app.original.widget.MyScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.ank.ankapp.original.widget.MyScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -311,4 +311,4 @@
         android:layout_height="0dp"
         android:layout_weight="0.1"/>
     </LinearLayout>
-</com.ank.ankapp.ank_app.original.widget.MyScrollView>
+</com.ank.ankapp.original.widget.MyScrollView>

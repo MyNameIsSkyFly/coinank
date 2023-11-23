@@ -3,13 +3,13 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <application
-        android:name="com.ank.ankapp.ank_app.original.App"
+        android:name="com.ank.ankapp.original.App"
         android:icon="@mipmap/ic_launcher"
         android:label="ank_app"
         android:theme="@style/LightTheme"
         tools:replace="android:label">
         <activity
-            android:name=".MainActivity"
+            android:name="com.ank.ankapp.MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:exported="true"
             android:hardwareAccelerated="true"
@@ -29,14 +29,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".original.activity.CommonFragmentActivity"
+            android:name="com.ank.ankapp.original.activity.CommonFragmentActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="true"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity
-            android:name=".original.activity.CommonWebActivity"
+            android:name="com.ank.ankapp.original.activity.CommonWebActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
             android:exported="true"
@@ -45,7 +45,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity
-            android:name=".original.activity.IndicSettingActivity"
+            android:name="com.ank.ankapp.original.activity.IndicSettingActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
             android:launchMode="singleTop"
@@ -53,20 +53,20 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity
-            android:name=".original.activity.KLineActivity"
+            android:name="com.ank.ankapp.original.activity.KLineActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="true"
             android:hardwareAccelerated="true"
             android:launchMode="singleTask" />
         <activity
-            android:name=".original.activity.MulKLineActivity"
+            android:name="com.ank.ankapp.original.activity.MulKLineActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
             android:hardwareAccelerated="true"
             android:launchMode="singleTask"  />
         <activity
-            android:name=".original.activity.SearchBaseCoinListActivity"
+            android:name="com.ank.ankapp.original.activity.SearchBaseCoinListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="true"
             android:hardwareAccelerated="true"
@@ -75,7 +75,7 @@
             android:windowSoftInputMode="adjustUnspecified|stateHidden"  />
 
         <activity
-            android:name=".original.activity.PriceChgActivity"
+            android:name="com.ank.ankapp.original.activity.PriceChgActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
             android:exported="true"
@@ -84,7 +84,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity
-            android:name=".original.activity.OIChgActivity"
+            android:name="com.ank.ankapp.original.activity.OIChgActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
             android:exported="true"
@@ -94,13 +94,13 @@
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
 
         <service
-            android:name=".original.service.WebService"
+            android:name="com.ank.ankapp.original.service.WebService"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE"
             android:process=":web" />
 
         <service
-            android:name=".original.service.MainWebService"
+            android:name="com.ank.ankapp.original.service.MainWebService"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE"
             />

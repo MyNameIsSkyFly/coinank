@@ -65,7 +65,7 @@
             android:layout_gravity="center"
             android:orientation="vertical">
 
-            <com.ank.ankapp.ank_app.original.widget.MyProgressBar
+            <com.ank.ankapp.original.widget.MyProgressBar
                 android:id="@+id/tv_progress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
                     android:text="4"
                     android:textColor="@color/blackgray"
                     android:textSize="@dimen/font_home_second" />
-            </com.ank.ankapp.ank_app.original.widget.MyProgressBar>
+            </com.ank.ankapp.original.widget.MyProgressBar>
         </LinearLayout>
 
         <TextView
