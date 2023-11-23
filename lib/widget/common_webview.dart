@@ -76,19 +76,25 @@ class _CommonWebViewState extends State<CommonWebView> {
         AppConst.eventBus.on<ThemeChangeEvent>().listen((event) async {
       await webCtrl?.clearCache();
       await CommonWebView.setCookieValue();
-      webCtrl?.loadUrl(
-          urlRequest:
-              URLRequest(url: WebUri(widget.urlGetter?.call() ?? widget.url)));
+      reload();
     });
     _loginStatusSubscription =
         AppConst.eventBus.on<LoginStatusChangeEvent>().listen((event) async {
       await webCtrl?.clearCache();
       await CommonWebView.setCookieValue();
+      reload();
+    });
+    super.initState();
+  }
+
+  void reload() {
+    if (widget.urlGetter == null) {
+      webCtrl?.reload();
+    } else {
       webCtrl?.loadUrl(
           urlRequest:
               URLRequest(url: WebUri(widget.urlGetter?.call() ?? widget.url)));
-    });
-    super.initState();
+    }
   }
 
   @override
