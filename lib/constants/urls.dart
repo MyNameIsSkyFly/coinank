@@ -4,7 +4,7 @@ class Urls {
   static String strDomain = 'coinsoto.com';
   static String h5Prefix = 'https://$strDomain';
   static String depthOrderDomain = 'cdn01.coinsoto.com';
-  static String uniappDomain = 'coinsoto-h5.s3.ap-northeast-1.amazonaws.com';
+  static String uniappDomain = 'https://coinsoto-h5.s3.ap-northeast-1.amazonaws.com';
 
   static String get webLanguage => AppUtil.webLanguage;
 
@@ -16,6 +16,7 @@ class Urls {
 
   static String get urlAbout => '$h5Prefix/${webLanguage}about';
   //爆仓数据
-  static String get urlLiquidation => 'https://$uniappDomain/index.html#/pages/liquidation/index';
-
+  static String get urlLiquidation => '$uniappDomain/index.html#/pages/liquidation/index';
+  //投资组合
+  static String get urlPortfolio => '$h5Prefix/${webLanguage}users/portfolio';
 }

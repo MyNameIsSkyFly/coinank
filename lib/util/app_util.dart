@@ -129,13 +129,13 @@ class AppUtil {
   static String get webLanguage {
     final locale = StoreLogic.to.locale;
     return switch (locale) {
-      const Locale('en') => '',
+      const Locale('en') => 'en/',
       const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans') => 'zh/',
       const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant') =>
         'zh-tw/',
       const Locale('ja') => 'ja/',
       const Locale('ko') => 'ko/',
-      _ => ''
+      _ => 'zh/'
     };
   }
 
@@ -148,7 +148,7 @@ class AppUtil {
         'zh-tw',
       const Locale('ja') => 'ja',
       const Locale('ko') => 'ko',
-      _ => ''
+      _ => 'zh'
     };
   }
 

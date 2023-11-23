@@ -114,6 +114,10 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [self.navigationController pushViewController:controller animated:YES];
 }
 
+- (void)saveLoginInfoUserInfoWithBaseEntityJson:(nonnull NSString *)userInfoWithBaseEntityJson error:(FlutterError * _Nullable __autoreleasing * _Nonnull)error { 
+    [kUserDefaults setObject:userInfoWithBaseEntityJson forKey:@"loginData"];
+}
+
 
 -(void)pushWebVCWithTitle:(NSString* )title urlStr:(NSString* )urlStr {
     XHWebViewController *controller = [[XHWebViewController alloc] init];
