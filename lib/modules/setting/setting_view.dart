@@ -614,9 +614,9 @@ class _DeleteAccountInputDialogState extends State<_DeleteAccountInputDialog> {
                   await Apis().deleteAccount(StoreLogic.to.loginUsername,
                       pwdCtrl.text, verifyCodeCtrl.text);
 
-                  Get.find<SettingLogic>().clearUserInfo();
+                  StoreLogic.clearUserInfo();
                 },
-                child: Text(S.of(context).s_login)),
+                child: Text(S.of(context).s_ok)),
           ),
           Gap(max(MediaQuery.of(context).viewInsets.bottom,
                   MediaQuery.of(context).padding.bottom) +

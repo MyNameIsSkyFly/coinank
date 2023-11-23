@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ank_app/route/app_nav.dart';
 import 'package:ank_app/util/store.dart';
 import 'package:dio/dio.dart';
 
@@ -14,6 +15,7 @@ class BaseInterceptor extends Interceptor {
     }
     super.onRequest(options, handler);
   }
+
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     final code = response.data?['code'];
@@ -87,6 +89,10 @@ class BaseInterceptor extends Interceptor {
     switch (code) {
       case '101':
         AppUtil.showToast('test error');
+        return true;
+      case '400':
+        StoreLogic.clearUserInfo();
+        AppNav.toLogin();
         return true;
       default:
         return false;

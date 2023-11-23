@@ -1,7 +1,11 @@
 import 'dart:convert';
 
+import 'package:ank_app/constants/app_const.dart';
+import 'package:ank_app/entity/event/logged_event.dart';
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/entity/user_info_entity.dart';
+import 'package:ank_app/pigeon/host_api.g.dart';
+import 'package:ank_app/widget/common_webview.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,9 +14,20 @@ class StoreLogic extends GetxController {
   static StoreLogic get to => Get.find();
 
   static bool isLogin = false;
+
   static Future<void> init() async {
     await _SpUtil().init();
     updateLoginStatus();
+  }
+
+  static Future<void> clearUserInfo() async {
+    await StoreLogic.to.removeLoginUserInfo();
+    await StoreLogic.to.removeLoginPassword();
+    await StoreLogic.to.removeLoginUsername();
+    MessageHostApi().saveLoginInfo('');
+    StoreLogic.updateLoginStatus();
+    await CommonWebView.setCookieValue();
+    AppConst.eventBus.fire(LoginStatusChangeEvent(isLogin: false));
   }
 
   static void updateLoginStatus() {
