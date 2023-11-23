@@ -83,6 +83,12 @@ abstract class Apis {
   Future<UserInfoEntity?> login(@Part(name: 'userName') String userName,
       @Part(name: 'passWord') String passWord);
 
+  @POST('/api/User/logOut')
+  @MultiPart()
+  Future logout(
+      {@Part(name: 'none') String userName = 'none',
+      @Header('token') String? header});
+
   @POST('/api/User/register')
   @MultiPart()
   Future register(

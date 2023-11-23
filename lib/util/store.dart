@@ -12,8 +12,13 @@ class StoreLogic extends GetxController {
   static bool isLogin = false;
   static Future<void> init() async {
     await _SpUtil().init();
+    updateLoginStatus();
+  }
+
+  static void updateLoginStatus() {
     isLogin = StoreLogic.to.loginUserInfo?.token != null &&
         StoreLogic.to.loginUserInfo!.token!.isNotEmpty;
+    Get.forceAppUpdate();
   }
 
   Future<bool> saveLocale(Locale? locale) {
@@ -90,6 +95,10 @@ class StoreLogic extends GetxController {
   Future<bool> saveLoginUserInfo(UserInfoEntity? userInfo) {
     return _SpUtil()._saveString(_SpKeys.loginUserInfo,
         userInfo == null ? '' : jsonEncode(userInfo.toJson()));
+  }
+
+  Future<bool> removeLoginUserInfo() {
+    return _SpUtil()._remove(_SpKeys.loginUserInfo);
   }
 
   UserInfoEntity? get loginUserInfo {

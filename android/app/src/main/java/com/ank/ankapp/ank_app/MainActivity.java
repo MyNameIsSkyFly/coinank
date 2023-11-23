@@ -1,6 +1,9 @@
 package com.ank.ankapp.ank_app;
 
 import android.content.Intent;
+import android.os.Build;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,9 +15,14 @@ import com.ank.ankapp.ank_app.original.activity.CommonFragmentActivity;
 import com.ank.ankapp.ank_app.original.activity.CommonWebActivity;
 import com.ank.ankapp.ank_app.original.activity.OIChgActivity;
 import com.ank.ankapp.ank_app.original.activity.PriceChgActivity;
+import com.ank.ankapp.ank_app.original.bean.JsonVo;
+import com.ank.ankapp.ank_app.original.bean.UserInfoVo;
 import com.ank.ankapp.ank_app.original.language.LanguageUtil;
+import com.ank.ankapp.ank_app.original.utils.AppUtils;
 import com.ank.ankapp.ank_app.original.utils.UrlGet;
 import com.ank.ankapp.ank_app.pigeon_plugin.Messages;
+
+import java.util.ArrayList;
 
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.FlutterEngine;
@@ -191,6 +199,15 @@ public class MainActivity extends FlutterActivity {
             i.putExtra(Config.TYPE_URL, Config.h5Prefix + url);
             i.putExtra(Config.TYPE_TITLE, getResources().getString(R.string.s_chart));
             Global.showActivity(getActivity(), i);
+        }
+
+        @Override
+        public void saveLoginInfo(@NonNull String userInfoWithBaseEntityJson) {
+            Config.getMMKV(getContext()).putString(Config.CONF_LOGIN_USER_INFO, userInfoWithBaseEntityJson);
+            JsonVo<UserInfoVo> a = AppUtils.getLoginInfo(getContext());
+            
+            System.out.println(a);
+            AppUtils.setCookieValue(getContext());
         }
     }
 }

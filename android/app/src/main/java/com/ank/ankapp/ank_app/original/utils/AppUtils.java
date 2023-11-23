@@ -8,10 +8,13 @@ import android.os.Build;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 
 import com.ank.ankapp.ank_app.original.Config;
 import com.ank.ankapp.ank_app.original.bean.JsonVo;
 import com.ank.ankapp.ank_app.original.bean.UserInfoVo;
+import com.ank.ankapp.ank_app.original.language.LanguageUtil;
 import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -21,6 +24,7 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -279,6 +283,59 @@ public class AppUtils {
         return largeValueFormatter.getFormattedValue(Float.valueOf(val), null);
     }
 
+    public static void setCookieValue(Context context) {
+        ArrayList<String> cookieList = new ArrayList<>();
+        if (Config.getMMKV(context).getBoolean(Config.DAY_NIGHT_MODE, false)) {
+            //cookieList.add("theme=dark");//网站用的是dark
+            cookieList.add("theme=night");//app night
+        } else {
+            cookieList.add("theme=light");
+        }
+
+        if (AppUtils.getLoginInfo(context) != null) {
+            cookieList.add("COINSOHO_KEY=" + AppUtils.getToken(context));
+        } else {
+            cookieList.add("COINSOHO_KEY=" + "");
+        }
+
+        if (Config.getMMKV(context).getBoolean(Config.IS_GREEN_UP, true)) {
+            cookieList.add("green-up=true");
+        } else {
+            cookieList.add("green-up=false");
+        }
+
+
+        syncCookie(context, Config.strDomain, cookieList);
+        String s = LanguageUtil.getShortLanguageName(context);
+        cookieList.add("i18n_redirected=" + s);
+
+        syncCookie(context, Config.depthOrderDomain, cookieList);//实时挂单数据url cookie
+
+        //uni-app写入cookie
+        syncCookie(context, Config.uniappDomain, cookieList);
+    }
+
+    private static void syncCookie(Context context, String domain, ArrayList<String> cookieList) {
+        if (domain == null) return;
+        CookieManager cookieManager = CookieManager.getInstance();
+        cookieManager.setAcceptCookie(true);
+        if (cookieList != null && cookieList.size() > 0) {
+            for (String cookie : cookieList) {
+                //MLog.d(domain + ":" + cookie);
+                cookieManager.setCookie(domain, cookie);
+            }
+        }
+
+        cookieManager.setCookie(domain, "Domain=" + domain);
+        cookieManager.setCookie(domain, "Path=/");
+        String cookies = cookieManager.getCookie(domain);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            cookieManager.flush();
+        } else {
+            CookieSyncManager.createInstance(context);
+            CookieSyncManager.getInstance().sync();
+        }
+    }
 
 }
 

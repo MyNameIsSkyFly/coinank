@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:ank_app/res/export.dart';
+import 'package:ank_app/route/app_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
@@ -85,7 +88,20 @@ class _CommonWebViewState extends State<CommonWebView> {
             webCtrl = controller
               ..addJavaScriptHandler(
                 handlerName: 'openLogin',
-                callback: (arguments) {},
+                callback: (arguments) {
+                  AppNav.toLogin();
+                },
+              )
+              ..addJavaScriptHandler(
+                handlerName: 'getUserInfo',
+                callback: (arguments) {
+                  final json = {
+                    'success': true,
+                    'code': 1,
+                    'data': StoreLogic.to.loginUserInfo?.toJson(),
+                  };
+                  return jsonEncode(json);
+                },
               );
           },
           onConsoleMessage: (controller, consoleMessage) {

@@ -3,6 +3,7 @@ import 'package:ank_app/res/export.dart';
 import 'package:ank_app/route/app_nav.dart';
 import 'package:ank_app/util/app_util.dart';
 import 'package:ank_app/util/store.dart';
+import 'package:ank_app/widget/adaptive_dialog_action.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -81,23 +82,6 @@ class _SettingPageState extends State<SettingPage> {
                   title: S.of(context).s_about_us,
                 ),
                 Obx(() {
-                  Widget adaptiveAction(
-                      {required VoidCallback onPressed,
-                      required Widget child}) {
-                    final ThemeData theme = Theme.of(context);
-                    switch (theme.platform) {
-                      case TargetPlatform.android:
-                      case TargetPlatform.fuchsia:
-                      case TargetPlatform.linux:
-                      case TargetPlatform.windows:
-                        return TextButton(onPressed: onPressed, child: child);
-                      case TargetPlatform.iOS:
-                      case TargetPlatform.macOS:
-                        return CupertinoDialogAction(
-                            onPressed: onPressed, child: child);
-                    }
-                  }
-
                   return _SettingLine(
                       onTap: () async {
                         var result = await Loading.wrap(
@@ -118,12 +102,12 @@ class _SettingPageState extends State<SettingPage> {
                                 ),
                                 backgroundColor: Theme.of(context).cardColor,
                                 actions: [
-                                  adaptiveAction(
+                                  AdaptiveDialogAction(
                                       child: Text(S.of(context).s_cancel),
                                       onPressed: () {
                                         Get.back();
                                       }),
-                                  adaptiveAction(
+                                  AdaptiveDialogAction(
                                       child: Text(S.of(context).s_ok),
                                       onPressed: () async {
                                         await launchUrl(
@@ -150,7 +134,37 @@ class _SettingPageState extends State<SettingPage> {
                 ? FilledButton(
                     style: FilledButton.styleFrom(
                         backgroundColor: Theme.of(context).dividerTheme.color),
-                    onPressed: () {},
+                    onPressed: () {
+                      showAdaptiveDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog.adaptive(
+                            title: Text(
+                              '${S.of(context).s_exit_login}?',
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .color),
+                            ),
+                            backgroundColor: Theme.of(context).cardColor,
+                            actions: [
+                              AdaptiveDialogAction(
+                                  child: Text(S.of(context).s_cancel),
+                                  onPressed: () {
+                                    Get.back();
+                                  }),
+                              AdaptiveDialogAction(
+                                  child: Text(S.of(context).s_ok),
+                                  onPressed: () async {
+                                    logic.logout();
+                                    Get.back();
+                                  }),
+                            ],
+                          );
+                        },
+                      );
+                    },
                     child: Text(
                       S.of(context).s_exit_login,
                       style: Styles.tsBody_16(context),
