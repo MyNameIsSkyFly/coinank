@@ -13,13 +13,7 @@ import '../entity/event/logged_event.dart';
 import '../util/store.dart';
 
 class CommonWebView extends StatefulWidget {
-  const CommonWebView(
-      {super.key, this.title, required this.url, this.onWebViewCreated});
-
-  final void Function(InAppWebViewController controller)? onWebViewCreated;
-
-  final String? title;
-  final String url;
+  const CommonWebView({super.key, this.title, required this.url});
 
   static Future<void> setCookieValue() async {
     final cookieManager = CookieManager.instance();
@@ -62,6 +56,9 @@ class CommonWebView extends StatefulWidget {
     cookieManager.setCookie(url: WebUri(domain), name: 'Domain', value: domain);
     cookieManager.setCookie(url: WebUri(domain), name: 'Path', value: '/');
   }
+
+  final String? title;
+  final String url;
 
   @override
   State<CommonWebView> createState() => _CommonWebViewState();
@@ -113,7 +110,6 @@ class _CommonWebViewState extends State<CommonWebView> {
               transparentBackground: true,
               javaScriptCanOpenWindowsAutomatically: true),
           onWebViewCreated: (controller) {
-            widget.onWebViewCreated?.call(controller);
             webCtrl = controller
               ..addJavaScriptHandler(
                 handlerName: 'openLogin',
