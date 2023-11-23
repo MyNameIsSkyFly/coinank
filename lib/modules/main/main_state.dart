@@ -20,7 +20,11 @@ class MainState {
     tabPage = [
       keepAlivePage(const HomePage()),
       keepAlivePage(MarketPage()),
-      keepAlivePage(CommonWebView(title: null, url: Urls.urlProChart)),
+      keepAlivePage(CommonWebView(
+        title: null,
+        url: Urls.urlProChart,
+        urlGetter: () => Urls.urlProChart,
+      )),
       keepAlivePage(const ChartPage()),
       keepAlivePage(SettingPage()),
     ];

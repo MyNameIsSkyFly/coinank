@@ -5,6 +5,7 @@ import 'package:ank_app/widget/common_webview.dart';
 import 'package:ank_app/modules/market/contract/contract_view.dart';
 import 'package:ank_app/modules/market/contract_market/contract_market_view.dart';
 import 'package:ank_app/modules/market/funding_rate/funding_rate_view.dart';
+
 class MarketState {
   TabController? tabController;
   late List<Widget> tabPage;
@@ -15,7 +16,10 @@ class MarketState {
       keepAlivePage(const ContractMarketPage()),
       keepAlivePage(CommonWebView(url: Urls.urlLiquidation)),
       keepAlivePage(const FundingRatePage()),
-      keepAlivePage(CommonWebView(url: Urls.urlPortfolio)),
+      keepAlivePage(CommonWebView(
+        url: Urls.urlPortfolio,
+        urlGetter: () => Urls.urlPortfolio,
+      )),
     ];
   }
 }
