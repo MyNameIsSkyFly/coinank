@@ -466,11 +466,13 @@ class _HotMarket extends StatelessWidget {
                           isLong: true),
                       _DataWithQuantity(
                           title: S.of(context).s_longs,
+                          textColor: Styles.cUp(context),
                           value: AppUtil.getLargeFormatString(
                               logic.homeInfoData.value?.liquidationLong ?? '0'),
                           isLong: true),
                       _DataWithQuantity(
                           title: S.of(context).s_shorts,
+                          textColor: Styles.cDown(context),
                           value: AppUtil.getLargeFormatString(
                               logic.homeInfoData.value?.liquidationShort ??
                                   '0'),
@@ -775,11 +777,13 @@ class _DataWithQuantity extends StatelessWidget {
     required this.title,
     required this.value,
     this.isLong,
+    this.textColor,
   });
 
   final String title;
   final String value;
   final bool? isLong;
+  final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -792,7 +796,7 @@ class _DataWithQuantity extends StatelessWidget {
               title,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: Styles.tsBody_12m(context),
+              style: Styles.tsBody_12m(context).copyWith(color: textColor),
             ),
           ),
           Text(

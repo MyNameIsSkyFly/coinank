@@ -1,4 +1,4 @@
-flutter pub run pigeon \
+fvm flutter pub run pigeon \
   --input pigeons/pigeon_api.dart \
   --dart_out lib/pigeon/host_api.g.dart \
   --swift_out ios/Runner/Messages.g.swift \

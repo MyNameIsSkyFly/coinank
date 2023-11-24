@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:ank_app/modules/main/main_logic.dart';
 import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:ank_app/util/jpush_util.dart';
 import 'package:ank_app/util/store.dart';
 import 'package:get/get.dart';
 
@@ -19,6 +20,7 @@ class Application {
     await StoreLogic.init();
     MessageFlutterApi.setup(FlutterApiManager());
     EasyRefresh.defaultHeaderBuilder = () => const CupertinoHeader();
+    JPushUtil().initPlatformState();
   }
 }
 

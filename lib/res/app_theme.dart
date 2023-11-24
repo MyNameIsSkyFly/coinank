@@ -31,9 +31,12 @@ class AppThemes {
         brightness: Brightness.light,
         scaffoldBackgroundColor: Colors.white,
         textTheme: const TextTheme(
-          bodyLarge: TextStyle(color: Styles.cTextBlack, height: 1.4),
-          bodyMedium: TextStyle(color: Styles.cTextBlack, height: 1.4),
-          bodySmall: TextStyle(color: Color(0xff616E85), height: 1.4),
+          bodyLarge: TextStyle(
+              color: Styles.cTextBlack, height: 1.4, fontFamily: 'PingFang SC'),
+          bodyMedium: TextStyle(
+              color: Styles.cTextBlack, height: 1.4, fontFamily: 'PingFang SC'),
+          bodySmall: TextStyle(
+              color: Color(0xff616E85), height: 1.4, fontFamily: 'PingFang SC'),
         ),
         inputDecorationTheme: InputDecorationTheme(
           fillColor: const Color(0xFFEFF2F5),
@@ -73,9 +76,12 @@ class AppThemes {
         brightness: Brightness.dark,
         scaffoldBackgroundColor: const Color(0xff171823),
         textTheme: const TextTheme(
-          bodyLarge: TextStyle(color: Colors.white, height: 1.4),
-          bodyMedium: TextStyle(color: Colors.white, height: 1.4),
-          bodySmall: TextStyle(color: Color(0xffA1A7BB), height: 1.4),
+          bodyLarge: TextStyle(
+              color: Colors.white, height: 1.4, fontFamily: 'PingFang SC'),
+          bodyMedium: TextStyle(
+              color: Colors.white, height: 1.4, fontFamily: 'PingFang SC'),
+          bodySmall: TextStyle(
+              color: Color(0xffA1A7BB), height: 1.4, fontFamily: 'PingFang SC'),
         ),
         inputDecorationTheme: InputDecorationTheme(
           fillColor: const Color(0xFF323546),

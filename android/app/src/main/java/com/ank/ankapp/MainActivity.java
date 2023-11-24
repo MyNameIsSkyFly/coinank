@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import com.ank.ankapp.R;
+import com.ank.ankapp.original.App;
 import com.ank.ankapp.original.Config;
 import com.ank.ankapp.original.Global;
 import com.ank.ankapp.original.activity.CommonFragmentActivity;
@@ -198,6 +199,11 @@ public class MainActivity extends FlutterActivity {
         public void saveLoginInfo(@NonNull String userInfoWithBaseEntityJson) {
             Config.getMMKV(getContext()).putString(Config.CONF_LOGIN_USER_INFO, userInfoWithBaseEntityJson);
             AppUtils.setCookieValue(getContext());
+        }
+
+        @Override
+        public void toAndroidFloatingWindow() {
+
         }
     }
 }

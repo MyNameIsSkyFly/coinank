@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:ank_app/constants/urls.dart';
@@ -97,6 +98,10 @@ class _SettingPageState extends State<SettingPage> {
                 Obx(() {
                   return _SettingLine(
                       onTap: () async {
+                        if (Platform.isIOS) {
+                          launchUrl(Uri.parse('https://apps.apple.com'));
+                          return;
+                        }
                         var result = await Loading.wrap(
                             () async => AppUtil.needUpdate());
                         if (result.isNeed) {

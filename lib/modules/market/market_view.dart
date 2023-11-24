@@ -16,6 +16,7 @@ class MarketPage extends StatelessWidget {
     return Scaffold(
       appBar: AppTitleBar(
         customWidget: TabBar(
+          tabAlignment: TabAlignment.start,
           controller: state.tabController,
           isScrollable: true,
           labelPadding: const EdgeInsets.only(left: 15, right: 5),

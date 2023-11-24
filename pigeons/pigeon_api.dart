@@ -54,6 +54,9 @@ abstract class MessageHostApi {
   ///"data:UserInfo.toJson()
   ///}
   void saveLoginInfo(String userInfoWithBaseEntityJson);
+
+  ///安卓悬浮窗设置
+  void toAndroidFloatingWindow();
 }
 
 @FlutterApi()
