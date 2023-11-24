@@ -2,6 +2,7 @@ import 'package:ank_app/constants/app_const.dart';
 import 'package:ank_app/entity/event/theme_event.dart';
 import 'package:ank_app/modules/chart/chart_drawer/chart_drawer_logic.dart';
 import 'package:ank_app/modules/chart/chart_logic.dart';
+import 'package:ank_app/modules/main/main_logic.dart';
 import 'dart:convert';
 
 import 'package:ank_app/pigeon/host_api.g.dart';
@@ -191,4 +192,20 @@ class AppUtil {
   static String encodeBase64(String data) => base64.encode(utf8.encode(data));
 
   static String decodeBase64(String data) => utf8.decode(base64.decode(data));
+
+  static void toKLine(String exchangeName, String symbol, String baseCoin,
+      String? productType) {
+    Map<String, dynamic> map = {
+      'symbol': symbol,
+      'baseCoin': baseCoin,
+      'exchangeName': exchangeName,
+      'productType': productType ?? 'SWAP',
+    };
+    String js = "flutterOpenKline('${jsonEncode(map)}');";
+    Get.find<MainLogic>()
+        .state
+        .webViewController
+        ?.evaluateJavascript(source: js);
+    Get.find<MainLogic>().selectTab(2);
+  }
 }
