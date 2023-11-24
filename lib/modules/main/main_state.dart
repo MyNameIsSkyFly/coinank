@@ -3,6 +3,7 @@ import 'package:ank_app/modules/market/market_view.dart';
 import 'package:ank_app/modules/setting/setting_view.dart';
 import 'package:ank_app/widget/keep_alive_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 
 import '../../constants/urls.dart';
@@ -14,6 +15,7 @@ class MainState {
   RxInt selectedIndex = 0.obs;
   late List<Widget> tabPage;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  InAppWebViewController? webViewController;
 
   MainState() {
     pageController = PageController(initialPage: 0);
@@ -21,10 +23,12 @@ class MainState {
       keepAlivePage(const HomePage()),
       keepAlivePage(MarketPage()),
       keepAlivePage(CommonWebView(
-        title: null,
-        url: Urls.urlProChart,
-        urlGetter: () => Urls.urlProChart,
-      )),
+          title: null,
+          url: 'https://tv.coinsoto.com/proChart', //Urls.urlProChart,
+          // urlGetter: () => Urls.urlProChart,
+          onWebViewCreated: (controller) {
+            webViewController = controller;
+          })),
       keepAlivePage(const ChartPage()),
       keepAlivePage(SettingPage()),
     ];

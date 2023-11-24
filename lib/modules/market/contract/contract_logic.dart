@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/modules/main/main_logic.dart';
 import 'package:ank_app/modules/market/market_logic.dart';
@@ -83,6 +84,19 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
 
   void tapItem(MarkerTickerEntity item) {
     /// TODO 跳转订单流 并传参 item.symbol item.exchangeName
+    Map<String, dynamic> map = {
+      'symbol': item.symbol,
+      'baseCoin': item.baseCoin,
+      'exchangeName': item.exchangeName,
+      'productType': 'SWAP',
+    };
+    String js = "flutterOpenKline('${jsonEncode(map)}');";
+
+    Get.find<MainLogic>()
+        .state
+        .webViewController
+        ?.evaluateJavascript(source: js);
+    Get.find<MainLogic>().selectTab(2);
   }
 
   tapCollect(MarkerTickerEntity item) async {

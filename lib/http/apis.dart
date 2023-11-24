@@ -24,8 +24,8 @@ part 'apis.g.dart';
 abstract class Apis {
   static final Dio dio = Dio()
     ..interceptors.addAll([
-      TalkerDioLogger(
-          settings: const TalkerDioLoggerSettings(printRequestHeaders: true)),
+    //   TalkerDioLogger(
+    //       settings: const TalkerDioLoggerSettings(printRequestHeaders: true)),
       BaseInterceptor(),
     ])
     ..options.headers.addAll({'client': Platform.isAndroid ? 'android' : 'ios'})

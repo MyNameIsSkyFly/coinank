@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'futures_big_data_entity.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: true)
 class MarkerTickerEntity {
   MarkerTickerEntity({
     this.baseCoin,
@@ -50,6 +50,8 @@ class MarkerTickerEntity {
   factory MarkerTickerEntity.fromJson(Map<String, dynamic> json) {
     return _$MarkerTickerEntityFromJson(json);
   }
+
+  Map<String, dynamic> toJson() => _$MarkerTickerEntityToJson(this);
 }
 
 @JsonSerializable()

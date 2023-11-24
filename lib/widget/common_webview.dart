@@ -14,11 +14,12 @@ import '../util/store.dart';
 
 class CommonWebView extends StatefulWidget {
   const CommonWebView(
-      {super.key, this.title, required this.url, this.urlGetter});
+      {super.key, this.title, required this.url, this.urlGetter, this.onWebViewCreated});
 
   final String? title;
   final String url;
   final String Function()? urlGetter;
+  final void Function(InAppWebViewController controller)? onWebViewCreated;
 
   static Future<void> setCookieValue() async {
     final cookieList = <(String, String)>[];
@@ -130,6 +131,7 @@ class _CommonWebViewState extends State<CommonWebView>
               transparentBackground: true,
               javaScriptCanOpenWindowsAutomatically: true),
           onWebViewCreated: (controller) {
+            widget.onWebViewCreated?.call(controller);
             webCtrl = controller
               ..addJavaScriptHandler(
                 handlerName: 'openLogin',
@@ -140,12 +142,7 @@ class _CommonWebViewState extends State<CommonWebView>
               ..addJavaScriptHandler(
                 handlerName: 'getUserInfo',
                 callback: (arguments) {
-                  final json = {
-                    'success': true,
-                    'code': 1,
-                    'data': StoreLogic.to.loginUserInfo?.toJson(),
-                  };
-                  return jsonEncode(json);
+                  return jsonEncode(StoreLogic.to.loginUserInfo?.toJson());
                 },
               );
           },

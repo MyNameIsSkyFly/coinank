@@ -261,8 +261,8 @@
     
     XHContractModel *model = self.listArray[indexPath.row];
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate.flutterApi toKLineExchangeName:model.exchangeName symbol:model.symbol completion:^(FlutterError * error) {
-        NSLog(@"flutter - toKLine");
+    [appDelegate.flutterApi toKLineExchangeName:model.exchangeName symbol:model.symbol baseCoin:model.baseCoin productType:nil completion:^(FlutterError * error) {
+        
     }];
     [self.navigationController popViewControllerAnimated:false];
 
