@@ -65,13 +65,16 @@ class CommonWebView extends StatefulWidget {
   State<CommonWebView> createState() => _CommonWebViewState();
 }
 
-class _CommonWebViewState extends State<CommonWebView> {
+class _CommonWebViewState extends State<CommonWebView>
+    with WidgetsBindingObserver {
   InAppWebViewController? webCtrl;
 
   StreamSubscription? _themeChangeSubscription;
   StreamSubscription? _loginStatusSubscription;
   @override
   void initState() {
+    WidgetsBinding.instance.addObserver(this);
+
     _themeChangeSubscription =
         AppConst.eventBus.on<ThemeChangeEvent>().listen((event) async {
       await webCtrl?.clearCache();
@@ -85,6 +88,11 @@ class _CommonWebViewState extends State<CommonWebView> {
       reload();
     });
     super.initState();
+  }
+
+  @override
+  void didChangeLocales(List<Locale>? locales) {
+    CommonWebView.setCookieValue().then((value) => reload());
   }
 
   void reload() {

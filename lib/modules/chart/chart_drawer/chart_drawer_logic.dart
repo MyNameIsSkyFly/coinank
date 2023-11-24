@@ -16,7 +16,7 @@ class ChartDrawerLogic extends GetxController {
 
   Future<void> onRefresh() async {
     final result =
-        await Apis().getChartLeftData(locale: AppUtil.getLanguageSir());
+        await Apis().getChartLeftData(locale: AppUtil.shortLanguageName);
     if (result != null) {
       state.dataList.value = result;
     }

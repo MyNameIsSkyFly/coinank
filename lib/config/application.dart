@@ -1,4 +1,5 @@
 import 'package:ank_app/pigeon/host_api.g.dart';
+import 'package:ank_app/res/export.dart';
 import 'package:ank_app/util/store.dart';
 
 class Application {
@@ -13,6 +14,7 @@ class Application {
   Future<void> init() async {
     await StoreLogic.init();
     MessageFlutterApi.setup(FlutterApiManager());
+    EasyRefresh.defaultHeaderBuilder = () => const CupertinoHeader();
   }
 }
 

@@ -13,7 +13,7 @@ class ChartLogic extends GetxController {
       'btcData': [],
       'otherData': [],
     };
-    final result = await Apis().getChartData(locale: AppUtil.getLanguageSir());
+    final result = await Apis().getChartData(locale: AppUtil.shortLanguageName);
 
     result?.forEach((element) {
       dataMap[element.groupName]!.add(element);

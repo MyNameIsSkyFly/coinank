@@ -42,10 +42,18 @@ class _MyAppState extends State<MyApp> {
       ],
       supportedLocales: S.delegate.supportedLocales,
       localeResolutionCallback: (locale, supportedLocales) {
-        if (supportedLocales.contains(locale) == true) {
-          return locale;
-        } else {
+        if (locale?.scriptCode == 'Hant') {
+          return const Locale.fromSubtags(
+              languageCode: 'zh', scriptCode: 'Hant');
+        } else if (locale?.languageCode == 'en') {
           return const Locale('en');
+        } else if (locale?.languageCode == 'ja') {
+          return const Locale('ja');
+        } else if (locale?.languageCode == 'ko') {
+          return const Locale('ko');
+        } else {
+          return const Locale.fromSubtags(
+              languageCode: 'zh', scriptCode: 'Hans');
         }
       },
       defaultTransition: Transition.cupertino,

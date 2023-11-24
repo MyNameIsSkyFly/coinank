@@ -65,27 +65,6 @@ class AppUtil {
     }
   }
 
-  static String getLanguageSir() {
-    if (StoreLogic.to.locale == const Locale('en')) {
-      return 'en';
-    }
-    if (StoreLogic.to.locale ==
-        const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant')) {
-      return 'zh-tw';
-    }
-    if (StoreLogic.to.locale ==
-        const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans')) {
-      return 'zh';
-    }
-    if (StoreLogic.to.locale == const Locale('ja')) {
-      return 'ja';
-    }
-    if (StoreLogic.to.locale == const Locale('ko')) {
-      return 'ko';
-    }
-    return 'zh';
-  }
-
   static void changeTheme(bool? isDarkMode) {
     StoreLogic.to.saveDarkMode(isDarkMode);
     Get.changeThemeMode(isDarkMode == null
@@ -127,29 +106,33 @@ class AppUtil {
   }
 
   static String get webLanguage {
-    final locale = StoreLogic.to.locale;
-    return switch (locale) {
-      const Locale('en') => 'en/',
-      const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans') => 'zh/',
-      const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant') =>
-        'zh-tw/',
-      const Locale('ja') => 'ja/',
-      const Locale('ko') => 'ko/',
-      _ => 'zh/'
-    };
+    final locale = StoreLogic.to.locale ?? Get.deviceLocale;
+    if (locale?.languageCode == 'en') {
+      return '';
+    } else if (locale?.languageCode == 'zh' && locale?.scriptCode == 'Hant') {
+      return 'zh-tw/';
+    } else if (locale?.languageCode == 'ja') {
+      return 'ja/';
+    } else if (locale?.languageCode == 'ko') {
+      return 'ko/';
+    } else {
+      return 'zh/';
+    }
   }
 
   static String get shortLanguageName {
-    final locale = StoreLogic.to.locale;
-    return switch (locale) {
-      const Locale('en') => 'en',
-      const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans') => 'zh',
-      const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant') =>
-        'zh-tw',
-      const Locale('ja') => 'ja',
-      const Locale('ko') => 'ko',
-      _ => 'zh'
-    };
+    final locale = StoreLogic.to.locale ?? Get.deviceLocale;
+    if (locale?.languageCode == 'en') {
+      return 'en';
+    } else if (locale?.languageCode == 'zh' && locale?.scriptCode == 'Hant') {
+      return 'zh-tw';
+    } else if (locale?.languageCode == 'ja') {
+      return 'ja';
+    } else if (locale?.languageCode == 'ko') {
+      return 'ko';
+    } else {
+      return 'zh';
+    }
   }
 
   static String getRate(

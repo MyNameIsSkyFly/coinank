@@ -44,7 +44,9 @@ class _SettingPageState extends State<SettingPage> {
                           context: context,
                           builder: (context) => const _DeleteAccountDialog());
                     },
-                    title: AppUtil.decodeBase64(StoreLogic.to.loginUsername),
+                    title: logic.mosaicEmail(AppUtil.decodeBase64(
+                            StoreLogic.to.loginUsername)) ??
+                        '',
                   ),
                 const _ThemeChangeLine(),
                 _SettingLine(
@@ -484,7 +486,9 @@ class _DeleteAccountDialog extends StatelessWidget {
               onTap: () async {
                 Loading.wrap(() async {
                   await Apis()
-                      .sendCode(StoreLogic.to.loginUsername, 'logOff')
+                      .sendCode(
+                          AppUtil.decodeBase64(StoreLogic.to.loginUsername),
+                          'logOff')
                       .whenComplete(() {
                     Get.back();
                     showCupertinoModalPopup(
@@ -611,9 +615,11 @@ class _DeleteAccountInputDialogState extends State<_DeleteAccountInputDialog> {
             child: FilledButton(
                 onPressed: () async {
                   if (!(formKey.currentState?.validate() ?? false)) return;
-                  await Apis().deleteAccount(StoreLogic.to.loginUsername,
-                      pwdCtrl.text, verifyCodeCtrl.text);
-
+                  await Apis().deleteAccount(
+                      AppUtil.decodeBase64(StoreLogic.to.loginUsername),
+                      pwdCtrl.text,
+                      verifyCodeCtrl.text);
+                  Get.back();
                   StoreLogic.clearUserInfo();
                 },
                 child: Text(S.of(context).s_ok)),
