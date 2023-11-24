@@ -100,6 +100,7 @@ class ContractSearchPage extends StatelessWidget {
                     MarkerTickerEntity item = state.list[idx];
                     return _DataItem(
                       item: item,
+                      onTap: () => logic.tapItem(item),
                       onTapCollect: () => logic.tapCollect(item),
                     );
                   },

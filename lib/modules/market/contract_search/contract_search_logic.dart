@@ -49,4 +49,10 @@ class ContractSearchLogic extends GetxController {
       state.list.refresh();
     }
   }
+
+  void tapItem(MarkerTickerEntity item) {
+    Get.back();
+    AppUtil.toKLine(item.exchangeName ?? '', item.symbol ?? '',
+        item.baseCoin ?? '', 'SWAP');
+  }
 }
