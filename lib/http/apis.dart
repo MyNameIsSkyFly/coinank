@@ -24,8 +24,8 @@ part 'apis.g.dart';
 abstract class Apis {
   static final Dio dio = Dio()
     ..interceptors.addAll([
-      //   TalkerDioLogger(
-      //       settings: const TalkerDioLoggerSettings(printRequestHeaders: true)),
+      // TalkerDioLogger(
+      //     settings: const TalkerDioLoggerSettings(printRequestHeaders: true)),
       BaseInterceptor(),
     ])
     ..options.headers.addAll({'client': Platform.isAndroid ? 'android' : 'ios'})
@@ -133,5 +133,14 @@ abstract class Apis {
     @Query('offset') required int offset,
     @Query('deviceType') required String deviceType,
     @Query('pushPlatform') required String pushPlatform,
+  });
+
+  //持仓html的json
+  @GET('/api/openInterest/chart')
+  Future getExchangeOIChartJson({
+    @Query('baseCoin') String? baseCoin,
+    @Query('interval') String? interval,
+    @Query('type') String? type,
+    @Query('size') int size = 100,
   });
 }

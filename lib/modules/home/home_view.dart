@@ -538,7 +538,7 @@ class _TotalOiAndFuturesVol extends StatelessWidget {
       return Row(
         children: [
           _FirstLineItem(
-            onTap: logic.hostApi.toTotalOi,
+            onTap: () => AppNav.toExchangeOI(),
             title: S.of(context).s_total_oi,
             value: AppUtil.getLargeFormatString(
                 logic.homeInfoData.value?.openInterest ?? '0'),

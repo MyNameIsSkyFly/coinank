@@ -63,11 +63,13 @@ flutter:
     - assets/images/platform/
     - assets/images/chart_left/
     - assets/images/setting/
+    - assets/files/
 
 flutter_assets_generator:
   output_filename: assets
   class_name: Assets
   output_dir: generated/
+  filename_split_pattern: "[-_.]"
 flutter_assets:
   assets_path: assets/
   output_path: lib/generated/

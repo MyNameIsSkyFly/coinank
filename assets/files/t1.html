@@ -1,0 +1,336 @@
+<!--
+	此示例下载自 https://echarts.apache.org/examples/zh/editor.html?c=line-simple
+-->
+<!DOCTYPE html>
+<html lang="zh-CN" style="height: 100%">
+<head>
+  <meta charset="utf-8">
+  <style type="text/css">
+    .tooltip-box{
+        font-size: 0.6rem;
+        line-height: 0.8rem;
+        min-width: 8rem;
+    }
+  </style>
+</head>
+<body style="height: 100%; margin: 0">
+  <div id="container" style="height: 100%"></div>
+  
+
+  
+
+  <!-- Uncomment this line if you want to dataTool extension
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.2/dist/extension/dataTool.min.js"></script>
+  -->
+  <!-- Uncomment this line if you want to use gl extension
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts-gl@2/dist/echarts-gl.min.js"></script>
+  -->
+  <!-- Uncomment this line if you want to echarts-stat extension
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts-stat@latest/dist/ecStat.min.js"></script>
+  -->
+  <!-- Uncomment this line if you want to use map
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@4.9.0/map/js/china.js"></script>
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@4.9.0/map/js/world.js"></script>
+  -->
+  <!-- Uncomment these two lines if you want to use bmap extension
+  <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=YOUR_API_KEY"></script>
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.2/dist/extension/bmap.min.js"></script>
+  -->
+
+  <script type="text/javascript" src="./echarts.min.js"></script>
+  <script src="./numeral.min.js"></script>
+  <script src="./moment.min.js"></script>
+
+
+  
+  <script type="text/javascript">
+
+    let dom = document.getElementById('container');
+    let myChart = echarts.init(dom, null, {
+      renderer: 'canvas',
+      useDirtyRect: false
+    });
+
+
+    let options = {
+      platform:"andoird",
+      language:"zh",
+      height:"",
+      dataType:""
+    }
+
+
+    
+
+    window.addEventListener('resize', myChart.resize);
+
+
+
+    const formatAmount = function (value, local, format){
+
+      if(format === undefined){
+          format = "0,0.00";
+      }
+      if(local != undefined){
+          local = local.toLowerCase() ;
+      }
+      if("zh" == local || "zh-cn" == local){
+          if(value >= 100000000){
+              return numeral((value / 100000000)).format(format) + "亿";
+          }else if(value >= 10000){
+              return numeral((value / 10000)).format(format) + "万";
+          }else{
+              return numeral(value).format(format);
+          }
+      }else{//英文单位
+          return numeral(value).format(format+'a').toLocaleUpperCase();
+      }
+    }
+
+
+
+
+    const buildOpenInterestOptions = (data, dataOptions = {})=>{
+      
+      let xAxisData = data.tss;
+      let series = [];
+      let legendData = [];
+
+      let {exchangeName, interval, baseCoin, price, locale} = dataOptions;
+
+
+      let seriesPirceName = (baseCoin !=undefined &&  baseCoin!= "" ? baseCoin : "BTC") + " " + price;
+
+      series.push({
+          name: seriesPirceName,
+          showSymbol:false,
+          type: 'line',
+          smooth:true,
+          data: data.prices?data.prices:[],
+          yAxisIndex:1,
+          z:20
+      });
+
+      let colors = ['#39adfb','#d1bd78', '#cb8cff', '#32dfcc', '#fff550', '#ff8365', '#5186ff','#FF9BC3',"#FEC3DC" ]
+      let i = 0;
+      for(let key in data.dataValues){
+          if(exchangeName === key || "" === exchangeName || undefined === exchangeName  ){
+              legendData.push(key);
+              series.push({
+                  name: key,
+                  type: 'line',
+                  lineStyle:{
+                    width:0,
+                  },
+                  smooth: true,
+                  showSymbol:false,
+                  stack: 'Total',
+                  color:colors[i],
+                  areaStyle: {
+                    opacity: 1
+                  },
+                  emphasis: {
+                      focus: 'series'
+                  },
+                  data: data.dataValues[key]
+              });
+              i++;
+          }
+      }
+
+      let minPrice = 10000000;
+      let maxPrice = 0;
+      data.prices.forEach(v=>{
+          if(minPrice> v){
+              minPrice = v;
+          }
+          if(maxPrice < v){
+              maxPrice = v;
+          }
+      })
+
+      let inside = true;
+      let grid = {
+        left:0,
+        right:0
+      }
+
+      
+
+      let chartData =   {
+          darkMode:true,
+          grid:grid,
+          xAxis:[
+              {
+                  data:xAxisData,
+                  inverse:true,
+                  axisLabel:{
+                      formatter: (value)=>{
+                          if("1d"=== interval || "12h"===interval){
+                              return moment(parseInt(value)).format("MM-DD")
+                          }else {
+                              return moment(parseInt(value)).format("HH:mm")
+                          }
+                      }
+                  }
+              }
+          ],
+          yAxis: [
+              {
+                  type: 'value',
+                  splitLine:false,
+                  axisLabel: {
+                      formatter: (value)=>{
+                          return "$"+formatAmount(Math.abs(value), locale)
+                      },
+                      inside:inside,
+                  },
+                  // z:10,
+              },
+              {
+                  type: 'value',
+                  min: minPrice,
+                  max: maxPrice,
+                  // z:10,
+                  splitLine:false,
+                  axisLabel: {
+                      formatter: (value)=>{
+                          return "$"+formatAmount(Math.abs(value), locale)
+                      },
+                      inside:inside,
+                  }
+              }
+          ],
+        //   dataZoom: [
+        //       {
+        //           type: 'slider',
+        //           showDetail:false,
+        //           start: 0,
+        //           end: 100,
+        //           zoomOnMouseWheel:true,
+        //           moveOnMouseMove:true,
+        //           moveOnMouseWheel:false,
+        //       },
+        //       {   
+        //           type:"inside",
+        //           zoomOnMouseWheel:true,
+        //           moveOnMouseMove:true,
+        //           moveOnMouseWheel:false,
+        //           start: 0,
+        //           end: 100,
+                  
+        //       },
+        //         {
+        //           start: 0,
+        //           end: 100,
+        //           labelFormatter:  (value) => {
+        //               if("1d"==interval || "12h"==interval){
+        //                   return moment(parseInt(xAxisData[value])).format("MM-DD")
+        //               }else {
+        //                   return moment(parseInt(xAxisData[value])).format("HH:mm")
+        //               }
+        //           }
+        //       }
+        //   ],
+          tooltip: {
+              backgroundColor: "rgba(255,255,255,0.8)",
+              trigger: 'axis',
+              confine: true,
+              axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                  type: 'cross',        // 默认为直线，可选为：'line' | 'shadow'
+                  label:{
+                      formatter:(params)=>{
+                          if(params.axisDimension == "x"){
+                              return moment(parseInt(params.value)).format("YYYY-MM-DD")
+                          }else if(params.axisDimension == "y"){
+                              return "$"+formatAmount(Math.abs(params.value), locale)
+                          }
+                      }
+                  }
+              },
+              formatter:(params, ticket, callback) =>{
+
+                  console.log(params);
+
+                  let dataIndex = params[0].dataIndex;
+
+                  let h = "";
+                  
+                      h =  moment(parseInt(params[0].axisValue)).format("yyyy-MM-DD HH:mm")
+                  let detalDiv = ""
+                  let total = 0;
+                  params.forEach((item, index) => {
+                      if(item.seriesName != seriesPirceName){
+                          total += item.value==null || item.value == undefined ? 0:item.value;
+                          detalDiv += "<div><span style='display:inline-block;width:50%'>"+item.marker+item.seriesName+"</span><span class='' style='display:inline-block;width:50%'>"+ "$"+formatAmount(item.value, locale)+"</span></div>"
+                      }else{
+                          detalDiv += "<div><span style='display:inline-block;width:50%'>"+item.marker+item.seriesName+"</span><span class='' style='display:inline-block;width:50%'>"+ "$"+item.value+"</span></div>"
+                          detalDiv += "<hr/>"
+                      }
+                  });
+
+                  h += detalDiv
+                  let allDiv = "<div><span style='display:inline-block;width:50%'>ALL</span><span class='' style='display:inline-block;width:50%'>"+ "$"+formatAmount(total, locale)+"</span></div>"
+                  h += "<hr/>"+allDiv
+                  
+                  return "<div class='tooltip-box'>"+h+"</div>";
+              }
+              
+          },
+          legend: {
+              right: 50,
+              type: 'scroll'
+          },
+          series: series
+      };
+
+
+      return chartData;
+
+
+    }
+
+    const buildFunc = {
+      "openInterest":buildOpenInterestOptions
+    }
+
+
+    function setChartData(dataParams, platform,dataType, dataOptions={}){
+        
+
+        // data = 
+
+        // dom.append("func2");
+        // dom.append("<br/>");
+
+        let {data} = dataParams;
+
+        // dom.append("func3");
+        // dom.append("<br/>");
+
+        // dom.append("func4");
+        // dom.append("<br/>");
+
+        let funcTarget = buildFunc["openInterest"];
+
+        // dom.append("func5");
+        // dom.append("<br/>");
+        let option = funcTarget(data, dataOptions);
+
+        // dom.append("func6");
+        // dom.append("<br/>");
+
+        if (option && typeof option === 'object') {
+            myChart.setOption(option);
+        }
+
+        // dom.append("func7");
+        // dom.append("<br/>");
+}
+
+
+
+
+  </script>
+</body>
+</html>

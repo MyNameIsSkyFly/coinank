@@ -9,6 +9,7 @@ import 'package:ank_app/modules/market/market_logic.dart';
 import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:get/get.dart';
 
+import '../../route/router_config.dart';
 import '../main/main_logic.dart';
 
 class HomeLogic extends GetxController {
@@ -43,7 +44,8 @@ class HomeLogic extends GetxController {
       (timer) {
         if (!appVisible ||
             mainLogic.state.selectedIndex.value != 0 ||
-            isRefreshing) return;
+            isRefreshing ||
+            Get.currentRoute != RouteConfig.main) return;
         onRefresh();
       },
     );

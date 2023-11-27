@@ -20,12 +20,14 @@ class CommonWebView extends StatefulWidget {
       this.title,
       required this.url,
       this.urlGetter,
-      this.onWebViewCreated});
+      this.onWebViewCreated,
+      this.isFile = false});
 
   final String? title;
   final String url;
   final String Function()? urlGetter;
   final void Function(InAppWebViewController controller)? onWebViewCreated;
+  final bool isFile;
 
   static Future<void> setCookieValue() async {
     final cookieList = <(String, String)>[];
@@ -150,8 +152,10 @@ class _CommonWebViewState extends State<CommonWebView>
             ),
       body: SafeArea(
         child: InAppWebView(
-          initialUrlRequest:
-              URLRequest(url: WebUri(widget.urlGetter?.call() ?? widget.url)),
+          initialFile: widget.isFile ? widget.url : null,
+          initialUrlRequest: widget.isFile
+              ? null
+              : URLRequest(url: WebUri(widget.urlGetter?.call() ?? widget.url)),
           initialSettings: InAppWebViewSettings(
               userAgent: 'CoinsohoWeb-flutter',
               javaScriptEnabled: true,
@@ -174,7 +178,10 @@ class _CommonWebViewState extends State<CommonWebView>
               );
           },
           onLoadStop: (controller, url) {
-            controller.evaluateJavascript(source: "changeSymbolInfo('BTC')");
+            if (widget.url.contains('proChart') ||
+                widget.urlGetter?.call().contains('proChart') == true) {
+              controller.evaluateJavascript(source: "changeSymbolInfo('BTC')");
+            }
           },
           onConsoleMessage: (controller, consoleMessage) {
             print(consoleMessage.toString());

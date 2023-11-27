@@ -1,3 +1,5 @@
+import 'package:ank_app/modules/home/exchange_oi/exchange_oi_view.dart';
+import 'package:ank_app/modules/home/exchange_oi/exchange_oi_view.dart';
 import 'package:ank_app/modules/login/login_view.dart';
 import 'package:ank_app/modules/login/register_view.dart';
 import 'package:ank_app/modules/login/register_view.dart';
@@ -31,6 +33,10 @@ class RouteConfig {
     GetPage(
       name: RegisterPage.routeName,
       page: () => const RegisterPage(),
+    ),
+    GetPage(
+      name: ExchangeOiPage.routeName,
+      page: () => const ExchangeOiPage(),
     ),
   ];
 }
