@@ -12,10 +12,10 @@ import com.ank.ankapp.original.bean.JsonVo;
 import com.ank.ankapp.original.bean.UrlConfigVo;
 import com.ank.ankapp.original.language.LanguageUtil;
 import com.ank.ankapp.original.language.PrefUtils;
-import com.ank.ankapp.original.service.WebService;
 import com.ank.ankapp.original.utils.MLog;
 import com.ank.ankapp.original.utils.OkHttpUtil;
 import com.ank.ankapp.original.utils.SQLiteKV;
+import com.ank.ankapp.pigeon_plugin.Messages;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -31,6 +31,7 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
 
 public class App extends Application {
+    public Messages.MessageFlutterApi messageFlutterApi;
 
     @Override
     public void onCreate() {
@@ -84,7 +85,7 @@ public class App extends Application {
         // Normal app init code...
         initImageLoader(this);//初始化异步图片加载库
 
-        WebService.enqueueWork(this, new Intent());
+//        WebService.enqueueWork(this, new Intent());
         //腾讯 bugly，日志上报，google play需要去掉，以防被下架
         //CrashReport.initCrashReport(getApplicationContext(), AppUtils.getMetaDataString(this, "app_bugly"), Config.isLogDebug);
 
@@ -93,38 +94,34 @@ public class App extends Application {
         ToastUtils.setGravity(Gravity.BOTTOM);
     }
 
-    public void getUrlConfig(boolean fromLocal)
-    {
+    public void getUrlConfig(boolean fromLocal) {
         //从本地加载配置
-        if (fromLocal)
-        {
+        if (fromLocal) {
             String json = Config.getMMKV(getApplicationContext()).getString(Config.CONF_URL_CONFIG, "");
             if (TextUtils.isEmpty(json)) return;
 
             JsonVo<UrlConfigVo> jsonVo;
 
             Gson gson = new GsonBuilder().create();
-            jsonVo = gson.fromJson(json, new TypeToken<JsonVo<UrlConfigVo>>() {}.getType());
+            jsonVo = gson.fromJson(json, new TypeToken<JsonVo<UrlConfigVo>>() {
+            }.getType());
 
-            if (jsonVo != null && jsonVo.isSuccess() && jsonVo.getData().getApiPrefix() != null)
-            {
+            if (jsonVo != null && jsonVo.isSuccess() && jsonVo.getData().getApiPrefix() != null) {
                 Config.setUrlConfig(jsonVo.getData());
             }
-        }
-        else
-        {
+        } else {
             //从服务器加载配置
             OkHttpUtil.getJSON(Config.urlAppConfig, new OkHttpUtil.OnDataListener() {
                 @Override
-                public void onResponse(String url, Object obj,String json) {
+                public void onResponse(String url, Object obj, String json) {
                     //MLog.d("url config json:" + json);
                     JsonVo<UrlConfigVo> jsonVo;
 
                     Gson gson = new GsonBuilder().create();
-                    jsonVo = gson.fromJson(json, new TypeToken<JsonVo<UrlConfigVo>>() {}.getType());
+                    jsonVo = gson.fromJson(json, new TypeToken<JsonVo<UrlConfigVo>>() {
+                    }.getType());
 
-                    if (jsonVo.isSuccess())
-                    {
+                    if (jsonVo.isSuccess()) {
                         Config.getMMKV(getApplicationContext()).putString(Config.CONF_URL_CONFIG, json);
                         Config.setUrlConfig(jsonVo.getData());
                     }
@@ -156,9 +153,9 @@ public class App extends Application {
 
 
     private static Context mCot;
-    public static App getApplication()
-    {
-        return (App)mCot;
+
+    public static App getApplication() {
+        return (App) mCot;
     }
 
     public void initDayNight() {
