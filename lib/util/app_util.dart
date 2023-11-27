@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ank_app/constants/app_const.dart';
 import 'package:ank_app/entity/event/theme_event.dart';
 import 'package:ank_app/modules/chart/chart_drawer/chart_drawer_logic.dart';
@@ -6,6 +8,7 @@ import 'package:ank_app/modules/main/main_logic.dart';
 import 'dart:convert';
 
 import 'package:ank_app/pigeon/host_api.g.dart';
+import 'package:ank_app/res/export.dart';
 import 'package:ank_app/util/format_util.dart';
 import 'package:ank_app/util/store.dart';
 import 'package:dio/dio.dart';
@@ -22,6 +25,15 @@ import '../widget/common_webview.dart';
 
 class AppUtil {
   AppUtil._();
+
+  static Future<void> updateAppInfo() async {
+    await Apis().getOtherInfo(
+        deviceId: StoreLogic.to.deviceId,
+        language: shortLanguageName,
+        offset: DateTime.now().timeZoneOffset.inMilliseconds,
+        deviceType: Platform.isAndroid ? 'android' : 'ios',
+        pushPlatform: 'jpush');
+  }
 
   static Future<void> showToast(String text) async {
     if (!kIsWeb) await Fluttertoast.cancel();
