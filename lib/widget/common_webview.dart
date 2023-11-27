@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:ank_app/entity/event/theme_event.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/route/app_nav.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 
@@ -14,7 +16,11 @@ import '../util/store.dart';
 
 class CommonWebView extends StatefulWidget {
   const CommonWebView(
-      {super.key, this.title, required this.url, this.urlGetter, this.onWebViewCreated});
+      {super.key,
+      this.title,
+      required this.url,
+      this.urlGetter,
+      this.onWebViewCreated});
 
   final String? title;
   final String url;
@@ -72,10 +78,12 @@ class _CommonWebViewState extends State<CommonWebView>
 
   StreamSubscription? _themeChangeSubscription;
   StreamSubscription? _loginStatusSubscription;
+  DateTime? lastLeftTime;
+  StreamSubscription<FGBGType>? _fgbgSubscription;
+
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
-
     _themeChangeSubscription =
         AppConst.eventBus.on<ThemeChangeEvent>().listen((event) async {
       await webCtrl?.clearCache();
@@ -88,12 +96,30 @@ class _CommonWebViewState extends State<CommonWebView>
       await CommonWebView.setCookieValue();
       reload();
     });
+    startWebRefreshCounter();
     super.initState();
   }
 
   @override
   void didChangeLocales(List<Locale>? locales) {
     CommonWebView.setCookieValue().then((value) => reload());
+  }
+
+  void startWebRefreshCounter() {
+    if (!Platform.isIOS) return;
+    if (widget.url.contains('proChart') == false &&
+        widget.urlGetter?.call().contains('proChart') == false) return;
+    _fgbgSubscription = FGBGEvents.stream.listen((event) {
+      if (event == FGBGType.foreground) {
+        if (lastLeftTime != null &&
+            DateTime.now().difference(lastLeftTime!) >
+                const Duration(seconds: 15)) {
+          reload();
+        }
+      } else if (event == FGBGType.background) {
+        lastLeftTime = DateTime.now();
+      }
+    });
   }
 
   void reload() {
@@ -110,6 +136,7 @@ class _CommonWebViewState extends State<CommonWebView>
   void dispose() {
     _themeChangeSubscription?.cancel();
     _loginStatusSubscription?.cancel();
+    _fgbgSubscription?.cancel();
     super.dispose();
   }
 
