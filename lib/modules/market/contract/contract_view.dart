@@ -2,6 +2,7 @@ import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 
 import 'contract_logic.dart';
@@ -14,40 +15,47 @@ class ContractPage extends StatelessWidget {
     final logic = Get.put(ContractLogic());
     final state = Get.find<ContractLogic>().state;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+      padding: const EdgeInsets.only(top: 15),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          InkWell(
-            onTap: () => Get.toNamed(RouteConfig.contractSearch),
-            child: Container(
-              height: 32,
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              decoration: BoxDecoration(
-                color: Theme.of(context).inputDecorationTheme.fillColor,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Row(
-                children: [
-                  Image.asset(
-                    Assets.commonIconSearch,
-                    width: 16,
-                    color: Theme.of(context).textTheme.bodySmall?.color,
+          Obx(() {
+            return AnimatedSize(
+              duration: const Duration(milliseconds: 100),
+              alignment: Alignment.topCenter,
+              child: InkWell(
+                onTap: () => Get.toNamed(RouteConfig.contractSearch),
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 15),
+                  height: state.isScrollDown.value ? 32 : 0,
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).inputDecorationTheme.fillColor,
+                    borderRadius: BorderRadius.circular(20),
                   ),
-                  const Gap(10),
-                  Text(
-                    S.current.s_search,
-                    style: Styles.tsSub_12(context),
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        Assets.commonIconSearch,
+                        width: 16,
+                        color: Theme.of(context).textTheme.bodySmall?.color,
+                      ),
+                      const Gap(10),
+                      Text(
+                        S.current.s_search,
+                        style: Styles.tsSub_12(context),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
+            );
+          }),
           GetBuilder<ContractLogic>(
               id: 'sort',
               builder: (_) {
                 return Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 15, 0, 10),
+                  padding: const EdgeInsets.fromLTRB(15, 15, 15, 10),
                   child: Row(
                     children: [
                       GetBuilder<ContractLogic>(
@@ -60,7 +68,10 @@ class ContractPage extends StatelessWidget {
                                       Assets.commonIconStarFill,
                                       width: 17,
                                       height: 17,
-                                      color: Styles.cYellow,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.color,
                                     )
                                   : Image.asset(
                                       Assets.commonIconStar,
@@ -118,17 +129,21 @@ class ContractPage extends StatelessWidget {
               child: GetBuilder<ContractLogic>(
                   id: 'data',
                   builder: (_) {
-                    return ListView.builder(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      itemBuilder: (cnt, idx) {
-                        MarkerTickerEntity item = state.data![idx];
-                        return _DataItem(
-                          item: item,
-                          onTap: () => logic.tapItem(item),
-                          onTapCollect: () => logic.tapCollect(item),
-                        );
-                      },
-                      itemCount: state.data?.length ?? 0,
+                    return SlidableAutoCloseBehavior(
+                      child: ListView.builder(
+                        controller: state.scrollController,
+                        padding: const EdgeInsets.only(bottom: 10),
+                        itemBuilder: (cnt, idx) {
+                          MarkerTickerEntity item = state.data![idx];
+                          return _DataItem(
+                            key: ValueKey(idx),
+                            item: item,
+                            onTap: () => logic.tapItem(item),
+                            onTapCollect: () => logic.tapCollect(item),
+                          );
+                        },
+                        itemCount: state.data?.length ?? 0,
+                      ),
                     );
                   }),
             ),
@@ -153,101 +168,130 @@ class _DataItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5),
-        child: Row(
-          children: [
-            InkWell(
-              onTap: onTapCollect,
-              child: Image.asset(
-                Assets.commonIconStarFill,
-                width: 17,
-                height: 17,
-                color: item.follow == true
-                    ? Styles.cYellow
-                    : Theme.of(context)
-                        .textTheme
-                        .bodySmall!
-                        .color!
-                        .withOpacity(0.3),
-              ),
-            ),
-            const Gap(15),
-            ClipOval(
-              child: ImageUtil.networkImage(
-                item.coinImage ?? '',
-                width: 24,
-                height: 24,
-              ),
-            ),
-            const Gap(10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return Slidable(
+      key: key,
+      endActionPane: ActionPane(
+        extentRatio: 0.2,
+        motion: const ScrollMotion(),
+        children: [
+          CustomSlidableAction(
+            onPressed: (_) => onTapCollect?.call(),
+            backgroundColor: Styles.cMain,
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  item.baseCoin ?? '',
-                  style: Styles.tsBody_12m(context),
-                ),
-                const Gap(5),
-                Row(
-                  children: [
-                    Text(
-                      AppUtil.getLargeFormatString('${item.openInterest ?? 0}'),
-                      style: Styles.tsSub_12(context),
-                    ),
-                    const Gap(5),
-                    Text(
-                      AppUtil.getRate(
-                          rate: item.openInterestCh24, precision: 2),
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: (item.openInterestCh24 ?? 0) >= 0
-                            ? Styles.cUp(context)
-                            : Styles.cDown(context),
+                item.follow == true
+                    ? Image.asset(
+                        Assets.commonIconStarFill,
+                        width: 15,
+                        height: 15,
+                        color: Colors.white,
+                      )
+                    : Image.asset(
+                        Assets.commonIconStar,
+                        width: 15,
+                        height: 15,
+                        color: Colors.white,
                       ),
-                    ),
-                  ],
-                ),
+                const Gap(4),
+                Text(
+                  item.follow == true ? '取消自选' : '添加自选',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                    height: 1.4,
+                  ),
+                )
               ],
             ),
-            Expanded(
-              child: AutoSizeText(
-                '\$${item.price}',
-                style: Styles.tsBody_14(context).copyWith(
-                  color: Theme.of(context).textTheme.bodyMedium?.color,
-                ),
-                maxFontSize: 14,
-                minFontSize: 10,
-                maxLines: 1,
-                textAlign: TextAlign.right,
-              ),
-            ),
-            const Gap(25),
-            Container(
-              width: 65,
-              height: 27,
-              decoration: BoxDecoration(
-                color: (item.priceChangeH24 ?? 0) >= 0
-                    ? Styles.cUp(context)
-                    : Styles.cDown(context),
-                borderRadius: BorderRadius.circular(4),
-              ),
-              alignment: Alignment.center,
-              child: Text(
-                AppUtil.getRate(
-                  rate: item.priceChangeH24,
-                  precision: 2,
-                  mul: false,
-                ),
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.white,
+          ),
+        ],
+      ),
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          height: 55,
+          child: Row(
+            children: [
+              ClipOval(
+                child: ImageUtil.networkImage(
+                  item.coinImage ?? '',
+                  width: 24,
+                  height: 24,
                 ),
               ),
-            ),
-          ],
+              const Gap(10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    item.baseCoin ?? '',
+                    style: Styles.tsBody_12m(context),
+                  ),
+                  const Gap(5),
+                  Row(
+                    children: [
+                      Text(
+                        AppUtil.getLargeFormatString(
+                            '${item.openInterest ?? 0}'),
+                        style: Styles.tsSub_12(context),
+                      ),
+                      const Gap(5),
+                      Text(
+                        AppUtil.getRate(
+                            rate: item.openInterestCh24, precision: 2),
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: (item.openInterestCh24 ?? 0) >= 0
+                              ? Styles.cUp(context)
+                              : Styles.cDown(context),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              Expanded(
+                child: AutoSizeText(
+                  '\$${item.price}',
+                  style: Styles.tsBody_14(context).copyWith(
+                    color: Theme.of(context).textTheme.bodyMedium?.color,
+                  ),
+                  maxFontSize: 14,
+                  minFontSize: 10,
+                  maxLines: 1,
+                  textAlign: TextAlign.right,
+                ),
+              ),
+              const Gap(25),
+              Container(
+                width: 65,
+                height: 27,
+                decoration: BoxDecoration(
+                  color: (item.priceChangeH24 ?? 0) >= 0
+                      ? Styles.cUp(context)
+                      : Styles.cDown(context),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  AppUtil.getRate(
+                    rate: item.priceChangeH24,
+                    precision: 2,
+                    mul: false,
+                  ),
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

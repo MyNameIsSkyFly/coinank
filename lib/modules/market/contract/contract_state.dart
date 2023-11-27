@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/widget/sort_with_arrow.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ContractState {
   SortStatus oiSort = SortStatus.down;
@@ -25,7 +27,9 @@ class ContractState {
   bool isCollect = false;
   Timer? pollingTimer;
   bool isRefresh = false;
-  bool appVisible  = true;
-
+  bool appVisible = true;
+  ScrollController scrollController = ScrollController();
+  double offset = 0;
+  RxBool isScrollDown = true.obs;
   ContractState() {}
 }

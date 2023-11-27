@@ -16,8 +16,6 @@ class JPushUtil {
   final JPush _jpush = JPush();
 
   Future<void> initPlatformState() async {
-    String? platformVersion;
-
     try {
       _jpush.addEventHandler(
           onReceiveNotification: (Map<String, dynamic> message) async {
@@ -43,7 +41,7 @@ class JPushUtil {
         print('flutter onConnected: $message');
       });
     } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
+      print('Failed to get platform version.');
     }
 
     _jpush.setAuth(enable: true);

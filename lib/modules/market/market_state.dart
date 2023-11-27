@@ -16,10 +16,6 @@ class MarketState {
       keepAlivePage(const ContractMarketPage()),
       keepAlivePage(CommonWebView(url: Urls.urlLiquidation)),
       keepAlivePage(const FundingRatePage()),
-      keepAlivePage(CommonWebView(
-        url: Urls.urlPortfolio,
-        urlGetter: () => Urls.urlPortfolio,
-      )),
     ];
   }
 }

@@ -118,6 +118,11 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [kUserDefaults setObject:userInfoWithBaseEntityJson forKey:@"loginData"];
 }
 
+- (void)toAndroidFloatingWindowWithError:(FlutterError * _Nullable __autoreleasing * _Nonnull)error { 
+    
+}
+
+
 
 -(void)pushWebVCWithTitle:(NSString* )title urlStr:(NSString* )urlStr {
     XHWebViewController *controller = [[XHWebViewController alloc] init];
@@ -125,7 +130,6 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     controller.title = title;
     [self.navigationController pushViewController:controller animated:YES];
 }
-
 
 @end
 

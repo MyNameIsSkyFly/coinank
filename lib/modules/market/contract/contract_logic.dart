@@ -127,16 +127,24 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
     });
   }
 
+  _scrollListener() {
+    double offset = state.scrollController.offset;
+    state.isScrollDown.value = offset <= 0 || state.offset - offset > 0;
+    state.offset = offset;
+  }
+
   @override
   void onInit() {
     super.onInit();
     WidgetsBinding.instance.addObserver(this);
     _startTimer();
+    state.scrollController.addListener(_scrollListener);
   }
 
   @override
   void onClose() {
     WidgetsBinding.instance.removeObserver(this);
+    state.scrollController.removeListener(_scrollListener);
     state.pollingTimer?.cancel();
     state.pollingTimer = null;
     super.onClose();
