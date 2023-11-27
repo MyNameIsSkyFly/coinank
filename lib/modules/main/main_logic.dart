@@ -1,3 +1,5 @@
+import 'package:ank_app/res/export.dart';
+import 'package:ank_app/util/store.dart';
 import 'package:get/get.dart';
 
 import '../../widget/common_webview.dart';
@@ -9,6 +11,7 @@ class MainLogic extends GetxController {
   @override
   void onReady() {
     CommonWebView.setCookieValue();
+    tryLogin();
     super.onReady();
   }
 
@@ -16,6 +19,17 @@ class MainLogic extends GetxController {
     if (state.selectedIndex.value != currentIndex) {
       state.selectedIndex.value = currentIndex;
       state.pageController.jumpToPage(currentIndex);
+    }
+  }
+
+  void tryLogin() {
+    final userInfo = StoreLogic.to.loginUserInfo;
+    final pwd = AppUtil.decodeBase64(StoreLogic.to.loginPassword);
+    final username = AppUtil.decodeBase64(StoreLogic.to.loginUsername);
+    if (userInfo != null && pwd.isNotEmpty) {
+      Apis().login(username, pwd).then((value) {
+        StoreLogic.to.saveLoginUserInfo(value);
+      });
     }
   }
 }
