@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import com.ank.ankapp.original.App;
 import com.ank.ankapp.original.Config;
 import com.ank.ankapp.original.language.LanguageUtil;
 import com.ank.ankapp.original.language.PrefUtils;
+import com.ank.ankapp.original.service.FloatViewService;
 import com.ank.ankapp.original.utils.AppUtils;
 import com.ank.ankapp.original.utils.MLog;
 import com.huawei.hms.aaid.HmsInstanceId;
@@ -78,9 +80,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public void checkAndStartFloating() {
         Config.getMMKV(this).getLong(Config.CONF_CURR_TIMESNAMP, 0);
-//        if (Config.getMMKV(this).getBoolean(Config.IS_FLOAT_VIEW_SHOW, false)) {
-//            startService(new Intent(this, FloatViewService.class));
-//        }
+        if (Config.getMMKV(this).getBoolean(Config.IS_FLOAT_VIEW_SHOW, false)) {
+            startService(new Intent(this, FloatViewService.class));
+        }
     }
 
     /*
@@ -171,11 +173,11 @@ public abstract class BaseActivity extends AppCompatActivity {
             Config.redColor = ContextCompat.getColor(this, R.color.green4C);
         }
 
-//        boolean b = isServiceRunning(getApplicationContext(), FloatViewService.class.getName());
-        //MLog.d("service is running:" + b);
-//        if (!b) {
-//            handler.sendEmptyMessageDelayed(1, 1500);
-//        }
+        boolean b = isServiceRunning(getApplicationContext(), FloatViewService.class.getName());
+        MLog.d("service is running:" + b);
+        if (!b) {
+            handler.sendEmptyMessageDelayed(1, 1500);
+        }
     }
 
     public static void setStatusColor(Activity activity, boolean isTranslate, boolean isDarkText, @ColorRes int bgColor) {

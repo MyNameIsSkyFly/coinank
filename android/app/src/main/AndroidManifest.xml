@@ -2,6 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <application
         android:name="com.ank.ankapp.original.App"
         android:icon="@mipmap/ic_launcher"
@@ -38,18 +44,17 @@
         <activity
             android:name="com.ank.ankapp.original.activity.CommonWebActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:hardwareAccelerated="true"
             android:exported="true"
-            android:process=":web"
+            android:hardwareAccelerated="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity
             android:name="com.ank.ankapp.original.activity.IndicSettingActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="true"
             android:hardwareAccelerated="true"
             android:launchMode="singleTop"
-            android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity
@@ -62,9 +67,9 @@
             android:name="com.ank.ankapp.original.activity.MulKLineActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="true"
-            android:screenOrientation="portrait"
             android:hardwareAccelerated="true"
-            android:launchMode="singleTask"  />
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.ank.ankapp.original.activity.SearchBaseCoinListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -72,39 +77,68 @@
             android:hardwareAccelerated="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden"  />
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
 
         <activity
             android:name="com.ank.ankapp.original.activity.PriceChgActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:hardwareAccelerated="true"
             android:exported="true"
-            android:process=":web"
+            android:hardwareAccelerated="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity
             android:name="com.ank.ankapp.original.activity.OIChgActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:hardwareAccelerated="true"
             android:exported="true"
-            android:process=":web"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+        <activity
+            android:name=".original.activity.SelectFloatViewSymbolActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="true"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+        <activity
+            android:name=".original.activity.SetFloatTextSizeActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="true"
+            android:hardwareAccelerated="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
 
-        <service
-            android:name="com.ank.ankapp.original.service.WebService"
+        <activity
+            android:name=".original.activity.SetFloatingBgAlphaActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE"
-            android:process=":web" />
+            android:hardwareAccelerated="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+        <activity
+            android:name=".original.activity.SetFloatViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="true"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+
+        <!--        <service-->
+        <!--            android:name="com.ank.ankapp.original.service.WebService"-->
+        <!--            android:exported="true"-->
+        <!--            android:permission="android.permission.BIND_JOB_SERVICE"-->
+        <!--            android:process=":web" />-->
 
         <service
-            android:name="com.ank.ankapp.original.service.MainWebService"
+            android:name="com.ank.ankapp.original.service.FloatViewService"
             android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE"
-            />
-
+            android:process=":fv" />
 
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->

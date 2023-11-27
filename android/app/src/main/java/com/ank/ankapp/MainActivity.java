@@ -13,6 +13,7 @@ import com.ank.ankapp.original.activity.CommonFragmentActivity;
 import com.ank.ankapp.original.activity.CommonWebActivity;
 import com.ank.ankapp.original.activity.OIChgActivity;
 import com.ank.ankapp.original.activity.PriceChgActivity;
+import com.ank.ankapp.original.activity.SetFloatViewActivity;
 import com.ank.ankapp.original.language.LanguageUtil;
 import com.ank.ankapp.original.utils.AppUtils;
 import com.ank.ankapp.original.utils.UrlGet;
@@ -22,13 +23,13 @@ import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.FlutterEngine;
 
 public class MainActivity extends FlutterActivity {
-    Messages.MessageFlutterApi messageFlutterApi;
 
     @Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
         super.configureFlutterEngine(flutterEngine);
         Messages.MessageHostApi.setUp(flutterEngine.getDartExecutor(), new HostMessageHandler());
-        messageFlutterApi = new Messages.MessageFlutterApi(flutterEngine.getDartExecutor());
+        App.getApplication().messageFlutterApi = new Messages.MessageFlutterApi(flutterEngine.getDartExecutor());
+        System.out.println("App.getApplication().messageFlutterApi = " + App.getApplication().messageFlutterApi);
     }
 
     class HostMessageHandler implements Messages.MessageHostApi {
@@ -116,6 +117,7 @@ public class MainActivity extends FlutterActivity {
 
         @Override
         public void toPriceChange() {
+            System.out.println("App.getApplication().messageFlutterApi = " + App.getApplication().messageFlutterApi);
             Intent i = new Intent();
             i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             i.setClass(getActivity(), PriceChgActivity.class);
@@ -203,7 +205,10 @@ public class MainActivity extends FlutterActivity {
 
         @Override
         public void toAndroidFloatingWindow() {
-
+            Intent i = new Intent();
+            i.setClass(getActivity(), SetFloatViewActivity.class);
+            i.putExtra(Config.TYPE_TITLE, getResources().getString(R.string.s_floatviewsetting));
+            Global.showActivity(getActivity(), i);
         }
     }
 }

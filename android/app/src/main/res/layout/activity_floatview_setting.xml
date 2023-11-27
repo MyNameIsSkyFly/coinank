@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorPrimary"
+    android:layout_height="match_parent">
+
+    <include android:id="@+id/toolbar2" layout="@layout/toolbar_main"></include>
+
+
+    <RelativeLayout
+        android:id="@+id/rl_floatview_display"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/setting_item_height"
+        android:orientation="horizontal"
+        android:padding="@dimen/setting_item_padding"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/s_floatview_display"
+            android:textColor="@color/blackgray"
+            android:textSize="@dimen/font_sz_setting" />
+
+        <ImageView
+            android:id="@+id/toggle_display_floatview"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:scaleType="fitEnd"
+            android:src="@drawable/selector_toggle" />
+    </RelativeLayout>
+    <com.ruffian.library.widget.RView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        app:background_normal="@color/lv_line"
+        >
+    </com.ruffian.library.widget.RView>
+    <RelativeLayout
+        android:id="@+id/rl_floatview_lock"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/setting_item_height"
+        android:orientation="horizontal"
+        android:padding="@dimen/setting_item_padding"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/s_floatview_lock"
+            android:textColor="@color/blackgray"
+            android:textSize="@dimen/font_sz_setting" />
+
+        <ImageView
+            android:id="@+id/togle_floatview_lock"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:scaleType="fitEnd"
+            android:src="@drawable/selector_toggle" />
+    </RelativeLayout>
+    <com.ruffian.library.widget.RView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        app:background_normal="@color/lv_line"
+        >
+    </com.ruffian.library.widget.RView>
+    <RelativeLayout
+        android:id="@+id/rl_text_size"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/setting_item_height"
+        android:orientation="horizontal"
+        android:padding="@dimen/setting_item_padding"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/s_text_size"
+            android:textColor="@color/blackgray"
+            android:textSize="@dimen/font_sz_setting" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:drawableRight="@drawable/next"
+            android:text=""
+            android:textColor="@color/blackgray"
+            android:textSize="@dimen/font_sz_setting" />
+    </RelativeLayout>
+    <com.ruffian.library.widget.RView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        app:background_normal="@color/lv_line"
+        >
+    </com.ruffian.library.widget.RView>
+    <RelativeLayout
+        android:id="@+id/rl_bg_alpha"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/setting_item_height"
+        android:orientation="horizontal"
+        android:padding="@dimen/setting_item_padding"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/s_bg_alpha"
+            android:textColor="@color/blackgray"
+            android:textSize="@dimen/font_sz_setting" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:drawableRight="@drawable/next"
+            android:text=""
+            android:textColor="@color/blackgray"
+            android:textSize="@dimen/font_sz_setting" />
+    </RelativeLayout>
+    <com.ruffian.library.widget.RView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        app:background_normal="@color/lv_line"
+        >
+    </com.ruffian.library.widget.RView>
+    <RelativeLayout
+        android:id="@+id/rl_add_market"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/setting_item_height"
+        android:orientation="horizontal"
+        android:padding="@dimen/setting_item_padding"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/s_add_market"
+            android:textColor="@color/blackgray"
+            android:textSize="@dimen/font_sz_setting" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:drawableRight="@drawable/next"
+            android:text=""
+            android:textColor="@color/blackgray"
+            android:textSize="@dimen/font_sz_setting" />
+    </RelativeLayout>
+    <com.ruffian.library.widget.RView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        app:background_normal="@color/lv_line"
+        >
+    </com.ruffian.library.widget.RView>
+    <ListView
+        android:id="@+id/lv_floatview_ticker"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:divider="@color/lv_line"
+        android:dividerHeight="0.3dp"
+        android:cacheColorHint="@android:color/transparent"
+        />
+</LinearLayout>

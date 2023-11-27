@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:ank_app/constants/urls.dart';
+import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/route/app_nav.dart';
 import 'package:ank_app/util/store.dart';
@@ -48,6 +49,13 @@ class _SettingPageState extends State<SettingPage> {
                     title: logic.mosaicEmail(AppUtil.decodeBase64(
                             StoreLogic.to.loginUsername)) ??
                         '',
+                  ),
+                if (Platform.isAndroid)
+                  _SettingLine(
+                    onTap: () {
+                      MessageHostApi().toAndroidFloatingWindow();
+                    },
+                    title: S.of(context).s_floatviewsetting,
                   ),
                 const _ThemeChangeLine(),
                 _SettingLine(
