@@ -42,6 +42,7 @@ dependencies:
   package_info_plus: ^5.0.1
   event_bus: ^2.0.0
   jpush_flutter: ^2.5.0
+  flutter_fgbg: ^0.3.0
 
 dev_dependencies:
   flutter_test:
