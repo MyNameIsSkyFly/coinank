@@ -57,7 +57,7 @@ class ExchangeOiLogic extends GetxController {
       'price': S.current.s_price,
     };
     var jsSource = '''
-setChartData($jsonData, ${Platform.isAndroid ? "android" : "ios"}, "openInterest", ${jsonEncode(options)});    
+setChartData($jsonData, "${Platform.isAndroid ? "android" : "ios"}", "openInterest", ${jsonEncode(options)});    
     ''';
     webCtrl?.evaluateJavascript(source: jsSource);
   }
