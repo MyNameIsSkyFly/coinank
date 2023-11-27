@@ -1,3 +1,9 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:ank_app/res/export.dart';
+import 'package:ank_app/route/app_nav.dart';
+import 'package:ank_app/util/store.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:jpush_flutter/jpush_flutter.dart';
@@ -15,22 +21,26 @@ class JPushUtil {
     try {
       _jpush.addEventHandler(
           onReceiveNotification: (Map<String, dynamic> message) async {
-        print("flutter onReceiveNotification: $message");
+        print('flutter onReceiveNotification: $message');
+        _handeData(message);
       }, onOpenNotification: (Map<String, dynamic> message) async {
-        print("flutter onOpenNotification: $message");
+        print('flutter onOpenNotification: $message');
+        _jpush.setBadge(0);
+        _handeData(message);
       }, onReceiveMessage: (Map<String, dynamic> message) async {
-        print("flutter onReceiveMessage: $message");
+        print('flutter onReceiveMessage: $message');
+        _handeData(message);
       }, onReceiveNotificationAuthorization:
               (Map<String, dynamic> message) async {
-        print("flutter onReceiveNotificationAuthorization: $message");
+        print('flutter onReceiveNotificationAuthorization: $message');
       }, onNotifyMessageUnShow: (Map<String, dynamic> message) async {
-        print("flutter onNotifyMessageUnShow: $message");
+        print('flutter onNotifyMessageUnShow: $message');
       }, onInAppMessageShow: (Map<String, dynamic> message) async {
-        print("flutter onInAppMessageShow: $message");
+        print('flutter onInAppMessageShow: $message');
       }, onInAppMessageClick: (Map<String, dynamic> message) async {
-        print("flutter onInAppMessageClick: $message");
+        print('flutter onInAppMessageClick: $message');
       }, onConnected: (Map<String, dynamic> message) async {
-        print("flutter onConnected: $message");
+        print('flutter onConnected: $message');
       });
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
@@ -38,7 +48,7 @@ class JPushUtil {
 
     _jpush.setAuth(enable: true);
     _jpush.setup(
-      appKey: 'b475c5612b06aa19f6057a6a', //你自己应用的 AppKey
+      appKey: '8de9d5e306e08c49a078ab5f',
       channel: 'developer-default',
       production: !kDebugMode,
       debug: kDebugMode,
@@ -46,10 +56,28 @@ class JPushUtil {
     _jpush.applyPushAuthority(
         const NotificationSettingsIOS(sound: true, alert: true, badge: true));
 
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    _jpush.getRegistrationID().then((rid) {
+    _jpush.getRegistrationID().then((rid) async {
       print('getRegistrationID:$rid');
+      if (rid.isNotEmpty) {
+        await StoreLogic.to.saveDeviceId(rid);
+        await AppUtil.updateAppInfo();
+      }
     });
-    _jpush.setAlias('coinank_tester');
+  }
+
+  _handeData(Map<String, dynamic> message) {
+    if (Platform.isAndroid) {
+      final extra = message['extras']['cn.jpush.android.EXTRA'] as String;
+      final map = jsonDecode(extra) as Map<String, dynamic>;
+      if (map.containsKey('url')) {
+        AppNav.openWebUrl(url: map['url'] as String, title: 'Coinank');
+      }
+    } else {
+      final extra = message['extras'] as String;
+      final map = jsonDecode(extra) as Map<String, dynamic>;
+      if (map.containsKey('url')) {
+        AppNav.openWebUrl(url: map['url'] as String, title: 'Coinank');
+      }
+    }
   }
 }

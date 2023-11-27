@@ -144,6 +144,14 @@ class StoreLogic extends GetxController {
     if (time == 0) return DateTime.fromMillisecondsSinceEpoch(0);
     return DateTime.fromMillisecondsSinceEpoch(time);
   }
+
+  Future<bool> saveDeviceId(String deviceId) {
+    return _SpUtil()._saveString(_SpKeys.deviceId, deviceId);
+  }
+
+  String get deviceId {
+    return _SpUtil()._getString(_SpKeys.deviceId);
+  }
 }
 
 class _SpKeys {
@@ -160,6 +168,8 @@ class _SpKeys {
   static const loginUsername = 'loginUsername';
   static const loginUserInfo = 'loginUserInfo';
   static const lastSendCodeTime = 'lastSendCodeTime';
+
+  static const deviceId = 'deviceId';
 }
 
 class _SpUtil {

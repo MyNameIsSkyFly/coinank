@@ -42,19 +42,27 @@ class _MyAppState extends State<MyApp> {
       ],
       supportedLocales: S.delegate.supportedLocales,
       localeResolutionCallback: (locale, supportedLocales) {
-        if (locale?.scriptCode == 'Hant') {
-          return const Locale.fromSubtags(
-              languageCode: 'zh', scriptCode: 'Hant');
-        } else if (locale?.languageCode == 'en') {
-          return const Locale('en');
-        } else if (locale?.languageCode == 'ja') {
-          return const Locale('ja');
-        } else if (locale?.languageCode == 'ko') {
-          return const Locale('ko');
-        } else {
-          return const Locale.fromSubtags(
-              languageCode: 'zh', scriptCode: 'Hans');
+        if(StoreLogic.to.locale != null){
+          return StoreLogic.to.locale;
         }
+        Locale local;
+        if (locale?.scriptCode == 'Hant') {
+          local =
+              const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant');
+        } else if (locale?.languageCode == 'en') {
+          local = const Locale('en');
+        } else if (locale?.languageCode == 'ja') {
+          local = const Locale('ja');
+        } else if (locale?.languageCode == 'ko') {
+          local = const Locale('ko');
+        } else {
+          local =
+              const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans');
+        }
+        if(StoreLogic.to.locale == null){
+          StoreLogic.to.saveLocale(locale);
+        }
+        return locale;
       },
       defaultTransition: Transition.cupertino,
       locale: StoreLogic.to.locale,

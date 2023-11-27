@@ -118,10 +118,20 @@ abstract class Apis {
     @Query('type') String type = '1',
   });
 
-//行情删除关注
+  //行情删除关注
   @GET('/api/userFollow/delFollow')
   Future getDelFollow({
     @Query('baseCoin') required String baseCoin,
     @Query('type') String type = '1',
+  });
+
+  //保存信息(极光注册的设备id,当前应用语言等等)
+  @GET('/api/User/saveSetting')
+  Future getOtherInfo({
+    @Query('deviceId') required String deviceId,
+    @Query('language') required String language,
+    @Query('offset') required int offset,
+    @Query('deviceType') required String deviceType,
+    @Query('pushPlatform') required String pushPlatform,
   });
 }
