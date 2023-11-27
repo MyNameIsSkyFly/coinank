@@ -43,6 +43,8 @@ dependencies:
   event_bus: ^2.0.0
   jpush_flutter: ^2.5.0
   flutter_fgbg: ^0.3.0
+  #cell 侧滑按钮
+  flutter_slidable: ^3.0.1
 
 dev_dependencies:
   flutter_test:

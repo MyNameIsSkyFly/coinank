@@ -32,6 +32,10 @@ class FundingRateState {
   Timer? pollingTimer;
   bool isRefresh = false;
   bool appVisible  = true;
+
+  double offset = 0;
+  RxBool isScrollDown = true.obs;
+
   FundingRateState() {
     ///Initialize variables
   }

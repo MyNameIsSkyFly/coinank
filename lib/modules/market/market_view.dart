@@ -32,7 +32,6 @@ class MarketPage extends StatelessWidget {
             Tab(text: S.current.s_futures_market),
             Tab(text: S.current.s_liquidation_data),
             Tab(text: S.current.s_funding_rate),
-            Tab(text: S.current.s_portfolio),
           ],
         ),
       ),

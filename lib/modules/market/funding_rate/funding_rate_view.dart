@@ -37,54 +37,73 @@ class FundingRatePage extends StatelessWidget {
                 );
               }),
               const Gap(10),
-              InkWell(
-                onTap: () => logic.tapTime(),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  height: 32,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).inputDecorationTheme.fillColor,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    children: [
-                      Obx(() {
-                        return Text(
-                          state.time.isEmpty
-                              ? S.current.s_current
-                              : state.time.value,
-                          style: Styles.tsBody_14m(context),
-                        );
-                      }),
-                      const Gap(5),
-                      Icon(
-                        Icons.keyboard_arrow_down,
-                        size: 15,
-                        color: Theme.of(context).iconTheme.color,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const Spacer(),
-              SizedBox(
-                width: 14,
-                height: 14,
-                child: IconButton(
-                  visualDensity: VisualDensity.compact,
-                  padding: EdgeInsets.zero,
-                  onPressed: () => logic.tapSearch(),
-                  icon: Image.asset(
-                    Assets.commonIconSearch,
-                    height: 14,
-                    width: 14,
-                    color: Theme.of(context).iconTheme.color,
+              Expanded(
+                child: InkWell(
+                  onTap: () => logic.tapTime(),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    height: 32,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).inputDecorationTheme.fillColor,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      children: [
+                        Obx(() {
+                          return Text(
+                            state.time.isEmpty
+                                ? S.current.s_current
+                                : state.time.value,
+                            style: Styles.tsBody_14m(context),
+                          );
+                        }),
+                        const Gap(5),
+                        const Spacer(),
+                        Icon(
+                          Icons.keyboard_arrow_down,
+                          size: 15,
+                          color: Theme.of(context).iconTheme.color,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ],
           ),
         ),
+        Obx(() {
+          return AnimatedSize(
+            duration: const Duration(milliseconds: 100),
+            alignment: Alignment.topCenter,
+            child: InkWell(
+              onTap: () => logic.tapSearch(),
+              child: Container(
+                margin: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+                height: state.isScrollDown.value ? 32 : 0,
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).inputDecorationTheme.fillColor,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Row(
+                  children: [
+                    Image.asset(
+                      Assets.commonIconSearch,
+                      width: 16,
+                      color: Theme.of(context).textTheme.bodySmall?.color,
+                    ),
+                    const Gap(10),
+                    Text(
+                      S.current.s_search,
+                      style: Styles.tsSub_12(context),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }),
         Row(
           children: [
             Container(
@@ -139,6 +158,7 @@ class FundingRatePage extends StatelessWidget {
             refreshOnStart: true,
             child: Obx(() {
               return SingleChildScrollView(
+                controller: state.scrollController,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

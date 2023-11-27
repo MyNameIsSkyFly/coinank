@@ -2,7 +2,6 @@ import 'package:ank_app/modules/home/exchange_oi/exchange_oi_view.dart';
 import 'package:ank_app/modules/home/exchange_oi/exchange_oi_view.dart';
 import 'package:ank_app/modules/login/login_view.dart';
 import 'package:ank_app/modules/login/register_view.dart';
-import 'package:ank_app/modules/login/register_view.dart';
 import 'package:ank_app/modules/main/main_binding.dart';
 import 'package:ank_app/modules/main/main_view.dart';
 import 'package:ank_app/modules/market/contract_market_search/contract_market_search_binding.dart';

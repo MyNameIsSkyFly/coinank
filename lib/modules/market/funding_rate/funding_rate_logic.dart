@@ -181,11 +181,16 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin {
       }
     });
   }
-
+  _scrollListener() {
+    double offset = state.scrollController.offset;
+    state.isScrollDown.value = offset <= 0 || state.offset - offset > 0;
+    state.offset = offset;
+  }
   @override
   void onInit() {
     super.onInit();
     WidgetsBinding.instance.addObserver(this);
+    state.scrollController.addListener(_scrollListener);
     state.titleController.addListener(_updateContent);
     state.contentController.addListener(_updateTitle);
     _startTimer();
@@ -193,9 +198,10 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin {
 
   @override
   void onClose() {
+    WidgetsBinding.instance.removeObserver(this);
+    state.scrollController.removeListener(_scrollListener);
     state.titleController.removeListener(_updateContent);
     state.contentController.removeListener(_updateTitle);
-    WidgetsBinding.instance.removeObserver(this);
     state.pollingTimer?.cancel();
     state.pollingTimer = null;
     super.onClose();
