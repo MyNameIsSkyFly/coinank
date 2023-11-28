@@ -13,9 +13,7 @@ class PriceChangePage extends StatelessWidget {
   static const String priceChange = '/home/priceChange';
 
   final logic = Get.find<PriceChangeLogic>();
-  final state = Get
-      .find<PriceChangeLogic>()
-      .state;
+  final state = Get.find<PriceChangeLogic>().state;
 
   @override
   Widget build(BuildContext context) {
@@ -86,24 +84,27 @@ class PriceChangePage extends StatelessWidget {
                               itemCount: state.contentDataList.length,
                               itemBuilder: (cnt, idx) {
                                 MarkerTickerEntity item =
-                                state.contentDataList.toList()[idx];
-                                return Row(
-                                  children: [
-                                    ClipOval(
-                                      child: ImageUtil.networkImage(
-                                        item.coinImage ?? '',
-                                        width: 24,
-                                        height: 24,
+                                    state.contentDataList.toList()[idx];
+                                return InkWell(
+                                  onTap: () => logic.tapItem(item),
+                                  child: Row(
+                                    children: [
+                                      ClipOval(
+                                        child: ImageUtil.networkImage(
+                                          item.coinImage ?? '',
+                                          width: 24,
+                                          height: 24,
+                                        ),
                                       ),
-                                    ),
-                                    const Gap(10),
-                                    Expanded(
-                                      child: Text(
-                                        item.baseCoin ?? '',
-                                        style: Styles.tsBody_12m(context),
+                                      const Gap(10),
+                                      Expanded(
+                                        child: Text(
+                                          item.baseCoin ?? '',
+                                          style: Styles.tsBody_12m(context),
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 );
                               },
                             ),
@@ -111,7 +112,7 @@ class PriceChangePage extends StatelessWidget {
                           Expanded(
                             child: SizedBox(
                               height:
-                              max(state.contentDataList.length * 48, 480),
+                                  max(state.contentDataList.length * 48, 480),
                               child: ListView.builder(
                                 padding: EdgeInsets.zero,
                                 controller: state.contentController,
@@ -163,11 +164,7 @@ class _DataItem extends StatelessWidget {
           MarkerTickerEntity item = logic.state.contentDataList.toList()[idx];
           List<String> textList = ['${item.price}'];
           List<Color> colorList = [
-            Theme
-                .of(context)
-                .textTheme
-                .bodyMedium!
-                .color!,
+            Theme.of(context).textTheme.bodyMedium!.color!,
           ];
           if (logic.state.isPrice) {
             textList.addAll([
@@ -212,11 +209,7 @@ class _DataItem extends StatelessWidget {
               AppUtil.getRate(rate: item.openInterestCh24, precision: 2),
             ]);
             colorList.addAll([
-              Theme
-                  .of(context)
-                  .textTheme
-                  .bodyMedium!
-                  .color!,
+              Theme.of(context).textTheme.bodyMedium!.color!,
               (item.openInterestCh1 ?? 0) >= 0
                   ? Styles.cUp(context)
                   : Styles.cDown(context),
@@ -228,12 +221,15 @@ class _DataItem extends StatelessWidget {
                   : Styles.cDown(context),
             ]);
           }
-          return Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              textList[index],
-              style:
-              Styles.tsBody_12(context).copyWith(color: colorList[index]),
+          return InkWell(
+            onTap: () => logic.tapItem(item),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                textList[index],
+                style:
+                    Styles.tsBody_12(context).copyWith(color: colorList[index]),
+              ),
             ),
           );
         },

@@ -40,10 +40,10 @@ class ContractSearchLogic extends GetxController {
       AppNav.toLogin();
     } else {
       if (item.follow == true) {
-        final data = await Apis().getDelFollow(baseCoin: item.baseCoin!);
+        await Apis().getDelFollow(baseCoin: item.baseCoin!);
         item.follow = false;
       } else {
-        final data = await Apis().getAddFollow(baseCoin: item.baseCoin!);
+        await Apis().getAddFollow(baseCoin: item.baseCoin!);
         item.follow = true;
       }
       state.list.refresh();
@@ -51,7 +51,6 @@ class ContractSearchLogic extends GetxController {
   }
 
   void tapItem(MarkerTickerEntity item) {
-    Get.back();
     AppUtil.toKLine(item.exchangeName ?? '', item.symbol ?? '',
         item.baseCoin ?? '', 'SWAP');
   }
