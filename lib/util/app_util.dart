@@ -204,6 +204,7 @@ class AppUtil {
 
   static void toKLine(String exchangeName, String symbol, String baseCoin,
       String? productType) {
+    Get.back();
     Map<String, dynamic> map = {
       'symbol': symbol,
       'baseCoin': baseCoin,

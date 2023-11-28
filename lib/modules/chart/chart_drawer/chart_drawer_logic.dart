@@ -1,6 +1,6 @@
+import 'package:ank_app/constants/urls.dart';
 import 'package:ank_app/entity/chart_left_entity.dart';
 import 'package:ank_app/modules/main/main_logic.dart';
-import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:get/get.dart';
 
@@ -10,7 +10,7 @@ class ChartDrawerLogic extends GetxController {
   final ChartDrawerState state = ChartDrawerState();
 
   tapItem(Subs sub) {
-    MessageHostApi().toChartWeb(sub.path ?? '', sub.title ?? '');
+    AppNav.openWebUrl(url: '${Urls.h5Prefix}${sub.path}', title: sub.title);
     Get.find<MainLogic>().state.scaffoldKey.currentState?.closeDrawer();
   }
 

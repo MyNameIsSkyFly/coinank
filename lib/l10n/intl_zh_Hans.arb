@@ -269,5 +269,8 @@
   "oiDistribution": "持仓分布",
   "languageName": "简体中文",
   "welcomeBack": "欢迎回来！",
-  "email": "电子邮箱"
+  "email": "电子邮箱",
+  "hotData": "热门数据",
+  "btcData": "BTC数据",
+  "otherData": "其他数据"
 }

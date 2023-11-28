@@ -48,11 +48,13 @@ abstract class Apis {
       @Query('sortType') required String sortType});
 
   @GET('/api/instruments/agg')
-  Future<TickersDataEntity?> getFuturesBigData(
-      {@Query('page') required int page,
-      @Query('size') required int size,
-      @Query('sortBy') required String sortBy,
-      @Query('sortType') required String sortType});
+  Future<TickersDataEntity?> getFuturesBigData({
+    @Query('page') required int page,
+    @Query('size') required int size,
+    @Query('sortBy') String? sortBy,
+    @Query('sortType') required String sortType,
+    @Query('sort') String? sort,
+  });
 
   @GET('/api/fundingRate/top?type=LAST&size=3')
   Future<List<HomeFundRateEntity>?> getHomeFundRateData();
@@ -141,5 +143,18 @@ abstract class Apis {
     @Query('interval') String? interval,
     @Query('type') String? type,
     @Query('size') int size = 100,
+  });
+
+  //合约持仓2
+  @GET('/api/instruments/aggForIos')
+  Future<TickersDataEntity?> getFuturesBigData2({
+    @Query('page') required int page,
+    @Query('size') required int size,
+    @Query('sortBy') String? sortBy,
+    @Query('sortType') required String sortType,
+    @Query('sort') String? sort,
+    @Query('openInterest') String? openInterest,
+    @Query('isFollow') int? isFollow,
+    @Query('type') String? type,
   });
 }

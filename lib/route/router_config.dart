@@ -1,4 +1,6 @@
 import 'package:ank_app/modules/home/exchange_oi/exchange_oi_view.dart';
+import 'package:ank_app/modules/home/price_change/price_change_binding.dart';
+import 'package:ank_app/modules/home/price_change/price_change_view.dart';
 import 'package:ank_app/modules/login/login_view.dart';
 import 'package:ank_app/modules/login/register_view.dart';
 import 'package:ank_app/modules/main/main_binding.dart';
@@ -36,5 +38,9 @@ class RouteConfig {
       name: ExchangeOiPage.routeName,
       page: () => const ExchangeOiPage(),
     ),
+    GetPage(
+        name: PriceChangePage.priceChange,
+        page: () => PriceChangePage(),
+        binding: PriceChangeBinding()),
   ];
 }

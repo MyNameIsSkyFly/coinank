@@ -77,9 +77,9 @@ class AppThemes {
         scaffoldBackgroundColor: const Color(0xff171823),
         textTheme: const TextTheme(
           bodyLarge: TextStyle(
-              color: Colors.white, height: 1.4, fontFamily: 'PingFang SC'),
+              color: Color(0xffEFF2F5), height: 1.4, fontFamily: 'PingFang SC'),
           bodyMedium: TextStyle(
-              color: Colors.white, height: 1.4, fontFamily: 'PingFang SC'),
+              color: Color(0xffEFF2F5), height: 1.4, fontFamily: 'PingFang SC'),
           bodySmall: TextStyle(
               color: Color(0xffA1A7BB), height: 1.4, fontFamily: 'PingFang SC'),
         ),

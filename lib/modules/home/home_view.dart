@@ -1,4 +1,5 @@
 import 'package:ank_app/constants/urls.dart';
+import 'package:ank_app/modules/home/price_change/price_change_view.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/route/app_nav.dart';
 import 'package:ank_app/util/store.dart';
@@ -375,7 +376,8 @@ class _HotMarket extends StatelessWidget {
             children: [
               Expanded(
                 child: _OutlinedContainer(
-                  onTap: logic.hostApi.toOiChange,
+                  onTap: () => Get.toNamed(PriceChangePage.priceChange,
+                      arguments: {'isPrice': false}),
                   child: Obx(() {
                     return Column(
                       children: [
@@ -406,7 +408,8 @@ class _HotMarket extends StatelessWidget {
               const Gap(9),
               Expanded(
                 child: _OutlinedContainer(
-                  onTap: logic.hostApi.toPriceChange,
+                  onTap: () => Get.toNamed(PriceChangePage.priceChange,
+                      arguments: {'isPrice': true}),
                   child: Obx(() {
                     return Column(
                       children: [
@@ -733,6 +736,8 @@ class _DataWithIcon extends StatelessWidget {
             child: Text(
               title,
               style: Styles.tsBody_12m(context),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
             ),
           ),
           RateWithSign(rate: value),
