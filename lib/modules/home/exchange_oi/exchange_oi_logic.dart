@@ -56,8 +56,9 @@ class ExchangeOiLogic extends GetxController {
       'locale': AppUtil.shortLanguageName,
       'price': S.current.s_price,
     };
+    var platformString = Platform.isAndroid ? 'android' : 'ios';
     var jsSource = '''
-setChartData($jsonData, "${Platform.isAndroid ? "android" : "ios"}", "openInterest", ${jsonEncode(options)});    
+setChartData($jsonData, "$platformString", "openInterest", ${jsonEncode(options)});    
     ''';
     webCtrl?.evaluateJavascript(source: jsSource);
   }
