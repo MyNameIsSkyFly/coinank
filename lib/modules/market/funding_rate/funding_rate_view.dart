@@ -134,7 +134,7 @@ class FundingRatePage extends StatelessWidget {
                                 padding: const EdgeInsets.only(right: 5),
                                 child: ClipOval(
                                   child: Image.asset(
-                                    'assets/images/platform/${state.topList[idx]}.png',
+                                    'assets/images/platform/${state.topList[idx].toLowerCase()}.png',
                                     width: 15,
                                   ),
                                 ),

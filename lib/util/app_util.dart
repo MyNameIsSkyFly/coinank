@@ -1,12 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 
-import 'package:ank_app/constants/app_const.dart';
 import 'package:ank_app/entity/event/theme_event.dart';
 import 'package:ank_app/modules/chart/chart_drawer/chart_drawer_logic.dart';
 import 'package:ank_app/modules/chart/chart_logic.dart';
 import 'package:ank_app/modules/main/main_logic.dart';
-import 'dart:convert';
-
 import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/util/format_util.dart';
@@ -20,7 +18,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-import '../generated/l10n.dart';
 import '../widget/common_webview.dart';
 
 class AppUtil {

@@ -41,7 +41,7 @@ class _MyAppState extends State<MyApp> {
       ],
       supportedLocales: S.delegate.supportedLocales,
       localeResolutionCallback: (locale, supportedLocales) {
-        if(StoreLogic.to.locale != null){
+        if (StoreLogic.to.locale != null) {
           return StoreLogic.to.locale;
         }
         Locale local;
@@ -58,10 +58,10 @@ class _MyAppState extends State<MyApp> {
           local =
               const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans');
         }
-        if(StoreLogic.to.locale == null){
-          StoreLogic.to.saveLocale(locale);
+        if (StoreLogic.to.locale == null) {
+          StoreLogic.to.saveLocale(local);
         }
-        return locale;
+        return local;
       },
       defaultTransition: Transition.cupertino,
       locale: StoreLogic.to.locale,
@@ -77,7 +77,8 @@ class _MyAppState extends State<MyApp> {
       builder: EasyLoading.init(
         builder: (context, child) {
           return MediaQuery(
-            data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+            data: MediaQuery.of(context)
+                .copyWith(textScaler: const TextScaler.linear(1.0)),
             child: child!,
           );
         },

@@ -153,7 +153,7 @@ class ContractMarketPage extends StatelessWidget {
                             children: [
                               ClipOval(
                                 child: Image.asset(
-                                  'assets/images/platform/${item.exchangeName}.png',
+                                  'assets/images/platform/${item.exchangeName?.toLowerCase()}.png',
                                   width: 24,
                                 ),
                               ),
