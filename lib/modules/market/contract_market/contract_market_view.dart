@@ -147,65 +147,69 @@ class ContractMarketPage extends StatelessWidget {
                       itemCount: state.dataList?.length ?? 0,
                       itemBuilder: (cnt, idx) {
                         ContractMarketEntity item = state.dataList![idx];
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: Row(
-                            children: [
-                              ClipOval(
-                                child: Image.asset(
-                                  'assets/images/platform/${item.exchangeName?.toLowerCase()}.png',
-                                  width: 24,
+                        return InkWell(
+                          onTap: () => AppUtil.toKLine(item.exchangeName ?? '',
+                              item.symbol ?? '', item.baseCoin ?? '', 'SWAP'),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Row(
+                              children: [
+                                ClipOval(
+                                  child: Image.asset(
+                                    'assets/images/platform/${item.exchangeName?.toLowerCase()}.png',
+                                    width: 24,
+                                  ),
                                 ),
-                              ),
-                              const Gap(10),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    item.exchangeName ?? '',
-                                    style: Styles.tsBody_12m(context),
-                                  ),
-                                  const Gap(5),
-                                  Text(
-                                    item.symbol ?? '',
-                                    style: Styles.tsSub_10(context)
-                                        .copyWith(fontSize: 9),
-                                  ),
-                                ],
-                              ),
-                              const Spacer(),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    '\$${item.lastPrice ?? 0}',
-                                    style: Styles.tsBody_12(context),
-                                  ),
-                                  const Gap(3),
-                                  Text(
-                                    '\$${AppUtil.getLargeFormatString('${item.turnover24h ?? 0}')}',
-                                    style: Styles.tsSub_12(context),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                width: 130,
-                                child: Column(
+                                const Gap(10),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      item.exchangeName ?? '',
+                                      style: Styles.tsBody_12m(context),
+                                    ),
+                                    const Gap(5),
+                                    Text(
+                                      item.symbol ?? '',
+                                      style: Styles.tsSub_10(context)
+                                          .copyWith(fontSize: 9),
+                                    ),
+                                  ],
+                                ),
+                                const Spacer(),
+                                Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Text(
-                                      '\$${AppUtil.getLargeFormatString('${item.oiUSD ?? 0}')}',
+                                      '\$${item.lastPrice ?? 0}',
                                       style: Styles.tsBody_12(context),
                                     ),
                                     const Gap(3),
                                     Text(
-                                      '${((item.fundingRate ?? 0) * 100).toStringAsFixed(4)}%',
+                                      '\$${AppUtil.getLargeFormatString('${item.turnover24h ?? 0}')}',
                                       style: Styles.tsSub_12(context),
                                     ),
                                   ],
                                 ),
-                              ),
-                            ],
+                                SizedBox(
+                                  width: 130,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        '\$${AppUtil.getLargeFormatString('${item.oiUSD ?? 0}')}',
+                                        style: Styles.tsBody_12(context),
+                                      ),
+                                      const Gap(3),
+                                      Text(
+                                        '${((item.fundingRate ?? 0) * 100).toStringAsFixed(4)}%',
+                                        style: Styles.tsSub_12(context),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       },

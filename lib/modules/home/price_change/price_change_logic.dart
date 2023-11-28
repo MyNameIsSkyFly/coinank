@@ -61,7 +61,7 @@ class PriceChangeLogic extends FullLifeCycleController with FullLifeCycleMixin {
         List.generate(state.topList.length, (index) => SortStatus.normal);
     statusList[idx] = state.statusList[idx];
     state.statusList.value = List.from(statusList);
-    await onRefresh();
+    await onRefresh(true);
   }
 
   void tapItem(MarkerTickerEntity item) {
@@ -69,13 +69,17 @@ class PriceChangeLogic extends FullLifeCycleController with FullLifeCycleMixin {
         item.baseCoin ?? '', 'SWAP');
   }
 
-  Future<void> onRefresh() async {
+  Future<void> onRefresh(bool showLoading) async {
     state.isRefresh = true;
+    if (showLoading) {
+      Loading.show();
+    }
     if (state.isPrice) {
       await getBigData();
     } else {
       await getOiData();
     }
+    Loading.dismiss();
     state.isRefresh = false;
   }
 
@@ -110,7 +114,7 @@ class PriceChangeLogic extends FullLifeCycleController with FullLifeCycleMixin {
     state.pollingTimer =
         Timer.periodic(const Duration(seconds: 5), (timer) async {
       if (!state.isRefresh && state.appVisible) {
-        await onRefresh();
+        await onRefresh(false);
       }
     });
   }

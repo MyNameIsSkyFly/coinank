@@ -63,7 +63,7 @@ class PriceChangePage extends StatelessWidget {
           ),
           Expanded(
             child: EasyRefresh(
-              onRefresh: () => logic.onRefresh(),
+              onRefresh: () => logic.onRefresh(false),
               refreshOnStart: true,
               child: Obx(() {
                 return SingleChildScrollView(

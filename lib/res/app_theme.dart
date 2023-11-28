@@ -67,7 +67,7 @@ class AppThemes {
               statusBarIconBrightness: Brightness.light,
               statusBarBrightness: Brightness.dark,
             )),
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Color(0xffEFF2F5)),
         cardColor: const Color(0xff1F202C),
         bottomAppBarTheme: const BottomAppBarTheme(color: Color(0xff1F202C)),
         shadowColor: Colors.black12,

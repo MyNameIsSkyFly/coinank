@@ -28,7 +28,7 @@ class ExchangeOiLogic extends GetxController {
   }
 
   Future<void> loadAllBaseCoins() async {
-    final result = await Apis().getAllBaseCoins();
+    final result = await Apis().getMarketAllCurrencyData();
     final converted = result
         ?.map((e) => (
               e,

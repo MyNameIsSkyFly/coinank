@@ -157,10 +157,11 @@ class _CommonWebViewState extends State<CommonWebView>
               ? null
               : URLRequest(url: WebUri(widget.urlGetter?.call() ?? widget.url)),
           initialSettings: InAppWebViewSettings(
-              userAgent: 'CoinsohoWeb-flutter',
-              javaScriptEnabled: true,
-              transparentBackground: true,
-              javaScriptCanOpenWindowsAutomatically: true),
+            userAgent: 'CoinsohoWeb-flutter',
+            javaScriptEnabled: true,
+            transparentBackground: true,
+            javaScriptCanOpenWindowsAutomatically: true,
+          ),
           onWebViewCreated: (controller) {
             widget.onWebViewCreated?.call(controller);
             webCtrl = controller

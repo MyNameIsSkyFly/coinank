@@ -45,6 +45,7 @@ dependencies:
   flutter_fgbg: ^0.3.0
   #cell 侧滑按钮
   flutter_slidable: ^3.0.1
+  lottie: ^2.7.0
 
 dev_dependencies:
   build_runner: ^2.4.6
@@ -64,6 +65,7 @@ flutter:
     - assets/images/chart_left/
     - assets/images/setting/
     - assets/files/
+    - assets/lottie/
 
 flutter_assets_generator:
   output_filename: assets

@@ -1,8 +1,7 @@
 import 'package:ank_app/constants/urls.dart';
+import 'package:ank_app/modules/home/long_short_ratio/long_short_ratio_view.dart';
 import 'package:ank_app/modules/home/price_change/price_change_view.dart';
 import 'package:ank_app/res/export.dart';
-import 'package:ank_app/route/app_nav.dart';
-import 'package:ank_app/util/store.dart';
 import 'package:ank_app/widget/rate_with_sign.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -306,7 +305,7 @@ class _OiDistribution extends StatelessWidget {
                   child: Text(S.of(context).oiDistribution,
                       style: Styles.tsBody_16m(context))),
               _FilledContainer(
-                onTap: logic.hostApi.toTakerBuyLongShortRatio,
+                onTap: () => Get.toNamed(LongShortRatioPage.routeName),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 child: Row(

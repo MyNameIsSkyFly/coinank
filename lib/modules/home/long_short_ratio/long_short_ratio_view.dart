@@ -1,0 +1,336 @@
+import 'package:ank_app/entity/short_rate_entity.dart';
+import 'package:ank_app/res/export.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+
+import 'long_short_ratio_logic.dart';
+
+class LongShortRatioPage extends StatelessWidget {
+  LongShortRatioPage({super.key});
+
+  static const String routeName = '/home/long_short_ratio';
+
+  final logic = Get.find<LongShortRatioLogic>();
+  final state = Get.find<LongShortRatioLogic>().state;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppTitleBar(
+        title: S.current.s_buysel_longshort_ratio,
+      ),
+      body: Obx(() {
+        return state.isLoading.value
+            ? const LottieIndicator()
+            : Column(
+                children: [
+                  SizedBox(
+                    height: 44,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Obx(() {
+                            return ScrollablePositionedList.builder(
+                              itemScrollController: state.itemScrollController,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              physics: const ClampingScrollPhysics(),
+                              padding: const EdgeInsets.only(left: 15),
+                              itemCount: state.headerTitles.length,
+                              itemBuilder: (cnt, idx) {
+                                String type = state.headerTitles.toList()[idx];
+                                return InkWell(
+                                  onTap: () => logic.tapHeader(type),
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 10),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 2),
+                                    height: 24,
+                                    decoration: BoxDecoration(
+                                      color: type == state.type.value
+                                          ? Styles.cMain.withOpacity(0.1)
+                                          : Colors.transparent,
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    child: Text(
+                                      type,
+                                      style: type == state.type.value
+                                          ? Styles.tsMain_14m
+                                          : Styles.tsSub_14(context),
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          }),
+                        ),
+                        InkWell(
+                          onTap: () => logic.toSearch(),
+                          child: Container(
+                            padding: const EdgeInsets.only(left: 8),
+                            color: Theme.of(context).colorScheme.tertiary,
+                            width: 39,
+                            height: 24,
+                            alignment: Alignment.centerLeft,
+                            child: Image.asset(
+                              Assets.commonIconSearch,
+                              width: 16,
+                              height: 16,
+                              color: Theme.of(context).iconTheme.color,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  const Gap(10),
+                  Expanded(
+                    child: EasyRefresh(
+                      onRefresh: logic.onRefresh,
+                      child: CustomScrollView(
+                        slivers: [
+                          SliverToBoxAdapter(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Obx(() {
+                                    return Text(
+                                      '${S.current.s_buysel_longshort_ratio}(${state.type})',
+                                      style: Styles.tsBody_14m(context),
+                                    );
+                                  }),
+                                  InkWell(
+                                    onTap: () => logic.chooseTime(true),
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 5),
+                                      height: 24,
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context)
+                                            .inputDecorationTheme
+                                            .fillColor,
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Obx(() {
+                                            return Text(
+                                              state.longSortTime.value,
+                                              style: Styles.tsSub_12m(context),
+                                            );
+                                          }),
+                                          const Gap(10),
+                                          Image.asset(
+                                            Assets.commonIconArrowDown,
+                                            width: 10,
+                                            color: Theme.of(context)
+                                                .iconTheme
+                                                .color,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SliverToBoxAdapter(child: Gap(10)),
+                          SliverToBoxAdapter(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15),
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: 125,
+                                    child: Text(S.current.s_exchange_name,
+                                        style: Styles.tsSub_12(context)),
+                                  ),
+                                  Text(S.current.s_longs,
+                                      style: Styles.tsSub_12(context)),
+                                  const Spacer(),
+                                  Text(S.current.s_shorts,
+                                      style: Styles.tsSub_12(context))
+                                ],
+                              ),
+                            ),
+                          ),
+                          SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (cnt, index) {
+                                ShortRateEntity item =
+                                    state.dataList.toList()[index];
+                                return Container(
+                                  height: 50,
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 15),
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 125,
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            ClipOval(
+                                              child: Image.asset(
+                                                'assets/images/platform/${item.exchangeName?.toLowerCase()}.png',
+                                                width: 24,
+                                              ),
+                                            ),
+                                            const Gap(10),
+                                            Text(item.exchangeName ?? '',
+                                                style:
+                                                    Styles.tsBody_12m(context))
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                          child: Stack(
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Flexible(
+                                                    flex:
+                                                        ((item.longRatio ?? 0) *
+                                                                1000)
+                                                            .toInt(),
+                                                    child: Container(
+                                                      color:
+                                                          Styles.cUp(context),
+                                                      height: 20,
+                                                    ),
+                                                  ),
+                                                  Flexible(
+                                                    flex: ((item.shortRatio ??
+                                                                0) *
+                                                            1000)
+                                                        .toInt(),
+                                                    child: Container(
+                                                      color:
+                                                          Styles.cDown(context),
+                                                      height: 20,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 10),
+                                                height: 20,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      AppUtil.getRate(
+                                                              rate: item
+                                                                  .longRatio,
+                                                              precision: 2)
+                                                          .substring(1),
+                                                      style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      AppUtil.getRate(
+                                                              rate: item
+                                                                  .shortRatio,
+                                                              precision: 2)
+                                                          .substring(1),
+                                                      style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                              childCount: state.dataList.length,
+                            ),
+                          ),
+                          const SliverToBoxAdapter(child: Gap(15)),
+                          SliverToBoxAdapter(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Obx(() {
+                                    return Text(
+                                      '${S.current.s_takerbuy_longshort_ratio_chart}(${state.type})',
+                                      style: Styles.tsBody_14m(context),
+                                    );
+                                  }),
+                                  InkWell(
+                                    onTap: () => logic.chooseTime(false),
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 5),
+                                      height: 24,
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context)
+                                            .inputDecorationTheme
+                                            .fillColor,
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Obx(() {
+                                            return Text(
+                                              state.webTime.value,
+                                              style: Styles.tsSub_12m(context),
+                                            );
+                                          }),
+                                          const Gap(10),
+                                          Image.asset(
+                                            Assets.commonIconArrowDown,
+                                            width: 10,
+                                            color: Theme.of(context)
+                                                .iconTheme
+                                                .color,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              );
+      }),
+    );
+  }
+}
