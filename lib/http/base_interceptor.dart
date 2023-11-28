@@ -42,19 +42,19 @@ class BaseInterceptor extends Interceptor {
 
     switch (statusCode) {
       case HttpStatus.badRequest:
-        errorMessage = "Bad Request";
+        errorMessage = 'Bad Request';
       case HttpStatus.unauthorized:
-        errorMessage = "Unauthorized";
+        errorMessage = 'Unauthorized';
       case HttpStatus.forbidden:
-        errorMessage = "Forbidden";
+        errorMessage = 'Forbidden';
       case HttpStatus.notFound:
-        errorMessage = "Not Found";
+        errorMessage = 'Not Found';
       case HttpStatus.internalServerError:
-        errorMessage = "Internal Server Error";
+        errorMessage = 'Internal Server Error';
       case HttpStatus.badGateway:
         errorMessage = S.current.theServerIsBusyPleaseTryAgainLater;
       case HttpStatus.serviceUnavailable:
-        errorMessage = "Service Unavailable";
+        errorMessage = 'Service Unavailable';
       default:
         switch (err.type) {
           case DioExceptionType.connectionTimeout:

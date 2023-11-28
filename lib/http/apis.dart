@@ -6,6 +6,7 @@ import 'package:ank_app/entity/chart_entity.dart';
 import 'package:ank_app/entity/chart_left_entity.dart';
 import 'package:ank_app/entity/contract_market_entity.dart';
 import 'package:ank_app/entity/marker_funding_rate_entity.dart';
+import 'package:ank_app/entity/oi_entity.dart';
 import 'package:ank_app/entity/test_entity.dart';
 import 'package:ank_app/entity/user_info_entity.dart';
 import 'package:ank_app/http/base_interceptor.dart';
@@ -23,8 +24,8 @@ part 'apis.g.dart';
 abstract class Apis {
   static final Dio dio = Dio()
     ..interceptors.addAll([
-      // TalkerDioLogger(
-      //     settings: const TalkerDioLoggerSettings(printRequestHeaders: true)),
+      TalkerDioLogger(
+          settings: const TalkerDioLoggerSettings(printResponseData: false)),
       BaseInterceptor(),
     ])
     ..options.headers.addAll({'client': Platform.isAndroid ? 'android' : 'ios'})
@@ -139,10 +140,10 @@ abstract class Apis {
   //持仓html的json
   @GET('/api/openInterest/chart')
   Future getExchangeOIChartJson({
+    @Query('size') String size = '100',
     @Query('baseCoin') String? baseCoin,
     @Query('interval') String? interval,
     @Query('type') String? type,
-    @Query('size') int size = 100,
   });
 
   //合约持仓2
@@ -157,4 +158,14 @@ abstract class Apis {
     @Query('isFollow') int? isFollow,
     @Query('type') String? type,
   });
+
+  //持仓html的json
+  @GET('/api/openInterest/all')
+  Future<List<OIEntity>?> getExchangeIOList({
+    @Query('baseCoin') String? baseCoin,
+  });
+
+  //获取所有币种
+  @GET('/api/baseCoin')
+  Future<List<String>?> getAllBaseCoins();
 }

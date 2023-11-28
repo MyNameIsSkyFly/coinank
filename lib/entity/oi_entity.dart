@@ -6,14 +6,14 @@ part 'oi_entity.g.dart';
 class OIEntity {
   OIEntity();
 
-  String? coinCount;
-  String? coinValue;
+  num? coinCount;
+  num? coinValue;
   String? baseCoin;
   String? exchangeName;
-  String? rate;
-  String? change1H;
-  String? change4H;
-  String? change24H;
+  num? rate;
+  num? change1H;
+  num? change4H;
+  num? change24H;
 
   factory OIEntity.fromJson(Map<String, dynamic> json) {
     return _$OIEntityFromJson(json);

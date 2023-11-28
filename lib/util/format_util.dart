@@ -13,9 +13,9 @@ class FormatUtil {
     double tempValue = 0;
     double remainder = 0;
     if ((amount > wan) && (amount < yi)) {
-      tempValue = (amount ~/ wan).toDouble();
-      remainder = (amount % wan);
-      if (remainder < (wan ~/ 2)) {
+      tempValue = amount / wan;
+      remainder = amount % wan;
+      if (remainder < (wan / 2)) {
         value = formatNumber(tempValue, 2);
       } else {
         value = formatNumber(tempValue, 2);
@@ -28,8 +28,8 @@ class FormatUtil {
     } else {
       if (amount > yi) {
         tempValue = amount / yi;
-        remainder = (amount % yi);
-        if (remainder < (yi ~/ 2)) {
+        remainder = amount % yi;
+        if (remainder < (yi / 2)) {
           value = formatNumber(tempValue, 2);
         } else {
           value = formatNumber(tempValue, 2);

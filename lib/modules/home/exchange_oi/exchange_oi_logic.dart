@@ -15,17 +15,34 @@ class ExchangeOiLogic extends GetxController {
     interval: '1d',
   ).obs;
   final oiList = RxList<OIEntity>();
+  final coinList = RxList<(String, bool)>();
   String? jsonData;
   InAppWebViewController? webCtrl;
 
   @override
   void onInit() {
-    initData();
+    loadData();
     loadOIData();
+    loadAllBaseCoins();
     super.onInit();
   }
 
-  void initData() {}
+  Future<void> loadAllBaseCoins() async {
+    final result = await Apis().getAllBaseCoins();
+    final converted = result
+        ?.map((e) => (
+              e,
+              e.toUpperCase() == menuParamEntity.value.baseCoin?.toUpperCase()
+            ))
+        .toList();
+    coinList.assignAll(converted ?? []);
+  }
+
+  Future<void> loadData() async {
+    final result = await Apis()
+        .getExchangeIOList(baseCoin: menuParamEntity.value.baseCoin);
+    oiList.assignAll(result ?? []);
+  }
 
   Future<void> loadOIData() async {
     final t1 = DateTime.now().millisecondsSinceEpoch;
