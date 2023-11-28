@@ -166,7 +166,7 @@ class FundingRatePage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          padding: const EdgeInsets.only(left: 15),
+                          margin: const EdgeInsets.only(left: 15),
                           width: 100,
                           child: ListView.builder(
                             shrinkWrap: true,
