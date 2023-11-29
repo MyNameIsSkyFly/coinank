@@ -17,7 +17,7 @@ class ContractMarketLogic extends FullLifeCycleController
     if (type == state.type) return;
     state.type = type;
     update(['header']);
-    await onRefresh();
+    await onRefresh(true);
   }
 
   toSearch() async {
@@ -30,9 +30,9 @@ class ContractMarketLogic extends FullLifeCycleController
       state.itemScrollController.scrollTo(
         index: state.headerTitles!.indexOf(type),
         alignment: 0.5,
-        duration: const Duration(milliseconds: 500),
+        duration: const Duration(milliseconds: 200),
       );
-      await onRefresh();
+      await onRefresh(true);
     }
   }
 
@@ -80,17 +80,16 @@ class ContractMarketLogic extends FullLifeCycleController
     if (state.sortBy == sortBy && state.sortType == sortType) return;
     state.sortType = sortType;
     state.sortBy = sortBy;
-    onRefresh();
+    onRefresh(true);
   }
 
   Future<void> getAllData() async {
-    if (state.isLoading) {
+    if (state.isLoading.value) {
       await Future.wait([getHeaderData(), _getContentData()]).then((value) {
-        state.isLoading = false;
-        update();
+        state.isLoading.value = false;
       });
     } else {
-      await onRefresh();
+      await onRefresh(false);
     }
   }
 
@@ -107,8 +106,12 @@ class ContractMarketLogic extends FullLifeCycleController
     state.isRefresh = false;
   }
 
-  Future<void> onRefresh() async {
+  Future<void> onRefresh(bool showLoading) async {
+    if (showLoading) {
+      Loading.show();
+    }
     await _getContentData();
+    Loading.dismiss();
     update(['content']);
   }
 
@@ -119,7 +122,7 @@ class ContractMarketLogic extends FullLifeCycleController
           !state.isRefresh &&
           Get.find<MarketLogic>().state.tabController?.index == 1 &&
           state.appVisible) {
-        await onRefresh();
+        await onRefresh(false);
       }
     });
   }

@@ -35,6 +35,7 @@ class FundingRateState {
 
   double offset = 0;
   RxBool isScrollDown = true.obs;
+  RxBool isLoading = true.obs;
 
   FundingRateState() {
     ///Initialize variables

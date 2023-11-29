@@ -152,64 +152,25 @@ class FundingRatePage extends StatelessWidget {
             ),
           ],
         ),
-        Expanded(
-          child: EasyRefresh(
-            onRefresh: () => logic.onRefresh(showLoading: false),
-            refreshOnStart: true,
-            child: Obx(() {
-              return SingleChildScrollView(
-                controller: state.scrollController,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(left: 15),
-                          width: 100,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            padding: EdgeInsets.zero,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemExtent: 48,
-                            itemCount: state.contentDataList.length,
-                            itemBuilder: (cnt, idx) {
-                              MarkerFundingRateEntity item =
-                                  state.contentDataList.toList()[idx];
-                              return Row(
-                                children: [
-                                  ClipOval(
-                                    child: ImageUtil.networkImage(
-                                      AppConst.imageHost(item.symbol ?? ''),
-                                      width: 24,
-                                      height: 24,
-                                    ),
-                                  ),
-                                  const Gap(10),
-                                  Expanded(
-                                    child: Text(
-                                      item.symbol ?? '',
-                                      style: Styles.tsBody_12m(context),
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        ),
-                        Expanded(
-                          child: SizedBox(
-                            height: max(state.contentDataList.length * 48, 480),
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              controller: state.contentController,
-                              scrollDirection: Axis.horizontal,
-                              physics: const ClampingScrollPhysics(),
-                              itemCount: state.topList.length,
-                              shrinkWrap: true,
-                              itemBuilder: (cnt, index) {
-                                return SizedBox(
+        Obx(() {
+          return state.isLoading.value
+              ? const LottieIndicator(
+                  margin: EdgeInsets.only(top: 150),
+                )
+              : Expanded(
+                  child: EasyRefresh(
+                    onRefresh: () => logic.onRefresh(showLoading: false),
+                    child: Obx(() {
+                      return SingleChildScrollView(
+                        controller: state.scrollController,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.only(left: 15),
                                   width: 100,
                                   child: ListView.builder(
                                     shrinkWrap: true,
@@ -221,75 +182,130 @@ class FundingRatePage extends StatelessWidget {
                                     itemBuilder: (cnt, idx) {
                                       MarkerFundingRateEntity item =
                                           state.contentDataList.toList()[idx];
-                                      String mapKey =
-                                          state.topList.toList()[index];
-                                      return Obx(() {
-                                        Exchange? exchangeItem =
-                                            item.cmap![mapKey];
-                                        if (!state.isCmap.value) {
-                                          exchangeItem = item.umap![mapKey];
-                                        }
-                                        return Align(
-                                          alignment: Alignment.centerLeft,
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                AppUtil.getRate(
-                                                    rate: exchangeItem
-                                                        ?.fundingRate,
-                                                    precision: 4,
-                                                    showAdd: false),
-                                                style: Styles.tsBody_12(context)
-                                                    .copyWith(
-                                                  color: AppUtil
-                                                      .getColorWithFundRate(
-                                                          exchangeItem
-                                                              ?.fundingRate),
-                                                ),
-                                              ),
-                                              if (!state.isHide.value)
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 4),
-                                                  child: Text(
-                                                    AppUtil.getRate(
-                                                        rate: exchangeItem
-                                                            ?.estimatedRate,
-                                                        precision: 4,
-                                                        showAdd: false),
-                                                    style: Styles.tsBody_12(
-                                                            context)
-                                                        .copyWith(
-                                                      color: AppUtil
-                                                          .getColorWithFundRate(
-                                                              exchangeItem
-                                                                  ?.estimatedRate),
-                                                    ),
-                                                  ),
-                                                ),
-                                            ],
+                                      return Row(
+                                        children: [
+                                          ClipOval(
+                                            child: ImageUtil.networkImage(
+                                              AppConst.imageHost(
+                                                  item.symbol ?? ''),
+                                              width: 24,
+                                              height: 24,
+                                            ),
                                           ),
-                                        );
-                                      });
+                                          const Gap(10),
+                                          Expanded(
+                                            child: Text(
+                                              item.symbol ?? '',
+                                              style: Styles.tsBody_12m(context),
+                                            ),
+                                          ),
+                                        ],
+                                      );
                                     },
                                   ),
-                                );
-                              },
+                                ),
+                                Expanded(
+                                  child: SizedBox(
+                                    height: max(
+                                        state.contentDataList.length * 48, 480),
+                                    child: ListView.builder(
+                                      padding: EdgeInsets.zero,
+                                      controller: state.contentController,
+                                      scrollDirection: Axis.horizontal,
+                                      physics: const ClampingScrollPhysics(),
+                                      itemCount: state.topList.length,
+                                      shrinkWrap: true,
+                                      itemBuilder: (cnt, index) {
+                                        return SizedBox(
+                                          width: 100,
+                                          child: ListView.builder(
+                                            shrinkWrap: true,
+                                            padding: EdgeInsets.zero,
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
+                                            itemExtent: 48,
+                                            itemCount:
+                                                state.contentDataList.length,
+                                            itemBuilder: (cnt, idx) {
+                                              MarkerFundingRateEntity item =
+                                                  state.contentDataList
+                                                      .toList()[idx];
+                                              String mapKey =
+                                                  state.topList.toList()[index];
+                                              return Obx(() {
+                                                Exchange? exchangeItem =
+                                                    item.cmap![mapKey];
+                                                if (!state.isCmap.value) {
+                                                  exchangeItem =
+                                                      item.umap![mapKey];
+                                                }
+                                                return Align(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        AppUtil.getRate(
+                                                            rate: exchangeItem
+                                                                ?.fundingRate,
+                                                            precision: 4,
+                                                            showAdd: false),
+                                                        style: Styles.tsBody_12(
+                                                                context)
+                                                            .copyWith(
+                                                          color: AppUtil
+                                                              .getColorWithFundRate(
+                                                                  exchangeItem
+                                                                      ?.fundingRate),
+                                                        ),
+                                                      ),
+                                                      if (!state.isHide.value)
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(top: 4),
+                                                          child: Text(
+                                                            AppUtil.getRate(
+                                                                rate: exchangeItem
+                                                                    ?.estimatedRate,
+                                                                precision: 4,
+                                                                showAdd: false),
+                                                            style: Styles
+                                                                    .tsBody_12(
+                                                                        context)
+                                                                .copyWith(
+                                                              color: AppUtil
+                                                                  .getColorWithFundRate(
+                                                                      exchangeItem
+                                                                          ?.estimatedRate),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                    ],
+                                                  ),
+                                                );
+                                              });
+                                            },
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            }),
-          ),
-        ),
+                      );
+                    }),
+                  ),
+                );
+        }),
       ],
     );
   }

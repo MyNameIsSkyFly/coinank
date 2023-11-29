@@ -98,7 +98,7 @@ class LongShortRatioPage extends StatelessWidget {
                   child: Column(
                     children: [
                       if (state.isLoading.value)
-                        LottieIndicator(height: AppConst.height),
+                        const LottieIndicator(),
                       if (!state.isLoading.value)
                         Column(
                           children: [

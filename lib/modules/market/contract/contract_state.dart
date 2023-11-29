@@ -31,5 +31,6 @@ class ContractState {
   ScrollController scrollController = ScrollController();
   double offset = 0;
   RxBool isScrollDown = true.obs;
+  RxBool isLoading = true.obs;
   ContractState() {}
 }

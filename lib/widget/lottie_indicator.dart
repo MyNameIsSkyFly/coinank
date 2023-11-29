@@ -6,18 +6,18 @@ class LottieIndicator extends StatelessWidget {
   final double? size;
   final double? height;
   final AlignmentGeometry? alignment;
-  final EdgeInsetsGeometry? padding;
+  final EdgeInsetsGeometry? margin;
 
   const LottieIndicator(
-      {super.key, this.height, this.size, this.alignment, this.padding});
+      {super.key, this.height, this.size, this.alignment, this.margin});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: height ?? double.infinity,
+      height: height ?? 80,
       alignment: alignment ?? Alignment.topCenter,
-      padding: padding ?? EdgeInsets.only(top: AppConst.height * 0.3),
+      margin: margin ?? EdgeInsets.only(top: AppConst.height * 0.3),
       child: Lottie.asset(
         StoreLogic.to.isDarkMode == true
             ? 'assets/lottie/loading_dark.json'

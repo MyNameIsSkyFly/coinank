@@ -3,8 +3,6 @@ import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/modules/main/main_logic.dart';
 import 'package:ank_app/modules/market/market_logic.dart';
 import 'package:ank_app/res/export.dart';
-import 'package:ank_app/route/app_nav.dart';
-import 'package:ank_app/util/store.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -78,7 +76,7 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
     if (state.sortBy == sortBy && state.sortType == sortType) return;
     state.sortType = sortType;
     state.sortBy = sortBy;
-    await onRefresh();
+    await onRefresh(showLoading: true);
   }
 
   void tapItem(MarkerTickerEntity item) {
@@ -91,17 +89,20 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
       AppNav.toLogin();
     } else {
       if (item.follow == true) {
-        final data = await Apis().getDelFollow(baseCoin: item.baseCoin!);
+        await Apis().getDelFollow(baseCoin: item.baseCoin!);
         item.follow = false;
       } else {
-        final data = await Apis().getAddFollow(baseCoin: item.baseCoin!);
+        await Apis().getAddFollow(baseCoin: item.baseCoin!);
         item.follow = true;
       }
       sortCollect();
     }
   }
 
-  Future<void> onRefresh() async {
+  Future<void> onRefresh({bool showLoading = false}) async {
+    if (showLoading) {
+      Loading.show();
+    }
     state.isRefresh = true;
     final data = await Apis().getFuturesBigData(
       page: 1,
@@ -109,6 +110,10 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
       sortBy: state.sortBy,
       sortType: state.sortType,
     );
+    Loading.dismiss();
+    if (state.isLoading.value) {
+      state.isLoading.value = false;
+    }
     state.originalData = data?.list;
     sortCollect();
     state.isRefresh = false;
@@ -131,6 +136,12 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
     double offset = state.scrollController.offset;
     state.isScrollDown.value = offset <= 0 || state.offset - offset > 0;
     state.offset = offset;
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+    onRefresh();
   }
 
   @override
