@@ -17,7 +17,7 @@ class LongShortRatioState {
   bool isRefresh = false;
   bool appVisible = true;
   InAppWebViewController? webCtrl;
-
+  ShortRateEntity? jsData;
   LongShortRatioState() {
     ///Initialize variables
   }

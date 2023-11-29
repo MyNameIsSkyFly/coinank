@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:ank_app/entity/short_rate_entity.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/custom_bottom_sheet/custom_bottom_sheet_view.dart';
 import 'package:flutter/material.dart';
@@ -58,18 +59,20 @@ class LongShortRatioLogic extends FullLifeCycleController
         if (state.webTime.value != v) {
           state.webTime.value = v;
           await getJSData(true);
+          _updateChart();
         }
       }
     }
   }
 
   Future<void> getAllData() async {
-    await Future.wait([
+    await Future.wait<dynamic>([
       getHeaderData(),
       getData(false),
       getJSData(false),
     ]).then((value) {
       state.isLoading.value = false;
+      _updateChart();
     });
   }
 
@@ -84,6 +87,7 @@ class LongShortRatioLogic extends FullLifeCycleController
     ]).then((value) {
       Loading.dismiss();
       state.isRefresh = false;
+      _updateChart();
     });
   }
 
@@ -110,10 +114,14 @@ class LongShortRatioLogic extends FullLifeCycleController
         interval: state.webTime.value,
         baseCoin: state.type.value,
         exchangeName: 'Binance');
+    state.jsData = data;
     Loading.dismiss();
-    final json = {'code': '1', 'success': true, 'data': data};
+  }
+
+  void _updateChart() {
+    final json = {'code': '1', 'success': true, 'data': state.jsData};
     final options = {
-      'exchangeName': data?.exchangeName,
+      'exchangeName': state.jsData?.exchangeName,
       'interval': state.webTime.value,
       'baseCoin': state.type.value,
       'locale': AppUtil.shortLanguageName,
