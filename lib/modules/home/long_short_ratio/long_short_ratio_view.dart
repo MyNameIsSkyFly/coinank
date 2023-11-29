@@ -22,78 +22,87 @@ class LongShortRatioPage extends StatelessWidget {
         title: S.current.s_buysel_longshort_ratio,
       ),
       body: Obx(() {
-        return state.isLoading.value
-            ? const LottieIndicator()
-            : Column(
-                children: [
-                  SizedBox(
-                    height: 44,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Obx(() {
-                            return ScrollablePositionedList.builder(
-                              itemScrollController: state.itemScrollController,
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              physics: const ClampingScrollPhysics(),
-                              padding: const EdgeInsets.only(left: 15),
-                              itemCount: state.headerTitles.length,
-                              itemBuilder: (cnt, idx) {
-                                String type = state.headerTitles.toList()[idx];
-                                return InkWell(
-                                  onTap: () => logic.tapHeader(type),
-                                  child: Container(
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 10),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10, vertical: 2),
-                                    height: 24,
-                                    decoration: BoxDecoration(
-                                      color: type == state.type.value
-                                          ? Styles.cMain.withOpacity(0.1)
-                                          : Colors.transparent,
-                                      borderRadius: BorderRadius.circular(4),
-                                    ),
-                                    child: Text(
-                                      type,
-                                      style: type == state.type.value
-                                          ? Styles.tsMain_14m
-                                          : Styles.tsSub_14(context),
-                                    ),
+        return Column(
+          children: [
+            if (!state.isLoading.value)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: SizedBox(
+                  height: 44,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Obx(() {
+                          return ScrollablePositionedList.builder(
+                            itemScrollController: state.itemScrollController,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            physics: const ClampingScrollPhysics(),
+                            padding: const EdgeInsets.only(left: 15),
+                            itemCount: state.headerTitles.length,
+                            itemBuilder: (cnt, idx) {
+                              String type = state.headerTitles.toList()[idx];
+                              return InkWell(
+                                onTap: () => logic.tapHeader(type),
+                                child: Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 2),
+                                  height: 24,
+                                  decoration: BoxDecoration(
+                                    color: type == state.type.value
+                                        ? Styles.cMain.withOpacity(0.1)
+                                        : Colors.transparent,
+                                    borderRadius: BorderRadius.circular(4),
                                   ),
-                                );
-                              },
-                            );
-                          }),
-                        ),
-                        InkWell(
-                          onTap: () => logic.toSearch(),
-                          child: Container(
-                            padding: const EdgeInsets.only(left: 8),
-                            color: Theme.of(context).colorScheme.tertiary,
-                            width: 39,
-                            height: 24,
-                            alignment: Alignment.centerLeft,
-                            child: Image.asset(
-                              Assets.commonIconSearch,
-                              width: 16,
-                              height: 16,
-                              color: Theme.of(context).iconTheme.color,
-                            ),
+                                  child: Text(
+                                    type,
+                                    style: type == state.type.value
+                                        ? Styles.tsMain_14m
+                                        : Styles.tsSub_14(context),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        }),
+                      ),
+                      InkWell(
+                        onTap: () => logic.toSearch(),
+                        child: Container(
+                          padding: const EdgeInsets.only(left: 8),
+                          color: Theme.of(context).colorScheme.tertiary,
+                          width: 39,
+                          height: 24,
+                          alignment: Alignment.centerLeft,
+                          child: Image.asset(
+                            Assets.commonIconSearch,
+                            width: 16,
+                            height: 16,
+                            color: Theme.of(context).iconTheme.color,
                           ),
-                        )
-                      ],
-                    ),
+                        ),
+                      )
+                    ],
                   ),
-                  const Gap(10),
-                  Expanded(
-                    child: EasyRefresh(
-                      onRefresh: () => logic.onRefresh(false),
-                      child: CustomScrollView(
-                        slivers: [
-                          SliverToBoxAdapter(
-                            child: Padding(
+                ),
+              ),
+            Expanded(
+              child: EasyRefresh(
+                onRefresh: () => logic.onRefresh(false),
+                child: SingleChildScrollView(
+                  physics: state.isLoading.value
+                      ? const NeverScrollableScrollPhysics()
+                      : null,
+                  child: Column(
+                    children: [
+                      if (state.isLoading.value)
+                        const LottieIndicator(),
+                      if (!state.isLoading.value)
+                        Column(
+                          children: [
+                            Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 15),
                               child: Row(
@@ -141,12 +150,8 @@ class LongShortRatioPage extends StatelessWidget {
                                 ],
                               ),
                             ),
-                          ),
-                          const SliverToBoxAdapter(child: Gap(10)),
-                          SliverToBoxAdapter(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 15),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
                               child: Row(
                                 children: [
                                   SizedBox(
@@ -162,22 +167,19 @@ class LongShortRatioPage extends StatelessWidget {
                                 ],
                               ),
                             ),
-                          ),
-                          SliverList(
-                            delegate: SliverChildBuilderDelegate(
-                              (cnt, index) {
+                            ListView.builder(
+                              shrinkWrap: true,
+                              padding: EdgeInsets.zero,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: state.dataList.length,
+                              itemBuilder: (cnt, idx) {
                                 ShortRateEntity item =
-                                    state.dataList.toList()[index];
+                                    state.dataList.toList()[idx];
                                 return _DataItem(item: item);
                               },
-                              childCount: state.dataList.length,
                             ),
-                          ),
-                          const SliverToBoxAdapter(child: Gap(15)),
-                          SliverToBoxAdapter(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 15),
+                            Padding(
+                              padding: const EdgeInsets.all(15),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -223,28 +225,27 @@ class LongShortRatioPage extends StatelessWidget {
                                 ],
                               ),
                             ),
-                          ),
-                          const SliverToBoxAdapter(child: Gap(15)),
-                          SliverToBoxAdapter(
-                            child: Container(
-                              height: 280,
-                              width: double.infinity,
-                              margin: const EdgeInsets.all(15),
-                              child: CommonWebView(
-                                url: 'assets/files/t18.html',
-                                isFile: true,
-                                onWebViewCreated: (controller) {
-                                  state.webCtrl = controller;
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
+                      Container(
+                        height: 280,
+                        width: double.infinity,
+                        margin: const EdgeInsets.all(15),
+                        child: CommonWebView(
+                          url: 'assets/files/t18.html',
+                          isFile: true,
+                          onWebViewCreated: (controller) {
+                            state.webCtrl = controller;
+                          },
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              );
+                ),
+              ),
+            ),
+          ],
+        );
       }),
     );
   }

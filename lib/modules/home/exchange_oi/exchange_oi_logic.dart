@@ -58,7 +58,8 @@ class ExchangeOiLogic extends GetxController {
     _pollingTimer?.cancel();
   }
 
-  Future onRefresh() {
+  Future onRefresh() async {
+    if (refreshing) return;
     refreshing = true;
     return Future.wait([loadData(), loadOIData()]).whenComplete(() {
       refreshing = false;

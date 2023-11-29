@@ -29,7 +29,7 @@ class LongShortRatioLogic extends FullLifeCycleController
       state.itemScrollController.scrollTo(
         index: state.headerTitles.indexOf(type),
         alignment: 0.5,
-        duration: const Duration(milliseconds: 500),
+        duration: const Duration(milliseconds: 200),
       );
       await onRefresh(true);
     }

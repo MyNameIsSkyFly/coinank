@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:ank_app/entity/contract_market_entity.dart';
 import 'package:ank_app/widget/sort_with_arrow.dart';
+import 'package:get/get.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class ContractMarketState {
@@ -17,9 +18,10 @@ class ContractMarketState {
   String type = 'BTC';
   String? sortBy;
   Timer? pollingTimer;
-  bool isLoading = true;
+  RxBool isLoading = true.obs;
   bool isRefresh = false;
   bool appVisible = true;
+
   ItemScrollController itemScrollController = ItemScrollController();
 
   ContractMarketState() {

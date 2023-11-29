@@ -122,32 +122,37 @@ class ContractPage extends StatelessWidget {
                   ),
                 );
               }),
-          Expanded(
-            child: EasyRefresh(
-              refreshOnStart: true,
-              onRefresh: logic.onRefresh,
-              child: GetBuilder<ContractLogic>(
-                  id: 'data',
-                  builder: (_) {
-                    return SlidableAutoCloseBehavior(
-                      child: ListView.builder(
-                        controller: state.scrollController,
-                        padding: const EdgeInsets.only(bottom: 10),
-                        itemBuilder: (cnt, idx) {
-                          MarkerTickerEntity item = state.data![idx];
-                          return _DataItem(
-                            key: ValueKey(idx),
-                            item: item,
-                            onTap: () => logic.tapItem(item),
-                            onTapCollect: () => logic.tapCollect(item),
-                          );
-                        },
-                        itemCount: state.data?.length ?? 0,
-                      ),
-                    );
-                  }),
-            ),
-          ),
+          Obx(() {
+            return state.isLoading.value
+                ? const LottieIndicator(
+                    margin: EdgeInsets.only(top: 200),
+                  )
+                : Expanded(
+                    child: EasyRefresh(
+                      onRefresh: logic.onRefresh,
+                      child: GetBuilder<ContractLogic>(
+                          id: 'data',
+                          builder: (_) {
+                            return SlidableAutoCloseBehavior(
+                              child: ListView.builder(
+                                controller: state.scrollController,
+                                padding: const EdgeInsets.only(bottom: 10),
+                                itemBuilder: (cnt, idx) {
+                                  MarkerTickerEntity item = state.data![idx];
+                                  return _DataItem(
+                                    key: ValueKey(idx),
+                                    item: item,
+                                    onTap: () => logic.tapItem(item),
+                                    onTapCollect: () => logic.tapCollect(item),
+                                  );
+                                },
+                                itemCount: state.data?.length ?? 0,
+                              ),
+                            );
+                          }),
+                    ),
+                  );
+          }),
         ],
       ),
     );

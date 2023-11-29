@@ -163,6 +163,9 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin {
     state.isRefresh = true;
     final data = await Apis().getMarketFundingRateData(type: state.timeType);
     Loading.dismiss();
+    if (state.isLoading.value) {
+      state.isLoading.value = false;
+    }
     state.isRefresh = false;
     if (data != null) {
       state.contentOriginalDataList = data;
@@ -181,11 +184,20 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin {
       }
     });
   }
+
   _scrollListener() {
     double offset = state.scrollController.offset;
     state.isScrollDown.value = offset <= 0 || state.offset - offset > 0;
     state.offset = offset;
   }
+
+  @override
+  void onReady() {
+    // TODO: implement onReady
+    super.onReady();
+    onRefresh(showLoading: false);
+  }
+
   @override
   void onInit() {
     super.onInit();
