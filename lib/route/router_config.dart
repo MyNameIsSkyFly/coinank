@@ -1,4 +1,6 @@
 import 'package:ank_app/modules/home/exchange_oi/exchange_oi_view.dart';
+import 'package:ank_app/modules/home/liq_main/liq_main_binding.dart';
+import 'package:ank_app/modules/home/liq_main/liq_main_view.dart';
 import 'package:ank_app/modules/home/long_short_ratio/long_short_person_ratio/long_short_person_ratio_view.dart';
 import 'package:ank_app/modules/home/long_short_ratio/long_short_ratio_binding.dart';
 import 'package:ank_app/modules/home/long_short_ratio/long_short_ratio_view.dart';
