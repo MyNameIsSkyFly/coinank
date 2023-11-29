@@ -1,4 +1,5 @@
 import 'package:ank_app/modules/home/exchange_oi/exchange_oi_view.dart';
+import 'package:ank_app/modules/home/long_short_ratio/long_short_person_ratio/long_short_person_ratio_view.dart';
 import 'package:ank_app/modules/home/long_short_ratio/long_short_ratio_binding.dart';
 import 'package:ank_app/modules/home/long_short_ratio/long_short_ratio_view.dart';
 import 'package:ank_app/modules/home/price_change/price_change_binding.dart';
@@ -48,5 +49,9 @@ class RouteConfig {
         name: LongShortRatioPage.routeName,
         page: () => LongShortRatioPage(),
         binding: LongShortRatioBinding()),
+    GetPage(
+      name: LongShortPersonRatioPage.routeName,
+      page: () => const LongShortPersonRatioPage(),
+    ),
   ];
 }
