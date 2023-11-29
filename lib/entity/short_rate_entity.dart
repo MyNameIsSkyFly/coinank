@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'short_rate_entity.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: true)
 class ShortRateEntity {
   final String? baseCoin;
   final String? exchangeName;
@@ -30,4 +30,6 @@ class ShortRateEntity {
 
   factory ShortRateEntity.fromJson(Map<String, dynamic> json) =>
       _$ShortRateEntityFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ShortRateEntityToJson(this);
 }

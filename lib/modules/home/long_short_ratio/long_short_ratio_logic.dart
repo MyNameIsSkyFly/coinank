@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/custom_bottom_sheet/custom_bottom_sheet_view.dart';
@@ -14,7 +16,7 @@ class LongShortRatioLogic extends FullLifeCycleController
   tapHeader(String type) async {
     if (type == state.type.value) return;
     state.type.value = type;
-    await onRefresh();
+    await onRefresh(true);
   }
 
   toSearch() async {
@@ -28,7 +30,7 @@ class LongShortRatioLogic extends FullLifeCycleController
         alignment: 0.5,
         duration: const Duration(milliseconds: 500),
       );
-      await onRefresh();
+      await onRefresh(true);
     }
   }
 
@@ -71,12 +73,16 @@ class LongShortRatioLogic extends FullLifeCycleController
     });
   }
 
-  Future<void> onRefresh() async {
+  Future<void> onRefresh(bool isLoading) async {
+    if (isLoading) {
+      Loading.show();
+    }
     state.isRefresh = true;
     await Future.wait([
       getData(false),
       getJSData(false),
     ]).then((value) {
+      Loading.dismiss();
       state.isRefresh = false;
     });
   }
@@ -104,15 +110,30 @@ class LongShortRatioLogic extends FullLifeCycleController
         interval: state.webTime.value,
         baseCoin: state.type.value,
         exchangeName: 'Binance');
-    state.jsData.value = data;
     Loading.dismiss();
+    final json = {'code': '1', 'success': true, 'data': data};
+    final options = {
+      'exchangeName': data?.exchangeName,
+      'interval': state.webTime.value,
+      'baseCoin': state.type.value,
+      'locale': AppUtil.shortLanguageName,
+      'price': S.current.s_price,
+      'seriesLongName': S.current.s_longs,
+      'seriesShortName': S.current.s_shorts,
+      'ratioName': S.current.s_longshort_ratio,
+    };
+    var platformString = Platform.isAndroid ? 'android' : 'ios';
+    var jsSource = '''
+setChartData(${jsonEncode(json)}, "$platformString", "realtimeLongShort", ${jsonEncode(options)});    
+    ''';
+    state.webCtrl?.evaluateJavascript(source: jsSource);
   }
 
   Future<void> _startTimer() async {
     state.pollingTimer =
         Timer.periodic(const Duration(seconds: 5), (timer) async {
       if (!state.isRefresh && state.appVisible) {
-        await onRefresh();
+        await onRefresh(false);
       }
     });
   }

@@ -1,5 +1,6 @@
 import 'package:ank_app/entity/short_rate_entity.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:ank_app/widget/common_webview.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -88,7 +89,7 @@ class LongShortRatioPage extends StatelessWidget {
                   const Gap(10),
                   Expanded(
                     child: EasyRefresh(
-                      onRefresh: logic.onRefresh,
+                      onRefresh: () => logic.onRefresh(false),
                       child: CustomScrollView(
                         slivers: [
                           SliverToBoxAdapter(
@@ -167,108 +168,7 @@ class LongShortRatioPage extends StatelessWidget {
                               (cnt, index) {
                                 ShortRateEntity item =
                                     state.dataList.toList()[index];
-                                return Container(
-                                  height: 50,
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 15),
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 125,
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            ClipOval(
-                                              child: Image.asset(
-                                                'assets/images/platform/${item.exchangeName?.toLowerCase()}.png',
-                                                width: 24,
-                                              ),
-                                            ),
-                                            const Gap(10),
-                                            Text(item.exchangeName ?? '',
-                                                style:
-                                                    Styles.tsBody_12m(context))
-                                          ],
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(4),
-                                          child: Stack(
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Flexible(
-                                                    flex:
-                                                        ((item.longRatio ?? 0) *
-                                                                1000)
-                                                            .toInt(),
-                                                    child: Container(
-                                                      color:
-                                                          Styles.cUp(context),
-                                                      height: 20,
-                                                    ),
-                                                  ),
-                                                  Flexible(
-                                                    flex: ((item.shortRatio ??
-                                                                0) *
-                                                            1000)
-                                                        .toInt(),
-                                                    child: Container(
-                                                      color:
-                                                          Styles.cDown(context),
-                                                      height: 20,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Container(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 10),
-                                                height: 20,
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text(
-                                                      AppUtil.getRate(
-                                                              rate: item
-                                                                  .longRatio,
-                                                              precision: 2)
-                                                          .substring(1),
-                                                      style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      AppUtil.getRate(
-                                                              rate: item
-                                                                  .shortRatio,
-                                                              precision: 2)
-                                                          .substring(1),
-                                                      style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                );
+                                return _DataItem(item: item);
                               },
                               childCount: state.dataList.length,
                             ),
@@ -324,6 +224,21 @@ class LongShortRatioPage extends StatelessWidget {
                               ),
                             ),
                           ),
+                          const SliverToBoxAdapter(child: Gap(15)),
+                          SliverToBoxAdapter(
+                            child: Container(
+                              height: 280,
+                              width: double.infinity,
+                              margin: const EdgeInsets.all(15),
+                              child: CommonWebView(
+                                url: 'assets/files/t18.html',
+                                isFile: true,
+                                onWebViewCreated: (controller) {
+                                  state.webCtrl = controller;
+                                },
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -331,6 +246,96 @@ class LongShortRatioPage extends StatelessWidget {
                 ],
               );
       }),
+    );
+  }
+}
+
+class _DataItem extends StatelessWidget {
+  const _DataItem({super.key, required this.item});
+
+  final ShortRateEntity item;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 50,
+      margin: const EdgeInsets.symmetric(horizontal: 15),
+      child: Row(
+        children: [
+          SizedBox(
+            width: 125,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ClipOval(
+                  child: Image.asset(
+                    'assets/images/platform/${item.exchangeName?.toLowerCase()}.png',
+                    width: 24,
+                  ),
+                ),
+                const Gap(10),
+                Text(item.exchangeName ?? '', style: Styles.tsBody_12m(context))
+              ],
+            ),
+          ),
+          Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: Stack(
+                children: [
+                  Row(
+                    children: [
+                      Flexible(
+                        flex: ((item.longRatio ?? 0.5) * 1000).toInt(),
+                        child: Container(
+                          color: Styles.cUp(context),
+                          height: 20,
+                        ),
+                      ),
+                      Flexible(
+                        flex: ((item.shortRatio ?? 0.5) * 1000).toInt(),
+                        child: Container(
+                          color: Styles.cDown(context),
+                          height: 20,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    height: 20,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          AppUtil.getRate(
+                                  rate: item.longRatio ?? 0, precision: 2)
+                              .substring(1),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Text(
+                          AppUtil.getRate(
+                                  rate: item.shortRatio ?? 0, precision: 2)
+                              .substring(1),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
