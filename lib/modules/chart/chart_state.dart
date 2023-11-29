@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 class ChartState {
   RxList<List<ChartEntity>> dataList = RxList.empty();
   RxMap<String, List<ChartEntity>> dataMap = RxMap();
-
+  RxBool isLoading = true.obs;
   ChartState() {
     ///Initialize variables
   }

@@ -31,44 +31,47 @@ class ChartPage extends StatelessWidget {
           ),
         ),
       ),
-      body: EasyRefresh(
-        onRefresh: logic.onRefresh,
-        refreshOnStart: true,
-        child: Obx(() {
-          return Padding(
-            padding: const EdgeInsets.all(15),
-            child: CustomScrollView(
-              slivers: state.dataMap.isEmpty
-                  ? []
-                  : [
-                      SliverToBoxAdapter(
-                        child: _ChartItem(
-                          iconName: Assets.chartLeftIconHotData,
-                          title: S.current.hotData,
-                          data: state.dataMap['hotData'] ?? [],
-                        ),
-                      ),
-                      const SliverToBoxAdapter(child: Gap(20)),
-                      SliverToBoxAdapter(
-                        child: _ChartItem(
-                          iconName: Assets.chartLeftIconBtcData,
-                          title: S.current.btcData,
-                          data: state.dataMap['btcData'] ?? [],
-                        ),
-                      ),
-                      const SliverToBoxAdapter(child: Gap(20)),
-                      SliverToBoxAdapter(
-                        child: _ChartItem(
-                          iconName: Assets.chartLeftIconOtherData,
-                          title: S.current.otherData,
-                          data: state.dataMap['otherData'] ?? [],
-                        ),
-                      ),
-                    ],
-            ),
-          );
-        }),
-      ),
+      body: Obx(() {
+        return state.isLoading.value
+            ? const LottieIndicator()
+            : EasyRefresh(
+                onRefresh: logic.onRefresh,
+                child: Obx(() {
+                  return Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: CustomScrollView(
+                      slivers: state.dataMap.isEmpty
+                          ? []
+                          : [
+                              SliverToBoxAdapter(
+                                child: _ChartItem(
+                                  iconName: Assets.chartLeftIconHotData,
+                                  title: S.current.hotData,
+                                  data: state.dataMap['hotData'] ?? [],
+                                ),
+                              ),
+                              const SliverToBoxAdapter(child: Gap(20)),
+                              SliverToBoxAdapter(
+                                child: _ChartItem(
+                                  iconName: Assets.chartLeftIconBtcData,
+                                  title: S.current.btcData,
+                                  data: state.dataMap['btcData'] ?? [],
+                                ),
+                              ),
+                              const SliverToBoxAdapter(child: Gap(20)),
+                              SliverToBoxAdapter(
+                                child: _ChartItem(
+                                  iconName: Assets.chartLeftIconOtherData,
+                                  title: S.current.otherData,
+                                  data: state.dataMap['otherData'] ?? [],
+                                ),
+                              ),
+                            ],
+                    ),
+                  );
+                }),
+              );
+      }),
     );
   }
 }

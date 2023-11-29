@@ -14,10 +14,16 @@ class ChartLogic extends GetxController {
       'otherData': [],
     };
     final result = await Apis().getChartData(locale: AppUtil.shortLanguageName);
-
+    state.isLoading.value = false;
     result?.forEach((element) {
       dataMap[element.groupName]!.add(element);
     });
     state.dataMap.value = dataMap;
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+    onRefresh();
   }
 }
