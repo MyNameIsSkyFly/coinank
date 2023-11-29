@@ -173,6 +173,7 @@ abstract class Apis {
     @Query('interval') required String interval,
     @Query('baseCoin') required String baseCoin,
     @Query('exchangeName') required String exchangeName,
+
   });
 
   //持仓html的json
@@ -191,5 +192,16 @@ abstract class Apis {
     @Query('interval') required String interval,
     @Query('symbol') required String symbol,
     @Query('exchange') required String exchange,
+  });
+
+  //多空持仓人数比
+  @GET('/api/longshort/longShortRatio')
+  Future getLongShortPersonRatio({
+    @Query('baseCoin') String? baseCoin,
+    @Query('exchangeName') String? exchangeName,
+    @Query('interval') String? interval,
+    @Query('type') String? type,
+    @Query('exchangeType') String? exchangeType,
+    @Query('limit') int limit = 30,
   });
 }

@@ -30,6 +30,11 @@ class BaseInterceptor extends Interceptor {
       );
       return;
     }
+    if (response.requestOptions.path
+        .contains('/api/longshort/longShortRatio')) {
+      handler.next(response);
+      return;
+    }
     final data = response.data?['data'];
     response.data = data;
     handler.next(response);

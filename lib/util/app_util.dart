@@ -110,8 +110,10 @@ class AppUtil {
       return '${mFormat.format(amount / 1000)}K';
     } else if (amount < 1000000000) {
       return '${mFormat.format(amount / 1000000)}M';
-    } else {
+    } else if (amount < 1000000000000) {
       return '${mFormat.format(amount / 1000000000)}B';
+    } else {
+      return '${mFormat.format(amount / 1000000000000)}T';
     }
   }
 

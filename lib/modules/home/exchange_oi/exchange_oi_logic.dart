@@ -1,11 +1,17 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:ank_app/entity/oi_chart_menu_param_entity.dart';
 import 'package:ank_app/entity/oi_entity.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+
+import '../../../widget/custom_bottom_sheet/custom_bottom_sheet_view.dart';
 
 class ExchangeOiLogic extends GetxController {
   final menuParamEntity = OIChartMenuParamEntity(
@@ -15,27 +21,54 @@ class ExchangeOiLogic extends GetxController {
     interval: '1d',
   ).obs;
   final oiList = RxList<OIEntity>();
-  final coinList = RxList<(String, bool)>();
+  final coinList = RxList<String>();
+  var selectedCoinIndex = 0;
   String? jsonData;
   InAppWebViewController? webCtrl;
-
+  final itemScrollController = ItemScrollController();
+  StreamSubscription? _fgbgSubscription;
+  var isAppVisible = true;
+  final loading = true.obs;
+  var refreshing = false;
+  var webViewLoaded = false;
   @override
   void onInit() {
-    loadData();
-    loadOIData();
-    loadAllBaseCoins();
+    _fgbgSubscription = FGBGEvents.stream.listen((event) {
+      isAppVisible = event == FGBGType.foreground;
+    });
+    Future.wait([loadData(), loadOIData(), loadAllBaseCoins()]).then((value) {
+      loading.value = false;
+    });
+    startPolling();
     super.onInit();
+  }
+
+  Timer? _pollingTimer;
+
+  void startPolling() {
+    _pollingTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
+      if (!isAppVisible) return;
+      onRefresh();
+    });
+  }
+
+  @override
+  void onClose() {
+    _fgbgSubscription?.cancel();
+    _pollingTimer?.cancel();
+  }
+
+  Future onRefresh() async {
+    if (refreshing) return;
+    refreshing = true;
+    return Future.wait([loadData(), loadOIData()]).whenComplete(() {
+      refreshing = false;
+    });
   }
 
   Future<void> loadAllBaseCoins() async {
     final result = await Apis().getMarketAllCurrencyData();
-    final converted = result
-        ?.map((e) => (
-              e,
-              e.toUpperCase() == menuParamEntity.value.baseCoin?.toUpperCase()
-            ))
-        .toList();
-    coinList.assignAll(converted ?? []);
+    coinList.assignAll(result ?? []);
   }
 
   Future<void> loadData() async {
@@ -79,4 +112,39 @@ setChartData($jsonData, "$platformString", "openInterest", ${jsonEncode(options)
     ''';
     webCtrl?.evaluateJavascript(source: jsSource);
   }
+
+  Future<void> toSearch() async {
+    final result = await Get.toNamed(RouteConfig.contractMarketSearch,
+        arguments: coinList.toList());
+    if (result != null) {
+      String type = result as String;
+      selectedCoinIndex = coinList.indexOf(type);
+      menuParamEntity.value.baseCoin = type;
+      coinList.refresh();
+      itemScrollController.scrollTo(
+        index: selectedCoinIndex,
+        alignment: 0.5,
+        duration: const Duration(milliseconds: 500),
+      );
+      Loading.wrap(() => onRefresh());
+    }
+  }
+
+  Future<String?> openSelector(List<String> items) async {
+    final result = await Get.bottomSheet(
+      CustomBottomSheetPage(),
+      isScrollControlled: true,
+      isDismissible: true,
+      settings: RouteSettings(
+        arguments: {'title': '', 'list': items, 'current': ''},
+      ),
+    );
+    return result as String?;
+  }
+
+  final exchangeItems = const [
+    'ALL', 'Binance', 'Okex', 'Bybit', 'CME', 'Bitget', 'Bitmex', //end
+    'Bitfinex', 'Gate', 'Deribit', 'Huobi', 'Kraken' //end
+  ];
+  final intervalItems = const ['15m', '30m', '1h', '2h', '4h', '12h', '1d'];
 }

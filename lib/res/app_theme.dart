@@ -11,6 +11,10 @@ class AppThemes {
           onBackground: Colors.black,
           tertiary: Colors.white,
         ),
+        progressIndicatorTheme: const ProgressIndicatorThemeData(
+          refreshBackgroundColor: Colors.white,
+          color: Styles.cMain,
+        ),
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.white,
           scrolledUnderElevation: 0,
@@ -56,6 +60,10 @@ class AppThemes {
           brightness: Brightness.dark,
           onBackground: Colors.white,
           tertiary: Styles.cTextBlack,
+        ),
+        progressIndicatorTheme: const ProgressIndicatorThemeData(
+          refreshBackgroundColor: Color(0xffA1A7BB),
+          color: Styles.cMain,
         ),
         appBarTheme: const AppBarTheme(
             backgroundColor: Color(0xff171823),

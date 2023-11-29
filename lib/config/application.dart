@@ -14,7 +14,7 @@ class Application {
   Future<void> init() async {
     await StoreLogic.init();
     MessageFlutterApi.setup(FlutterApiManager());
-    EasyRefresh.defaultHeaderBuilder = () => const CupertinoHeader();
+    EasyRefresh.defaultHeaderBuilder = () => const MaterialHeader();
     JPushUtil().initPlatformState();
   }
 }
