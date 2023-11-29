@@ -1,18 +1,18 @@
 import 'package:ank_app/res/export.dart';
-import 'package:ank_app/widget/sliver_app_bar_delegate.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'custom_bottom_sheet_logic.dart';
 
 class CustomBottomSheetPage extends StatelessWidget {
-  CustomBottomSheetPage({Key? key}) : super(key: key);
+  const CustomBottomSheetPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final logic = Get.put(CustomBottomSheetLogic());
     final state = Get.find<CustomBottomSheetLogic>().state;
     return Container(
+      margin: EdgeInsets.only(top: kToolbarHeight + AppConst.statusBarHeight),
       padding: const EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
         color: Theme.of(context).appBarTheme.backgroundColor,
@@ -27,23 +27,26 @@ class CustomBottomSheetPage extends StatelessWidget {
             delegate: SliverAppBarDelegate(
               maxHeight: 62,
               minHeight: 62,
-              child: Row(
-                children: [
-                  Text(
-                    state.title,
-                    style: Styles.tsBody_16(context),
-                  ),
-                  const Spacer(),
-                  IconButton(
-                    onPressed: () => Get.back(),
-                    icon: Text(
-                      S.current.s_cancel,
-                      style: Styles.tsSub_16(context),
+              child: Container(
+                color: Theme.of(context).appBarTheme.backgroundColor,
+                child: Row(
+                  children: [
+                    Text(
+                      state.title,
+                      style: Styles.tsBody_16(context),
                     ),
-                    constraints: const BoxConstraints.tightFor(),
-                    padding: EdgeInsets.zero,
-                  ),
-                ],
+                    const Spacer(),
+                    IconButton(
+                      onPressed: () => Get.back(),
+                      icon: Text(
+                        S.current.s_cancel,
+                        style: Styles.tsSub_16(context),
+                      ),
+                      constraints: const BoxConstraints.tightFor(),
+                      padding: EdgeInsets.zero,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

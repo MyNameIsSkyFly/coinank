@@ -41,7 +41,7 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin {
       S.current.s_year: 'year',
     };
     final result = await Get.bottomSheet(
-      CustomBottomSheetPage(),
+      const CustomBottomSheetPage(),
       isScrollControlled: true,
       isDismissible: true,
       settings: RouteSettings(

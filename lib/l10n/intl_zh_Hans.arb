@@ -272,5 +272,11 @@
   "email": "电子邮箱",
   "hotData": "热门数据",
   "btcData": "BTC数据",
-  "otherData": "其他数据"
+  "otherData": "其他数据",
+  "s_liq_hot_map": "清算热图",
+  "s_liq_map_long": "多单累计清算强度",
+  "s_liq_map_short": "空单累计清算强度",
+  "s_liq_map_low": "低杠杆",
+  "s_liq_map_mid": "中等杠杆",
+  "s_liq_map_high": "高杠杆"
 }

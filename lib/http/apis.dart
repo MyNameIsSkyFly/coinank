@@ -173,12 +173,23 @@ abstract class Apis {
     @Query('interval') required String interval,
     @Query('baseCoin') required String baseCoin,
     @Query('exchangeName') required String exchangeName,
-
   });
 
   //持仓html的json
   @GET('/api/openInterest/all')
   Future<List<OIEntity>?> getExchangeIOList({
     @Query('baseCoin') String? baseCoin,
+  });
+
+  //清算地图币种列表
+  @GET('/api/liqMap/getLiqMapSymbolV1')
+  Future<List<String>?> getLiqMapData();
+
+  //清算地图html json
+  @GET('/api/liqMap/getLiqMap')
+  Future getLiqMapJsonData({
+    @Query('interval') required String interval,
+    @Query('symbol') required String symbol,
+    @Query('exchange') required String exchange,
   });
 }

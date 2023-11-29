@@ -271,7 +271,13 @@
   "languageName": "日本語",
   "welcomeBack": "欢迎回来！",
   "email": "电子邮箱",
-  "hotData": "热门数据",
-  "btcData": "BTC数据",
-  "otherData": "其他数据"
+  "hotData": "Hot Data",
+  "btcData": "BTC Data",
+  "otherData": "Other Data",
+  "s_liq_hot_map": "Liquidation Heatmap",
+  "s_liq_map_long": "Cumulative Long Liquidation Leverage",
+  "s_liq_map_short": "Cumulative Short Liquidation Leverage",
+  "s_liq_map_low": "Low leverage",
+  "s_liq_map_mid": "Medium leverage",
+  "s_liq_map_high": "High leverage"
 }

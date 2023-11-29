@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:ank_app/entity/short_rate_entity.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/custom_bottom_sheet/custom_bottom_sheet_view.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +36,7 @@ class LongShortRatioLogic extends FullLifeCycleController
 
   chooseTime(bool isHeader) async {
     final result = await Get.bottomSheet(
-      CustomBottomSheetPage(),
+      const CustomBottomSheetPage(),
       isScrollControlled: true,
       isDismissible: true,
       settings: RouteSettings(

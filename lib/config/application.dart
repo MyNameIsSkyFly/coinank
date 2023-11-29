@@ -1,7 +1,6 @@
 import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/util/jpush_util.dart';
-import 'package:ank_app/util/store.dart';
 
 class Application {
   Application._privateConstructor();

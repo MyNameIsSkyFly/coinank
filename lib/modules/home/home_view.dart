@@ -1,4 +1,5 @@
 import 'package:ank_app/constants/urls.dart';
+import 'package:ank_app/modules/home/liq_main/liq_main_view.dart';
 import 'package:ank_app/modules/home/long_short_ratio/long_short_ratio_view.dart';
 import 'package:ank_app/modules/home/price_change/price_change_view.dart';
 import 'package:ank_app/res/export.dart';
@@ -103,9 +104,24 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               const Gap(10),
 
               ///清算地图
-              _CheckDetailRow(
-                title: S.of(context).s_liqmap,
-                onTap: () => logic.hostApi.toLiqMap(),
+              Row(
+                children: [
+                  Expanded(
+                    child: _CheckDetailRow(
+                      title: S.of(context).s_liqmap,
+                      onTap: () =>
+                          Get.toNamed(LiqMainPage.routeName, arguments: 0),
+                    ),
+                  ),
+                  const Gap(10),
+                  Expanded(
+                    child: _CheckDetailRow(
+                      title: S.of(context).s_liq_hot_map,
+                      onTap: () =>
+                          Get.toNamed(LiqMainPage.routeName, arguments: 1),
+                    ),
+                  ),
+                ],
               ),
               const Gap(20),
               _HotMarket(logic: logic),
