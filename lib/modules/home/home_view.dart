@@ -70,7 +70,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               visualDensity: VisualDensity.compact,
               onPressed: () => StoreLogic.isLogin
                   ? AppNav.openWebUrl(
-                      title: S.current.s_add_alert, url: Urls.urlNotification)
+                      title: S.current.s_add_alert,
+                      url: Urls.urlNotification,
+                      showLoading: true,
+                    )
                   : AppNav.toLogin(),
               icon: Stack(
                 children: [
@@ -139,7 +142,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 title: S.of(context).s_grayscale_data,
                 onTap: () => AppNav.openWebUrl(
                     title: S.of(context).s_grayscale_data,
-                    url: Urls.urlGreedIndex),
+                    url: Urls.urlGreedIndex,
+                    showLoading: true),
               )
             ],
           ),
@@ -160,7 +164,9 @@ class _FearGreedInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return _OutlinedContainer(
       onTap: () => AppNav.openWebUrl(
-          title: S.of(context).s_greed_index, url: Urls.urlGreedIndex),
+          title: S.of(context).s_greed_index,
+          url: Urls.urlGreedIndex,
+          showLoading: true),
       child: Obx(() {
         return Row(
           children: [
@@ -223,7 +229,8 @@ class _BtcInfo extends StatelessWidget {
               child: InkWell(
                 onTap: () => AppNav.openWebUrl(
                     title: S.of(context).s_marketcap_ratio,
-                    url: Urls.urlBTCMarketCap),
+                    url: Urls.urlBTCMarketCap,
+                    showLoading: true),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -268,7 +275,9 @@ class _BtcInfo extends StatelessWidget {
             Expanded(
               child: InkWell(
                 onTap: () => AppNav.openWebUrl(
-                    title: S.of(context).s_btc_profit, url: Urls.urlBTCProfit),
+                    title: S.of(context).s_btc_profit,
+                    url: Urls.urlBTCProfit,
+                    showLoading: true),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 20),
                   child: Column(
@@ -574,7 +583,8 @@ class _TotalOiAndFuturesVol extends StatelessWidget {
           _FirstLineItem(
               onTap: () => AppNav.openWebUrl(
                   title: S.of(context).s_futures_vol_24h,
-                  url: Urls.url24HOIVol),
+                  url: Urls.url24HOIVol,
+                  showLoading: true),
               title: S.of(context).s_futures_vol_24h,
               rate: double.tryParse(
                       logic.homeInfoData.value?.tickerChange ?? '0') ??

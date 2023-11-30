@@ -9,9 +9,6 @@ abstract class MessageHostApi {
   void changeUpColor(bool isGreenUp);
 
   ///图表模块跳转
-  void toChartWeb(String url, String title);
-
-  ///图表模块跳转
   ///json格式:{
   ///"success":true,
   ///"code":1,
@@ -25,6 +22,4 @@ abstract class MessageHostApi {
 
 @FlutterApi()
 abstract class MessageFlutterApi {
-  void toKLine(
-      String exchangeName, String symbol, String baseCoin, String? productType);
 }

@@ -28,17 +28,6 @@ require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelpe
 flutter_ios_podfile_setup
 
 target 'Runner' do
-  pod 'JXCategoryView'
-  pod 'GGWkCookie'#管理WKWEBcookie
-  pod 'JHUD'#hud
-  pod 'FDFullscreenPopGesture'#滑动返回
-  pod 'Masonry'
-  pod 'YYKit'
-  pod 'AFNetworking'
-  pod 'MBProgressHUD'
-  pod 'WHToast'
-  pod 'JDStatusBarNotification' #顶部提示框
-  pod 'SDWebImage'
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
   target 'RunnerTests' do

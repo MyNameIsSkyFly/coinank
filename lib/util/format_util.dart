@@ -1,4 +1,3 @@
-import 'package:decimal/decimal.dart';
 
 class FormatUtil {
   FormatUtil._();
