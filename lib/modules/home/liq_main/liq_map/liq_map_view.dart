@@ -6,13 +6,12 @@ import 'package:get/get.dart';
 import 'liq_map_logic.dart';
 
 class LiqMapPage extends StatelessWidget {
-  LiqMapPage({super.key});
-
-  final logic = Get.put(LiqMapLogic());
-  final state = Get.find<LiqMapLogic>().state;
+  const LiqMapPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final logic = Get.put(LiqMapLogic());
+    final state = Get.find<LiqMapLogic>().state;
     return Column(
       children: [
         Padding(
