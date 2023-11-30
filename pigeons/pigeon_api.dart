@@ -8,24 +8,6 @@ abstract class MessageHostApi {
 
   void changeUpColor(bool isGreenUp);
 
-  ///贪婪指数
-  void toGreedIndex();
-
-  ///BTC市值占比
-  void toBtcMarketRatio();
-
-  ///24H合约成交量
-  void toFuturesVolume();
-
-  ///BTC投资回报率
-  void toBtcProfitRate();
-
-  ///灰度数据
-  void toGrayScaleData();
-
-  ///资金费率
-  void toFundRate();
-
   ///图表模块跳转
   void toChartWeb(String url, String title);
 

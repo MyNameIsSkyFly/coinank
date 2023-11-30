@@ -62,68 +62,6 @@ public class MainActivity extends FlutterActivity {
         }
 
         @Override
-        public void toGreedIndex() {
-            Intent i = new Intent();
-            String url;
-            url = Config.urlGreedIndex;
-            i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            i.setClass(getActivity(), CommonWebActivity.class);
-            i.putExtra(Config.TYPE_URL, UrlGet.getUrl(url,
-                    LanguageUtil.getWebLanguage(getContext())));
-            i.putExtra(Config.TYPE_TITLE, getResources().getString(R.string.s_greed_index));
-            Global.showActivity(getActivity(), i);
-        }
-
-        @Override
-        public void toBtcMarketRatio() {
-            Intent i = new Intent();
-            i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            i.setClass(getActivity(), CommonWebActivity.class);
-            i.putExtra(Config.TYPE_URL, UrlGet.getUrl(Config.urlBTCMarketCap,
-                    LanguageUtil.getWebLanguage(getContext())));
-            i.putExtra(Config.TYPE_TITLE, getResources().getString(R.string.s_marketcap_ratio));
-            Global.showActivity(getActivity(), i);
-        }
-
-        @Override
-        public void toFuturesVolume() {
-            Intent i = new Intent();
-            i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            i.setClass(getActivity(), CommonWebActivity.class);
-            i.putExtra(Config.TYPE_URL, UrlGet.getUrl(Config.url24HOIVol,
-                    LanguageUtil.getWebLanguage(getContext())));
-            i.putExtra(Config.TYPE_TITLE, getResources().getString(R.string.s_futures_vol_24h));
-            Global.showActivity(getActivity(), i);
-        }
-
-        @Override
-        public void toBtcProfitRate() {
-            Intent i = new Intent();
-            i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            i.setClass(getActivity(), CommonWebActivity.class);
-            i.putExtra(Config.TYPE_URL, UrlGet.getUrl(Config.urlBTCProfit,
-                    LanguageUtil.getWebLanguage(getContext())));
-            i.putExtra(Config.TYPE_TITLE, getResources().getString(R.string.s_btc_profit));
-            Global.showActivity(getActivity(), i);
-        }
-
-        @Override
-        public void toGrayScaleData() {
-            Intent i = new Intent();
-            i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            i.setClass(getActivity(), CommonWebActivity.class);
-            i.putExtra(Config.TYPE_URL, UrlGet.getUrl(Config.urlGrayscale,
-                    LanguageUtil.getWebLanguage(getContext())));
-            i.putExtra(Config.TYPE_TITLE, getResources().getString(R.string.s_grayscale_data));
-            Global.showActivity(getActivity(), i);
-        }
-
-        @Override
-        public void toFundRate() {
-
-        }
-
-        @Override
         public void toChartWeb(@NonNull String url, @NonNull String title) {
             Intent i = new Intent();
             i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);

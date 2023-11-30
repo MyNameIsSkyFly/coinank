@@ -137,7 +137,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               ///灰度数据
               _CheckDetailRow(
                 title: S.of(context).s_grayscale_data,
-                onTap: () => logic.hostApi.toGrayScaleData(),
+                onTap: () => AppNav.openWebUrl(
+                    title: S.of(context).s_grayscale_data,
+                    url: Urls.urlGreedIndex),
               )
             ],
           ),
@@ -157,7 +159,8 @@ class _FearGreedInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _OutlinedContainer(
-      onTap: logic.hostApi.toGreedIndex,
+      onTap: () => AppNav.openWebUrl(
+          title: S.of(context).s_greed_index, url: Urls.urlGreedIndex),
       child: Obx(() {
         return Row(
           children: [
@@ -218,7 +221,9 @@ class _BtcInfo extends StatelessWidget {
           children: [
             Expanded(
               child: InkWell(
-                onTap: logic.hostApi.toBtcMarketRatio,
+                onTap: () => AppNav.openWebUrl(
+                    title: S.of(context).s_marketcap_ratio,
+                    url: Urls.urlBTCMarketCap),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -262,7 +267,8 @@ class _BtcInfo extends StatelessWidget {
             const SizedBox(height: 30, child: VerticalDivider()),
             Expanded(
               child: InkWell(
-                onTap: logic.hostApi.toBtcProfitRate,
+                onTap: () => AppNav.openWebUrl(
+                    title: S.of(context).s_btc_profit, url: Urls.urlBTCProfit),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 20),
                   child: Column(
@@ -566,7 +572,9 @@ class _TotalOiAndFuturesVol extends StatelessWidget {
           ),
           const Gap(9),
           _FirstLineItem(
-              onTap: logic.hostApi.toFuturesVolume,
+              onTap: () => AppNav.openWebUrl(
+                  title: S.of(context).s_futures_vol_24h,
+                  url: Urls.url24HOIVol),
               title: S.of(context).s_futures_vol_24h,
               rate: double.tryParse(
                       logic.homeInfoData.value?.tickerChange ?? '0') ??

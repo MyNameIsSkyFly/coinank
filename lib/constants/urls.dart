@@ -27,4 +27,22 @@ class Urls {
   //首页提醒
   static String get urlNotification =>
       '$h5Prefix/${webLanguage}users/noticeConfig';
+
+  //贪婪指数
+  static String get urlGreedIndex =>
+      '$h5Prefix/${webLanguage}indexdata/feargreedIndex';
+
+  //贪婪指数
+  static String get urlBTCMarketCap =>
+      '$h5Prefix/${webLanguage}indexdata/btcMarketCap';
+
+  //24H合约成交量
+  static String get url24HOIVol =>
+      '$h5Prefix/${webLanguage}indexdata/oivol/vol24h';
+
+  //btc投资回报率
+  static String get urlBTCProfit => '$h5Prefix/${webLanguage}indexdata/profit';
+
+  //灰度数据
+  static String get urlGrayscale => '$h5Prefix/${webLanguage}grayscale';
 }
