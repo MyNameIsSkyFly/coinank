@@ -189,12 +189,21 @@ class AppUtil {
             'https://coinsoho.s3.us-east-2.amazonaws.com/app/androidwebversion.txt')
         .whenComplete(() => Loading.dismiss());
     final data = jsonDecode(res.data as String? ?? '{}');
-    final result = (
-      isNeed: (int.tryParse(packageInfo.buildNumber) ?? 10000) <
+    bool isNeed = false;
+    if (Platform.isIOS) {
+      isNeed = (int.tryParse(packageInfo.version.replaceAll('.', '')) ?? 100) <
+          ((int.tryParse('${data['data']['iosVersionCode']}') ?? 0)*100);
+    } else {
+      isNeed = (int.tryParse(packageInfo.buildNumber) ?? 10000) <
           (int.tryParse(
                   '${data['data'][AppConst.isPlayVersion ? 'ank_googleVersionCode' : 'ank_versionCode']}') ??
-              0),
-      jumpUrl: Platform.isIOS?'${data['data']['iosurl']}':'${data['data']['ank_url']}'
+              0);
+    }
+    final result = (
+      isNeed: isNeed,
+      jumpUrl: Platform.isIOS
+          ? '${data['data']['iosurl']}'
+          : '${data['data']['ank_url']}'
     );
     if (result.isNeed) {
       if (!context.mounted) return;
