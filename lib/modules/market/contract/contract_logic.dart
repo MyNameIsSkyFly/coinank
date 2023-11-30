@@ -42,33 +42,54 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
         sortBy = 'openInterest';
         sortType = state.oiSort == SortStatus.down ? 'descend' : 'ascend';
       case SortType.openInterestCh24:
-        state.oiChangeSort = state.oiChangeSort == SortStatus.down
-            ? SortStatus.up
-            : SortStatus.down;
+        state.oiChangeSort = state.oiChangeSort == SortStatus.normal
+            ? SortStatus.down
+            : state.oiChangeSort == SortStatus.down
+                ? SortStatus.up
+                : SortStatus.normal;
         state.oiSort = SortStatus.normal;
         state.priceSort = SortStatus.normal;
         state.priceChangSort = SortStatus.normal;
         sortBy = 'openInterestCh24';
         sortType = state.oiChangeSort == SortStatus.down ? 'descend' : 'ascend';
+        if(state.oiChangeSort == SortStatus.normal) {
+          sortBy = 'openInterest';
+          sortType = 'descend';
+          state.oiSort = SortStatus.down;
+        }
       case SortType.price:
-        state.priceSort = state.priceSort == SortStatus.down
+        state.priceSort = state.priceSort == SortStatus.normal
+            ? SortStatus.down
+            : state.priceSort == SortStatus.down
             ? SortStatus.up
-            : SortStatus.down;
+            : SortStatus.normal;
         state.oiSort = SortStatus.normal;
         state.oiChangeSort = SortStatus.normal;
         state.priceChangSort = SortStatus.normal;
         sortBy = 'price';
         sortType = state.priceSort == SortStatus.down ? 'descend' : 'ascend';
+        if(state.priceSort == SortStatus.normal) {
+          sortBy = 'openInterest';
+          sortType = 'descend';
+          state.oiSort = SortStatus.down;
+        }
       case SortType.priceChangeH24:
-        state.priceChangSort = state.priceChangSort == SortStatus.down
+        state.priceChangSort = state.priceChangSort == SortStatus.normal
+            ? SortStatus.down
+            : state.priceChangSort == SortStatus.down
             ? SortStatus.up
-            : SortStatus.down;
+            : SortStatus.normal;
         state.oiSort = SortStatus.normal;
         state.oiChangeSort = SortStatus.normal;
         state.priceSort = SortStatus.normal;
         sortBy = 'priceChangeH24';
         sortType =
             state.priceChangSort == SortStatus.down ? 'descend' : 'ascend';
+        if(state.priceChangSort == SortStatus.normal) {
+          sortBy = 'openInterest';
+          sortType = 'descend';
+          state.oiSort = SortStatus.down;
+        }
       default:
         break;
     }
@@ -100,6 +121,7 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
   }
 
   Future<void> onRefresh({bool showLoading = false}) async {
+    state.oldData = List.from(state.originalData ?? []);
     if (showLoading) {
       Loading.show();
     }

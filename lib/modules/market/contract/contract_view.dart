@@ -1,4 +1,5 @@
 import 'package:ank_app/entity/futures_big_data_entity.dart';
+import 'package:ank_app/modules/home/price_change/price_change_view.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -142,8 +143,7 @@ class ContractPage extends StatelessWidget {
                                   return _DataItem(
                                     key: ValueKey(idx),
                                     item: item,
-                                    onTap: () => logic.tapItem(item),
-                                    onTapCollect: () => logic.tapCollect(item),
+                                    logic: logic,
                                   );
                                 },
                                 itemCount: state.data?.length ?? 0,
@@ -163,16 +163,26 @@ class _DataItem extends StatelessWidget {
   const _DataItem({
     super.key,
     required this.item,
-    this.onTap,
-    this.onTapCollect,
+    required this.logic,
   });
 
   final MarkerTickerEntity item;
-  final GestureTapCallback? onTap;
-  final GestureTapCallback? onTapCollect;
+  final ContractLogic logic;
 
   @override
   Widget build(BuildContext context) {
+    Color normalColor = Theme.of(context).textTheme.bodyMedium!.color!;
+    Color animationColor = normalColor;
+    final old = logic.state.oldData?.firstWhere(
+        (element) => item.baseCoin == element.baseCoin,
+        orElse: () => MarkerTickerEntity());
+    animationColor = old?.price != null
+        ? item.price! > old!.price!
+            ? Styles.cUp(context)
+            : item.price! < old.price!
+                ? Styles.cDown(context)
+                : normalColor
+        : normalColor;
     return Slidable(
       key: key,
       endActionPane: ActionPane(
@@ -180,7 +190,7 @@ class _DataItem extends StatelessWidget {
         motion: const ScrollMotion(),
         children: [
           CustomSlidableAction(
-            onPressed: (_) => onTapCollect?.call(),
+            onPressed: (_) => logic.tapCollect(item),
             backgroundColor: Styles.cMain,
             foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(vertical: 8),
@@ -215,7 +225,7 @@ class _DataItem extends StatelessWidget {
         ],
       ),
       child: InkWell(
-        onTap: onTap,
+        onTap: () => logic.tapItem(item),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           height: 55,
@@ -261,14 +271,11 @@ class _DataItem extends StatelessWidget {
                 ],
               ),
               Expanded(
-                child: AutoSizeText(
-                  '\$${item.price}',
-                  style: Styles.tsBody_14(context).copyWith(
-                    color: Theme.of(context).textTheme.bodyMedium?.color,
-                  ),
-                  maxFontSize: 14,
-                  minFontSize: 10,
-                  maxLines: 1,
+                child: AnimationColorText(
+                  text: '\$${item.price}',
+                  style: Styles.tsBody_14(context),
+                  normalColor: normalColor,
+                  animationColor: animationColor,
                   textAlign: TextAlign.right,
                 ),
               ),

@@ -8,9 +8,10 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 class ContractMarketState {
   List<String>? headerTitles;
   List<ContractMarketEntity>? dataList;
+  List<ContractMarketEntity>? oldDataList;
 
   SortStatus priceSort = SortStatus.normal;
-  SortStatus volSort = SortStatus.down;
+  SortStatus volSort = SortStatus.normal;
   SortStatus oiSort = SortStatus.normal;
   SortStatus rateSort = SortStatus.normal;
 

@@ -23,6 +23,7 @@ class ContractState {
   String sortType = 'descend';
   List<MarkerTickerEntity>? data;
   List<MarkerTickerEntity>? originalData;
+  List<MarkerTickerEntity>? oldData;
 
   bool isCollect = false;
   Timer? pollingTimer;

@@ -17,6 +17,7 @@ class ContractMarketLogic extends FullLifeCycleController
     if (type == state.type) return;
     state.type = type;
     update(['header']);
+    state.oldDataList = null;
     await onRefresh(true);
   }
 
@@ -25,54 +26,68 @@ class ContractMarketLogic extends FullLifeCycleController
         arguments: state.headerTitles);
     if (result != null) {
       String type = result as String;
-      state.type = type;
-      update(['header']);
-      state.itemScrollController.scrollTo(
-        index: state.headerTitles!.indexOf(type),
-        alignment: 0.5,
-        duration: const Duration(milliseconds: 200),
-      );
-      await onRefresh(true);
+      if (state.type != type) {
+        state.type = type;
+        update(['header']);
+        state.itemScrollController.scrollTo(
+          index: state.headerTitles!.indexOf(type),
+          alignment: 0.5,
+          duration: const Duration(milliseconds: 200),
+        );
+        state.oldDataList = null;
+        await onRefresh(true);
+      }
     }
   }
 
   void tapSort(SortType type) {
-    String sortBy = '';
+    String? sortBy;
     String sortType = '';
     switch (type) {
       case SortType.price:
-        state.priceSort = state.priceSort == SortStatus.down
-            ? SortStatus.up
-            : SortStatus.down;
+        state.priceSort = state.priceSort == SortStatus.normal
+            ? SortStatus.down
+            : state.priceSort == SortStatus.down
+                ? SortStatus.up
+                : SortStatus.normal;
         state.volSort = SortStatus.normal;
         state.oiSort = SortStatus.normal;
         state.rateSort = SortStatus.normal;
-        sortBy = 'lastPrice';
-        sortType = state.priceSort == SortStatus.down ? 'descend' : 'ascend';
+        sortBy = state.priceSort == SortStatus.normal ? null : 'lastPrice';
+        sortType = state.priceSort == SortStatus.up ? 'ascend' : 'descend';
       case SortType.volH24:
-        state.volSort =
-            state.volSort == SortStatus.down ? SortStatus.up : SortStatus.down;
+        state.volSort = state.volSort == SortStatus.normal
+            ? SortStatus.down
+            : state.volSort == SortStatus.down
+                ? SortStatus.up
+                : SortStatus.normal;
         state.priceSort = SortStatus.normal;
         state.oiSort = SortStatus.normal;
         state.rateSort = SortStatus.normal;
-        sortBy = 'turnover24h';
-        sortType = state.volSort == SortStatus.down ? 'descend' : 'ascend';
+        sortBy = state.volSort == SortStatus.normal ? null : 'turnover24h';
+        sortType = state.volSort == SortStatus.up ? 'ascend' : 'descend';
       case SortType.openInterest:
-        state.oiSort =
-            state.oiSort == SortStatus.down ? SortStatus.up : SortStatus.down;
+        state.oiSort = state.oiSort == SortStatus.normal
+            ? SortStatus.down
+            : state.oiSort == SortStatus.down
+                ? SortStatus.up
+                : SortStatus.normal;
         state.volSort = SortStatus.normal;
         state.priceSort = SortStatus.normal;
         state.rateSort = SortStatus.normal;
-        sortBy = 'oiUSD';
-        sortType = state.oiSort == SortStatus.down ? 'descend' : 'ascend';
+        sortBy = state.oiSort == SortStatus.normal ? null : 'oiUSD';
+        sortType = state.oiSort == SortStatus.up ? 'ascend' : 'descend';
       case SortType.fundingRate:
-        state.rateSort =
-            state.rateSort == SortStatus.down ? SortStatus.up : SortStatus.down;
+        state.rateSort = state.rateSort == SortStatus.normal
+            ? SortStatus.down
+            : state.rateSort == SortStatus.down
+                ? SortStatus.up
+                : SortStatus.normal;
         state.volSort = SortStatus.normal;
         state.oiSort = SortStatus.normal;
         state.priceSort = SortStatus.normal;
-        sortBy = 'fundingRate';
-        sortType = state.rateSort == SortStatus.down ? 'descend' : 'ascend';
+        sortBy = state.rateSort == SortStatus.normal ? null : 'fundingRate';
+        sortType = state.rateSort == SortStatus.up ? 'ascend' : 'descend';
       default:
         break;
     }
@@ -107,6 +122,7 @@ class ContractMarketLogic extends FullLifeCycleController
   }
 
   Future<void> onRefresh(bool showLoading) async {
+    state.oldDataList = List.from(state.dataList ?? []);
     if (showLoading) {
       Loading.show();
     }

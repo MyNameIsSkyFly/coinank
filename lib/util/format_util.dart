@@ -17,7 +17,7 @@ class FormatUtil {
     } else if (number >= 10000) {
       return '${(number / 10000).toStringAsFixed(2)}万';
     } else {
-      return number.toString();
+      return number.toStringAsFixed(2);
     }
   }
 
