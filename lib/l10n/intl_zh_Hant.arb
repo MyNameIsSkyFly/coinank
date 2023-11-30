@@ -280,5 +280,7 @@
   "s_liq_map_low": "低杠桿",
   "s_liq_map_mid": "中等杠桿",
   "s_liq_map_high": "高杠桿",
-  "liqHeat": "清算强度"
+  "liqHeat": "清算强度",
+  "s_choose_time": "選擇時間",
+  "s_choose_coin": "選擇幣種"
 }

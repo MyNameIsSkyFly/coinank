@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:ank_app/entity/event/theme_event.dart';
 import 'package:ank_app/res/export.dart';
-import 'package:ank_app/route/app_nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -12,22 +11,24 @@ import 'package:get/get.dart';
 
 import '../constants/urls.dart';
 import '../entity/event/logged_event.dart';
-import '../util/store.dart';
 
 class CommonWebView extends StatefulWidget {
-  const CommonWebView(
-      {super.key,
-      this.title,
-      required this.url,
-      this.urlGetter,
-      this.onWebViewCreated,
-      this.isFile = false});
+  const CommonWebView({
+    super.key,
+    this.title,
+    required this.url,
+    this.urlGetter,
+    this.onWebViewCreated,
+    this.isFile = false,
+    this.showLoading = false,
+  });
 
   final String? title;
   final String url;
   final String Function()? urlGetter;
   final void Function(InAppWebViewController controller)? onWebViewCreated;
   final bool isFile;
+  final bool showLoading;
 
   static Future<void> setCookieValue() async {
     final cookieList = <(String, String)>[];
@@ -82,6 +83,7 @@ class _CommonWebViewState extends State<CommonWebView>
   StreamSubscription? _loginStatusSubscription;
   DateTime? lastLeftTime;
   StreamSubscription<FGBGType>? _fgbgSubscription;
+  int _progress = 0;
 
   @override
   void initState() {
@@ -151,42 +153,53 @@ class _CommonWebViewState extends State<CommonWebView>
               title: widget.title ?? '',
             ),
       body: SafeArea(
-        child: InAppWebView(
-          initialFile: widget.isFile ? widget.url : null,
-          initialUrlRequest: widget.isFile
-              ? null
-              : URLRequest(url: WebUri(widget.urlGetter?.call() ?? widget.url)),
-          initialSettings: InAppWebViewSettings(
-            userAgent: 'CoinsohoWeb-flutter',
-            javaScriptEnabled: true,
-            transparentBackground: true,
-            javaScriptCanOpenWindowsAutomatically: true,
-          ),
-          onWebViewCreated: (controller) {
-            widget.onWebViewCreated?.call(controller);
-            webCtrl = controller
-              ..addJavaScriptHandler(
-                handlerName: 'openLogin',
-                callback: (arguments) {
-                  AppNav.toLogin();
-                },
-              )
-              ..addJavaScriptHandler(
-                handlerName: 'getUserInfo',
-                callback: (arguments) {
-                  return jsonEncode(StoreLogic.to.loginUserInfo?.toJson());
-                },
-              );
-          },
-          onLoadStop: (controller, url) {
-            if (widget.url.contains('proChart') ||
-                widget.urlGetter?.call().contains('proChart') == true) {
-              controller.evaluateJavascript(source: "changeSymbolInfo('BTC')");
-            }
-          },
-          onConsoleMessage: (controller, consoleMessage) {
-            print(consoleMessage.toString());
-          },
+        child: Stack(
+          children: [
+            InAppWebView(
+              initialFile: widget.isFile ? widget.url : null,
+              initialUrlRequest: widget.isFile
+                  ? null
+                  : URLRequest(
+                      url: WebUri(widget.urlGetter?.call() ?? widget.url)),
+              initialSettings: InAppWebViewSettings(
+                userAgent: 'CoinsohoWeb-flutter',
+                javaScriptEnabled: true,
+                transparentBackground: true,
+                javaScriptCanOpenWindowsAutomatically: true,
+              ),
+              onWebViewCreated: (controller) {
+                widget.onWebViewCreated?.call(controller);
+                webCtrl = controller
+                  ..addJavaScriptHandler(
+                    handlerName: 'openLogin',
+                    callback: (arguments) {
+                      AppNav.toLogin();
+                    },
+                  )
+                  ..addJavaScriptHandler(
+                    handlerName: 'getUserInfo',
+                    callback: (arguments) {
+                      return jsonEncode(StoreLogic.to.loginUserInfo?.toJson());
+                    },
+                  );
+              },
+              onLoadStop: (controller, url) {
+                if (widget.url.contains('proChart') ||
+                    widget.urlGetter?.call().contains('proChart') == true) {
+                  controller.evaluateJavascript(
+                      source: "changeSymbolInfo('BTC')");
+                }
+              },
+              onConsoleMessage: (controller, consoleMessage) {
+                print(consoleMessage.toString());
+              },
+              onProgressChanged: (controller, progress) {
+                _progress = progress;
+                setState(() {});
+              },
+            ),
+            if (widget.showLoading && _progress != 100) const LottieIndicator(),
+          ],
         ),
       ),
     );

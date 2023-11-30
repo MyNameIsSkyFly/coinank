@@ -1,5 +1,4 @@
 import 'package:ank_app/res/export.dart';
-import 'package:ank_app/util/store.dart';
 import 'package:get/get.dart';
 
 import '../../widget/common_webview.dart';

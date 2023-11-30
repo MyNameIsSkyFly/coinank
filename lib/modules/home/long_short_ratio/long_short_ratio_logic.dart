@@ -41,7 +41,7 @@ class LongShortRatioLogic extends FullLifeCycleController
       isDismissible: true,
       settings: RouteSettings(
         arguments: {
-          'title': '选择时间',
+          'title': S.current.s_choose_time,
           'list': const ['5m', '15m', '30m', '1h', '2h', '4h', '12h', '1d'],
           'current': isHeader ? state.longSortTime.value : state.webTime.value,
         },

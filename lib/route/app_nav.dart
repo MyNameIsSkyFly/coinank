@@ -9,9 +9,17 @@ class AppNav {
   AppNav._();
 
   static Future<void> openWebUrl(
-      {String? title, required String url, bool isFile = false}) async {
+      {String? title,
+      required String url,
+      bool isFile = false,
+      bool showLoading = false}) async {
     await CommonWebView.setCookieValue();
-    Get.to(() => CommonWebView(title: title, url: url, isFile: isFile));
+    Get.to(() => CommonWebView(
+          title: title,
+          url: url,
+          isFile: isFile,
+          showLoading: showLoading,
+        ));
   }
 
   static Future toLogin() async {

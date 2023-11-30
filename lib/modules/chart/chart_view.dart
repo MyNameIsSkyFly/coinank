@@ -1,5 +1,6 @@
 import 'package:ank_app/constants/urls.dart';
 import 'package:ank_app/entity/chart_entity.dart';
+import 'package:ank_app/modules/home/liq_main/liq_main_view.dart';
 import 'package:ank_app/modules/main/main_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
@@ -115,9 +116,15 @@ class _ChartItem extends StatelessWidget {
           children: List.generate(
             data.length,
             (idx) => InkWell(
-              onTap: () => AppNav.openWebUrl(
-                  url: '${Urls.h5Prefix}${data[idx].path}',
-                  title: data[idx].title),
+              onTap: () =>
+                  ['liqMapChart', 'liqHeatMapChart'].contains(data[idx].key)
+                      ? Get.toNamed(LiqMainPage.routeName,
+                          arguments: data[idx].key == 'liqMapChart' ? 0 : 1)
+                      : AppNav.openWebUrl(
+                          url: '${Urls.h5Prefix}${data[idx].path}',
+                          title: data[idx].title,
+                          showLoading: true,
+                        ),
               child: Container(
                 height: 46,
                 width: AppConst.width / 2 - 20,
