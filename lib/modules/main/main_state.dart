@@ -23,6 +23,7 @@ class MainState {
       keepAlivePage(MarketPage()),
       keepAlivePage(CommonWebView(
           title: null,
+          showLoading: true,
           url: 'https://tv.coinsoto.com/proChart', //Urls.urlProChart,
           // urlGetter: () => Urls.urlProChart,
           onWebViewCreated: (controller) {

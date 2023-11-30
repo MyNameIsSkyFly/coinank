@@ -110,5 +110,6 @@ setChartData($jsData, "$platformString", "liqMap", ${jsonEncode(options)});
     super.onReady();
     await getSymbolsData();
     await getJsonData(false);
+    state.isLoading.value = false;
   }
 }

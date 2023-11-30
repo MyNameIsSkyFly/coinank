@@ -10,7 +10,11 @@ class ChartDrawerLogic extends GetxController {
   final ChartDrawerState state = ChartDrawerState();
 
   tapItem(Subs sub) {
-    AppNav.openWebUrl(url: '${Urls.h5Prefix}${sub.path}', title: sub.title);
+    AppNav.openWebUrl(
+      url: '${Urls.h5Prefix}${sub.path}',
+      title: sub.title,
+      showLoading: true,
+    );
     Get.find<MainLogic>().state.scaffoldKey.currentState?.closeDrawer();
   }
 
