@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -61,79 +63,87 @@ class PriceChangePage extends StatelessWidget {
               ),
             ],
           ),
-          Expanded(
-            child: EasyRefresh(
-              onRefresh: () => logic.onRefresh(false),
-              refreshOnStart: true,
-              child: Obx(() {
-                return SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 15),
-                            width: 100,
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              padding: EdgeInsets.zero,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemExtent: 48,
-                              itemCount: state.contentDataList.length,
-                              itemBuilder: (cnt, idx) {
-                                MarkerTickerEntity item =
-                                    state.contentDataList.toList()[idx];
-                                return InkWell(
-                                  onTap: () => logic.tapItem(item),
-                                  child: Row(
-                                    children: [
-                                      ClipOval(
-                                        child: ImageUtil.networkImage(
-                                          item.coinImage ?? '',
-                                          width: 24,
-                                          height: 24,
-                                        ),
-                                      ),
-                                      const Gap(10),
-                                      Expanded(
-                                        child: Text(
-                                          item.baseCoin ?? '',
-                                          style: Styles.tsBody_12m(context),
-                                        ),
-                                      ),
-                                    ],
+          Obx(() {
+            return state.isLoading.value
+                ? const LottieIndicator()
+                : Expanded(
+                    child: EasyRefresh(
+                      onRefresh: () => logic.onRefresh(false),
+                      child: Obx(() {
+                        return SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 15),
+                                    width: 100,
+                                    child: ListView.builder(
+                                      shrinkWrap: true,
+                                      padding: EdgeInsets.zero,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemExtent: 48,
+                                      itemCount: state.contentDataList.length,
+                                      itemBuilder: (cnt, idx) {
+                                        MarkerTickerEntity item =
+                                            state.contentDataList.toList()[idx];
+                                        return InkWell(
+                                          onTap: () => logic.tapItem(item),
+                                          child: Row(
+                                            children: [
+                                              ClipOval(
+                                                child: ImageUtil.networkImage(
+                                                  item.coinImage ?? '',
+                                                  width: 24,
+                                                  height: 24,
+                                                ),
+                                              ),
+                                              const Gap(10),
+                                              Expanded(
+                                                child: Text(
+                                                  item.baseCoin ?? '',
+                                                  style: Styles.tsBody_12m(
+                                                      context),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    ),
                                   ),
-                                );
-                              },
-                            ),
-                          ),
-                          Expanded(
-                            child: SizedBox(
-                              height:
-                                  max(state.contentDataList.length * 48, 480),
-                              child: ListView.builder(
-                                padding: EdgeInsets.zero,
-                                controller: state.contentController,
-                                scrollDirection: Axis.horizontal,
-                                physics: const ClampingScrollPhysics(),
-                                itemCount: state.topList.length,
-                                shrinkWrap: true,
-                                itemBuilder: (cnt, index) {
-                                  return _DataItem(logic: logic, index: index);
-                                },
+                                  Expanded(
+                                    child: SizedBox(
+                                      height: max(
+                                          state.contentDataList.length * 48,
+                                          480),
+                                      child: ListView.builder(
+                                        padding: EdgeInsets.zero,
+                                        controller: state.contentController,
+                                        scrollDirection: Axis.horizontal,
+                                        physics: const ClampingScrollPhysics(),
+                                        itemCount: state.topList.length,
+                                        shrinkWrap: true,
+                                        itemBuilder: (cnt, index) {
+                                          return _DataItem(
+                                              logic: logic, index: index);
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              }),
-            ),
-          ),
+                        );
+                      }),
+                    ),
+                  );
+          }),
         ],
       ),
     );
@@ -221,19 +231,104 @@ class _DataItem extends StatelessWidget {
                   : Styles.cDown(context),
             ]);
           }
+          Color animationColor = colorList[index];
+          if (index == 0) {
+            final old = logic.state.oldContentDataList.firstWhere(
+                (element) => item.baseCoin == element.baseCoin,
+                orElse: () => MarkerTickerEntity());
+            animationColor = old.price != null
+                ? item.price! > old.price!
+                    ? Styles.cUp(context)
+                    : item.price! < old.price!
+                        ? Styles.cDown(context)
+                        : colorList[index]
+                : colorList[index];
+          }
+
           return InkWell(
             onTap: () => logic.tapItem(item),
             child: Align(
               alignment: Alignment.centerLeft,
-              child: Text(
-                textList[index],
-                style:
-                    Styles.tsBody_12(context).copyWith(color: colorList[index]),
-              ),
+              child: index == 0
+                  ? AnimationColorText(
+                      text: textList[index],
+                      style: Styles.tsBody_12(context),
+                      normalColor: colorList[index],
+                      animationColor: animationColor,
+                    )
+                  : Text(
+                      textList[index],
+                      style: Styles.tsBody_12(context)
+                          .copyWith(color: colorList[index]),
+                    ),
             ),
           );
         },
       ),
     );
+  }
+}
+
+class AnimationColorText extends StatefulWidget {
+  const AnimationColorText({
+    super.key,
+    required this.text,
+    required this.style,
+    this.normalColor,
+    this.animationColor,
+    this.textAlign,
+  });
+
+  final String text;
+  final TextStyle style;
+  final Color? normalColor;
+  final Color? animationColor;
+  final TextAlign? textAlign;
+
+  @override
+  State<AnimationColorText> createState() => _AnimationColorTextState();
+}
+
+class _AnimationColorTextState extends State<AnimationColorText> {
+  Color? _color;
+
+  @override
+  Widget build(BuildContext context) {
+    return AutoSizeText(
+      widget.text,
+      style: widget.style.copyWith(color: _color),
+      textAlign: widget.textAlign,
+      minFontSize: 8,
+      maxLines: 1,
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (mounted) {
+      updateColor();
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant AnimationColorText oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    updateColor();
+  }
+
+  updateColor() {
+    if (mounted) {
+      setState(() {
+        _color = widget.animationColor;
+      });
+    }
+    Timer(const Duration(milliseconds: 1000), () {
+      if (mounted) {
+        setState(() {
+          _color = widget.normalColor;
+        });
+      }
+    });
   }
 }

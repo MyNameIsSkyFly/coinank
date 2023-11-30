@@ -1,4 +1,5 @@
 import 'package:ank_app/entity/contract_market_entity.dart';
+import 'package:ank_app/modules/home/price_change/price_change_view.dart';
 import 'package:ank_app/modules/market/contract/contract_logic.dart';
 import 'package:flutter/material.dart';
 import 'package:ank_app/res/export.dart';
@@ -154,6 +155,18 @@ class ContractMarketPage extends StatelessWidget {
                             itemCount: state.dataList?.length ?? 0,
                             itemBuilder: (cnt, idx) {
                               ContractMarketEntity item = state.dataList![idx];
+                              Color normalColor = Theme.of(context).textTheme.bodyMedium!.color!;
+                              Color animationColor = normalColor;
+                              final old = state.oldDataList?.firstWhere(
+                                      (element) => item.symbol == element.symbol,
+                                  orElse: () => const ContractMarketEntity());
+                              animationColor = old?.lastPrice != null
+                                  ? item.lastPrice! > old!.lastPrice!
+                                  ? Styles.cUp(context)
+                                  : item.lastPrice! < old.lastPrice!
+                                  ? Styles.cDown(context)
+                                  : normalColor
+                                  : normalColor;
                               return InkWell(
                                 onTap: () => AppUtil.toKLine(
                                     item.exchangeName ?? '',
@@ -193,9 +206,12 @@ class ContractMarketPage extends StatelessWidget {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.end,
                                         children: [
-                                          Text(
-                                            '\$${item.lastPrice ?? 0}',
+                                          AnimationColorText(
+                                            text: '\$${item.lastPrice}',
                                             style: Styles.tsBody_12(context),
+                                            normalColor: normalColor,
+                                            animationColor: animationColor,
+                                            textAlign: TextAlign.right,
                                           ),
                                           const Gap(3),
                                           Text(

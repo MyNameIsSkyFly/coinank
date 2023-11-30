@@ -16,6 +16,7 @@ class PriceChangeState {
   List<MarkerTickerEntity>? data;
   List<MarkerTickerEntity>? originalData;
   RxList<MarkerTickerEntity> contentDataList = RxList.empty();
+  List<MarkerTickerEntity> oldContentDataList = [];
 
   ScrollController titleController = ScrollController();
   ScrollController contentController = ScrollController();
@@ -23,7 +24,7 @@ class PriceChangeState {
   Timer? pollingTimer;
   bool isRefresh = false;
   bool appVisible = true;
-
+  RxBool isLoading = true.obs;
   PriceChangeState() {
     final arg = Get.arguments;
     isPrice = arg?['isPrice'] as bool? ?? false;

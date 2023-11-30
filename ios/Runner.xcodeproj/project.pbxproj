@@ -70,7 +70,6 @@
 		188A723D2B0CA6CA0046A164 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Info.strings"; sourceTree = "<group>"; };
 		188A723E2B0CA6D60046A164 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		188A723F2B0CA6D60046A164 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Info.strings"; sourceTree = "<group>"; };
-		188A72402B0CA8840046A164 /* HttpHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpHeader.h; sourceTree = "<group>"; };
 		188A72712B0CD0490046A164 /* Singleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Singleton.h; sourceTree = "<group>"; };
 		18E91DB12B0DB05A00CFBEF4 /* normal.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = normal.mp3; sourceTree = "<group>"; };
 		18E91DB22B0DB05A00CFBEF4 /* down.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = down.mp3; sourceTree = "<group>"; };
@@ -147,7 +146,6 @@
 				188A71DC2B0CA4E30046A164 /* Macro.h */,
 				188A71DE2B0CA4E30046A164 /* KeyHeader.h */,
 				188A71DF2B0CA4E30046A164 /* PrefixHeader-UUKR.pch */,
-				188A72402B0CA8840046A164 /* HttpHeader.h */,
 			);
 			path = Other;
 			sourceTree = "<group>";
