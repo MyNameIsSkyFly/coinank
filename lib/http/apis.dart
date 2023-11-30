@@ -204,4 +204,8 @@ abstract class Apis {
     @Query('exchangeType') String? exchangeType,
     @Query('limit') int limit = 30,
   });
+
+  //清算热图币种列表
+  @GET('/api/liqMap/getLiqHeatMapSymbol')
+  Future<List<String>?> getLiqHeatMapData();
 }

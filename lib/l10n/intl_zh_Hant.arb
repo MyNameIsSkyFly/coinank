@@ -279,5 +279,6 @@
   "s_liq_map_short": "空單纍計清算强度",
   "s_liq_map_low": "低杠桿",
   "s_liq_map_mid": "中等杠桿",
-  "s_liq_map_high": "高杠桿"
+  "s_liq_map_high": "高杠桿",
+  "liqHeat": "清算强度"
 }

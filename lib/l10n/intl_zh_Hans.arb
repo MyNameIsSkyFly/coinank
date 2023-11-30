@@ -278,5 +278,6 @@
   "s_liq_map_short": "空单累计清算强度",
   "s_liq_map_low": "低杠杆",
   "s_liq_map_mid": "中等杠杆",
-  "s_liq_map_high": "高杠杆"
+  "s_liq_map_high": "高杠杆",
+  "liqHeat": "清算强度"
 }

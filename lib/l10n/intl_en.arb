@@ -281,5 +281,6 @@
   "s_liq_map_short": "Cumulative Short Liquidation Leverage",
   "s_liq_map_low": "Low leverage",
   "s_liq_map_mid": "Medium leverage",
-  "s_liq_map_high": "High leverage"
+  "s_liq_map_high": "High leverage",
+  "liqHeat":"Liquidation Leverage"
 }

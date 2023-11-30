@@ -11,6 +11,6 @@ class LiqMainLogic extends GetxController
   void onInit() {
     super.onInit();
     state.tabController =
-        TabController(initialIndex: state.index, length: 2, vsync: this);
+        TabController(initialIndex: state.index.value, length: 2, vsync: this);
   }
 }

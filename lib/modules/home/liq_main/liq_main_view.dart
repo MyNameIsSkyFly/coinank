@@ -65,8 +65,8 @@ class LiqMainPage extends StatelessWidget {
         controller: state.tabController,
         physics: const NeverScrollableScrollPhysics(),
         children: [
-          keepAlivePage(LiqMapPage()),
-          keepAlivePage(LiqHotMapPage()),
+          keepAlivePage(const LiqMapPage()),
+          keepAlivePage(const LiqHotMapPage()),
         ],
       ),
     );
