@@ -106,47 +106,7 @@ class _SettingPageState extends State<SettingPage> {
                 Obx(() {
                   return _SettingLine(
                       onTap: () async {
-                        if (Platform.isIOS) {
-                          launchUrl(Uri.parse('https://apps.apple.com'));
-                          return;
-                        }
-                        var result = await Loading.wrap(
-                            () async => AppUtil.needUpdate());
-                        if (result.isNeed) {
-                          if (!mounted) return;
-                          showAdaptiveDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog.adaptive(
-                                title: Text(
-                                  S.of(context).s_is_upgrade,
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .color),
-                                ),
-                                backgroundColor: Theme.of(context).cardColor,
-                                actions: [
-                                  AdaptiveDialogAction(
-                                      child: Text(S.of(context).s_cancel),
-                                      onPressed: () {
-                                        Get.back();
-                                      }),
-                                  AdaptiveDialogAction(
-                                      child: Text(S.of(context).s_ok),
-                                      onPressed: () async {
-                                        await launchUrl(
-                                            Uri.parse(result.jumpUrl),
-                                            mode:
-                                                LaunchMode.externalApplication);
-                                        Get.back();
-                                      }),
-                                ],
-                              );
-                            },
-                          );
-                        }
+                        AppUtil.checkUpdate(context, showLoading: true);
                       },
                       title: S.of(context).s_check_update,
                       value: logic.versionName.value);

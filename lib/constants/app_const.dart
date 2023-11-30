@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AppConst {
+  static const isPlayVersion = bool.fromEnvironment('PLAY');
   static final eventBus = EventBus();
   static String imageHost(String imageName) {
     return 'https://cdn01.coinsoto.com/image/coin/64/$imageName.png';

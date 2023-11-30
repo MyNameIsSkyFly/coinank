@@ -27,7 +27,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 
-import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.ank.ankapp.R;
 import com.ank.ankapp.original.App;
 import com.ank.ankapp.original.Config;
@@ -36,8 +35,6 @@ import com.ank.ankapp.original.language.PrefUtils;
 import com.ank.ankapp.original.service.FloatViewService;
 import com.ank.ankapp.original.utils.AppUtils;
 import com.ank.ankapp.original.utils.MLog;
-import com.huawei.hms.aaid.HmsInstanceId;
-import com.huawei.hms.common.ApiException;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -138,25 +135,25 @@ public abstract class BaseActivity extends AppCompatActivity {
         LanguageUtil.changeAppLanguage(this, PrefUtils.getLanguage(this));
         super.onResume();
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String token = null;
-                try {
-                    token = HmsInstanceId.getInstance(getApplicationContext()).getToken("106593271", "HCM");
-                    MLog.d("\nhuawei push token:" + token);
-                } catch (ApiException e) {
-                    e.printStackTrace();
-                }
-
-                /*
-
-                 */
-            }
-        }).start();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                String token = null;
+//                try {
+//                    token = HmsInstanceId.getInstance(getApplicationContext()).getToken("106593271", "HCM");
+//                    MLog.d("\nhuawei push token:" + token);
+//                } catch (ApiException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                /*
+//
+//                 */
+//            }
+//        }).start();
 
         bPause = false;
-        Config.DeviceID = PushServiceFactory.getCloudPushService().getDeviceId();
+//        Config.DeviceID = PushServiceFactory.getCloudPushService().getDeviceId();
         MLog.d("push id:" + Config.DeviceID);
 
         Config.isNightMode = Config.getMMKV(this).getBoolean(Config.DAY_NIGHT_MODE, false);

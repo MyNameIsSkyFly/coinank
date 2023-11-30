@@ -41,7 +41,7 @@ public class App extends Application {
 //        Global.getAnalytics(this).logEvent("user_action",
 //                Global.createBundle("app oncreate", getClass().getSimpleName()));
 
-        PushSetting.PackageName = getPackageName();
+//        PushSetting.PackageName = getPackageName();
 
         /**
          * 说明， WebView 初处初始化耗时 250ms 左右。
@@ -52,8 +52,8 @@ public class App extends Application {
 //        WebView mWebView=new WebView(new MutableContextWrapper(this));
 
         mCot = this;
-        PushSetting.app = this;
-        PushSetting.cot = this;
+//        PushSetting.app = this;
+//        PushSetting.cot = this;
 
         SQLiteKV kv = new SQLiteKV(getApplicationContext());
         kv.putString("test", "coinsoto.com");

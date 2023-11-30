@@ -17,7 +17,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../widget/adaptive_dialog_action.dart';
 import '../widget/common_webview.dart';
 
 class AppUtil {
@@ -178,16 +180,57 @@ class AppUtil {
     return Theme.of(Get.context!).textTheme.bodyMedium!.color;
   }
 
-  static Future<({bool isNeed, String jumpUrl})> needUpdate() async {
+  static Future<void> checkUpdate(BuildContext context,
+      {bool showLoading = false}) async {
+    if (Platform.isIOS) {
+      launchUrl(Uri.parse('https://apps.apple.com'));
+      return;
+    }
     final packageInfo = await PackageInfo.fromPlatform();
-    final res = await Dio().get(
-        'https://coinsoho.s3.us-east-2.amazonaws.com/app/androidwebversion.txt');
+    if (showLoading) Loading.show();
+
+    final res = await Dio()
+        .get(
+            'https://coinsoho.s3.us-east-2.amazonaws.com/app/androidwebversion.txt')
+        .whenComplete(() => Loading.dismiss());
     final data = jsonDecode(res.data as String? ?? '{}');
-    return (
+    final result = (
       isNeed: (int.tryParse(packageInfo.buildNumber) ?? 10000) <
-          (int.tryParse('${data['data']['ank_versionCode']}') ?? 0),
+          (int.tryParse(
+                  '${data['data'][AppConst.isPlayVersion ? 'ank_googleVersionCode' : 'ank_versionCode']}') ??
+              0),
       jumpUrl: '${data['data']['ank_url']}'
     );
+    if (result.isNeed) {
+      if (!context.mounted) return;
+      showAdaptiveDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog.adaptive(
+            title: Text(
+              S.of(context).s_is_upgrade,
+              style: TextStyle(
+                  color: Theme.of(context).textTheme.bodyMedium!.color),
+            ),
+            backgroundColor: Theme.of(context).cardColor,
+            actions: [
+              AdaptiveDialogAction(
+                  child: Text(S.of(context).s_cancel),
+                  onPressed: () {
+                    Get.back();
+                  }),
+              AdaptiveDialogAction(
+                  child: Text(S.of(context).s_ok),
+                  onPressed: () async {
+                    await launchUrl(Uri.parse(result.jumpUrl),
+                        mode: LaunchMode.externalApplication);
+                    Get.back();
+                  }),
+            ],
+          );
+        },
+      );
+    }
   }
 
   static bool isEmailValid(String input) {

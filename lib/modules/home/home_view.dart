@@ -334,7 +334,7 @@ class _OiDistribution extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                  child: Text(S.of(context).oiDistribution,
+                  child: Text(S.of(context).s_longshort_ratio,
                       style: Styles.tsBody_16m(context))),
               _FilledContainer(
                 onTap: () => Get.toNamed(LongShortRatioPage.routeName),
@@ -944,7 +944,7 @@ class _FilledContainer extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         onTap: onTap,
         child: Container(
-          padding: padding ?? EdgeInsets.all(10),
+          padding: padding ?? const EdgeInsets.all(10),
           child: child,
         ),
       ),
