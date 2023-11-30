@@ -18,7 +18,7 @@ class LiqHotMapLogic extends GetxController {
       isDismissible: true,
       settings: RouteSettings(
         arguments: {
-          'title': '选择币种',
+          'title': S.current.s_choose_coin,
           'list': state.symbolList.toList(),
           'current': state.symbol.value,
         },
@@ -40,7 +40,7 @@ class LiqHotMapLogic extends GetxController {
       isDismissible: true,
       settings: RouteSettings(
         arguments: {
-          'title': '选择时间',
+          'title': S.current.s_choose_time,
           'list': const ['12h', '1d', '3d', '1w', '2w', '1M', '3M', '6M', '1Y'],
           'current': state.interval.value,
         },

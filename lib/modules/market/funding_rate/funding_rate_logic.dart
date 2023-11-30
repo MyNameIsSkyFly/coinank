@@ -46,7 +46,7 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin {
       isDismissible: true,
       settings: RouteSettings(
         arguments: {
-          'title': '选择时间',
+          'title': S.current.s_choose_time,
           'list': timeMap.keys.toList(),
           'current': time,
         },

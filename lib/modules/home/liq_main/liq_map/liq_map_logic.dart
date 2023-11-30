@@ -18,7 +18,7 @@ class LiqMapLogic extends GetxController {
       isDismissible: true,
       settings: RouteSettings(
         arguments: {
-          'title': '选择币种',
+          'title': S.current.s_choose_coin,
           'list': state.symbolList.toList(),
           'current': state.symbol.value,
         },
@@ -40,7 +40,7 @@ class LiqMapLogic extends GetxController {
       isDismissible: true,
       settings: RouteSettings(
         arguments: {
-          'title': '选择时间',
+          'title': S.current.s_choose_time,
           'list': const ['1d', '1w'],
           'current': state.interval.value,
         },
