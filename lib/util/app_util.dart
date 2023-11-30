@@ -182,13 +182,8 @@ class AppUtil {
 
   static Future<void> checkUpdate(BuildContext context,
       {bool showLoading = false}) async {
-    if (Platform.isIOS) {
-      launchUrl(Uri.parse('https://apps.apple.com'));
-      return;
-    }
     final packageInfo = await PackageInfo.fromPlatform();
     if (showLoading) Loading.show();
-
     final res = await Dio()
         .get(
             'https://coinsoho.s3.us-east-2.amazonaws.com/app/androidwebversion.txt')
@@ -199,7 +194,7 @@ class AppUtil {
           (int.tryParse(
                   '${data['data'][AppConst.isPlayVersion ? 'ank_googleVersionCode' : 'ank_versionCode']}') ??
               0),
-      jumpUrl: '${data['data']['ank_url']}'
+      jumpUrl: Platform.isIOS?'${data['data']['iosurl']}':'${data['data']['ank_url']}'
     );
     if (result.isNeed) {
       if (!context.mounted) return;
