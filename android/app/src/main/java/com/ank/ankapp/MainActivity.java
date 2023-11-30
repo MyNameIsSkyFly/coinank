@@ -8,11 +8,9 @@ import androidx.appcompat.app.AppCompatDelegate;
 import com.ank.ankapp.original.App;
 import com.ank.ankapp.original.Config;
 import com.ank.ankapp.original.Global;
-import com.ank.ankapp.original.activity.CommonWebActivity;
 import com.ank.ankapp.original.activity.SetFloatViewActivity;
 import com.ank.ankapp.original.language.LanguageUtil;
 import com.ank.ankapp.original.utils.AppUtils;
-import com.ank.ankapp.original.utils.UrlGet;
 import com.ank.ankapp.pigeon_plugin.Messages;
 
 import io.flutter.embedding.android.FlutterActivity;
@@ -59,16 +57,6 @@ public class MainActivity extends FlutterActivity {
         @Override
         public void changeUpColor(@NonNull Boolean isGreenUp) {
             Config.getMMKV(getActivity()).putBoolean(Config.IS_GREEN_UP, isGreenUp);
-        }
-
-        @Override
-        public void toChartWeb(@NonNull String url, @NonNull String title) {
-            Intent i = new Intent();
-            i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            i.setClass(getActivity(), CommonWebActivity.class);
-            i.putExtra(Config.TYPE_URL, Config.h5Prefix + url);
-            i.putExtra(Config.TYPE_TITLE, getResources().getString(R.string.s_chart));
-            Global.showActivity(getActivity(), i);
         }
 
         @Override

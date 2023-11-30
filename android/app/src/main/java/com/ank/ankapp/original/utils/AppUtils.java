@@ -58,21 +58,6 @@ public class AppUtils {
         return val;
     }
 
-    public static String encode64(String str)
-    {
-        if (str == null || TextUtils.isEmpty(str)) return "";
-        String s = com.huawei.hms.support.log.common.Base64.encode(str.getBytes(StandardCharsets.UTF_8));
-        return s;
-    }
-
-    public static String decode64(String str)
-    {
-        //解码
-        String s = new String(com.huawei.hms.support.log.common.Base64.decode(str), StandardCharsets.UTF_8);
-        return s;
-    }
-
-
     public static int getTimeZone()
     {
         TimeZone timeZone = TimeZone.getDefault();

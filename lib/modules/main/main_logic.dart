@@ -11,6 +11,7 @@ class MainLogic extends GetxController {
   void onReady() {
     CommonWebView.setCookieValue();
     tryLogin();
+    AppUtil.checkUpdate(Get.context!);
     super.onReady();
   }
 
