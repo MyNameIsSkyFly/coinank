@@ -134,6 +134,12 @@ class PriceChangeLogic extends FullLifeCycleController with FullLifeCycleMixin {
   }
 
   @override
+  void onReady() {
+    super.onReady();
+    onRefresh(false);
+  }
+
+  @override
   void onInit() {
     super.onInit();
     WidgetsBinding.instance.addObserver(this);
