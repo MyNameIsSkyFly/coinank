@@ -21,7 +21,6 @@ class LiqMainPage extends StatelessWidget {
       appBar: AppTitleBar(
         customWidget: Stack(
           children: [
-
             Center(
               child: TabBar(
                 controller: state.tabController,

@@ -16,7 +16,7 @@ class LoginLogic extends GetxController {
   Future<void> login() async {
     final pwd = pwdCtrl.text;
     final mail = mailCtrl.text;
-    final userInfo = await Apis().login(mail, pwd);
+    final userInfo = await Apis().login(mail, pwd, StoreLogic.to.deviceId);
 
     AppUtil.showToast('SUCCESS');
     StoreLogic.to.saveLoginPassword(AppUtil.encodeBase64(pwd));

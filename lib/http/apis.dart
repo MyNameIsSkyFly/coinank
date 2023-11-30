@@ -84,8 +84,10 @@ abstract class Apis {
 
   @POST('/api/User/login')
   @MultiPart()
-  Future<UserInfoEntity?> login(@Part(name: 'userName') String userName,
-      @Part(name: 'passWord') String passWord);
+  Future<UserInfoEntity?> login(
+      @Part(name: 'userName') String userName,
+      @Part(name: 'passWord') String passWord,
+      @Part(name: 'deviceId') String deviceId);
 
   @POST('/api/User/logOut')
   @MultiPart()
@@ -173,7 +175,6 @@ abstract class Apis {
     @Query('interval') required String interval,
     @Query('baseCoin') required String baseCoin,
     @Query('exchangeName') required String exchangeName,
-
   });
 
   //持仓html的json
