@@ -224,14 +224,13 @@ public class JsCallJava {
     }
 
     private static String promptMsgFormat(String object, String method, String types, String args) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("{");
-        sb.append(KEY_OBJ).append(":").append(object).append(",");
-        sb.append(KEY_METHOD).append(":").append(method).append(",");
-        sb.append(KEY_TYPES).append(":").append(types).append(",");
-        sb.append(KEY_ARGS).append(":").append(args);
-        sb.append("}");
-        return sb.toString();
+        String sb = "{" +
+                KEY_OBJ + ":" + object + "," +
+                KEY_METHOD + ":" + method + "," +
+                KEY_TYPES + ":" + types + "," +
+                KEY_ARGS + ":" + args +
+                "}";
+        return sb;
     }
 
     /**

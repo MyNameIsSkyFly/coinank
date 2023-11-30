@@ -289,7 +289,7 @@ public class AgentWebUtils {
 		String type = "";
 		String fName = f.getName();
 		/* 取得扩展名 */
-		String end = fName.substring(fName.lastIndexOf(".") + 1, fName.length()).toLowerCase();
+		String end = fName.substring(fName.lastIndexOf(".") + 1).toLowerCase();
 		/* 依扩展名的类型决定MimeType */
 		if (end.equals("pdf")) {
 			type = "application/pdf";//
@@ -594,7 +594,7 @@ public class AgentWebUtils {
 		else if (fileUri.getAuthority().equalsIgnoreCase(context.getPackageName() + ".AgentWebFileProvider")) {
 			String path = fileUri.getPath();
 			int index = path.lastIndexOf("/");
-			return getAgentWebFilePath(context) + File.separator + path.substring(index + 1, path.length());
+			return getAgentWebFilePath(context) + File.separator + path.substring(index + 1);
 		} else if ("content".equalsIgnoreCase(fileUri.getScheme())) {
 			// Return the remote address
 			if (isGooglePhotosUri(fileUri)) {
@@ -733,7 +733,7 @@ public class AgentWebUtils {
 		if (activity == null || activity.isFinishing()) {
 			return;
 		}
-		WebParentLayout mWebParentLayout = (WebParentLayout) activity.findViewById(R.id.web_parent_layout_id);
+		WebParentLayout mWebParentLayout = activity.findViewById(R.id.web_parent_layout_id);
 		AbsAgentWebUIController mAgentWebUIController = mWebParentLayout.provide();
 		if (mAgentWebUIController != null) {
 			mAgentWebUIController.onShowMessage(message, from);

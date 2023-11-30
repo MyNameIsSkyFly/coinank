@@ -26,7 +26,7 @@ import android.webkit.WebView;
  * @since 1.0.0
  */
 public abstract class BaseJsAccessEntrace implements JsAccessEntrace {
-    private WebView mWebView;
+    private final WebView mWebView;
     public static final String TAG=BaseJsAccessEntrace.class.getSimpleName();
     BaseJsAccessEntrace(WebView webView){
         this.mWebView=webView;

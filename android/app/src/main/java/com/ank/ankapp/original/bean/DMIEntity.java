@@ -12,18 +12,18 @@ import java.util.List;
 
 public class DMIEntity {
 
-    private ArrayList<Float> DI1s;
-    private ArrayList<Float> DI2s;
-    private ArrayList<Float> ADXs;
-    private ArrayList<Float> ADXRs;
+    private final ArrayList<Float> DI1s;
+    private final ArrayList<Float> DI2s;
+    private final ArrayList<Float> ADXs;
+    private final ArrayList<Float> ADXRs;
 
-    private ArrayList<Float> DIHNs;
-    private ArrayList<Float> DILNs;
-    private ArrayList<Float> DIHNMAs;
-    private ArrayList<Float> DILNMAs;
-    private ArrayList<Float> DXNs;
-    private ArrayList<Float> ADXNs;
-    private ArrayList<Float> ADXRNs;
+    private final ArrayList<Float> DIHNs;
+    private final ArrayList<Float> DILNs;
+    private final ArrayList<Float> DIHNMAs;
+    private final ArrayList<Float> DILNMAs;
+    private final ArrayList<Float> DXNs;
+    private final ArrayList<Float> ADXNs;
+    private final ArrayList<Float> ADXRNs;
 
     /**
      * 计算DMI

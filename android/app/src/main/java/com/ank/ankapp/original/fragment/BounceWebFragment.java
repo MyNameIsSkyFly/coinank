@@ -52,7 +52,7 @@ public class BounceWebFragment extends AgentWebFragment {
 		hideLoadingView(view);//下拉刷新webview隐藏中间的加载动画
 
 		mAgentWeb = AgentWeb.with(this)
-				.setAgentWebParent((ViewGroup) view.findViewById(R.id.ll_rootview), new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+				.setAgentWebParent(view.findViewById(R.id.ll_rootview), new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
 				//.useDefaultIndicator(-1, 2)
 				.useDefaultIndicator(Color.TRANSPARENT, 2)
 				.setAgentWebWebSettings(getSettings())
@@ -95,7 +95,7 @@ public class BounceWebFragment extends AgentWebFragment {
 		mAgentWeb.getWebCreator().getWebView().loadUrl(getUrl());
 
 		// 得到 AgentWeb 最底层的控件
-		addBGChild((FrameLayout) mAgentWeb.getWebCreator().getWebParentLayout());
+		addBGChild(mAgentWeb.getWebCreator().getWebParentLayout());
 		initView(view);
 
 		// AgentWeb 没有把WebView的功能全面覆盖 ，所以某些设置 AgentWeb 没有提供 ， 请从WebView方面入手设置。

@@ -35,10 +35,10 @@ import static com.just.agentweb.AgentWebConfig.WEBVIEW_DEFAULT_TYPE;
  * @since 1.0.0
  */
 public class DefaultWebCreator implements WebCreator {
-    private Activity mActivity;
-    private ViewGroup mViewGroup;
-    private boolean mIsNeedDefaultProgress;
-    private int mIndex;
+    private final Activity mActivity;
+    private final ViewGroup mViewGroup;
+    private final boolean mIsNeedDefaultProgress;
+    private final int mIndex;
     private BaseIndicatorView mProgressView;
     private ViewGroup.LayoutParams mLayoutParams = null;
     private int mColor = -1;
@@ -47,7 +47,7 @@ public class DefaultWebCreator implements WebCreator {
      */
     private int mHeight;
     private boolean mIsCreated = false;
-    private IWebLayout mIWebLayout;
+    private final IWebLayout mIWebLayout;
     private BaseIndicatorSpec mBaseIndicatorSpec;
     private WebView mWebView = null;
     private FrameLayout mFrameLayout = null;
@@ -186,7 +186,7 @@ public class DefaultWebCreator implements WebCreator {
         WebParentLayout mFrameLayout = new WebParentLayout(mActivity);
         mFrameLayout.setId(R.id.web_parent_layout_id);
         mFrameLayout.setBackgroundColor(Color.WHITE);
-        View target = mIWebLayout == null ? (this.mWebView = (WebView) createWebView()) : webLayout();
+        View target = mIWebLayout == null ? (this.mWebView = createWebView()) : webLayout();
         FrameLayout.LayoutParams mLayoutParams = new FrameLayout.LayoutParams(-1, -1);
         mFrameLayout.addView(target, mLayoutParams);
         mFrameLayout.bindWebView(this.mWebView);
@@ -212,7 +212,7 @@ public class DefaultWebCreator implements WebCreator {
             mFrameLayout.addView((View) (this.mBaseIndicatorSpec = mWebIndicator), lp);
             mWebIndicator.setVisibility(View.GONE);
         } else if (!mIsNeedDefaultProgress && mProgressView != null) {
-            mFrameLayout.addView((View) (this.mBaseIndicatorSpec = (BaseIndicatorSpec) mProgressView), mProgressView.offerLayoutParams());
+            mFrameLayout.addView((View) (this.mBaseIndicatorSpec = mProgressView), mProgressView.offerLayoutParams());
             mProgressView.setVisibility(View.GONE);
         }
         return mFrameLayout;

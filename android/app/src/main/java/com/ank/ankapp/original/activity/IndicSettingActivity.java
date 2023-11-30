@@ -34,17 +34,17 @@ public class IndicSettingActivity extends BaseActivity implements View.OnClickLi
 
     private void initView()
     {
-        line_group = (RadioGroup)findViewById(R.id.line_group);
-        rb_small = (RadioButton)findViewById(R.id.rb_small);
-        rb_middle = (RadioButton)findViewById(R.id.rb_middle);
-        rb_large = (RadioButton)findViewById(R.id.rb_large);
+        line_group = findViewById(R.id.line_group);
+        rb_small = findViewById(R.id.rb_small);
+        rb_middle = findViewById(R.id.rb_middle);
+        rb_large = findViewById(R.id.rb_large);
         line_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 rb_small.setChecked(false);
                 rb_middle.setChecked(false);
                 rb_large.setChecked(false);
-                RadioButton rb = (RadioButton)findViewById(checkedId);
+                RadioButton rb = findViewById(checkedId);
                 rb.setChecked(true);
 
                 if (checkedId == R.id.rb_small)
@@ -87,15 +87,15 @@ public class IndicSettingActivity extends BaseActivity implements View.OnClickLi
             rb_large.setChecked(true);
         }
 
-        main_group = (RadioGroup)findViewById(R.id.main_group);
-        rb_solid = (RadioButton)findViewById(R.id.rb_solid);
-        rb_hollow = (RadioButton)findViewById(R.id.rb_hollow);
+        main_group = findViewById(R.id.main_group);
+        rb_solid = findViewById(R.id.rb_solid);
+        rb_hollow = findViewById(R.id.rb_hollow);
         main_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 rb_hollow.setChecked(false);
                 rb_solid.setChecked(false);
-                RadioButton rb = (RadioButton)findViewById(checkedId);
+                RadioButton rb = findViewById(checkedId);
                 rb.setChecked(true);
 
                 if (checkedId == R.id.rb_solid)

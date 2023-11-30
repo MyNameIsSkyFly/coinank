@@ -28,13 +28,11 @@ public class PullRecyclerView extends RecyclerView implements Pullable {
 
     public boolean isScrollTop()
     {
-        if (!canScrollVertically(-1)) {
-            //MLog.d("top");
-            return true;//顶部
-        }
+        //MLog.d("top");
+        return !canScrollVertically(-1);//顶部
 
         //MLog.d("not top");
-        return false;//非顶部
+//非顶部
     }
 
     @Override
@@ -43,11 +41,7 @@ public class PullRecyclerView extends RecyclerView implements Pullable {
             return false;
         }
 
-        if (isScrollTop()) {
-            return true;
-        }
-
-       return false;
+        return isScrollTop();
     }
 
     @Override

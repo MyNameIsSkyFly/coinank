@@ -72,11 +72,7 @@ public class PullScrollView extends ScrollView implements Pullable {
             return false;
         }
 
-        if (getScrollY() == 0) {
-            return true;
-        }
-
-       return false;
+        return getScrollY() == 0;
     }
 
     @Override

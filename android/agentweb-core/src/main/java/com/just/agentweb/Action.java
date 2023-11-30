@@ -30,10 +30,10 @@ import java.util.List;
  */
 public final class Action {
 
-    public transient static final int ACTION_PERMISSION = 1;
-    public transient static final int ACTION_FILE = 2;
-    public transient static final int ACTION_CAMERA = 3;
-    public transient static final int ACTION_VIDEO = 4;
+    public static final int ACTION_PERMISSION = 1;
+    public static final int ACTION_FILE = 2;
+    public static final int ACTION_CAMERA = 3;
+    public static final int ACTION_VIDEO = 4;
     private ArrayList<String> mPermissions = new ArrayList<>();
     private int mAction;
     private int mFromIntention;

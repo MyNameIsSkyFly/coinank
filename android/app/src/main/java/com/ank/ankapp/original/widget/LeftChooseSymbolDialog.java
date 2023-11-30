@@ -50,12 +50,12 @@ public class LeftChooseSymbolDialog extends DialogFragment implements View.OnCli
     protected ResponseSymbolVo mData = new ResponseSymbolVo();
     protected SelectSymbolAdapter mAdapter;
     protected ListView mListView;
-    private List<String> listExchangeName = new ArrayList<>();
+    private final List<String> listExchangeName = new ArrayList<>();
     private EditText et_search;
 
     private RadioButton rb_favorite, rb_all, rb_binance, rb_okx, rb_ftx, rb_bitget, rb_bybit, rb_bitmex, rb_gate, rb_kraken, rb_huobi;
-    private RadioButton []rBtns = new RadioButton[]{rb_favorite, rb_all, rb_binance, rb_okx, rb_ftx, rb_bitget, rb_bybit, rb_bitmex, rb_gate, rb_kraken, rb_huobi};
-    private int []res_id = new int[]{R.id.rb_favorite, R.id.rb_all, R.id.rb_binance, R.id.rb_okx, R.id.rb_ftx, R.id.rb_bitget, R.id.rb_bybit,
+    private final RadioButton []rBtns = new RadioButton[]{rb_favorite, rb_all, rb_binance, rb_okx, rb_ftx, rb_bitget, rb_bybit, rb_bitmex, rb_gate, rb_kraken, rb_huobi};
+    private final int []res_id = new int[]{R.id.rb_favorite, R.id.rb_all, R.id.rb_binance, R.id.rb_okx, R.id.rb_ftx, R.id.rb_bitget, R.id.rb_bybit,
             R.id.rb_bitmex, R.id.rb_gate, R.id.rb_kraken, R.id.rb_huobi};
 
     private RadioGroup main_exchange;
@@ -107,7 +107,7 @@ public class LeftChooseSymbolDialog extends DialogFragment implements View.OnCli
 
     private void initView(View v)
     {
-        et_search = (EditText)v.findViewById(R.id.et_search);
+        et_search = v.findViewById(R.id.et_search);
         et_search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -124,11 +124,11 @@ public class LeftChooseSymbolDialog extends DialogFragment implements View.OnCli
             }
         });
 
-        main_exchange = (RadioGroup)v.findViewById(R.id.main_exchange);
+        main_exchange = v.findViewById(R.id.main_exchange);
         int len = res_id.length;
         for (int i = 0; i < len; i++)
         {
-            rBtns[i] = (RadioButton)v.findViewById(res_id[i]);
+            rBtns[i] = v.findViewById(res_id[i]);
         }
 
         tabIdx = Config.getMMKV(getActivity()).getInt(Config.CONF_FAVORITE_TAB_IDX, 1);
@@ -174,7 +174,7 @@ public class LeftChooseSymbolDialog extends DialogFragment implements View.OnCli
             }
         });
 
-        mListView = (ListView) v.findViewById(R.id.lv_floatview_ticker);
+        mListView = v.findViewById(R.id.lv_floatview_ticker);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

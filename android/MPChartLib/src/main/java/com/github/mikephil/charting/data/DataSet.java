@@ -205,10 +205,9 @@ public abstract class DataSet<T extends Entry> extends BaseDataSet<T> {
      * @return
      */
     public String toSimpleString() {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("DataSet, label: " + (getLabel() == null ? "" : getLabel()) + ", entries: " + mEntries.size() +
-                "\n");
-        return buffer.toString();
+        String buffer = "DataSet, label: " + (getLabel() == null ? "" : getLabel()) + ", entries: " + mEntries.size() +
+                "\n";
+        return buffer;
     }
 
     @Override

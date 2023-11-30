@@ -7,7 +7,7 @@
     android:background="@color/colorPrimary"
     android:layout_height="match_parent">
 
-    <include android:id="@+id/toolbar2" layout="@layout/toolbar_main"></include>
+    <include layout="@layout/toolbar_main"></include>
 
     <RelativeLayout
         android:id="@+id/rl_small"
@@ -51,7 +51,6 @@
         >
 
         <TextView
-            android:id="@+id/tv_ko"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"

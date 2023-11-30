@@ -28,7 +28,7 @@ import java.util.Map;
  */
 public class UrlLoaderImpl implements IUrlLoader {
 	private Handler mHandler = null;
-	private WebView mWebView;
+	private final WebView mWebView;
 	private HttpHeaders mHttpHeaders;
 	public static final String TAG = UrlLoaderImpl.class.getSimpleName();
 

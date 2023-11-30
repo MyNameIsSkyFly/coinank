@@ -48,15 +48,15 @@ public final class AgentWeb {
     /**
      * Activity
      */
-    private Activity mActivity;
+    private final Activity mActivity;
     /**
      * 承载 WebParentLayout 的 ViewGroup
      */
-    private ViewGroup mViewGroup;
+    private final ViewGroup mViewGroup;
     /**
      * 负责创建布局 WebView ，WebParentLayout  Indicator等。
      */
-    private WebCreator mWebCreator;
+    private final WebCreator mWebCreator;
     /**
      * 管理 WebSettings
      */
@@ -72,15 +72,15 @@ public final class AgentWeb {
     /**
      * WebChromeClient
      */
-    private com.just.agentweb.WebChromeClient mWebChromeClient;
+    private final com.just.agentweb.WebChromeClient mWebChromeClient;
     /**
      * WebViewClient
      */
-    private com.just.agentweb.WebViewClient mWebViewClient;
+    private final com.just.agentweb.WebViewClient mWebViewClient;
     /**
      * is show indicator
      */
-    private boolean mEnableIndicator;
+    private final boolean mEnableIndicator;
     /**
      * IEventHandler 处理WebView相关返回事件
      */
@@ -88,7 +88,7 @@ public final class AgentWeb {
     /**
      * WebView 注入对象
      */
-    private ArrayMap<String, Object> mJavaObjects = new ArrayMap<>();
+    private final ArrayMap<String, Object> mJavaObjects = new ArrayMap<>();
     /**
      * flag
      */
@@ -136,7 +136,7 @@ public final class AgentWeb {
     /**
      * WebView 生命周期 ， 跟随生命周期释放CPU
      */
-    private WebLifeCycle mWebLifeCycle;
+    private final WebLifeCycle mWebLifeCycle;
     /**
      * Video 视屏播放管理类
      */
@@ -148,7 +148,7 @@ public final class AgentWeb {
     /**
      * PermissionInterceptor 权限拦截
      */
-    private PermissionInterceptor mPermissionInterceptor;
+    private final PermissionInterceptor mPermissionInterceptor;
     /**
      * 是否拦截未知的Url， @link{DefaultWebClient}
      */
@@ -160,11 +160,11 @@ public final class AgentWeb {
     /**
      * MiddlewareWebClientBase WebViewClient 中间件
      */
-    private MiddlewareWebClientBase mMiddleWrareWebClientBaseHeader;
+    private final MiddlewareWebClientBase mMiddleWrareWebClientBaseHeader;
     /**
      * MiddlewareWebChromeBase WebChromeClient 中间件
      */
-    private MiddlewareWebChromeBase mMiddlewareWebChromeBaseHeader;
+    private final MiddlewareWebChromeBase mMiddlewareWebChromeBaseHeader;
     /**
      * 事件拦截
      */
@@ -305,7 +305,7 @@ public final class AgentWeb {
     }
 
     public static class PreAgentWeb {
-        private AgentWeb mAgentWeb;
+        private final AgentWeb mAgentWeb;
         private boolean isReady = false;
 
         PreAgentWeb(AgentWeb agentWeb) {
@@ -466,7 +466,7 @@ public final class AgentWeb {
             MiddlewareWebChromeBase tail = header;
             int count = 1;
             MiddlewareWebChromeBase tmp = header;
-            for (; tmp.next() != null; ) {
+            while (tmp.next() != null) {
                 tail = tmp = tmp.next();
                 count++;
             }
@@ -479,17 +479,17 @@ public final class AgentWeb {
     }
 
     public enum SecurityType {
-        DEFAULT_CHECK, STRICT_CHECK;
+        DEFAULT_CHECK, STRICT_CHECK
     }
 
     public static final class AgentBuilder {
-        private Activity mActivity;
+        private final Activity mActivity;
         private Fragment mFragment;
         private ViewGroup mViewGroup;
         private boolean mIsNeedDefaultProgress;
         private int mIndex = -1;
         private BaseIndicatorView mBaseIndicatorView;
-        private IndicatorController mIndicatorController = null;
+        private final IndicatorController mIndicatorController = null;
         /*默认进度条是显示的*/
         private boolean mEnableIndicator = true;
         private ViewGroup.LayoutParams mLayoutParams = null;
@@ -618,7 +618,7 @@ public final class AgentWeb {
     }
 
     public static class CommonBuilder {
-        private AgentBuilder mAgentBuilder;
+        private final AgentBuilder mAgentBuilder;
 
         public CommonBuilder(AgentBuilder agentBuilder) {
             this.mAgentBuilder = agentBuilder;
@@ -753,7 +753,7 @@ public final class AgentWeb {
 
     private static final class PermissionInterceptorWrapper implements PermissionInterceptor {
 
-        private WeakReference<PermissionInterceptor> mWeakReference;
+        private final WeakReference<PermissionInterceptor> mWeakReference;
 
         private PermissionInterceptorWrapper(PermissionInterceptor permissionInterceptor) {
             this.mWeakReference = new WeakReference<PermissionInterceptor>(permissionInterceptor);

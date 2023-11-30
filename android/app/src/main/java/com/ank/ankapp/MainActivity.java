@@ -5,14 +5,10 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
 
-import com.ank.ankapp.R;
 import com.ank.ankapp.original.App;
 import com.ank.ankapp.original.Config;
 import com.ank.ankapp.original.Global;
-import com.ank.ankapp.original.activity.CommonFragmentActivity;
 import com.ank.ankapp.original.activity.CommonWebActivity;
-import com.ank.ankapp.original.activity.OIChgActivity;
-import com.ank.ankapp.original.activity.PriceChgActivity;
 import com.ank.ankapp.original.activity.SetFloatViewActivity;
 import com.ank.ankapp.original.language.LanguageUtil;
 import com.ank.ankapp.original.utils.AppUtils;
@@ -34,15 +30,6 @@ public class MainActivity extends FlutterActivity {
 
     class HostMessageHandler implements Messages.MessageHostApi {
 
-        @Override
-        public void toTotalOi() {
-            Intent i = new Intent();
-            i.setClass(getActivity(), CommonFragmentActivity.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            i.putExtra(Config.INDEX_TYPE, Config.TYPE_EXCHANGE_OI_FRAGMENT);
-            i.putExtra(Config.TYPE_TITLE, getResources().getString(R.string.s_open_interest));
-            Global.showActivity(getActivity(), i);
-        }
 
         @Override
         public void changeDarkMode(@NonNull Boolean isDark) {
@@ -75,60 +62,9 @@ public class MainActivity extends FlutterActivity {
         }
 
         @Override
-        public void toLiqMap() {
-            Intent i = new Intent();
-            i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            i.setClass(getActivity(), CommonWebActivity.class);
-            i.putExtra(Config.TYPE_URL, UrlGet.getUrl(Config.urlLiqMap,
-                    LanguageUtil.getWebLanguage(getContext())));
-            i.putExtra(Config.TYPE_TITLE, getResources().getString(R.string.s_liqmap));
-            Global.showActivity(getActivity(), i);
-        }
-
-        @Override
-        public void toLongShortAccountRatio() {
-            Intent i = new Intent();
-            i.setClass(getActivity(), CommonFragmentActivity.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            i.putExtra(Config.INDEX_TYPE, Config.TYPE_LONGSHORT_ACCOUNTS_RATIO_FRAGMENT);
-            i.putExtra(Config.TYPE_TITLE, getResources().getString(R.string.s_longshort_person));
-            Global.showActivity(getActivity(), i);
-
-        }
-
-        @Override
-        public void toTakerBuyLongShortRatio() {
-            Intent i = new Intent();
-            i.setClass(getActivity(), CommonFragmentActivity.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            i.putExtra(Config.INDEX_TYPE, Config.TYPE_TAKERBUY_LONGSSHORTS_FRAGMENT);
-            i.putExtra(Config.TYPE_TITLE, getResources().getString(R.string.s_buysel_longshort_ratio));
-            Global.showActivity(getActivity(), i);
-        }
-
-        @Override
-        public void toOiChange() {
-            Intent i = new Intent();
-            i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            i.setClass(getActivity(), OIChgActivity.class);
-            i.putExtra(Config.TYPE_TITLE, getResources().getString(R.string.s_oi_chg));
-            Global.showActivity(getActivity(), i);
-        }
-
-        @Override
-        public void toPriceChange() {
-            System.out.println("App.getApplication().messageFlutterApi = " + App.getApplication().messageFlutterApi);
-            Intent i = new Intent();
-            i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            i.setClass(getActivity(), PriceChgActivity.class);
-            i.putExtra(Config.TYPE_TITLE, getResources().getString(R.string.s_price_chg));
-            Global.showActivity(getActivity(), i);
-        }
-
-        @Override
         public void toGreedIndex() {
             Intent i = new Intent();
-            String url = "file:///android_asset/t7.html";
+            String url;
             url = Config.urlGreedIndex;
             i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             i.setClass(getActivity(), CommonWebActivity.class);

@@ -116,7 +116,7 @@ public class DefaultDesignUIController extends DefaultUIController {
             mRecyclerView.setId(RECYCLERVIEW_ID);
             mBottomSheetDialog.setContentView(mRecyclerView);
         }
-        mRecyclerView = (RecyclerView) mBottomSheetDialog.getDelegate().findViewById(RECYCLERVIEW_ID);
+        mRecyclerView = mBottomSheetDialog.getDelegate().findViewById(RECYCLERVIEW_ID);
         mRecyclerView.setAdapter(getAdapter(ways, callback));
         mBottomSheetDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
@@ -167,7 +167,7 @@ public class DefaultDesignUIController extends DefaultUIController {
         TextView mTextView;
         public BottomSheetHolder(View itemView) {
             super(itemView);
-            mTextView = (TextView) itemView.findViewById(android.R.id.text1);
+            mTextView = itemView.findViewById(android.R.id.text1);
         }
     }
 

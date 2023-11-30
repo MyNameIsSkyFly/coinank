@@ -17,9 +17,9 @@ import com.github.mikephil.charting.highlight.Highlight;
  */
 public class ChartFingerTouchListener implements View.OnTouchListener {
 
-    private BarLineChartBase mChart;
-    private GestureDetector mDetector;
-    private HighlightListener mListener;
+    private final BarLineChartBase mChart;
+    private final GestureDetector mDetector;
+    private final HighlightListener mListener;
     private boolean mIsLongPress = false;
 
     public ChartFingerTouchListener(BarLineChartBase chart, HighlightListener listener) {

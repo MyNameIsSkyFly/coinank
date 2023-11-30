@@ -19,7 +19,7 @@ import java.util.List;
 public class LeftSubMenuAdapter extends BaseExpandableListAdapter {
 
     private List<NavMenuBean> data;
-    private Context context;
+    private final Context context;
     private OnExpandListViewClickListener listener;
 
     public void setListener(OnExpandListViewClickListener listener)
@@ -79,7 +79,7 @@ public class LeftSubMenuAdapter extends BaseExpandableListAdapter {
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-        return groupPosition*10000+childPosition;
+        return groupPosition* 10000L +childPosition;
     }
 
     @Override
@@ -94,9 +94,9 @@ public class LeftSubMenuAdapter extends BaseExpandableListAdapter {
             convertView = LayoutInflater.from(context).inflate(
                     R.layout.nav_menu_group, null);
             holder = new ViewHolder();
-            holder.tv_menu = (RTextView) convertView
+            holder.tv_menu = convertView
                     .findViewById(R.id.tv_menu);
-            holder.tv_more = (TextView) convertView
+            holder.tv_more = convertView
                     .findViewById(R.id.tv_more);
             convertView.setTag(holder);
         } else {
@@ -146,7 +146,7 @@ public class LeftSubMenuAdapter extends BaseExpandableListAdapter {
             convertView = LayoutInflater.from(context).inflate(
                     R.layout.nav_menu_child, null);
             holder = new ViewHolder();
-            holder.tv_menu = (RTextView) convertView
+            holder.tv_menu = convertView
                     .findViewById(R.id.tv_menu);
             convertView.setTag(holder);
         } else {

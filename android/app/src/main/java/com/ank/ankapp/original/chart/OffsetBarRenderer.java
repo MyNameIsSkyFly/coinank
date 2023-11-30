@@ -37,8 +37,8 @@ public class OffsetBarRenderer extends BarChartRenderer {
 
     protected float barOffset;//BarChart绘制时偏移多少个单位 --小于0时向左偏移
     protected float highlightWidth, highlightSize;//高亮线宽度 单位:dp  /  高亮文字大小 单位:px
-    private RectF mBarShadowRectBuffer = new RectF();
-    private DecimalFormat format = new DecimalFormat("0.0000");//保留小数点后四位
+    private final RectF mBarShadowRectBuffer = new RectF();
+    private final DecimalFormat format = new DecimalFormat("0.0000");//保留小数点后四位
 
     public OffsetBarRenderer(BarDataProvider chart, ChartAnimator animator, ViewPortHandler viewPortHandler) {
         this(chart, animator, viewPortHandler, 0);

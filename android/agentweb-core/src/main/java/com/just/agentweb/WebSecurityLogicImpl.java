@@ -26,8 +26,8 @@ import android.webkit.WebView;
  * @author cenxiaozhong
  */
 public class WebSecurityLogicImpl implements WebSecurityCheckLogic {
-    private String TAG = this.getClass().getSimpleName();
-    private int webviewType;
+    private final String TAG = this.getClass().getSimpleName();
+    private final int webviewType;
 
     public static WebSecurityLogicImpl getInstance(int webViewType) {
         return new WebSecurityLogicImpl(webViewType);

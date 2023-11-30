@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class EXPMAEntity {
 
-    private ArrayList<Float> EXPMAs;
+    private final ArrayList<Float> EXPMAs;
 
     public EXPMAEntity(ArrayList<KLineItem> kLineBeens, int n) {
         EXPMAs = new ArrayList<>();

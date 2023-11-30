@@ -24,7 +24,7 @@ import java.util.List;
 public class FloatViewAdapter extends BaseAdapter {
 
     private List<SymbolVo> data;
-    private Context context;
+    private final Context context;
 
     public FloatViewAdapter(List<SymbolVo> data, Context context) {
         this.data = data;

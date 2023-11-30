@@ -4,40 +4,25 @@
     <color name="colorPrimaryDark">#ffffff</color>
     <color name="colorAccent">#477dd7</color>
     <color name="white">#ffffff</color>
-    <color name="black0B">#0f121b</color>
-    <color name="black0C">#0F131C</color>
     <color name="black3B">#3E424B</color>
     <color name="gray8B">#878d9b</color>
-    <color name="blue47">#477dd7</color>
     <color name="redEB">#e4455a</color>
     <color name="green4C">#37bc88</color>
-    <color name="brown">#FFBB77</color>
     <color name="purple">#ffB230ED</color>
     <color name="yellow">#ffEFBB40</color>
     <color name="blue_ma">#ff18cbf5</color>
     <color name="blackgray">#333333</color>
-    <color name="text_color_black">#333333</color>
-    <color name="text_color_darkgray">#666666</color>
     <color name="text_color_gray">#999999</color>
-    <color name="titleColor">#333333</color>
     <color name="refresh_text_color_gray">#999999</color>
     <color name="btn_color">#eff2f5</color>
 
-    <color name="fr_type_switch_btn_color">#fefeff</color>
-
     <color name="blue_color">#1B9AF7</color>
-    <color name="blue_color_light">#58b2f2</color>
-
-    <color name="colorPrimary_light_trsp" >#7b393a3f</color>
 
     <color name="floatview_color">#af000000</color>
 
     <color name="lv_second_color">#707a8a</color>
-    <color name="home_second_color">#707a8a</color>
 
     <color name="black_white">#000000</color>
-    <color name="home_title_font_color">#000000</color>
-    <color name="light_white">#C2C6CC</color>
     <color name="gray_dashline">#40878d9b</color>
 
     <color name="highlight_view_bg">#fafafa</color>
@@ -45,28 +30,11 @@
     <color name="symbol_bg">#eaebef</color>
 
     <color name="highlight_line_color">#7d8899</color>
-    <color name="btn_blue_press">#88477dd7</color>
-    <color name="home_card_view_bg">#eaebee</color>
-    <color name="home_rekt_bg">#808080</color>
     <color name="oi_progressbar_bg_color">#eff2f5</color>
     <color name="oi_progressbar_color">#cfd6e4</color>
     <color name="lv_line">#20878d9b</color>
 
-    <color name="sortby_bg_color">#e3e8f1</color>
     <color name="sub_chart_single_line_color">#2196f3</color>
-
-    <color name="color_radix">#3F85D0</color>
-    <color name="color_even">#fb9428</color>
-    <color name="color_white">#ffffff</color>
-
-    <color name="stare_item_1">#0E2F50</color>
-    <color name="stare_item_2">#0F3356</color>
-    <color name="stare_radio_1">#F74F00</color>
-    <color name="stare_radio_2">#C6C600</color>
-    <color name="stare_radio_3">#57BF4C</color>
-
-
-    <color name="text_gray_666666">#666666</color>
 
 
 </resources>

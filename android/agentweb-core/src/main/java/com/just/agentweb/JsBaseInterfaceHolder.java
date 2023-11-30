@@ -29,8 +29,8 @@ import java.lang.reflect.Method;
  */
 public abstract class JsBaseInterfaceHolder implements JsInterfaceHolder {
 
-    private AgentWeb.SecurityType mSecurityType;
-    private WebCreator mWebCreator;
+    private final AgentWeb.SecurityType mSecurityType;
+    private final WebCreator mWebCreator;
 
     protected JsBaseInterfaceHolder(WebCreator webCreator, AgentWeb.SecurityType securityType) {
         this.mSecurityType = securityType;
@@ -64,9 +64,7 @@ public abstract class JsBaseInterfaceHolder implements JsInterfaceHolder {
     }
 
     protected boolean checkSecurity() {
-        return mSecurityType != AgentWeb.SecurityType.STRICT_CHECK
-                ? true : mWebCreator.getWebViewType() == AgentWebConfig.WEBVIEW_AGENTWEB_SAFE_TYPE
-                ? true : Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1;
+        return mSecurityType != AgentWeb.SecurityType.STRICT_CHECK || mWebCreator.getWebViewType() == AgentWebConfig.WEBVIEW_AGENTWEB_SAFE_TYPE || Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR1;
     }
 
 }

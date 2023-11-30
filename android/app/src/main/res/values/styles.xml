@@ -16,27 +16,6 @@
         <item name="android:windowBackground">?android:colorBackground</item>
     </style>
 
-    <style name="activity_translate" parent="@android:style/Animation.Activity">
-        <item name="android:activityOpenEnterAnimation">@android:anim/anticipate_overshoot_interpolator</item>
-        <item name="android:activityOpenExitAnimation">@android:anim/anticipate_overshoot_interpolator</item>
-        <item name="android:activityCloseExitAnimation">@android:anim/anticipate_overshoot_interpolator</item>
-        <item name="android:activityCloseEnterAnimation">@android:anim/anticipate_overshoot_interpolator</item>
-    </style>
-
-    <style name="NightTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here.
-        <item name="android:windowAnimationStyle">@style/activity_translate</item>
-        -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorOnPrimary">@color/colorPrimary</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowActionBar">false</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="bg">@drawable/btn_back_light</item>
-    </style>
-
     <style name="LightTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -50,43 +29,8 @@
     </style>
 
     <!-- FirstActivity 用此主题-->
-    <style name="maintheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimary</item>
-        <item name="colorOnPrimary">@color/colorPrimary</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowActionBar">false</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowBackground">@color/black</item>
-
-        <item name="android:windowFullscreen">false</item>
-        <item name="android:windowIsTranslucent">true</item>
-    </style>
 
     <!-- Base application theme. -->
-    <style name="BaseAppTheme" parent="NightTheme">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:actionBarSize">48dp</item>
-
-    </style>
-
-    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar"></style>
-
-    <style name="toolBar">
-        <item name="colorControlNormal">#ffffff</item>
-        <item name="android:homeAsUpIndicator">@drawable/cha</item>
-        <item name="android:titleTextStyle">@style/titlestyle</item>
-
-    </style>
-
-    <style name="titlestyle">
-
-        <item name="android:textSize">12sp</item>
-    </style>
 
     <style name="dlg_anim">
         <item name="android:windowEnterAnimation">@anim/move_left_in_activity</item>
@@ -127,16 +71,8 @@
     </style>
 
     <!-- 全屏主题样式 -->
-    <style name="FullScreenTheme" parent="AppTheme">
-        <item name="android:windowFullscreen">true</item>
-    </style>
 
     <!-- 闪屏页主题样式 -->
-    <style name="SplashTheme" parent="FullScreenTheme">
-        <!-- https://www.jianshu.com/p/d0d907754603 -->
-        <item name="android:windowIsTranslucent">false</item>
-        <item name="android:windowDisablePreview">true</item>
-    </style>
 
 
     <!-- 对话框默认主题 -->

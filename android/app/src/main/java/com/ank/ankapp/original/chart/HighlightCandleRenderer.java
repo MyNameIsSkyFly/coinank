@@ -38,7 +38,7 @@ import java.util.List;
 public class HighlightCandleRenderer extends CandleStickChartRenderer {
 
     private float highlightSize;//图表高亮文字大小 单位:px
-    private DecimalFormat format = new DecimalFormat("0.0000");
+    private final DecimalFormat format = new DecimalFormat("0.0000");
     private Highlight[] indices;
 
     public HighlightCandleRenderer(CandleDataProvider chart, ChartAnimator animator,

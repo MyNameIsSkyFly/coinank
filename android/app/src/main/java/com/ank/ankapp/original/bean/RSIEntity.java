@@ -8,9 +8,9 @@ import java.util.ArrayList;
 
 public class RSIEntity {
 
-    private ArrayList<Float> RSIs01;
-    private ArrayList<Float> RSIs02;
-    private ArrayList<Float> RSIs03;
+    private final ArrayList<Float> RSIs01;
+    private final ArrayList<Float> RSIs02;
+    private final ArrayList<Float> RSIs03;
 
     /**
      */

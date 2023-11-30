@@ -10,9 +10,9 @@ import java.util.ArrayList;
 
 public class BOLLEntity {
 
-    private ArrayList<Float> UPs;
-    private ArrayList<Float> MBs;
-    private ArrayList<Float> DNs;
+    private final ArrayList<Float> UPs;
+    private final ArrayList<Float> MBs;
+    private final ArrayList<Float> DNs;
 
     /**
      * 得到BOLL指标

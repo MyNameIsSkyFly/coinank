@@ -52,8 +52,8 @@ public class AgentWebView extends LollipopFixedWebView {
     private static final String TAG = AgentWebView.class.getSimpleName();
     private Map<String, JsCallJava> mJsCallJavas;
     private Map<String, String> mInjectJavaScripts;
-    private FixedOnReceivedTitle mFixedOnReceivedTitle;
-    private boolean mIsInited;
+    private final FixedOnReceivedTitle mFixedOnReceivedTitle;
+    private final boolean mIsInited;
     private Boolean mIsAccessibilityEnabledOriginal;
 
     public AgentWebView(Context context) {
@@ -225,17 +225,16 @@ public class AgentWebView extends LollipopFixedWebView {
      */
     public String buildNotRepeatInjectJS(String key, String js) {
         String obj = String.format("__injectFlag_%1$s__", key);
-        StringBuilder sb = new StringBuilder();
-        sb.append("javascript:try{(function(){if(window.");
-        sb.append(obj);
-        sb.append("){console.log('");
-        sb.append(obj);
-        sb.append(" has been injected');return;}window.");
-        sb.append(obj);
-        sb.append("=true;");
-        sb.append(js);
-        sb.append("}())}catch(e){console.warn(e)}");
-        return sb.toString();
+        String sb = "javascript:try{(function(){if(window." +
+                obj +
+                "){console.log('" +
+                obj +
+                " has been injected');return;}window." +
+                obj +
+                "=true;" +
+                js +
+                "}())}catch(e){console.warn(e)}";
+        return sb;
     }
 
     /**
@@ -245,17 +244,16 @@ public class AgentWebView extends LollipopFixedWebView {
      * @return
      */
     public String buildTryCatchInjectJS(String js) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("javascript:try{");
-        sb.append(js);
-        sb.append("}catch(e){console.warn(e)}");
-        return sb.toString();
+        String sb = "javascript:try{" +
+                js +
+                "}catch(e){console.warn(e)}";
+        return sb;
     }
 
 
     public static class AgentWebClient extends MiddlewareWebClientBase {
 
-        private AgentWebView mAgentWebView;
+        private final AgentWebView mAgentWebView;
 
         private AgentWebClient(AgentWebView agentWebView) {
             this.mAgentWebView = agentWebView;
@@ -292,7 +290,7 @@ public class AgentWebView extends LollipopFixedWebView {
 
     public static class AgentWebChrome extends MiddlewareWebChromeBase {
 
-        private AgentWebView mAgentWebView;
+        private final AgentWebView mAgentWebView;
 
         private AgentWebChrome(AgentWebView agentWebView) {
             this.mAgentWebView = agentWebView;

@@ -26,11 +26,8 @@ public class ScrollablePanel extends FrameLayout {
 
     public boolean isScrollTop()
     {
-        if (!recyclerView.canScrollVertically(-1)) {
-            return true;//顶部
-        }
-
-        return false;//非顶部
+        return !recyclerView.canScrollVertically(-1);//顶部
+//非顶部
     }
 
     public ScrollablePanel(Context context, PanelAdapter panelAdapter) {
@@ -51,10 +48,10 @@ public class ScrollablePanel extends FrameLayout {
 
     private void initView() {
         LayoutInflater.from(getContext()).inflate(R.layout.view_scrollable_panel, this, true);
-        recyclerView = (MyRecyclelView) findViewById(R.id.recycler_content_list);
+        recyclerView = findViewById(R.id.recycler_content_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        firstItemView = (FrameLayout) findViewById(R.id.first_item);
-        headerRecyclerView = (MyRecyclelView) findViewById(R.id.recycler_header_list);
+        firstItemView = findViewById(R.id.first_item);
+        headerRecyclerView = findViewById(R.id.recycler_header_list);
         headerRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         headerRecyclerView.setHasFixedSize(true);
         if (panelAdapter != null) {
@@ -98,7 +95,7 @@ public class ScrollablePanel extends FrameLayout {
      */
     private static class PanelLineItemAdapter extends RecyclerView.Adapter {
 
-        private PanelAdapter panelAdapter;
+        private final PanelAdapter panelAdapter;
         private int row;
 
         public PanelLineItemAdapter(int row, PanelAdapter panelAdapter) {
@@ -140,9 +137,9 @@ public class ScrollablePanel extends FrameLayout {
     private static class PanelLineAdapter extends RecyclerView.Adapter<PanelLineAdapter.ViewHolder> {
 
         private PanelAdapter panelAdapter;
-        private RecyclerView headerRecyclerView;
-        private RecyclerView contentRV;
-        private HashSet<RecyclerView> observerList = new HashSet<>();
+        private final RecyclerView headerRecyclerView;
+        private final RecyclerView contentRV;
+        private final HashSet<RecyclerView> observerList = new HashSet<>();
         private int firstPos = -1;
         private int firstOffset = -1;
 
@@ -272,7 +269,7 @@ public class ScrollablePanel extends FrameLayout {
             recyclerViewHashSet.add(headerRecyclerView);
 
             for (int i = 0; i < contentRV.getChildCount(); i++) {
-                recyclerViewHashSet.add((RecyclerView) contentRV.getChildAt(i).findViewById(R.id.recycler_line_list));
+                recyclerViewHashSet.add(contentRV.getChildAt(i).findViewById(R.id.recycler_line_list));
             }
             return recyclerViewHashSet;
         }
@@ -285,8 +282,8 @@ public class ScrollablePanel extends FrameLayout {
 
             public ViewHolder(View view) {
                 super(view);
-                this.recyclerView = (RecyclerView) view.findViewById(R.id.recycler_line_list);
-                this.firstColumnItemView = (FrameLayout) view.findViewById(R.id.first_column_item);
+                this.recyclerView = view.findViewById(R.id.recycler_line_list);
+                this.firstColumnItemView = view.findViewById(R.id.first_column_item);
                 this.recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false));
             }
         }

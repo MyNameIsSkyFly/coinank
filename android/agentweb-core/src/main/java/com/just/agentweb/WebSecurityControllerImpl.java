@@ -26,9 +26,9 @@ import android.webkit.WebView;
  */
 public class WebSecurityControllerImpl implements WebSecurityController<WebSecurityCheckLogic> {
 
-	private WebView mWebView;
-	private ArrayMap<String, Object> mMap;
-	private AgentWeb.SecurityType mSecurityType;
+	private final WebView mWebView;
+	private final ArrayMap<String, Object> mMap;
+	private final AgentWeb.SecurityType mSecurityType;
 
 	public WebSecurityControllerImpl(WebView view, ArrayMap<String, Object> map, AgentWeb.SecurityType securityType) {
 		this.mWebView = view;

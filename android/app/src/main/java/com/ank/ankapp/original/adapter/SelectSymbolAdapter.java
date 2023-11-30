@@ -20,7 +20,7 @@ import java.util.List;
 public class SelectSymbolAdapter extends BaseAdapter {
 
     private List<SymbolVo> data;
-    private Context context;
+    private final Context context;
     private int type = 0;//0正常，1为K线界面交易对列表
 
     public int getType() {

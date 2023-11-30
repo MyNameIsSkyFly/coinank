@@ -28,7 +28,7 @@ import okhttp3.Response;
 public class OkHttpUtil {
 
     private static OkHttpClient okHttpClient;
-    private static Handler handler = new Handler();
+    private static final Handler handler = new Handler();
 
     public static void initOkHttp() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
@@ -155,9 +155,9 @@ public class OkHttpUtil {
      */
     static class OkHttpCallback implements Callback {
 
-        private String url;
+        private final String url;
         private Object object;
-        private OnDataListener dataListener;
+        private final OnDataListener dataListener;
 
         public OkHttpCallback(String url, OnDataListener dataListener) {
             this.url = url;

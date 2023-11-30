@@ -155,7 +155,7 @@ public class KLineActivity extends BaseActivity implements View.OnClickListener,
     private final String[] KLINE_STR_TEXT = {"1m", "3m", "5m", "30m", "2h",
             "6h", "8h", "12h", "1d", "1w", "1mon"};
 
-    private TextView[] klineTvArrs = new TextView[11];
+    private final TextView[] klineTvArrs = new TextView[11];
 
 
     private final int[] mainResIds = {R.id.tv_ma, R.id.tv_boll, R.id.tv_ema};
@@ -169,8 +169,8 @@ public class KLineActivity extends BaseActivity implements View.OnClickListener,
 
     private final  static int SUB_INDEX_COUNT = 19;//为subResIds.length
 
-    private TextView[] mainChartIndicArrs = new TextView[3];//mainResIds.length
-    private TextView[] subChartIndicArrs = new TextView[SUB_INDEX_COUNT];
+    private final TextView[] mainChartIndicArrs = new TextView[3];//mainResIds.length
+    private final TextView[] subChartIndicArrs = new TextView[SUB_INDEX_COUNT];
 
     private LoadingDialog loadingDialog;
 
@@ -1187,7 +1187,7 @@ public class KLineActivity extends BaseActivity implements View.OnClickListener,
     //K线界面右上角 更新24h最高价，最低价，24H成交量 ，实时百分比
     private void updateSymbolExtraInfo(SymbolRealPriceVo<SymbolExtraInfoVo> responseVo)
     {
-        SymbolExtraInfoVo vo = (SymbolExtraInfoVo)responseVo.getData();
+        SymbolExtraInfoVo vo = responseVo.getData();
         tv_24h_high_price.setText(vo.getHigh24h());
         tv_24h_low_price.setText(vo.getLow24h());
         //tv_24h_vol.setText(AppUtils.getFormatStringValue(vo.getVol24h(), 2));
@@ -1442,12 +1442,12 @@ public class KLineActivity extends BaseActivity implements View.OnClickListener,
                     //如果websocket推送过来的实时k线开始时间戳大于 最后一根K线的开始时间，
                     //则认为是新的一根K线开始了，然后开始处理list，构造K线对象，插入到list最后面
                     long lastTi = Long.parseLong(mDataParse.getKlineItemsList().get(count - 1).timestamp);
-                    long currTi = Long.parseLong(responseVo.getData().get(0).toString());
+                    long currTi = Long.parseLong(responseVo.getData().get(0));
                     if (currTi > lastTi)
                     {
                         MLog.d("count " + count + " size:" + mDataParse.kLineList.size());
                         MLog.d("t1:" + mDataParse.getKlineItemsList().get(count - 1).timestamp);
-                        MLog.d("t2:" + responseVo.getData().get(0).toString());
+                        MLog.d("t2:" + responseVo.getData().get(0));
                         MLog.d("*********need add kline************");
                         //添加新K线
                         KLineItem item = new KLineItem();
@@ -1529,12 +1529,12 @@ public class KLineActivity extends BaseActivity implements View.OnClickListener,
                     }
 
                     long lastTi = Long.parseLong(mDataParse.getKlineItemsList().get(count - 1).timestamp);
-                    long currTi = Long.parseLong(responseVo.getData().get(0).toString());
+                    long currTi = Long.parseLong(responseVo.getData().get(0));
 
                     if (currTi > lastTi)
                     {
                         MLog.d("t1:" + mDataParse.getKlineItemsList().get(count - 1).timestamp);
-                        MLog.d("t2:" + responseVo.getData().get(0).toString());
+                        MLog.d("t2:" + responseVo.getData().get(0));
                         MLog.d("*********need add kline************");
                         //添加新K线
                         KLineItem item = new KLineItem();
@@ -1736,7 +1736,7 @@ public class KLineActivity extends BaseActivity implements View.OnClickListener,
 
         openDepthPage();//打开K线界面下边的webview，用来显示实时挂单和最新成交订单数据
 
-        ll_pullview = (PullScrollView)findViewById(R.id.ll_pullscrollview);
+        ll_pullview = findViewById(R.id.ll_pullscrollview);
         ll_pullview.setPullUpEnable(false);
         //ll_pullview.setPullDownEnable(false);
         ll_pullview.setListener(new PullScrollView.OnPullDownListener() {
@@ -1750,7 +1750,7 @@ public class KLineActivity extends BaseActivity implements View.OnClickListener,
         });
 
 
-        mRefreshLayout = (PullToRefreshLayout)findViewById(R.id.pullToRefreshLayout);
+        mRefreshLayout = findViewById(R.id.pullToRefreshLayout);
         mRefreshLayout.getRefreshFooterView().setVisibility(View.GONE);
         ResourceConfig resourceConfig = new ResourceConfig() {
 
@@ -2167,7 +2167,7 @@ public class KLineActivity extends BaseActivity implements View.OnClickListener,
     private void initIndicPopupBtns(View view)
     {
         for(int i = 0; i < mainResIds.length; i++) {
-            mainChartIndicArrs[i] = (TextView) view.findViewById(mainResIds[i]);
+            mainChartIndicArrs[i] = view.findViewById(mainResIds[i]);
             mainChartIndicArrs[i].setOnClickListener(this);
         }
 
@@ -2179,7 +2179,7 @@ public class KLineActivity extends BaseActivity implements View.OnClickListener,
 
         //值参考ChartNode.ChartType
         for(int i = 0; i < subResIds.length; i++){
-            subChartIndicArrs[i] = (TextView) view.findViewById(subResIds[i]);
+            subChartIndicArrs[i] = view.findViewById(subResIds[i]);
             subChartIndicArrs[i].setOnClickListener(this);
             if (mapSubCharts.containsKey(i))
             {
@@ -2264,7 +2264,7 @@ public class KLineActivity extends BaseActivity implements View.OnClickListener,
         int len = KLINE_PERIOD_ID_ARRA.length;
         for(int i = 0; i < len; i++)
         {
-            klineTvArrs[i] = (TextView) view.findViewById(KLINE_PERIOD_ID_ARRA[i]);
+            klineTvArrs[i] = view.findViewById(KLINE_PERIOD_ID_ARRA[i]);
             klineTvArrs[i].setOnClickListener(this);
             if( klineTvArrs[i].getText().toString().equals(tvMoreTime.getText().toString()))
             {
@@ -2310,7 +2310,7 @@ public class KLineActivity extends BaseActivity implements View.OnClickListener,
     protected SeekBar seekbar;
     private void initSeekBar(View v)
     {
-        seekbar = (SeekBar) v.findViewById(R.id.seek_height);
+        seekbar = v.findViewById(R.id.seek_height);
         int height = Config.getMMKV(this).getInt(Config.CONF_KCHART_HEIGHT, 80);
         seekbar.setProgress(height);
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -3446,7 +3446,7 @@ public class KLineActivity extends BaseActivity implements View.OnClickListener,
 
     }
 
-    private  HashMap<Integer, Integer> hMapSubChartType = new HashMap<>();
+    private final HashMap<Integer, Integer> hMapSubChartType = new HashMap<>();
     private void collectVipIndexType()
     {
         for(int i = 2; i < this.mChartManager.chartsList.size(); i++)
@@ -3581,14 +3581,7 @@ public class KLineActivity extends BaseActivity implements View.OnClickListener,
         //WebSocketUtils.getInstance().removeSubscribe(getSubscribeArgs());
         WebSocketUtils.getInstance().removeAllSubscribe();
         currPeriod = TAB_KLINE_ARGS[klinePeriodIndex];
-        if (klinePeriodIndex == 0)
-        {
-            Config.getMMKV(this).putBoolean(Config.CONF_IS_MIN_PERIOD, true);
-        }
-        else
-        {
-            Config.getMMKV(this).putBoolean(Config.CONF_IS_MIN_PERIOD, false);
-        }
+        Config.getMMKV(this).putBoolean(Config.CONF_IS_MIN_PERIOD, klinePeriodIndex == 0);
         Config.getMMKV(this).putString(Config.CONF_KLINE_PERIOD, currPeriod);
         setPopupBtnColor(-1, false);
         loadData();
@@ -3914,7 +3907,7 @@ public class KLineActivity extends BaseActivity implements View.OnClickListener,
                     //处理当多空比从1以上突然下降到1以下的的时候，这个地方应该也要显示成red颜色才对
                     if (i >= 1)
                     {
-                        float lastVal = mDataParse.getLineLsPersonList().get(i-1).getY();;
+                        float lastVal = mDataParse.getLineLsPersonList().get(i-1).getY();
                         if (lastVal >= 1.0F && f < 1.0F)
                         {
                             colors.set(i - 1, Integer.valueOf(red));
@@ -3954,7 +3947,7 @@ public class KLineActivity extends BaseActivity implements View.OnClickListener,
                     //处理当多空比从1以上突然下降到1以下的的时候，这个地方应该也要显示成red颜色才对
                     if (i >= 1)
                     {
-                        float lastVal = mDataParse.getLineLsPositionList().get(i-1).getY();;
+                        float lastVal = mDataParse.getLineLsPositionList().get(i-1).getY();
                         if (lastVal >= 1.0F && f < 1.0F)
                         {
                             colors.set(i - 1, Integer.valueOf(red));
@@ -3992,7 +3985,7 @@ public class KLineActivity extends BaseActivity implements View.OnClickListener,
                     //处理当多空比从1以上突然下降到1以下的的时候，这个地方应该也要显示成red颜色才对
                     if (i >= 1)
                     {
-                        float lastVal = mDataParse.getLineLsAccountList().get(i-1).getY();;
+                        float lastVal = mDataParse.getLineLsAccountList().get(i-1).getY();
                         if (lastVal >= 1.0F && f < 1.0F)
                         {
                             colors.set(i - 1, Integer.valueOf(red));
@@ -4222,9 +4215,9 @@ public class KLineActivity extends BaseActivity implements View.OnClickListener,
         else if (v.getId() == R.id.tv_indic) {
             showIndicPopupMenu(tabLayout);
         }
-        else if (v.getId() == R.id.iv_klBack) {
-            onBackPressed();
-        }
+//        else if (v.getId() == R.id.iv_klBack) {
+//            onBackPressed();
+//        }
         else if (v.getId() == R.id.iv_klOrientation) {
             stopTranslate();
             highVisX = mChartKline.getHighestVisibleX();
@@ -4465,7 +4458,7 @@ public class KLineActivity extends BaseActivity implements View.OnClickListener,
         initToolBar();
         initView();
         configData();
-        boolean bland = (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE ? true:false);
+        boolean bland = (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE);
         if (xValuesDatetime.size() > 0) {
             mChartKline.post(new Runnable() {
                 @Override
@@ -4526,7 +4519,7 @@ public class KLineActivity extends BaseActivity implements View.OnClickListener,
     }
 
     //自定义广播，调整K线主图高度和设置K线是否空心和实心
-    private BaseBroadcast myBroadcast = new BaseBroadcast();
+    private final BaseBroadcast myBroadcast = new BaseBroadcast();
     private class BaseBroadcast extends BroadcastReceiver
     {
         @Override

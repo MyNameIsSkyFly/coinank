@@ -128,13 +128,13 @@ public class AgentWebConfig {
             callback = getDefaultIgnoreCallback();
         }
         if (CookieManager.getInstance() == null) {
-            callback.onReceiveValue(new Boolean(false));
+            callback.onReceiveValue(Boolean.FALSE);
             return;
         }
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             CookieManager.getInstance().removeSessionCookie();
             toSyncCookies();
-            callback.onReceiveValue(new Boolean(true));
+            callback.onReceiveValue(Boolean.TRUE);
             return;
         }
         CookieManager.getInstance().removeSessionCookies(callback);

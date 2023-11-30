@@ -10,7 +10,7 @@ import java.util.List;
  */
 
 public class WREntity {
-    private ArrayList<Float> WRs;
+    private final ArrayList<Float> WRs;
 
     /**
      * @param kLineBeens

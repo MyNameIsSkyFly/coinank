@@ -28,7 +28,7 @@ public class KlineUtils {
                 kline.high = fundingRateKLine.getHigh().floatValue();
                 kline.low = fundingRateKLine.getLow().floatValue();
                 klineIndc.klines.add(kline);
-            };
+            }
         }
         return klineIndc;
     }
@@ -51,7 +51,7 @@ public class KlineUtils {
                 kline.high = openInterestKLine.getHigh().floatValue();
                 kline.low = openInterestKLine.getLow().floatValue();
                 klineIndc.klines.add(kline);
-            };
+            }
         }
         return klineIndc;
     }
@@ -69,7 +69,7 @@ public class KlineUtils {
                 float close = openInterestKLine.getClose().floatValue();
                 float val = close - open;
                 klineIndc.oiDelta.add(val);
-            };
+            }
         }
 
         return klineIndc;
@@ -112,7 +112,7 @@ public class KlineUtils {
             for (FundingRate fundingRate:fundingRates
             ) {
                 fundingRateList.add(fundingRate.getOpenFundingRate().floatValue()*100);
-            };
+            }
 
             klineIndc.oiWeightFrData = fundingRateList;
         }
@@ -129,7 +129,7 @@ public class KlineUtils {
             for (FundingRate fundingRate:fundingRates
             ) {
                 fundingRateList.add(fundingRate.getTurnoverFundingRate().floatValue()*100);
-            };
+            }
 
             klineIndc.volumeWeightFrData = fundingRateList;
         }
@@ -146,7 +146,7 @@ public class KlineUtils {
             for (FundingRate fundingRate:fundingRates
                  ) {
                 fundingRateList.add(fundingRate.getFundingRate().floatValue());
-            };
+            }
 
             klineIndc.setFundingRateList(fundingRateList);
         }

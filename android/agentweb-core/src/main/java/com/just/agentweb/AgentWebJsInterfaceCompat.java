@@ -31,7 +31,7 @@ public class AgentWebJsInterfaceCompat {
 
 	private WeakReference<AgentWeb> mReference = null;
 	private WeakReference<Activity> mActivityWeakReference = null;
-	private String TAG = this.getClass().getSimpleName();
+	private final String TAG = this.getClass().getSimpleName();
 
 	AgentWebJsInterfaceCompat(AgentWeb agentWeb, Activity activity) {
 		mReference = new WeakReference<AgentWeb>(agentWeb);

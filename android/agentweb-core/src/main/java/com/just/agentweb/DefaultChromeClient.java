@@ -59,7 +59,7 @@ public class DefaultChromeClient extends MiddlewareWebChromeBase {
     /**
      * DefaultChromeClient 's TAG
      */
-    private String TAG = DefaultChromeClient.class.getSimpleName();
+    private final String TAG = DefaultChromeClient.class.getSimpleName();
     /**
      * Android WebChromeClient path ，用于反射，用户是否重写来该方法
      */
@@ -67,7 +67,7 @@ public class DefaultChromeClient extends MiddlewareWebChromeBase {
     /**
      * WebChromeClient
      */
-    private WebChromeClient mWebChromeClient;
+    private final WebChromeClient mWebChromeClient;
     /**
      * 包装Flag
      */
@@ -75,15 +75,15 @@ public class DefaultChromeClient extends MiddlewareWebChromeBase {
     /**
      * Video 处理类
      */
-    private IVideo mIVideo;
+    private final IVideo mIVideo;
     /**
      * PermissionInterceptor 权限拦截器
      */
-    private PermissionInterceptor mPermissionInterceptor;
+    private final PermissionInterceptor mPermissionInterceptor;
     /**
      * 当前 WebView
      */
-    private WebView mWebView;
+    private final WebView mWebView;
     /**
      * Web端触发的定位 mOrigin
      */
@@ -107,7 +107,7 @@ public class DefaultChromeClient extends MiddlewareWebChromeBase {
     /**
      * IndicatorController 进度条控制器
      */
-    private IndicatorController mIndicatorController;
+    private final IndicatorController mIndicatorController;
     /**
      * 文件选择器
      */
@@ -120,7 +120,7 @@ public class DefaultChromeClient extends MiddlewareWebChromeBase {
                         PermissionInterceptor permissionInterceptor, WebView webView) {
         super(chromeClient);
         this.mIndicatorController = indicatorController;
-        mIsWrapper = chromeClient != null ? true : false;
+        mIsWrapper = chromeClient != null;
         this.mWebChromeClient = chromeClient;
         mActivityWeakReference = new WeakReference<Activity>(activity);
         this.mIVideo = iVideo;
@@ -197,17 +197,13 @@ public class DefaultChromeClient extends MiddlewareWebChromeBase {
         }
     }
 
-    private AgentActionFragment.PermissionListener mPermissionListener = new AgentActionFragment.PermissionListener() {
+    private final AgentActionFragment.PermissionListener mPermissionListener = new AgentActionFragment.PermissionListener() {
         @Override
         public void onRequestPermissionsResult(@NonNull String[] permissions, @NonNull int[] grantResults, Bundle extras) {
             if (extras.getInt(KEY_FROM_INTENTION) == FROM_CODE_INTENTION_LOCATION) {
                 boolean hasPermission = AgentWebUtils.hasPermission(mActivityWeakReference.get(), permissions);
                 if (mCallback != null) {
-                    if (hasPermission) {
-                        mCallback.invoke(mOrigin, true, false);
-                    } else {
-                        mCallback.invoke(mOrigin, false, false);
-                    }
+                    mCallback.invoke(mOrigin, hasPermission, false);
                     mCallback = null;
                     mOrigin = null;
                 }

@@ -32,11 +32,7 @@ public class PullScrollPannelView extends ScrollablePanel implements Pullable {
             return false;
         }
 
-        if (isScrollTop()) {
-            return true;
-        }
-
-       return false;
+        return isScrollTop();
     }
 
     @Override

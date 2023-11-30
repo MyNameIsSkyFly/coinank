@@ -178,7 +178,7 @@ public class AutoScrollVerticalBannerView extends LinearLayout implements Runnab
         set.start();
     }
 
-    private AnimRunnable mRunnable = new AnimRunnable();
+    private final AnimRunnable mRunnable = new AnimRunnable();
 
     private class AnimRunnable implements Runnable {
         @Override

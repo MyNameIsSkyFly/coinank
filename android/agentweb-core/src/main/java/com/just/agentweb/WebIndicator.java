@@ -249,7 +249,7 @@ public class WebIndicator extends BaseIndicatorView implements BaseIndicatorSpec
         indicatorStatus = STARTED;
     }
 
-    private ValueAnimator.AnimatorUpdateListener mAnimatorUpdateListener = new ValueAnimator.AnimatorUpdateListener() {
+    private final ValueAnimator.AnimatorUpdateListener mAnimatorUpdateListener = new ValueAnimator.AnimatorUpdateListener() {
         @Override
         public void onAnimationUpdate(ValueAnimator animation) {
             float t = (float) animation.getAnimatedValue();
@@ -258,7 +258,7 @@ public class WebIndicator extends BaseIndicatorView implements BaseIndicatorSpec
         }
     };
 
-    private AnimatorListenerAdapter mAnimatorListenerAdapter = new AnimatorListenerAdapter() {
+    private final AnimatorListenerAdapter mAnimatorListenerAdapter = new AnimatorListenerAdapter() {
         @Override
         public void onAnimationEnd(Animator animation) {
             doEnd();

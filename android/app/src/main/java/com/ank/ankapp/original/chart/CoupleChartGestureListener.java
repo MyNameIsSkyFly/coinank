@@ -15,11 +15,12 @@ import com.github.mikephil.charting.listener.OnChartGestureListener;
  */
 public class CoupleChartGestureListener implements OnChartGestureListener {
 
-    private BarLineChartBase srcChart;
-    private Chart[] dstCharts;
+    private final BarLineChartBase srcChart;
+    private final Chart[] dstCharts;
 
     private OnDoSomething doListener;//滑动到边缘的监听器
-    private boolean isLoadMore, isHighlight;//是否加载更多、是否高亮  -- 高亮时不再加载更多
+    private final boolean isLoadMore;
+    private boolean isHighlight;//是否加载更多、是否高亮  -- 高亮时不再加载更多
     private boolean canLoad;//K线图手指交互已停止，正在惯性滑动
     private boolean isLoadding = false;//正在加载
 

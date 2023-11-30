@@ -37,7 +37,7 @@ public class CommonWebActivity extends BaseActivity {
 		}
 
 		setContentView(R.layout.activity_common);
-		mFrameLayout = (FrameLayout) this.findViewById(R.id.container_framelayout);
+		mFrameLayout = this.findViewById(R.id.container_framelayout);
 
 		mFragmentManager = this.getSupportFragmentManager();
 		openUrl(url);
@@ -131,7 +131,7 @@ public class CommonWebActivity extends BaseActivity {
 
 		AgentWebFragment mAgentWebFragment = this.mAgentWebFragment;
 		if (mAgentWebFragment != null) {
-			FragmentKeyDown mFragmentKeyDown = (FragmentKeyDown) mAgentWebFragment;
+			FragmentKeyDown mFragmentKeyDown = mAgentWebFragment;
 			if (mFragmentKeyDown.onFragmentKeyDown(keyCode, event)) {
 				return true;
 			} else {

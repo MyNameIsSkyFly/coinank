@@ -24,7 +24,7 @@ public class SetFloatingBgAlphaActivity extends BaseActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_float_bg_alpha);
         initToolBar();
-        seekbar = (SeekBar) this.findViewById(R.id.seekbar);
+        seekbar = this.findViewById(R.id.seekbar);
         int iAlpha = Config.getMMKV(this).getInt(Config.CONF_FLOATING_BG_ALPHA, 0xaf);
         seekbar.setProgress(iAlpha);
 

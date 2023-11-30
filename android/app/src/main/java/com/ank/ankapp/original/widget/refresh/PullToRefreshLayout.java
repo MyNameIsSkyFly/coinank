@@ -72,7 +72,7 @@ public class PullToRefreshLayout extends RelativeLayout {
     /**
      * 执行自动回滚的handler
      */
-    private Handler mUpdateHandler = new Handler(getContext().getMainLooper()) {
+    private final Handler mUpdateHandler = new Handler(getContext().getMainLooper()) {
 
         @Override
         public void handleMessage(Message msg) {
@@ -189,14 +189,14 @@ public class PullToRefreshLayout extends RelativeLayout {
 
     private void initView() {
         // 初始化下拉布局
-        refreshArrowImg = (ImageView) refreshView.findViewById(R.id.head_xw_ptr_arrow_img);
-        refreshHintText = (TextView) refreshView.findViewById(R.id.head_xw_ptr_hint_text);
-        refreshingBar = (ProgressBar) refreshView.findViewById(R.id.head_xw_ptr_progress_bar);
+        refreshArrowImg = refreshView.findViewById(R.id.head_xw_ptr_arrow_img);
+        refreshHintText = refreshView.findViewById(R.id.head_xw_ptr_hint_text);
+        refreshingBar = refreshView.findViewById(R.id.head_xw_ptr_progress_bar);
         // 初始化上拉布局
-        loadArrowImg = (ImageView) loadMoreView.findViewById(R.id.foot_xw_ptr_arrow_img);
+        loadArrowImg = loadMoreView.findViewById(R.id.foot_xw_ptr_arrow_img);
         rotateArrow(loadArrowImg);
-        loadHintText = (TextView) loadMoreView.findViewById(R.id.foot_xw_ptr_hint_text);
-        loadingBar = (ProgressBar) loadMoreView.findViewById(R.id.foot_xw_ptr_progress_bar);
+        loadHintText = loadMoreView.findViewById(R.id.foot_xw_ptr_hint_text);
+        loadingBar = loadMoreView.findViewById(R.id.foot_xw_ptr_progress_bar);
 
         if (mResourceConfig != null) {
             refreshArrowImg.setImageResource(mResourceConfig.getImageResIds()[0]);
@@ -670,8 +670,8 @@ public class PullToRefreshLayout extends RelativeLayout {
     }
 
     class MyTimer {
-        private Handler handler;
-        private Timer timer;
+        private final Handler handler;
+        private final Timer timer;
         private MyTask mTask;
 
         public MyTimer(Handler handler) {
@@ -696,7 +696,7 @@ public class PullToRefreshLayout extends RelativeLayout {
         }
 
         class MyTask extends TimerTask {
-            private Handler handler;
+            private final Handler handler;
 
             public MyTask(Handler handler) {
                 this.handler = handler;

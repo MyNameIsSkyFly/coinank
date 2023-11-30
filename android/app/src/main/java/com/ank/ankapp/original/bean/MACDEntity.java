@@ -9,9 +9,9 @@ import java.util.List;
 
 public class MACDEntity {
 
-    private List<Float> DEAs;
-    private List<Float> DIFs;
-    private List<Float> MACDs;
+    private final List<Float> DEAs;
+    private final List<Float> DIFs;
+    private final List<Float> MACDs;
 
     /**
      * 得到MACD数据

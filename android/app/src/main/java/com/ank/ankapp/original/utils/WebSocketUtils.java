@@ -275,7 +275,7 @@ public class WebSocketUtils {
                 MLog.d("uukr", "onFailure:");
                 if(response != null)
                 {
-                    MLog.d("uukr", "onFailure:"+response.toString());
+                    MLog.d("uukr", "onFailure:"+ response);
                 }
 
                 if (onMsgListener != null)
@@ -302,8 +302,8 @@ public class WebSocketUtils {
 
     private long sendTime = 0L;
     // 发送心跳包
-    private Handler mHandler = new Handler();
-    private Runnable tickRunable = new Runnable() {
+    private final Handler mHandler = new Handler();
+    private final Runnable tickRunable = new Runnable() {
         @Override
         public void run() {
             //MLog.d("tickRunable ready run");

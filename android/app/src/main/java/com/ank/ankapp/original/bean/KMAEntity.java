@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 
 public class KMAEntity {
-    private ArrayList<Float> MAs;
+    private final ArrayList<Float> MAs;
 
     /**
      * 得到已N日为单位的均值

@@ -12,12 +12,12 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
  */
 public class CoupleChartValueSelectedListener implements OnChartValueSelectedListener {
 
-    private BarLineChartBase srcChart;
-    private Chart[] dstCharts;
+    private final BarLineChartBase srcChart;
+    private final Chart[] dstCharts;
     private int selfCahrtIdx = 0;
-    private ChartManager mChartManager;
+    private final ChartManager mChartManager;
 
-    private ValueSelectedListener mListener;
+    private final ValueSelectedListener mListener;
 
     public CoupleChartValueSelectedListener(BarLineChartBase srcChart, Chart... dstCharts) {
         this(null, null, srcChart, dstCharts);

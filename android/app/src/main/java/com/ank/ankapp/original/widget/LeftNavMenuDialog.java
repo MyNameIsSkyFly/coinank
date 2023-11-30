@@ -77,7 +77,7 @@ public class LeftNavMenuDialog extends DialogFragment implements View.OnClickLis
 
     private void initView(View v)
     {
-        mListView = (ExpandableListView) v.findViewById(R.id.ex_lv);
+        mListView = v.findViewById(R.id.ex_lv);
     }
 
     private void initData()

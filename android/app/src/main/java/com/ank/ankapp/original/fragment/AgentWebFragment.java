@@ -78,7 +78,7 @@ public class AgentWebFragment extends Fragment implements FragmentKeyDown {
     protected TextView mTitleTextView;
     public AgentWeb mAgentWeb;
     public static final String URL_KEY = "url_key";
-    protected RelativeLayout  mRlLoadingView;
+//    protected RelativeLayout  mRlLoadingView;
     /**
      * 用于方便打印测试
      */
@@ -127,7 +127,7 @@ public class AgentWebFragment extends Fragment implements FragmentKeyDown {
         //MLog.d("cookie:" + getCookie(getUrl()));
 
         mAgentWeb = AgentWeb.with(this)//
-                .setAgentWebParent((LinearLayout) view.findViewById(R.id.ll_rootview), -1, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))//传入AgentWeb的父控件。
+                .setAgentWebParent(view.findViewById(R.id.ll_rootview), -1, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))//传入AgentWeb的父控件。
                 //.useDefaultIndicator(-1, 3)//设置进度条颜色与高度，-1为默认值，高度为2，单位为dp。
                 .useDefaultIndicator(Color.TRANSPARENT, 2)
                 .setAgentWebWebSettings(getSettings())//设置 IAgentWebSettings。
@@ -171,7 +171,7 @@ public class AgentWebFragment extends Fragment implements FragmentKeyDown {
         mAgentWeb.getWebCreator().getWebView().setBackgroundResource(R.color.colorPrimary);
        // mLoadingView = LayoutInflater.from(getContext()).inflate(R.layout.layout_rootview, (ViewGroup) view, false);
          //mAgentWeb.getWebCreator().getWebParentLayout().addView(mLoadingView, -1);
-        mRlLoadingView = (RelativeLayout)view.findViewById(R.id.rl_root);
+//        mRlLoadingView = view.findViewById(R.id.rl_root);
 
 
         //mAgentWeb.getWebCreator().getWebView().loadUrl("sssss");
@@ -232,7 +232,7 @@ public class AgentWebFragment extends Fragment implements FragmentKeyDown {
             strTitle = getResources().getString(R.string.app_name);
         }
 
-        mTitleTextView = (TextView) getView().findViewById(R.id.toolbar_title);
+        mTitleTextView = getView().findViewById(R.id.toolbar_title);
         mTitleTextView.setText(strTitle);
         mAgentWeb.getWebCreator().getWebView().loadUrl(url);
     }
@@ -327,7 +327,7 @@ public class AgentWebFragment extends Fragment implements FragmentKeyDown {
      */
     protected WebViewClient mWebViewClient = new WebViewClient() {
 
-        private HashMap<String, Long> timer = new HashMap<>();
+        private final HashMap<String, Long> timer = new HashMap<>();
 
         @Override
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
@@ -429,7 +429,7 @@ public class AgentWebFragment extends Fragment implements FragmentKeyDown {
     };
 
     protected void initView(View view) {
-        mBackImageView = (ImageView) view.findViewById(R.id.iv_back);
+        mBackImageView = view.findViewById(R.id.iv_back);
         if (Config.getMMKV(getActivity()).getBoolean(Config.DAY_NIGHT_MODE, false))
         {
             mBackImageView.setImageResource(R.drawable.btn_back_night);
@@ -442,24 +442,19 @@ public class AgentWebFragment extends Fragment implements FragmentKeyDown {
             strTitle = getResources().getString(R.string.app_name);
         }
 
-        mTitleTextView = (TextView) view.findViewById(R.id.toolbar_title);
+        mTitleTextView = view.findViewById(R.id.toolbar_title);
         mTitleTextView.setText(strTitle);
 
         mBackImageView.setOnClickListener(mOnClickListener);
     }
 
-    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
+    private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
 
-            switch (v.getId()) {
-                case R.id.iv_back:
-                    AgentWebFragment.this.getActivity().finish();
-                    break;
-                default:
-                    break;
-
+            if (v.getId() == R.id.iv_back) {
+                AgentWebFragment.this.getActivity().finish();
             }
         }
 
@@ -581,11 +576,9 @@ public class AgentWebFragment extends Fragment implements FragmentKeyDown {
 					return true;
 				}*/
 
-                if (super.shouldOverrideUrlLoading(view, url)) { // 执行 DefaultWebClient#shouldOverrideUrlLoading
-                    return true;
-                }
+                // 执行 DefaultWebClient#shouldOverrideUrlLoading
+                return super.shouldOverrideUrlLoading(view, url);
                 // do you work
-                return false;
             }
 
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

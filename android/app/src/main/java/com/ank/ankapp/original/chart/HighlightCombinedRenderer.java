@@ -14,7 +14,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
  */
 public class HighlightCombinedRenderer extends CombinedChartRenderer {
 
-    private float highlightSize;//图表高亮文字大小 单位:px
+    private final float highlightSize;//图表高亮文字大小 单位:px
 
     public HighlightCombinedRenderer(CombinedChart chart, ChartAnimator animator,
                                      ViewPortHandler viewPortHandler, float highlightSize) {

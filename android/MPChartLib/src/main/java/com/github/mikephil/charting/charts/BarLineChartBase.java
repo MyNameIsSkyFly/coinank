@@ -476,7 +476,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         }
     }
 
-    private RectF mOffsetsBuffer = new RectF();
+    private final RectF mOffsetsBuffer = new RectF();
 
     @Override
     public void calculateOffsets() {
@@ -1605,9 +1605,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     public boolean isAnyAxisInverted() {
         if (mAxisLeft.isInverted())
             return true;
-        if (mAxisRight.isInverted())
-            return true;
-        return false;
+        return mAxisRight.isInverted();
     }
 
     /**
@@ -1634,10 +1632,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     public void setPaint(Paint p, int which) {
         super.setPaint(p, which);
 
-        switch (which) {
-            case PAINT_GRID_BACKGROUND:
-                mGridBackgroundPaint = p;
-                break;
+        if (which == PAINT_GRID_BACKGROUND) {
+            mGridBackgroundPaint = p;
         }
     }
 
@@ -1647,9 +1643,8 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         if (p != null)
             return p;
 
-        switch (which) {
-            case PAINT_GRID_BACKGROUND:
-                return mGridBackgroundPaint;
+        if (which == PAINT_GRID_BACKGROUND) {
+            return mGridBackgroundPaint;
         }
 
         return null;

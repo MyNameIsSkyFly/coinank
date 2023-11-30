@@ -23,7 +23,7 @@ public class CustomSettings extends AbsAgentWebSettings {
     }
 
     private AgentWeb mAgentWeb;
-    private Activity mActivity;
+    private final Activity mActivity;
 
     @Override
     protected void bindAgentWebSupport(AgentWeb agentWeb) {

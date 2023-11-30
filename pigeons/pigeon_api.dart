@@ -2,29 +2,11 @@ import 'package:pigeon/pigeon.dart';
 
 @HostApi()
 abstract class MessageHostApi {
-  ///合约总持仓
-  void toTotalOi();
-
   void changeDarkMode(bool isDark);
 
   void changeLanguage(String languageCode);
 
   void changeUpColor(bool isGreenUp);
-
-  ///清算地图
-  void toLiqMap();
-
-  ///多空持仓比
-  void toLongShortAccountRatio();
-
-  ///主动买卖多空比
-  void toTakerBuyLongShortRatio();
-
-  ///持仓变化
-  void toOiChange();
-
-  ///价格变化
-  void toPriceChange();
 
   ///贪婪指数
   void toGreedIndex();

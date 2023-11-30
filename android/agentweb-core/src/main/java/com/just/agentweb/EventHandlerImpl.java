@@ -29,8 +29,8 @@ import android.webkit.WebView;
  * @since 2.0.0
  */
 public class EventHandlerImpl implements IEventHandler {
-	private WebView mWebView;
-	private EventInterceptor mEventInterceptor;
+	private final WebView mWebView;
+	private final EventInterceptor mEventInterceptor;
 
 	public static final EventHandlerImpl getInstantce(WebView view, EventInterceptor eventInterceptor) {
 		return new EventHandlerImpl(view, eventInterceptor);

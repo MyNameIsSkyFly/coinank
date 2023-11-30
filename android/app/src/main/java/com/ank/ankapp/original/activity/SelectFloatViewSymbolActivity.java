@@ -36,12 +36,12 @@ public class SelectFloatViewSymbolActivity extends BaseActivity implements View.
     protected ResponseSymbolVo mData = new ResponseSymbolVo();
     protected SelectSymbolAdapter mAdapter;
     protected ListView mListView;
-    private List<String> listExchangeName = new ArrayList<>();
+    private final List<String> listExchangeName = new ArrayList<>();
     private EditText et_search;
 
     private RadioButton rb_all, rb_binance, rb_okx, rb_ftx, rb_bitget, rb_bybit, rb_bitmex, rb_gate, rb_kraken, rb_huobi;
-    private RadioButton []rBtns = new RadioButton[]{rb_all, rb_binance, rb_okx, rb_ftx, rb_bitget, rb_bybit, rb_bitmex, rb_gate, rb_kraken, rb_huobi};
-    private int []res_id = new int[]{R.id.rb_all, R.id.rb_binance, R.id.rb_okx, R.id.rb_ftx, R.id.rb_bitget, R.id.rb_bybit,
+    private final RadioButton []rBtns = new RadioButton[]{rb_all, rb_binance, rb_okx, rb_ftx, rb_bitget, rb_bybit, rb_bitmex, rb_gate, rb_kraken, rb_huobi};
+    private final int []res_id = new int[]{R.id.rb_all, R.id.rb_binance, R.id.rb_okx, R.id.rb_ftx, R.id.rb_bitget, R.id.rb_bybit,
             R.id.rb_bitmex, R.id.rb_gate, R.id.rb_kraken, R.id.rb_huobi};
 
     private RadioGroup main_exchange;
@@ -58,7 +58,7 @@ public class SelectFloatViewSymbolActivity extends BaseActivity implements View.
 
     private void initView()
     {
-        et_search = (EditText)findViewById(R.id.et_search);
+        et_search = findViewById(R.id.et_search);
         et_search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -75,11 +75,11 @@ public class SelectFloatViewSymbolActivity extends BaseActivity implements View.
             }
         });
 
-        main_exchange = (RadioGroup)findViewById(R.id.main_exchange);
+        main_exchange = findViewById(R.id.main_exchange);
         int len = res_id.length;
         for (int i = 0; i < len; i++)
         {
-            rBtns[i] = (RadioButton)findViewById(res_id[i]);
+            rBtns[i] = findViewById(res_id[i]);
         }
 
         changeRbColor(R.id.rb_all);
@@ -103,7 +103,7 @@ public class SelectFloatViewSymbolActivity extends BaseActivity implements View.
             }
         });
 
-        mListView = (ListView) this.findViewById(R.id.lv_floatview_ticker);
+        mListView = this.findViewById(R.id.lv_floatview_ticker);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -282,10 +282,7 @@ public class SelectFloatViewSymbolActivity extends BaseActivity implements View.
 
     @Override
     public void onClick(View v) {
-        switch (v.getId())
-        {
-            case R.id.rl_add_market:
-                break;
+        if (v.getId() == R.id.rl_add_market) {
         }
     }
 

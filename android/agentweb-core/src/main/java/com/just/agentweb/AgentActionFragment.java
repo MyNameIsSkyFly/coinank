@@ -188,7 +188,7 @@ public final class AgentActionFragment extends Fragment {
             }
             Intent intent = AgentWebUtils.getIntentCaptureCompat(getActivity(), mFile);
             // 指定开启系统相机的Action
-            mAction.setUri((Uri) intent.getParcelableExtra(EXTRA_OUTPUT));
+            mAction.setUri(intent.getParcelableExtra(EXTRA_OUTPUT));
             this.startActivityForResult(intent, REQUEST_CODE);
         } catch (Throwable ignore) {
             LogUtils.e(TAG, "找不到系统相机");
@@ -216,7 +216,7 @@ public final class AgentActionFragment extends Fragment {
             }
             Intent intent = AgentWebUtils.getIntentVideoCompat(getActivity(), mFile);
             // 指定开启系统相机的Action
-            mAction.setUri((Uri) intent.getParcelableExtra(EXTRA_OUTPUT));
+            mAction.setUri(intent.getParcelableExtra(EXTRA_OUTPUT));
             this.startActivityForResult(intent, REQUEST_CODE);
         } catch (Throwable ignore) {
             LogUtils.e(TAG, "找不到系统相机");

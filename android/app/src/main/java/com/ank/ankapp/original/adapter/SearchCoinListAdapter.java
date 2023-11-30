@@ -16,7 +16,7 @@ import java.util.List;
 public class SearchCoinListAdapter<T> extends BaseAdapter {
 
     private List<T> data;
-    private Context context;
+    private final Context context;
 
     public SearchCoinListAdapter(List<T> data, Context context) {
         this.data = data;

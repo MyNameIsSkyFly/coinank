@@ -3,7 +3,7 @@ package com.github.mikephil.charting.utils;
 import android.util.Log;
 
 public class MLog {
-    private static boolean isDebug = true;
+    private static final boolean isDebug = true;
 
     public static void d(String msg)
     {

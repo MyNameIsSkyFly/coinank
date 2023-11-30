@@ -57,7 +57,7 @@ public final class SQLiteKV {
             onCreate(sqLiteDatabase);
         }
     }
-    private SQLiteKVDBHelper m_dbHelper;
+    private final SQLiteKVDBHelper m_dbHelper;
     private SQLiteDatabase m_writetableDB;
     private SQLiteDatabase m_readableDB;
 
@@ -126,12 +126,7 @@ public final class SQLiteKV {
         }
         cursor.close();
 
-        if (value == 0)
-        {
-            return false;
-        }
-
-        return true;
+        return value != 0;
     }
 
     public boolean putInt(String key, int value) {

@@ -8,9 +8,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.ank.ankapp.R;
 import com.ank.ankapp.original.Config;
 import com.ank.ankapp.original.Global;
-import com.ank.ankapp.original.fragment.ExchangeOIFragment;
-import com.ank.ankapp.original.fragment.LongsShortAccountsRatioFragment;
-import com.ank.ankapp.original.fragment.TakerBuyLongShortFragment;
 
 
 public class CommonFragmentActivity extends BaseActivity {
@@ -65,15 +62,15 @@ public class CommonFragmentActivity extends BaseActivity {
 //			case Config.TYPE_CHANGE_PASSWD:
 //				ft.add(R.id.fragment_view, ChangePasswordFragment.getInstance(mBundle = new Bundle()));
 //				break;
-			case Config.TYPE_EXCHANGE_OI_FRAGMENT:
-				ft.add(R.id.fragment_view, ExchangeOIFragment.getInstance(mBundle = new Bundle()));
-				break;
-			case Config.TYPE_TAKERBUY_LONGSSHORTS_FRAGMENT:
-				ft.add(R.id.fragment_view, TakerBuyLongShortFragment.getInstance(mBundle = new Bundle()));
-				break;
-			case Config.TYPE_LONGSHORT_ACCOUNTS_RATIO_FRAGMENT:
-				ft.add(R.id.fragment_view, LongsShortAccountsRatioFragment.getInstance(mBundle = new Bundle()));
-				break;
+//			case Config.TYPE_EXCHANGE_OI_FRAGMENT:
+//				ft.add(R.id.fragment_view, ExchangeOIFragment.getInstance(mBundle = new Bundle()));
+//				break;
+//			case Config.TYPE_TAKERBUY_LONGSSHORTS_FRAGMENT:
+//				ft.add(R.id.fragment_view, TakerBuyLongShortFragment.getInstance(mBundle = new Bundle()));
+//				break;
+//			case Config.TYPE_LONGSHORT_ACCOUNTS_RATIO_FRAGMENT:
+//				ft.add(R.id.fragment_view, LongsShortAccountsRatioFragment.getInstance(mBundle = new Bundle()));
+//				break;
 		}
 		ft.commit();
 

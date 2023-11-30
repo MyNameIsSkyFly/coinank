@@ -29,9 +29,9 @@ import java.util.Set;
 public class JsInterfaceHolderImpl extends JsBaseInterfaceHolder {
 
     private static final String TAG = JsInterfaceHolderImpl.class.getSimpleName();
-    private WebCreator mWebCreator;
-    private AgentWeb.SecurityType mSecurityType;
-    private WebView mWebView;
+    private final WebCreator mWebCreator;
+    private final AgentWeb.SecurityType mSecurityType;
+    private final WebView mWebView;
 
     static JsInterfaceHolderImpl getJsInterfaceHolder(WebCreator webCreator, AgentWeb.SecurityType securityType) {
         return new JsInterfaceHolderImpl(webCreator, securityType);

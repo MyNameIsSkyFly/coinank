@@ -47,7 +47,7 @@ public class SearchBaseCoinListActivity extends BaseActivity implements View.OnC
 
     private void initView()
     {
-        et_search = (EditText)findViewById(R.id.et_search);
+        et_search = findViewById(R.id.et_search);
         et_search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -65,7 +65,7 @@ public class SearchBaseCoinListActivity extends BaseActivity implements View.OnC
             }
         });
 
-        mListView = (PullListView) this.findViewById(R.id.lv_floatview_ticker);
+        mListView = this.findViewById(R.id.lv_floatview_ticker);
         mListView.setPullUpEnable(false);
         mListView.setPullDownEnable(false);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -97,7 +97,7 @@ public class SearchBaseCoinListActivity extends BaseActivity implements View.OnC
             }
         };
 
-        mRefreshLayout = (PullToRefreshLayout) this.findViewById(R.id.pullToRefreshLayout);
+        mRefreshLayout = this.findViewById(R.id.pullToRefreshLayout);
         mRefreshLayout.setResourceConfig(resourceConfig);
         mRefreshLayout.setOnRefreshListener(new PullToRefreshLayout.OnRefreshListener() {
             @Override

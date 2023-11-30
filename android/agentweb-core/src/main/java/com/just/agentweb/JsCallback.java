@@ -28,11 +28,11 @@ import org.json.JSONObject;
 import java.lang.ref.WeakReference;
 public class JsCallback {
     private static final String CALLBACK_JS_FORMAT = "javascript:%s.callback(%d, %d %s);";
-    private int mIndex;
+    private final int mIndex;
     private boolean mCouldGoOn;
-    private WeakReference<WebView> mWebViewRef;
+    private final WeakReference<WebView> mWebViewRef;
     private int mIsPermanent;
-    private String mInjectedName;
+    private final String mInjectedName;
 
     public JsCallback(WebView view, String injectedName, int index) {
         mCouldGoOn = true;
@@ -62,12 +62,12 @@ public class JsCallback {
             if (isStrArg && !isObjArg) {
                 sb.append("\"");
             }
-            sb.append(String.valueOf(arg));
+            sb.append(arg);
             if (isStrArg && !isObjArg) {
                 sb.append("\"");
             }
         }
-        String execJs = String.format(CALLBACK_JS_FORMAT, mInjectedName, mIndex, mIsPermanent, sb.toString());
+        String execJs = String.format(CALLBACK_JS_FORMAT, mInjectedName, mIndex, mIsPermanent, sb);
         if (LogUtils.isDebug()) {
             Log.d("JsCallBack", execJs);
         }

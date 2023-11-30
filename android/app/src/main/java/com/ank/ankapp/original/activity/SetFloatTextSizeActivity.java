@@ -19,11 +19,11 @@ public class SetFloatTextSizeActivity extends BaseActivity implements View.OnCli
     protected RelativeLayout rl_small,rl_middle, rl_large;
     protected ImageView iv_small,iv_middle, iv_large;
     protected TextView tv01,tv_04,  tv02, tv03, tv_ko;
-    private RelativeLayout[] languageArr = {rl_small,rl_middle, rl_large};
-    private ImageView[] ivCkboxArr = {iv_small, iv_middle, iv_large};
+    private final RelativeLayout[] languageArr = {rl_small,rl_middle, rl_large};
+    private final ImageView[] ivCkboxArr = {iv_small, iv_middle, iv_large};
 
-    private int[] resid = {R.id.rl_small,R.id.rl_middle, R.id.rl_large};
-    private int[] ivResid = {R.id.iv_small, R.id.iv_middle, R.id.iv_large};
+    private final int[] resid = {R.id.rl_small,R.id.rl_middle, R.id.rl_large};
+    private final int[] ivResid = {R.id.iv_small, R.id.iv_middle, R.id.iv_large};
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -34,8 +34,8 @@ public class SetFloatTextSizeActivity extends BaseActivity implements View.OnCli
         int textSizeIdx = Config.getMMKV(this).getInt(Config.CONF_FLOATING_TEXT_SIZE, 0);
         for(int i = 0; i < languageArr.length; i++)
         {
-            ivCkboxArr[i] = (ImageView) this.findViewById(ivResid[i]);
-            languageArr[i] = (RelativeLayout) this.findViewById(resid[i]);
+            ivCkboxArr[i] = this.findViewById(ivResid[i]);
+            languageArr[i] = this.findViewById(resid[i]);
             languageArr[i].setOnClickListener(this);
 
             if(textSizeIdx == i)

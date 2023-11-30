@@ -19,7 +19,7 @@ import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 
 public class WebLayout implements IWebLayout {
 
-    private Activity mActivity;
+    private final Activity mActivity;
     private final TwinklingRefreshLayout mTwinklingRefreshLayout;
     private WebView mWebView = null;
 
@@ -27,7 +27,7 @@ public class WebLayout implements IWebLayout {
         this.mActivity = activity;
         mTwinklingRefreshLayout = (TwinklingRefreshLayout) LayoutInflater.from(activity).inflate(R.layout.fragment_twk_web, null);
         mTwinklingRefreshLayout.setPureScrollModeOn();
-        mWebView = (WebView) mTwinklingRefreshLayout.findViewById(R.id.webView);
+        mWebView = mTwinklingRefreshLayout.findViewById(R.id.webView);
     }
 
     @NonNull

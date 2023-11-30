@@ -96,7 +96,7 @@ public class WebParentLayout extends FrameLayout implements Provider<AbsAgentWeb
 		} else {
 			mFrameLayout.addView(mErrorView);
 		}
-		ViewStub mViewStub = (ViewStub) this.findViewById(R.id.mainframe_error_viewsub_id);
+		ViewStub mViewStub = this.findViewById(R.id.mainframe_error_viewsub_id);
 		final int index = this.indexOfChild(mViewStub);
 		this.removeViewInLayout(mViewStub);
 		final ViewGroup.LayoutParams layoutParams = getLayoutParams();

@@ -25,9 +25,9 @@ import com.just.agentweb.AgentWeb;
 
 public class AndroidInterface {
 
-    private Handler deliver = new Handler(Looper.getMainLooper());
-    private AgentWeb agent;
-    private Context context;
+    private final Handler deliver = new Handler(Looper.getMainLooper());
+    private final AgentWeb agent;
+    private final Context context;
 
     public AndroidInterface(AgentWeb agent, Context context) {
         this.agent = agent;

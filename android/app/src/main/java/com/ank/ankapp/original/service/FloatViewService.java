@@ -63,7 +63,7 @@ public class FloatViewService extends Service implements View.OnClickListener {
     private static WindowManager.LayoutParams layoutParams;
     private static View floatView;
     //key-val args pos
-    private static HashMap<String, Integer> subscribeMap = new HashMap<>();
+    private static final HashMap<String, Integer> subscribeMap = new HashMap<>();
     private static List<SymbolVo> symbolList;
     private static Handler mHandler;
     private static boolean isGreenUp = true;//绿涨红跌
@@ -72,18 +72,18 @@ public class FloatViewService extends Service implements View.OnClickListener {
 
     private RLinearLayout ll_float_bg;
     protected LinearLayout ll_float_01, ll_float_02, ll_float_03, ll_float_04, ll_float_05, ll_float_06;
-    private LinearLayout[] llItemArr = {ll_float_01, ll_float_02, ll_float_03, ll_float_04, ll_float_05, ll_float_06};
+    private final LinearLayout[] llItemArr = {ll_float_01, ll_float_02, ll_float_03, ll_float_04, ll_float_05, ll_float_06};
     protected TextView tv_floatview_01, tv_floatview_02, tv_floatview_03, tv_floatview_04, tv_floatview_05, tv_floatview_06;
-    private TextView[] tvPriceArr = {tv_floatview_01, tv_floatview_02, tv_floatview_03, tv_floatview_04, tv_floatview_05, tv_floatview_06};
+    private final TextView[] tvPriceArr = {tv_floatview_01, tv_floatview_02, tv_floatview_03, tv_floatview_04, tv_floatview_05, tv_floatview_06};
     protected TextView tv_sybol_01, tv_sybol_02, tv_sybol_03, tv_sybol_04, tv_sybol_05, tv_sybol_06;
-    private TextView[] tvSymbolArr = {tv_sybol_01, tv_sybol_02, tv_sybol_03, tv_sybol_04, tv_sybol_05, tv_sybol_06};
+    private final TextView[] tvSymbolArr = {tv_sybol_01, tv_sybol_02, tv_sybol_03, tv_sybol_04, tv_sybol_05, tv_sybol_06};
 
-    private int[] res_ll = {R.id.ll_float_01, R.id.ll_float_02, R.id.ll_float_03, R.id.ll_float_04, R.id.ll_float_05, R.id.ll_float_06};
-    private int[] res_price = {R.id.tv_floatview_01, R.id.tv_floatview_02, R.id.tv_floatview_03, R.id.tv_floatview_04, R.id.tv_floatview_05, R.id.tv_floatview_06};
-    private int[] res_symbol = {R.id.tv_sybol_01, R.id.tv_sybol_02, R.id.tv_sybol_03, R.id.tv_sybol_04, R.id.tv_sybol_05, R.id.tv_sybol_06};
+    private final int[] res_ll = {R.id.ll_float_01, R.id.ll_float_02, R.id.ll_float_03, R.id.ll_float_04, R.id.ll_float_05, R.id.ll_float_06};
+    private final int[] res_price = {R.id.tv_floatview_01, R.id.tv_floatview_02, R.id.tv_floatview_03, R.id.tv_floatview_04, R.id.tv_floatview_05, R.id.tv_floatview_06};
+    private final int[] res_symbol = {R.id.tv_sybol_01, R.id.tv_sybol_02, R.id.tv_sybol_03, R.id.tv_sybol_04, R.id.tv_sybol_05, R.id.tv_sybol_06};
 
-    private int[] priceFontRes = {R.dimen.font_size_small, R.dimen.font_size_mid, R.dimen.font_size_big};
-    private int[] symbolFontRes = {R.dimen.font_size_small_symbol, R.dimen.font_size_mid_symbol, R.dimen.font_size_big_symbol};
+    private final int[] priceFontRes = {R.dimen.font_size_small, R.dimen.font_size_mid, R.dimen.font_size_big};
+    private final int[] symbolFontRes = {R.dimen.font_size_small_symbol, R.dimen.font_size_mid_symbol, R.dimen.font_size_big_symbol};
 
     private static int testVar = 0;
 
@@ -541,15 +541,12 @@ public class FloatViewService extends Service implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.ll_add_market:
-                Intent i = new Intent();
-                i.setClass(getApplicationContext(), SelectFloatViewSymbolActivity.class);
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                i.putExtra(Config.TYPE_TITLE, getResources().getString(R.string.s_add_market));
-                getApplicationContext().startActivity(i);
-                break;
-
+        if (v.getId() == R.id.ll_add_market) {
+            Intent i = new Intent();
+            i.setClass(getApplicationContext(), SelectFloatViewSymbolActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            i.putExtra(Config.TYPE_TITLE, getResources().getString(R.string.s_add_market));
+            getApplicationContext().startActivity(i);
         }
 
         doClick(v);
@@ -651,7 +648,7 @@ public class FloatViewService extends Service implements View.OnClickListener {
         unregisterReceiver(myBroadcast);
     }
 
-    private MyBroadcast myBroadcast = new MyBroadcast();
+    private final MyBroadcast myBroadcast = new MyBroadcast();
 
     private class MyBroadcast extends BroadcastReceiver {
         @Override

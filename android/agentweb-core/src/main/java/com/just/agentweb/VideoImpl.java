@@ -36,8 +36,8 @@ import java.util.Set;
  */
 public class VideoImpl implements IVideo, EventInterceptor {
 
-    private Activity mActivity;
-    private WebView mWebView;
+    private final Activity mActivity;
+    private final WebView mWebView;
     private static final String TAG = VideoImpl.class.getSimpleName();
     private Set<Pair<Integer, Integer>> mFlags = null;
     private View mMoiveView = null;

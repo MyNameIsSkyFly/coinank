@@ -24,7 +24,7 @@ public class LargeValueFormatter implements IValueFormatter, IAxisValueFormatter
             "", "K", "M", "B", "T"
     };
     private int mMaxLength = 5;
-    private DecimalFormat mFormat;
+    private final DecimalFormat mFormat;
     private String mText = "";
 
     public LargeValueFormatter() {

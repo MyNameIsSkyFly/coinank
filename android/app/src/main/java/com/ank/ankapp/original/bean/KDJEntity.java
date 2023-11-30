@@ -9,9 +9,9 @@ import java.util.List;
 
 public class KDJEntity {
 
-    private ArrayList<Float> Ks;
-    private ArrayList<Float> Ds;
-    private ArrayList<Float> Js;
+    private final ArrayList<Float> Ks;
+    private final ArrayList<Float> Ds;
+    private final ArrayList<Float> Js;
 
     /**
      * 得到KDJ

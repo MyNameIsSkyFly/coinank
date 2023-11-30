@@ -59,7 +59,6 @@ public class WebChromeClientDelegate extends WebChromeClient {
         super.onProgressChanged(view, newProgress);
         if (this.mDelegate != null) {
             this.mDelegate.onProgressChanged(view, newProgress);
-            return;
         }
     }
 

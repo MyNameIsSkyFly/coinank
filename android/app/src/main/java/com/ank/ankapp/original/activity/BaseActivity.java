@@ -58,11 +58,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         LanguageUtil.changeAppLanguage(this, PrefUtils.getLanguage(this));
         setCookieValue();//设置webview theme
         super.onCreate(savedInstanceState);
-        if (Config.getMMKV(this).getBoolean(Config.DAY_NIGHT_MODE, false)) {
-            setStatusColor(this, false, false, R.color.colorPrimary);
-        } else {
-            setStatusColor(this, false, true, R.color.colorPrimary);
-        }
+        setStatusColor(this, false, !Config.getMMKV(this).getBoolean(Config.DAY_NIGHT_MODE, false), R.color.colorPrimary);
 
         strTitle = getIntent().getStringExtra(Config.TYPE_TITLE);
 
@@ -103,7 +99,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         //MLog.d("OnlineService：",className);
         for (int i = 0; i < serviceList.size(); i++) {
             // MLog.d("serviceName：",serviceList.get(i).service.getClassName());
-            if (serviceList.get(i).service.getClassName().contains(className) == true) {
+            if (serviceList.get(i).service.getClassName().contains(className)) {
                 isRunning = true;
                 break;
             }
@@ -192,19 +188,19 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected void initToolBar() {
-        iv_mul_kline = (ImageView) this.findViewById(R.id.iv_mul_kline);
-        iv_favorite = (ImageView) this.findViewById(R.id.iv_favorite);
-        iv_switch_symbol = (ImageView) this.findViewById(R.id.iv_switch_symbol);
-        mBackImageView = (ImageView) this.findViewById(R.id.iv_back);
+        iv_mul_kline = this.findViewById(R.id.iv_mul_kline);
+        iv_favorite = this.findViewById(R.id.iv_favorite);
+        iv_switch_symbol = this.findViewById(R.id.iv_switch_symbol);
+        mBackImageView = this.findViewById(R.id.iv_back);
         if (Config.getMMKV(this).getBoolean(Config.DAY_NIGHT_MODE, false)) {
             mBackImageView.setImageResource(R.drawable.btn_back_night);
             iv_switch_symbol.setImageResource(R.drawable.switch_symbol_night);
             iv_mul_kline.setImageResource(R.drawable.mul_kline_icon_night);
         }
 
-        rl_title = (RelativeLayout) this.findViewById(R.id.rl_title);
-        tv_swap_type = (TextView) this.findViewById(R.id.tv_swap_type);
-        mTitleTextView = (TextView) this.findViewById(R.id.toolbar_title);
+        rl_title = this.findViewById(R.id.rl_title);
+        tv_swap_type = this.findViewById(R.id.tv_swap_type);
+        mTitleTextView = this.findViewById(R.id.toolbar_title);
         if (TextUtils.isEmpty(strTitle))
             strTitle = getResources().getString(R.string.app_name);
         mTitleTextView.setText(strTitle);
@@ -301,7 +297,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             String param = arr[i];
             try {
                 f = imm.getClass().getDeclaredField(param);
-                if (f.isAccessible() == false) {
+                if (!f.isAccessible()) {
                     f.setAccessible(true);
                 } // author: sodino mail:[email protected]
                 obj_get = f.get(imm);

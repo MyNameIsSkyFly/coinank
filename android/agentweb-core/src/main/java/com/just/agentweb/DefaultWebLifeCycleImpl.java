@@ -25,7 +25,7 @@ import android.webkit.WebView;
  * @since 2.0.0
  */
 public class DefaultWebLifeCycleImpl implements WebLifeCycle {
-    private WebView mWebView;
+    private final WebView mWebView;
     DefaultWebLifeCycleImpl(WebView webView) {
         this.mWebView = webView;
     }

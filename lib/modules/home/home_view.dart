@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 
 import '../../widget/rate_with_arrow.dart';
 import 'home_logic.dart';
+import 'long_short_ratio/long_short_person_ratio/long_short_person_ratio_view.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -347,7 +348,7 @@ class _OiDistribution extends StatelessWidget {
 
           ///多空持仓人数比
           _LongShortRatio(
-              onTap: logic.hostApi.toLongShortAccountRatio,
+              onTap: () => Get.toNamed(LongShortPersonRatioPage.routeName),
               title: S.of(context).s_bn_longshort_person_ratio,
               long: double.parse(
                   logic.homeInfoData.value?.binancePersonValue ?? '0'),
@@ -356,7 +357,7 @@ class _OiDistribution extends StatelessWidget {
                   logic.homeInfoData.value?.binancePersonChange ?? '0')),
           const Gap(10),
           _LongShortRatio(
-              onTap: logic.hostApi.toLongShortAccountRatio,
+              onTap: () => Get.toNamed(LongShortPersonRatioPage.routeName),
               title: S.of(context).s_ok_longshort_person_ratio,
               long: double.parse(
                   logic.homeInfoData.value?.okexPersonValue ?? '0'),

@@ -30,18 +30,12 @@ public class PullListView extends ListView implements Pullable {
         if (!pullDownEnable) {
             return false;
         }
+        // 滑到ListView的顶部了
         if (getCount() == 0) {
             // 没有item的时候也可以下拉刷新
             return true;
-        } else if (getFirstVisiblePosition() == 0 &&
-                ((getChildAt(0) != null) && getChildAt(0).getTop() >= 0)
-        )
-        {
-            // 滑到ListView的顶部了
-            return true;
-        }
-
-        return false;
+        } else return getFirstVisiblePosition() == 0 &&
+                ((getChildAt(0) != null) && getChildAt(0).getTop() >= 0);
     }
 
     @Override
@@ -54,11 +48,9 @@ public class PullListView extends ListView implements Pullable {
             return true;
         } else if (getLastVisiblePosition() == (getCount() - 1)) {
             // 滑到底部了
-            if (getChildAt(getLastVisiblePosition() - getFirstVisiblePosition()) != null
+            return getChildAt(getLastVisiblePosition() - getFirstVisiblePosition()) != null
                     && getChildAt(getLastVisiblePosition() - getFirstVisiblePosition()).getBottom()
-                    <= getMeasuredHeight()) {
-                return true;
-            }
+                    <= getMeasuredHeight();
         }
         return false;
     }

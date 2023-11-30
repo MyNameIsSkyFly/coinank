@@ -66,7 +66,7 @@ public class DefaultWebClient extends MiddlewareWebClientBase {
 	/**
 	 * WebViewClient
 	 */
-	private WebViewClient mWebViewClient;
+	private final WebViewClient mWebViewClient;
 	/**
 	 * mWebClientHelper
 	 */
@@ -126,7 +126,7 @@ public class DefaultWebClient extends MiddlewareWebClientBase {
 	/**
 	 * WebView
 	 */
-	private WebView mWebView;
+	private final WebView mWebView;
 	/**
 	 * 弹窗回调
 	 */
@@ -146,11 +146,11 @@ public class DefaultWebClient extends MiddlewareWebClientBase {
 	/**
 	 * 缓存当前出现错误的页面
 	 */
-	private Set<String> mErrorUrlsSet = new HashSet<>();
+	private final Set<String> mErrorUrlsSet = new HashSet<>();
 	/**
 	 * 缓存等待加载完成的页面 onPageStart()执行之后 ，onPageFinished()执行之前
 	 */
-	private Set<String> mWaittingFinishSet = new HashSet<>();
+	private final Set<String> mWaittingFinishSet = new HashSet<>();
 
 	static {
 		boolean tag = true;
@@ -336,7 +336,6 @@ public class DefaultWebClient extends MiddlewareWebClientBase {
 				return;
 			}
 			if (lookup(intentUrl)) {
-				return;
 			}
 		} catch (Throwable e) {
 			if (LogUtils.isDebug()) {
@@ -418,9 +417,7 @@ public class DefaultWebClient extends MiddlewareWebClientBase {
 
 	@Override
 	public void onPageStarted(WebView view, String url, Bitmap favicon) {
-		if (!mWaittingFinishSet.contains(url)) {
-			mWaittingFinishSet.add(url);
-		}
+		mWaittingFinishSet.add(url);
 		super.onPageStarted(view, url, favicon);
 
 	}
@@ -458,9 +455,7 @@ public class DefaultWebClient extends MiddlewareWebClientBase {
 
 	@Override
 	public void doUpdateVisitedHistory(WebView view, String url, boolean isReload) {
-		if (!mWaittingFinishSet.contains(url)) {
-			mWaittingFinishSet.add(url);
-		}
+		mWaittingFinishSet.add(url);
 		super.doUpdateVisitedHistory(view, url, isReload);
 	}
 
@@ -522,9 +517,7 @@ public class DefaultWebClient extends MiddlewareWebClientBase {
 		} else {
 			view.setVisibility(View.VISIBLE);
 		}
-		if (mWaittingFinishSet.contains(url)) {
-			mWaittingFinishSet.remove(url);
-		}
+		mWaittingFinishSet.remove(url);
 		if (!mErrorUrlsSet.isEmpty()) {
 			mErrorUrlsSet.clear();
 		}
@@ -576,12 +569,10 @@ public class DefaultWebClient extends MiddlewareWebClientBase {
 		return this.mCallback = new Handler.Callback() {
 			@Override
 			public boolean handleMessage(Message msg) {
-				switch (msg.what) {
-					case 1:
-						lookup(url);
-						break;
-					default:
-						return true;
+				if (msg.what == 1) {
+					lookup(url);
+				} else {
+					return true;
 				}
 				return true;
 			}
@@ -642,7 +633,7 @@ public class DefaultWebClient extends MiddlewareWebClientBase {
 		}
 	}
 
-	public static enum OpenOtherPageWays {
+	public enum OpenOtherPageWays {
 		/**
 		 * 直接打开跳转页
 		 */

@@ -42,25 +42,25 @@ public class SetFloatViewActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void initView() {
-        rl_bg_alpha = (RelativeLayout) this.findViewById(R.id.rl_bg_alpha);
+        rl_bg_alpha = this.findViewById(R.id.rl_bg_alpha);
         rl_bg_alpha.setOnClickListener(this);
-        rl_text_size = (RelativeLayout) this.findViewById(R.id.rl_text_size);
+        rl_text_size = this.findViewById(R.id.rl_text_size);
         rl_text_size.setOnClickListener(this);
-        rlDisplay = (RelativeLayout) this.findViewById(R.id.rl_floatview_display);
+        rlDisplay = this.findViewById(R.id.rl_floatview_display);
         rlDisplay.setOnClickListener(this);
-        rlAddMarket = (RelativeLayout) this.findViewById(R.id.rl_add_market);
+        rlAddMarket = this.findViewById(R.id.rl_add_market);
         rlAddMarket.setOnClickListener(this);
-        rlFloatViewLock = (RelativeLayout) this.findViewById(R.id.rl_floatview_lock);
+        rlFloatViewLock = this.findViewById(R.id.rl_floatview_lock);
         rlFloatViewLock.setOnClickListener(this);
 
-        ivFloatViewLock = (ImageView) this.findViewById(R.id.togle_floatview_lock);
-        ivToggleDisplay = (ImageView) this.findViewById(R.id.toggle_display_floatview);
+        ivFloatViewLock = this.findViewById(R.id.togle_floatview_lock);
+        ivToggleDisplay = this.findViewById(R.id.toggle_display_floatview);
         setChecked(ivFloatViewLock,
                 Config.getMMKV(this).getBoolean(Config.IS_FLOAT_VIEW_LOCK, false));
         setChecked(ivToggleDisplay,
                 Config.getMMKV(this).getBoolean(Config.IS_FLOAT_VIEW_SHOW, false));
 
-        mListView = (ListView) this.findViewById(R.id.lv_floatview_ticker);
+        mListView = this.findViewById(R.id.lv_floatview_ticker);
         initData();
     }
 
@@ -168,11 +168,7 @@ public class SetFloatViewActivity extends BaseActivity implements View.OnClickLi
                 Global.showActivity(this, i);
                 break;
             case R.id.rl_floatview_lock:
-                if (Config.getMMKV(this).getBoolean(Config.IS_FLOAT_VIEW_LOCK, false)) {
-                    Config.getMMKV(this).putBoolean(Config.IS_FLOAT_VIEW_LOCK, false);
-                } else {
-                    Config.getMMKV(this).putBoolean(Config.IS_FLOAT_VIEW_LOCK, true);
-                }
+                Config.getMMKV(this).putBoolean(Config.IS_FLOAT_VIEW_LOCK, !Config.getMMKV(this).getBoolean(Config.IS_FLOAT_VIEW_LOCK, false));
 
                 setChecked(ivFloatViewLock,
                         Config.getMMKV(this).getBoolean(Config.IS_FLOAT_VIEW_LOCK, false));

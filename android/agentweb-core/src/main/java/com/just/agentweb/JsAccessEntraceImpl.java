@@ -29,8 +29,8 @@ import android.webkit.WebView;
  */
 public class JsAccessEntraceImpl extends BaseJsAccessEntrace {
 
-    private WebView mWebView;
-    private Handler mHandler = new Handler(Looper.getMainLooper());
+    private final WebView mWebView;
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     public static JsAccessEntraceImpl getInstance(WebView webView) {
         return new JsAccessEntraceImpl(webView);
