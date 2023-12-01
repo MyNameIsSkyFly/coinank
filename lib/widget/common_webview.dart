@@ -21,6 +21,7 @@ class CommonWebView extends StatefulWidget {
     this.onWebViewCreated,
     this.isFile = false,
     this.showLoading = false,
+    this.safeArea = false,
   });
 
   final String? title;
@@ -29,6 +30,7 @@ class CommonWebView extends StatefulWidget {
   final void Function(InAppWebViewController controller)? onWebViewCreated;
   final bool isFile;
   final bool showLoading;
+  final bool safeArea;
 
   static Future<void> setCookieValue() async {
     final cookieList = <(String, String)>[];
@@ -147,22 +149,27 @@ class _CommonWebViewState extends State<CommonWebView>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: widget.title == null
           ? null
           : AppTitleBar(
               title: widget.title ?? '',
             ),
-      body: SafeArea(
-        child: Stack(
-          children: [
-            InAppWebView(
+      body: Stack(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(
+                top: widget.safeArea ? AppConst.statusBarHeight : 0),
+            child: InAppWebView(
               initialFile: widget.isFile ? widget.url : null,
               initialUrlRequest: widget.isFile
                   ? null
                   : URLRequest(
                       url: WebUri(widget.urlGetter?.call() ?? widget.url)),
               initialSettings: InAppWebViewSettings(
-                userAgent: 'CoinsohoWeb-flutter',
+                userAgent: Platform.isAndroid
+                    ? 'CoinsohoWeb-flutter-Android'
+                    : 'CoinsohoWeb-flutter-IOS',
                 javaScriptEnabled: true,
                 transparentBackground: true,
                 javaScriptCanOpenWindowsAutomatically: true,
@@ -195,12 +202,14 @@ class _CommonWebViewState extends State<CommonWebView>
               },
               onProgressChanged: (controller, progress) {
                 _progress = progress;
-                setState(() {});
+                if (progress == 100) {
+                  setState(() {});
+                }
               },
             ),
-            if (widget.showLoading && _progress != 100) const LottieIndicator(),
-          ],
-        ),
+          ),
+          if (widget.showLoading && _progress != 100) const LottieIndicator(),
+        ],
       ),
     );
   }

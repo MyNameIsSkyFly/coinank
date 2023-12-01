@@ -33,6 +33,7 @@ class MainPage extends StatelessWidget {
           CommonWebView(
               title: null,
               showLoading: true,
+              safeArea: true,
               url: Urls.urlProChart,
               urlGetter: () => Urls.urlProChart,
               onWebViewCreated: (controller) {
