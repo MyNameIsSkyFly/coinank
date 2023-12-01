@@ -80,14 +80,9 @@ class LongShortRatioLogic extends FullLifeCycleController
       Loading.show();
     }
     state.isRefresh = true;
-    await Future.wait([
-      getData(false),
-      getJSData(false),
-    ]).then((value) {
-      Loading.dismiss();
-      state.isRefresh = false;
-      _updateChart();
-    });
+    await getData(false);
+    Loading.dismiss();
+    state.isRefresh = false;
   }
 
   Future<void> getHeaderData() async {
@@ -131,7 +126,8 @@ class LongShortRatioLogic extends FullLifeCycleController
     };
     var platformString = Platform.isAndroid ? 'android' : 'ios';
     var jsSource = '''
-setChartData(${jsonEncode(json)}, "$platformString", "realtimeLongShort", ${jsonEncode(options)});    
+setChartData(${jsonEncode(
+        json)}, "$platformString", "realtimeLongShort", ${jsonEncode(options)});    
     ''';
     state.webCtrl?.evaluateJavascript(source: jsSource);
   }
@@ -139,10 +135,10 @@ setChartData(${jsonEncode(json)}, "$platformString", "realtimeLongShort", ${json
   Future<void> _startTimer() async {
     state.pollingTimer =
         Timer.periodic(const Duration(seconds: 5), (timer) async {
-      if (!state.isRefresh && state.appVisible) {
-        await onRefresh(false);
-      }
-    });
+          if (!state.isRefresh && state.appVisible) {
+            await onRefresh(false);
+          }
+        });
   }
 
   @override

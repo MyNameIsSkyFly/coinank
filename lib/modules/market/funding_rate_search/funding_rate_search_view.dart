@@ -49,7 +49,7 @@ class _FundingRateSearchPageState extends State<FundingRateSearchPage> {
                       filled: true,
                       constraints: const BoxConstraints(maxHeight: 40),
                       contentPadding: EdgeInsets.zero,
-                      hintText: '搜索',
+                      hintText: S.current.s_search,
                       hintStyle: Styles.tsSub_14(context),
                       prefixIcon: Padding(
                         padding: const EdgeInsets.only(left: 15, right: 10),

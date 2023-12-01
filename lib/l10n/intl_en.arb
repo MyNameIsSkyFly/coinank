@@ -282,7 +282,10 @@
   "s_liq_map_low": "Low leverage",
   "s_liq_map_mid": "Medium leverage",
   "s_liq_map_high": "High leverage",
-  "liqHeat":"Liquidation Leverage",
+  "liqHeat": "Liquidation Leverage",
   "s_choose_time": "Select Time",
-  "s_choose_coin": "Select Currency"
+  "s_choose_coin": "Select Currency",
+  "s_hot": "热门",
+  "s_add_star": "添加自選",
+  "s_del_star": "取消自選"
 }

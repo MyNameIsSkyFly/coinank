@@ -281,6 +281,8 @@
   "s_liq_map_high": "高杠杆",
   "liqHeat": "清算强度",
   "s_choose_time": "选择时间",
-  "s_choose_coin": "选择币种"
-
+  "s_choose_coin": "选择币种",
+  "s_hot": "热门",
+  "s_add_star": "添加自选",
+  "s_del_star": "取消自选"
 }

@@ -282,5 +282,8 @@
   "s_liq_map_high": "高杠桿",
   "liqHeat": "清算强度",
   "s_choose_time": "選擇時間",
-  "s_choose_coin": "選擇代幣"
+  "s_choose_coin": "選擇代幣",
+  "s_hot": "熱門",
+  "s_add_star": "添加自選",
+  "s_del_star": "取消自選"
 }

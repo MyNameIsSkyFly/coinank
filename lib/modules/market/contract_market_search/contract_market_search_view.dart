@@ -38,7 +38,7 @@ class ContractMarketSearchPage extends StatelessWidget {
                       filled: true,
                       constraints: const BoxConstraints(maxHeight: 40),
                       contentPadding: EdgeInsets.zero,
-                      hintText: '搜索',
+                      hintText: S.current.s_search,
                       hintStyle: Styles.tsSub_14(context),
                       prefixIcon: Padding(
                         padding: const EdgeInsets.only(left: 15, right: 10),
@@ -68,7 +68,7 @@ class ContractMarketSearchPage extends StatelessWidget {
                     width: 62,
                     child: Center(
                       child: Text(
-                        '取消',
+                        S.current.s_cancel,
                         style: Styles.tsSub_16(context),
                       ),
                     ),

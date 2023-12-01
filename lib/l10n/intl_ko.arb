@@ -282,5 +282,8 @@
   "s_liq_map_high": "High leverage",
   "liqHeat":"Liquidation Leverage",
   "s_choose_time": "시간대 선택",
-  "s_choose_coin": "암호화폐 선택"
+  "s_choose_coin": "암호화폐 선택",
+  "s_hot": "热门",
+  "s_add_star": "添加自選",
+  "s_del_star": "取消自選"
 }

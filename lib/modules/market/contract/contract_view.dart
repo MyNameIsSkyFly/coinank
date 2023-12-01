@@ -212,7 +212,7 @@ class _DataItem extends StatelessWidget {
                       ),
                 const Gap(4),
                 Text(
-                  item.follow == true ? '取消自选' : '添加自选',
+                  item.follow == true ? S.current.s_del_star : S.current.s_add_star,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 12,

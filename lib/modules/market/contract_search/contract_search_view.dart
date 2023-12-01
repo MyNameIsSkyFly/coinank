@@ -40,7 +40,7 @@ class ContractSearchPage extends StatelessWidget {
                       filled: true,
                       constraints: const BoxConstraints(maxHeight: 40),
                       contentPadding: EdgeInsets.zero,
-                      hintText: '搜索',
+                      hintText: S.current.s_search,
                       hintStyle: Styles.tsSub_14(context),
                       prefixIcon: Padding(
                         padding: const EdgeInsets.only(left: 15, right: 10),
@@ -70,7 +70,7 @@ class ContractSearchPage extends StatelessWidget {
                     width: 62,
                     child: Center(
                       child: Text(
-                        '取消',
+                        S.current.s_cancel,
                         style: Styles.tsSub_16(context),
                       ),
                     ),
@@ -88,7 +88,7 @@ class ContractSearchPage extends StatelessWidget {
               height: 44,
               child: Row(
                 children: [
-                  Text('热门', style: Styles.tsBody_16m(context)),
+                  Text(S.current.s_hot, style: Styles.tsBody_16m(context)),
                   Text('🔥', style: Styles.tsBody_16m(context)),
                 ],
               ),
@@ -162,7 +162,7 @@ class _DataItem extends StatelessWidget {
                       ),
                 const Gap(4),
                 Text(
-                  item.follow == true ? '取消自选' : '添加自选',
+                  item.follow == true ?  S.current.s_del_star : S.current.s_add_star,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 12,
