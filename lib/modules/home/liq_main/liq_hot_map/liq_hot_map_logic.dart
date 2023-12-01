@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/custom_bottom_sheet/custom_bottom_sheet_view.dart';
+import 'package:ank_app/widget/custom_search_bottom_sheet/custom_search_bottom_sheet_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,12 +14,11 @@ class LiqHotMapLogic extends GetxController {
 
   chooseSymbol() async {
     final result = await Get.bottomSheet(
-      const CustomBottomSheetPage(),
+      const CustomSearchBottomSheetPage(),
       isScrollControlled: true,
       isDismissible: true,
       settings: RouteSettings(
         arguments: {
-          'title': S.current.s_choose_coin,
           'list': state.symbolList.toList(),
           'current': state.symbol.value,
         },

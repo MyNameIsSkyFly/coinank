@@ -12,7 +12,9 @@ class CustomBottomSheetPage extends StatelessWidget {
     final logic = Get.put(CustomBottomSheetLogic());
     final state = Get.find<CustomBottomSheetLogic>().state;
     return Container(
-      margin: EdgeInsets.only(top: kToolbarHeight + AppConst.statusBarHeight),
+      constraints: BoxConstraints(
+          maxHeight:
+              AppConst.height - kToolbarHeight - AppConst.statusBarHeight),
       padding: const EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
         color: Theme.of(context).appBarTheme.backgroundColor,
