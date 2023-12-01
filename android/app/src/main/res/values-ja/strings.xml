@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Coinsoto</string>
+    <string name="app_name">Coinank</string>
 
     <string name="s_more_time">より多く</string>
     <string name="s_24h_max_price">24H最高価格</string>
