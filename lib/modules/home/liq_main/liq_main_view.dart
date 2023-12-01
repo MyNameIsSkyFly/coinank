@@ -18,6 +18,7 @@ class LiqMainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppTitleBar(
         customWidget: Stack(
           children: [

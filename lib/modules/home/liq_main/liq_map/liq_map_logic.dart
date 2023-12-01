@@ -13,17 +13,21 @@ class LiqMapLogic extends GetxController {
   final LiqMapState state = LiqMapState();
 
   chooseSymbol() async {
-    final result = await Get.bottomSheet(
-      const CustomSearchBottomSheetPage(),
+    final result = await showModalBottomSheet(
+      context: Get.context!,
+      builder: (_) {
+        return const CustomSearchBottomSheetPage();
+      },
       isScrollControlled: true,
       isDismissible: true,
-      settings: RouteSettings(
+      routeSettings: RouteSettings(
         arguments: {
           'list': state.symbolList.toList(),
           'current': state.symbol.value,
         },
       ),
     );
+
     if (result != null) {
       final v = result as String;
       if (state.symbol.value != v) {

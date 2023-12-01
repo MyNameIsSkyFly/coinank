@@ -1,5 +1,6 @@
 import 'package:ank_app/res/export.dart';
-import 'package:ank_app/util/store_binding.dart';
+import 'package:ank_app/util/jpush_util.dart';
+import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:get/get.dart';
 
 import '../../widget/common_webview.dart';
@@ -31,5 +32,15 @@ class MainLogic extends GetxController {
         StoreLogic.to.saveLoginUserInfo(value);
       });
     }
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    FGBGEvents.stream.listen((event) {
+      if (event == FGBGType.foreground) {
+        JPushUtil.setBadge();
+      }
+    });
   }
 }

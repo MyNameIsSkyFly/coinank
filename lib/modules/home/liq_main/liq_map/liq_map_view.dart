@@ -25,12 +25,12 @@ class LiqMapPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Obx(() {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            InkWell(
-                              onTap: () => logic.chooseSymbol(),
-                              child: Row(
+                        return InkWell(
+                          onTap: () => logic.chooseSymbol(),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
                                 children: [
                                   Text(
                                     state.symbol.value.split('/').last,
@@ -44,12 +44,12 @@ class LiqMapPage extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                            ),
-                            Text(
-                              state.symbol.value.split('/').first,
-                              style: Styles.tsSub_12(context),
-                            ),
-                          ],
+                              Text(
+                                state.symbol.value.split('/').first,
+                                style: Styles.tsSub_12(context),
+                              ),
+                            ],
+                          ),
                         );
                       }),
                       const Spacer(),

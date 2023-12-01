@@ -13,11 +13,14 @@ class LiqHotMapLogic extends GetxController {
   final LiqHotMapState state = LiqHotMapState();
 
   chooseSymbol() async {
-    final result = await Get.bottomSheet(
-      const CustomSearchBottomSheetPage(),
+    final result = await showModalBottomSheet(
+      context: Get.context!,
+      builder: (_) {
+        return const CustomSearchBottomSheetPage();
+      },
       isScrollControlled: true,
       isDismissible: true,
-      settings: RouteSettings(
+      routeSettings: RouteSettings(
         arguments: {
           'list': state.symbolList.toList(),
           'current': state.symbol.value,

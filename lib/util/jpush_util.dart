@@ -47,15 +47,17 @@ class JPushUtil {
     }
 
     _jpush.setAuth(enable: true);
-    _jpush.setup(
-      appKey: '8de9d5e306e08c49a078ab5f',
-      channel: 'developer-default',
-      production: !kDebugMode,
-      debug: kDebugMode,
-    );
+    if (Platform.isIOS) {
+      _jpush.setup(
+        appKey: '8de9d5e306e08c49a078ab5f',
+        channel: 'developer-default',
+        production: !kDebugMode,
+        debug: kDebugMode,
+      );
+    }
+
     _jpush.applyPushAuthority(
         const NotificationSettingsIOS(sound: true, alert: true, badge: true));
-
     _jpush.getRegistrationID().then((rid) async {
       print('getRegistrationID:$rid');
       if (rid.isNotEmpty) {
@@ -79,5 +81,9 @@ class JPushUtil {
         AppNav.openWebUrl(url: map['url'] as String, title: 'Coinank');
       }
     }
+  }
+
+  static setBadge() {
+    _instance._jpush.setBadge(0);
   }
 }

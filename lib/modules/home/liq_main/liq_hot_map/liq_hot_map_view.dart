@@ -23,12 +23,12 @@ class LiqHotMapPage extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          InkWell(
-                            onTap: () => logic.chooseSymbol(),
-                            child: Row(
+                      InkWell(
+                        onTap: () => logic.chooseSymbol(),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
                               children: [
                                 Obx(() {
                                   return Text(
@@ -44,12 +44,12 @@ class LiqHotMapPage extends StatelessWidget {
                                 ),
                               ],
                             ),
-                          ),
-                          Text(
-                            'Binance',
-                            style: Styles.tsSub_12(context),
-                          ),
-                        ],
+                            Text(
+                              'Binance',
+                              style: Styles.tsSub_12(context),
+                            ),
+                          ],
+                        ),
                       ),
                       const Spacer(),
                       InkWell(

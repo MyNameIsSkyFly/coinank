@@ -1,7 +1,6 @@
 import 'package:ank_app/config/application.dart';
 import 'package:ank_app/res/app_theme.dart';
 import 'package:ank_app/res/export.dart';
-import 'package:ank_app/util/store.dart';
 import 'package:ank_app/util/store_binding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

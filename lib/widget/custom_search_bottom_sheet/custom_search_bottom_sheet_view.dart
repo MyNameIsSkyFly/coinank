@@ -5,13 +5,21 @@ import 'package:get/get.dart';
 
 import 'custom_search_bottom_sheet_logic.dart';
 
-class CustomSearchBottomSheetPage extends StatelessWidget {
+class CustomSearchBottomSheetPage extends StatefulWidget {
   const CustomSearchBottomSheetPage({super.key});
 
   @override
+  State<CustomSearchBottomSheetPage> createState() =>
+      _CustomSearchBottomSheetPageState();
+}
+
+class _CustomSearchBottomSheetPageState
+    extends State<CustomSearchBottomSheetPage> {
+  final logic = Get.put(CustomSearchBottomSheetLogic());
+  final state = Get.find<CustomSearchBottomSheetLogic>().state;
+
+  @override
   Widget build(BuildContext context) {
-    final logic = Get.put(CustomSearchBottomSheetLogic());
-    final state = Get.find<CustomSearchBottomSheetLogic>().state;
     return ClipRRect(
       borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
       child: Container(
@@ -146,5 +154,11 @@ class CustomSearchBottomSheetPage extends StatelessWidget {
         }),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    Get.delete<CustomSearchBottomSheetLogic>();
+    super.dispose();
   }
 }

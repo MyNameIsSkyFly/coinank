@@ -9,8 +9,8 @@ class AppConst {
     return 'https://cdn01.coinsoto.com/image/coin/64/$imageName.png';
   }
 
-  static double width = MediaQuery.of(Get.context!).size.width;
-  static double height = MediaQuery.of(Get.context!).size.height;
-  static double statusBarHeight = MediaQuery.of(Get.context!).padding.top;
-  static double bottomBarHeight = MediaQuery.of(Get.context!).padding.bottom;
+  static double get width => MediaQuery.of(Get.context!).size.width;
+  static double get height => MediaQuery.of(Get.context!).size.height;
+  static double get statusBarHeight => MediaQuery.of(Get.context!).padding.top;
+  static double get bottomBarHeight => MediaQuery.of(Get.context!).padding.bottom;
 }
