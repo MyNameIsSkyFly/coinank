@@ -142,7 +142,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 title: S.of(context).s_grayscale_data,
                 onTap: () => AppNav.openWebUrl(
                     title: S.of(context).s_grayscale_data,
-                    url: Urls.urlGreedIndex,
+                    url: Urls.urlGrayscale,
                     showLoading: true),
               )
             ],

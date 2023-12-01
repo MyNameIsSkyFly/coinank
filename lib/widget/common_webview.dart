@@ -111,8 +111,8 @@ class _CommonWebViewState extends State<CommonWebView>
 
   void startWebRefreshCounter() {
     if (!Platform.isIOS) return;
-    if (widget.url.contains('proChart') == false &&
-        widget.urlGetter?.call().contains('proChart') == false) return;
+    if (!(widget.url.contains('proChart') == true ||
+        widget.urlGetter?.call().contains('proChart') == true)) return;
     _fgbgSubscription = FGBGEvents.stream.listen((event) {
       if (event == FGBGType.foreground) {
         if (lastLeftTime != null &&

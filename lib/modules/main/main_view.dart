@@ -8,6 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
+import '../../constants/urls.dart';
+import '../../widget/common_webview.dart';
+import '../chart/chart_view.dart';
+import '../home/home_view.dart';
+import '../market/market_view.dart';
+import '../setting/setting_view.dart';
 import 'main_logic.dart';
 
 class MainPage extends StatelessWidget {
@@ -20,13 +26,23 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       key: state.scaffoldKey,
-      body: PageView.builder(
-        physics: const NeverScrollableScrollPhysics(),
-        controller: state.pageController,
-        itemCount: state.tabPage.length,
-        itemBuilder: (context, index) => state.tabPage[index],
-      ),
-      drawer:  ChartDrawerPage(),
+      body: Obx(() {
+        return IndexedStack(index: logic.state.selectedIndex.value, children: [
+          const HomePage(),
+          MarketPage(),
+          CommonWebView(
+              title: null,
+              showLoading: true,
+              url: Urls.urlProChart,
+              urlGetter: () => Urls.urlProChart,
+              onWebViewCreated: (controller) {
+                logic.state.webViewController = controller;
+              }),
+          const ChartPage(),
+          const SettingPage(),
+        ]);
+      }),
+      drawer: ChartDrawerPage(),
       drawerEnableOpenDragGesture: false,
       bottomNavigationBar: Obx(() {
         return MyBottomBar(

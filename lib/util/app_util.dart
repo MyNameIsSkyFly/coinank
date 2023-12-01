@@ -192,7 +192,7 @@ class AppUtil {
     bool isNeed = false;
     if (Platform.isIOS) {
       isNeed = (int.tryParse(packageInfo.version.replaceAll('.', '')) ?? 100) <
-          ((int.tryParse('${data['data']['iosVersionCode']}') ?? 0)*100);
+          ((int.tryParse('${data['data']['iosVersionCode']}') ?? 0) * 100);
     } else {
       isNeed = (int.tryParse(packageInfo.buildNumber) ?? 10000) <
           (int.tryParse(
@@ -234,6 +234,9 @@ class AppUtil {
           );
         },
       );
+    } else {
+      if (!showLoading) return;
+      AppUtil.showToast(S.current.s_last_version);
     }
   }
 

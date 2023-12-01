@@ -10,29 +10,10 @@ import '../../widget/common_webview.dart';
 import '../home/home_view.dart';
 
 class MainState {
-  late PageController pageController;
   RxInt selectedIndex = 0.obs;
   late List<Widget> tabPage;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   InAppWebViewController? webViewController;
-
-  MainState() {
-    pageController = PageController(initialPage: 0);
-    tabPage = [
-      keepAlivePage(const HomePage()),
-      keepAlivePage(MarketPage()),
-      keepAlivePage(CommonWebView(
-          title: null,
-          showLoading: true,
-          url: 'https://tv.coinsoto.com/proChart', //Urls.urlProChart,
-          // urlGetter: () => Urls.urlProChart,
-          onWebViewCreated: (controller) {
-            webViewController = controller;
-          })),
-      keepAlivePage(const ChartPage()),
-      keepAlivePage(SettingPage()),
-    ];
-  }
 }
 
 class BottomBarItem {

@@ -19,7 +19,6 @@ class MainLogic extends GetxController {
   void selectTab(int currentIndex) {
     if (state.selectedIndex.value != currentIndex) {
       state.selectedIndex.value = currentIndex;
-      state.pageController.jumpToPage(currentIndex);
     }
   }
 

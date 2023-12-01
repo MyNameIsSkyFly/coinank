@@ -245,6 +245,7 @@ class _CoinListView extends StatelessWidget {
               onTap: () {
                 logic.selectedCoinIndex = index;
                 logic.menuParamEntity.value.baseCoin = item;
+                logic.menuParamEntity.refresh();
                 logic.coinList.refresh();
                 Loading.wrap(() async => logic.onRefresh());
               },
