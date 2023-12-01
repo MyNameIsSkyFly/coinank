@@ -269,8 +269,8 @@
   "hotMarket": "인기있는 시장 동향 ",
   "oiDistribution": "포지션 분석",
   "languageName": "한국인",
-  "welcomeBack": "欢迎回来！",
-  "email": "email",
+  "welcomeBack": "환영합니다！",
+  "email": "이메일",
   "hotData": "주요 데이터 분석",
   "btcData": " 비트코인 관련 정보",
   "otherData": " 추가적인 데이터 ",
@@ -283,7 +283,7 @@
   "liqHeat":"Liquidation Leverage",
   "s_choose_time": "시간대 선택",
   "s_choose_coin": "암호화폐 선택",
-  "s_hot": "热门",
-  "s_add_star": "添加自選",
-  "s_del_star": "取消自選"
+  "s_hot": "인기 검색 ",
+  "s_add_star": "즐겨찾기 추가",
+  "s_del_star": "즐겨찾기 제거"
 }

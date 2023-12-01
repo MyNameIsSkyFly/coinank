@@ -196,7 +196,7 @@ class FundingRatePage extends StatelessWidget {
                                           Expanded(
                                             child: Text(
                                               item.symbol ?? '',
-                                              style: Styles.tsBody_12m(context),
+                                              style: Styles.tsBody_14m(context),
                                             ),
                                           ),
                                         ],
