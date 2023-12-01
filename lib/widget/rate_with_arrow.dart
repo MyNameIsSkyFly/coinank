@@ -32,7 +32,7 @@ class RateWithArrow extends StatelessWidget {
         Text(
           rateString,
           style: TextStyle(
-              fontSize: fontSize ?? 12,
+              fontSize: fontSize ?? 14,
               fontWeight: Styles.fontMedium,
               color: rate >= 0 ? Styles.cUp(context) : Styles.cDown(context)),
         ),

@@ -110,16 +110,16 @@ class LongShortPersonRatioLogic extends GetxController {
     webCtrl2?.evaluateJavascript(source: jsSource);
   }
 
-  Future<String?> openSelector() async {
+  Future<String?> openSelector(String current) async {
     final result = await Get.bottomSheet(
-      CustomBottomSheetPage(),
+      const CustomBottomSheetPage(),
       isScrollControlled: true,
       isDismissible: true,
-      settings: const RouteSettings(
+      settings:  RouteSettings(
         arguments: {
-          'title': '',
-          'list': ['5m', '15m', '30m', '1h', '2h', '4h', '12h', '1d'],
-          'current': ''
+          'title': S.current.s_choose_time,
+          'list': const ['5m', '15m', '30m', '1h', '2h', '4h', '12h', '1d'],
+          'current': current
         },
       ),
     );

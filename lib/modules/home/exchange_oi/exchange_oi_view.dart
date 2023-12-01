@@ -69,14 +69,18 @@ class _ExchangeOiPageState extends State<ExchangeOiPage> {
                             children: [
                               const Gap(15),
                               Expanded(
+                                  flex: 10,
                                   child: Text(S.of(context).s_exchange_name)),
-                              Expanded(child: Text(S.of(context).s_oi)),
-                              Expanded(child: Text(S.of(context).s_rate)),
                               Expanded(
+                                  flex: 9, child: Text(S.of(context).s_oi)),
+                              Expanded(
+                                  flex: 9, child: Text(S.of(context).s_rate)),
+                              Expanded(
+                                  flex: 6,
                                   child: Text(
-                                S.of(context).s_24h_chg,
-                                textAlign: TextAlign.end,
-                              )),
+                                    S.of(context).s_24h_chg,
+                                    textAlign: TextAlign.end,
+                                  )),
                               const Gap(15),
                             ],
                           ),
@@ -284,7 +288,7 @@ class _OiItem extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            flex: 1,
+            flex: 10,
             child: Row(
               children: [
                 Image.asset(
@@ -296,16 +300,16 @@ class _OiItem extends StatelessWidget {
                 Expanded(
                   child: Text(
                     item.exchangeName ?? '',
-                    style: Styles.tsBody_12m(context),
+                    style: Styles.tsBody_14m(context),
                   ),
                 ),
               ],
             ),
           ),
           Expanded(
-              flex: 1,
+              flex: 9,
               child: Padding(
-                padding: const EdgeInsets.only(right: 5),
+                padding: const EdgeInsets.only(right: 15),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -323,7 +327,7 @@ class _OiItem extends StatelessWidget {
                 ),
               )),
           Expanded(
-              flex: 1,
+              flex: 9,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -357,7 +361,7 @@ class _OiItem extends StatelessWidget {
                 ],
               )),
           Expanded(
-              flex: 1,
+              flex: 6,
               child:
                   Text('${((item.change24H ?? 0) * 100).toStringAsFixed(2)}%',
                       textAlign: TextAlign.end,

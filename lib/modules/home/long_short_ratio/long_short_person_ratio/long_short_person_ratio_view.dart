@@ -37,7 +37,7 @@ class _LongShortPersonRatioPageState extends State<LongShortPersonRatioPage> {
                     return _PickerBar(
                       title: 'Binance BTC ${S.of(context).s_longshort_person}',
                       onTap: () async {
-                        final result = await logic.openSelector();
+                        final result = await logic.openSelector(logic.interval1.value);
                         if (result == null) return;
                         logic.interval1.value = result;
                         logic.loadChartData01();
@@ -66,7 +66,7 @@ class _LongShortPersonRatioPageState extends State<LongShortPersonRatioPage> {
                     return _PickerBar(
                       title: 'Binance BTC ${S.of(context).s_longshort_person}',
                       onTap: () async {
-                        final result = await logic.openSelector();
+                        final result = await logic.openSelector(logic.interval2.value);
                         if (result == null) return;
                         logic.interval2.value = result;
                         logic.loadChartData02();
@@ -128,14 +128,25 @@ class _PickerBar extends StatelessWidget {
         InkWell(
           onTap: onTap,
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            height: 30,
             decoration: BoxDecoration(
               color: Styles.cMain.withOpacity(0.1),
               borderRadius: BorderRadius.circular(4),
             ),
-            child: Text(
-              interval,
-              style: Styles.tsBody_12(context),
+            child: Row(
+              children: [
+                Text(
+                  interval,
+                  style: Styles.tsSub_14m(context),
+                ),
+                const Gap(10),
+                Image.asset(
+                  Assets.commonIconArrowDown,
+                  width: 10,
+                  color: Theme.of(context).iconTheme.color,
+                ),
+              ],
             ),
           ),
         ),

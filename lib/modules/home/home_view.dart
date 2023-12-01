@@ -171,7 +171,7 @@ class _FearGreedInfo extends StatelessWidget {
         return Row(
           children: [
             Text(S.of(context).s_greed_index,
-                style: Styles.tsBody_12m(context)),
+                style: Styles.tsBody_14m(context)),
             const Gap(10),
             Text(
               switch (
@@ -184,7 +184,9 @@ class _FearGreedInfo extends StatelessWidget {
                 _ => '',
               },
               style: TextStyle(
-                  fontSize: 12,
+                decoration: TextDecoration.underline,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
                   color: switch (double.tryParse(
                           logic.homeInfoData.value?.cnnValue ?? '') ??
                       -1) {
@@ -196,7 +198,7 @@ class _FearGreedInfo extends StatelessWidget {
             Text(
               (double.tryParse(logic.homeInfoData.value?.cnnValue ?? '') ?? 0)
                   .toStringAsFixed(0),
-              style: Styles.tsBody_12m(context),
+              style: Styles.tsBody_14m(context),
             ),
             const Gap(7),
             RateWithArrow(
@@ -346,13 +348,16 @@ class _OiDistribution extends StatelessWidget {
                   children: [
                     Text(
                       S.of(context).s_buysel_longshort_ratio,
-                      style: Styles.tsBody_12m(context),
+                      style: Styles.tsBody_14m(context),
                     ),
                     const Gap(7),
                     Text(
                       logic.buySellLongShortRatio,
-                      style: Styles.tsMain_14m
-                          .copyWith(decoration: TextDecoration.underline),
+                      style: Styles.tsBody_14m(context).copyWith(
+                          decoration: TextDecoration.underline,
+                          color: double.parse(logic.buySellLongShortRatio) >= 1
+                              ? Styles.cUp(context)
+                              : Styles.cDown(context)),
                     ),
                   ],
                 ),
@@ -497,6 +502,7 @@ class _HotMarket extends StatelessWidget {
                           title: '24H',
                           value: AppUtil.getLargeFormatString(
                               logic.homeInfoData.value?.liquidation ?? '0'),
+                          style: Styles.tsBody_14m(context),
                           isLong: true),
                       _DataWithQuantity(
                           title: S.of(context).s_longs,
@@ -616,12 +622,8 @@ class _CheckDetailRow extends StatelessWidget {
           Expanded(
             child: Text(
               title,
-              style: Styles.tsBody_12m(context),
+              style: Styles.tsBody_14m(context),
             ),
-          ),
-          Text(
-            S.of(context).viewDetail,
-            style: Styles.tsSub_12m(context),
           ),
           const Icon(CupertinoIcons.chevron_right, size: 12)
         ],
@@ -817,12 +819,14 @@ class _DataWithQuantity extends StatelessWidget {
     required this.value,
     this.isLong,
     this.textColor,
+    this.style,
   });
 
   final String title;
   final String value;
   final bool? isLong;
   final Color? textColor;
+  final TextStyle? style;
 
   @override
   Widget build(BuildContext context) {
@@ -835,12 +839,13 @@ class _DataWithQuantity extends StatelessWidget {
               title,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: Styles.tsBody_12m(context).copyWith(color: textColor),
+              style: (style ?? Styles.tsBody_12m(context))
+                  .copyWith(color: textColor),
             ),
           ),
           Text(
             value,
-            style: Styles.tsBody_12m(context).copyWith(
+            style: (style ?? Styles.tsBody_12m(context)).copyWith(
                 color: switch (isLong) {
               true => Styles.cUp(context),
               false => Styles.cDown(context),
@@ -887,7 +892,7 @@ class _FirstLineItem extends StatelessWidget {
                   value,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: Styles.tsBody_12m(context),
+                  style: Styles.tsBody_14m(context),
                 ),
                 const Gap(5),
                 RateWithArrow(rate: (rate ?? 0) * 100),

@@ -4,14 +4,11 @@ import 'dart:math';
 import 'package:ank_app/constants/urls.dart';
 import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/export.dart';
-import 'package:ank_app/route/app_nav.dart';
-import 'package:ank_app/util/store.dart';
 import 'package:ank_app/widget/adaptive_dialog_action.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'setting_logic.dart';
 
@@ -31,7 +28,10 @@ class _SettingPageState extends State<SettingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: AppTitleBar(title: S.of(context).s_setting),
+      appBar: AppTitleBar(
+        title: S.of(context).s_setting,
+        hideBackBtn: true,
+      ),
       backgroundColor: Colors.transparent,
       body: Column(
         children: [

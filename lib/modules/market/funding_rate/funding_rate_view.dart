@@ -177,7 +177,7 @@ class FundingRatePage extends StatelessWidget {
                                     padding: EdgeInsets.zero,
                                     physics:
                                         const NeverScrollableScrollPhysics(),
-                                    itemExtent: 48,
+                                    itemExtent: state.isHide.value ? 48 : 58,
                                     itemCount: state.contentDataList.length,
                                     itemBuilder: (cnt, idx) {
                                       MarkerFundingRateEntity item =
@@ -223,7 +223,7 @@ class FundingRatePage extends StatelessWidget {
                                             padding: EdgeInsets.zero,
                                             physics:
                                                 const NeverScrollableScrollPhysics(),
-                                            itemExtent: 48,
+                                            itemExtent: state.isHide.value ? 48 : 58,
                                             itemCount:
                                                 state.contentDataList.length,
                                             itemBuilder: (cnt, idx) {
