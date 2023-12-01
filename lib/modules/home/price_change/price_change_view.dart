@@ -106,7 +106,7 @@ class PriceChangePage extends StatelessWidget {
                                               Expanded(
                                                 child: Text(
                                                   item.baseCoin ?? '',
-                                                  style: Styles.tsBody_12m(
+                                                  style: Styles.tsBody_14m(
                                                       context),
                                                 ),
                                               ),
@@ -252,13 +252,13 @@ class _DataItem extends StatelessWidget {
               child: index == 0
                   ? AnimationColorText(
                       text: textList[index],
-                      style: Styles.tsBody_12(context),
+                      style: Styles.tsBody_14m(context),
                       normalColor: colorList[index],
                       animationColor: animationColor,
                     )
                   : Text(
                       textList[index],
-                      style: Styles.tsBody_12(context)
+                      style: Styles.tsBody_14m(context)
                           .copyWith(color: colorList[index]),
                     ),
             ),

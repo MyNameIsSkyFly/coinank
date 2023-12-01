@@ -119,8 +119,8 @@ class LongShortRatioPage extends StatelessWidget {
                                     onTap: () => logic.chooseTime(true),
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(
-                                          horizontal: 5),
-                                      height: 24,
+                                          horizontal: 10),
+                                      height: 30,
                                       decoration: BoxDecoration(
                                         color: Theme.of(context)
                                             .inputDecorationTheme
@@ -132,7 +132,7 @@ class LongShortRatioPage extends StatelessWidget {
                                           Obx(() {
                                             return Text(
                                               state.longSortTime.value,
-                                              style: Styles.tsSub_12m(context),
+                                              style: Styles.tsSub_14m(context),
                                             );
                                           }),
                                           const Gap(10),
@@ -194,8 +194,8 @@ class LongShortRatioPage extends StatelessWidget {
                                     onTap: () => logic.chooseTime(false),
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(
-                                          horizontal: 5),
-                                      height: 24,
+                                          horizontal: 10),
+                                      height: 30,
                                       decoration: BoxDecoration(
                                         color: Theme.of(context)
                                             .inputDecorationTheme
@@ -207,7 +207,7 @@ class LongShortRatioPage extends StatelessWidget {
                                           Obx(() {
                                             return Text(
                                               state.webTime.value,
-                                              style: Styles.tsSub_12m(context),
+                                              style: Styles.tsSub_14m(context),
                                             );
                                           }),
                                           const Gap(10),
@@ -259,7 +259,7 @@ class _DataItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 50,
+      height: 44,
       margin: const EdgeInsets.symmetric(horizontal: 15),
       child: Row(
         children: [

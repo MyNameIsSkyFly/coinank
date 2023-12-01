@@ -272,7 +272,7 @@
   "oiDistribution": "Holdings Distribution",
   "languageName": "English",
   "welcomeBack": "Welcome back！",
-  "email": "e-mail",
+  "email": "Email",
   "hotData": "Trending Statistics",
   "btcData": "BTC Statistics",
   "otherData": "Other Statistics",
@@ -285,7 +285,7 @@
   "liqHeat": "Liquidation Leverage",
   "s_choose_time": "Select Time",
   "s_choose_coin": "Select Currency",
-  "s_hot": "热门",
-  "s_add_star": "添加自選",
-  "s_del_star": "取消自選"
+  "s_hot": "Hot",
+  "s_add_star": "Add to Watchlist",
+  "s_del_star": "Cancel from Watchlist"
 }

@@ -146,9 +146,9 @@ class _FundingRateSearchPageState extends State<FundingRateSearchPage> {
                 color: Styles.cMain,
               ),
               alignment: Alignment.center,
-              child: const Text(
-                '确定',
-                style: TextStyle(color: Colors.white, fontSize: 16),
+              child: Text(
+                S.current.s_ok,
+                style: const TextStyle(color: Colors.white, fontSize: 16),
               ),
             ),
           ),

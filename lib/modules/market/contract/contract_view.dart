@@ -1,7 +1,6 @@
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/modules/home/price_change/price_change_view.dart';
 import 'package:ank_app/res/export.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
@@ -111,7 +110,7 @@ class ContractPage extends StatelessWidget {
                       ),
                       // const Gap(30),
                       Container(
-                        width: 90,
+                        width: 100,
                         alignment: Alignment.centerRight,
                         child: SortWithArrow(
                           title: S.current.s_price_chg,
@@ -218,6 +217,8 @@ class _DataItem extends StatelessWidget {
                     fontSize: 12,
                     height: 1.4,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 )
               ],
             ),
@@ -245,7 +246,7 @@ class _DataItem extends StatelessWidget {
                 children: [
                   Text(
                     item.baseCoin ?? '',
-                    style: Styles.tsBody_12m(context),
+                    style: Styles.tsBody_14m(context),
                   ),
                   const Gap(5),
                   Row(
@@ -273,13 +274,13 @@ class _DataItem extends StatelessWidget {
               Expanded(
                 child: AnimationColorText(
                   text: '\$${item.price}',
-                  style: Styles.tsBody_14(context),
+                  style: Styles.tsBody_14m(context),
                   normalColor: normalColor,
                   animationColor: animationColor,
                   textAlign: TextAlign.right,
                 ),
               ),
-              const Gap(25),
+              const Gap(35),
               Container(
                 width: 65,
                 height: 27,

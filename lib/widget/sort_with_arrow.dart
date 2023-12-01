@@ -39,20 +39,20 @@ class SortWithArrow extends StatelessWidget {
           if (status == SortStatus.normal)
             Image.asset(
               Assets.commonIconSortN,
-              width: 6,
-              height: 8,
+              width: 9,
+              height: 12,
             ),
           if (status == SortStatus.up)
             Image.asset(
               Assets.commonIconSortUp,
-              width: 6,
-              height: 8,
+              width: 9,
+              height: 12,
             ),
           if (status == SortStatus.down)
             Image.asset(
               Assets.commonIconSortDown,
-              width: 6,
-              height: 8,
+              width: 9,
+              height: 12,
             ),
         ],
       ),

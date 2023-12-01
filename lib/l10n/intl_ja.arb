@@ -269,8 +269,8 @@
   "hotMarket": "市場トレンド",
   "oiDistribution": "保有分布",
   "languageName": "日本語",
-  "welcomeBack": "欢迎回来！",
-  "email": "电子邮箱",
+  "welcomeBack": "お帰りなさい！",
+  "email": "電子メール",
   "hotData": "注目データ",
   "btcData": "BTC 指標",
   "otherData": "その他",
@@ -283,7 +283,7 @@
   "liqHeat":"Liquidation Leverage",
   "s_choose_time": "時間を指定",
   "s_choose_coin": "通貨を選択",
-  "s_hot": "热门",
-  "s_add_star": "添加自選",
-  "s_del_star": "取消自選"
+  "s_hot": "人気",
+  "s_add_star": "ウォッチリストに追加",
+  "s_del_star": "ウォッチリストから削除"
 }

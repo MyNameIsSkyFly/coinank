@@ -191,7 +191,7 @@ class ContractMarketPage extends StatelessWidget {
                                         children: [
                                           Text(
                                             item.exchangeName ?? '',
-                                            style: Styles.tsBody_12m(context),
+                                            style: Styles.tsBody_14m(context),
                                           ),
                                           const Gap(5),
                                           Text(
@@ -208,7 +208,7 @@ class ContractMarketPage extends StatelessWidget {
                                         children: [
                                           AnimationColorText(
                                             text: '\$${item.lastPrice}',
-                                            style: Styles.tsBody_12(context),
+                                            style: Styles.tsBody_14m(context),
                                             normalColor: normalColor,
                                             animationColor: animationColor,
                                             textAlign: TextAlign.right,
@@ -228,7 +228,7 @@ class ContractMarketPage extends StatelessWidget {
                                           children: [
                                             Text(
                                               '\$${AppUtil.getLargeFormatString('${item.oiUSD ?? 0}')}',
-                                              style: Styles.tsBody_12(context),
+                                              style: Styles.tsBody_14m(context),
                                             ),
                                             const Gap(3),
                                             Text(

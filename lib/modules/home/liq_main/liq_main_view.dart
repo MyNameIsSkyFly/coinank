@@ -26,7 +26,7 @@ class LiqMainPage extends StatelessWidget {
                 controller: state.tabController,
                 tabAlignment: TabAlignment.center,
                 isScrollable: true,
-                labelPadding: const EdgeInsets.symmetric(horizontal: 20),
+                labelPadding: const EdgeInsets.symmetric(horizontal: 10),
                 labelColor: Theme.of(context).textTheme.bodyMedium?.color,
                 labelStyle: Styles.tsBody_16m(context),
                 unselectedLabelStyle: Styles.tsBody_16m(context),

@@ -55,8 +55,8 @@ class LiqHotMapPage extends StatelessWidget {
                       InkWell(
                         onTap: () => logic.chooseTime(),
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          height: 24,
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          height: 30,
                           decoration: BoxDecoration(
                             color: Theme.of(context)
                                 .inputDecorationTheme
@@ -68,7 +68,7 @@ class LiqHotMapPage extends StatelessWidget {
                               Obx(() {
                                 return Text(
                                   state.interval.value,
-                                  style: Styles.tsSub_12m(context),
+                                  style: Styles.tsSub_14m(context),
                                 );
                               }),
                               const Gap(10),
@@ -85,18 +85,18 @@ class LiqHotMapPage extends StatelessWidget {
                       InkWell(
                         onTap: () => logic.onRefresh(),
                         child: Container(
-                          width: 24,
-                          height: 24,
+                          width: 30,
+                          height: 30,
                           decoration: BoxDecoration(
                             color: Theme.of(context)
                                 .inputDecorationTheme
                                 .fillColor,
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(15),
                           ),
                           child: Icon(
-                            Icons.refresh_sharp,
+                            Icons.refresh_rounded,
                             color: Theme.of(context).iconTheme.color,
-                            size: 14,
+                            size: 20,
                           ),
                         ),
                       ),
