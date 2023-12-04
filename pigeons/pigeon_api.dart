@@ -22,4 +22,6 @@ abstract class MessageHostApi {
 
 @FlutterApi()
 abstract class MessageFlutterApi {
+  void toKLine(
+      String exchangeName, String symbol, String baseCoin, String? productType);
 }
