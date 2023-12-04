@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/export.dart';
@@ -23,13 +24,10 @@ class Application {
   }
 
   Future initConfig() async {
-    for (int i = 0; i < 10; i++) {
-      final success = await getConfig();
-      if (success == false) {
-        await Future.delayed(const Duration(seconds: 3));
-        continue;
-      }
-      break;
+    if (!StoreLogic.to.isFirst || Platform.isAndroid) {
+      await getConfig();
+    } else {
+      StoreLogic.to.saveIsFirst(false);
     }
   }
 
@@ -58,5 +56,4 @@ class FlutterApiManager extends MessageFlutterApi {
       String? productType) {
     AppUtil.toKLine(exchangeName, symbol, baseCoin, productType);
   }
-
 }
