@@ -162,7 +162,8 @@ class StoreLogic extends GetxController {
   }
 
   String get chartUrl {
-    return _SpUtil()._getString(_SpKeys.chartUrl, defaultValue: 'assets/files/t18.html');
+    return _SpUtil()
+        ._getString(_SpKeys.chartUrl, defaultValue: 'assets/files/t18.html');
   }
 
   Future<bool> saveUniappDomain(String uniappDomain) {
@@ -219,6 +220,15 @@ class StoreLogic extends GetxController {
     return _SpUtil()._getString(_SpKeys.depthOrderDomain,
         defaultValue: 'cdn01.coinsoto.com');
   }
+
+  //isFirst
+  Future<bool> saveIsFirst(bool isFirst) {
+    return _SpUtil()._saveBool(_SpKeys.isFirst, isFirst);
+  }
+
+  bool get isFirst {
+    return _SpUtil()._getBool(_SpKeys.isFirst, defaultValue: true);
+  }
 }
 
 class _SpKeys {
@@ -236,12 +246,6 @@ class _SpKeys {
   static const loginUserInfo = 'loginUserInfo';
   static const lastSendCodeTime = 'lastSendCodeTime';
 
-//"ank_charturl":"assets/files/t18.html",
-//     "ank_uniappDomain": "coinsoto-h5.s3.ap-northeast-1.amazonaws.com",
-//     "ank_domain": "coinsoto.com",
-//     "ank_websocketUrl": "wss://coinsoto.com/wsKline/wsKline",
-//     "ank_apiPrefix": "https://coinsoto.com",
-//     "ank_h5Prefix": "https://coinsoto.com"
   static const deviceId = 'deviceId';
   static const chartUrl = 'ank_charturl';
   static const uniappDomain = 'ank_uniappDomain';
@@ -250,6 +254,7 @@ class _SpKeys {
   static const apiPrefix = 'ank_apiPrefix';
   static const h5Prefix = 'ank_h5Prefix';
   static const depthOrderDomain = 'ank_depthOrderDomain';
+  static const isFirst = 'isFirst';
 }
 
 class _SpUtil {
