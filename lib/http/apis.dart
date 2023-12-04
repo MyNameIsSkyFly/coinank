@@ -14,6 +14,7 @@ import 'package:ank_app/http/base_interceptor.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
+import '../constants/urls.dart';
 import '../entity/futures_big_data_entity.dart';
 import '../entity/head_statistics_entity.dart';
 import '../entity/home_fund_rate_entity.dart';
@@ -29,7 +30,7 @@ abstract class Apis {
       BaseInterceptor(),
     ])
     ..options.headers.addAll({'client': Platform.isAndroid ? 'android' : 'ios'})
-    ..options.baseUrl = 'https://coinsoto.com'
+    ..options.baseUrl = Urls.apiPrefix
     ..options.connectTimeout = const Duration(seconds: 15)
     ..options.receiveTimeout = const Duration(seconds: 15)
     ..options.sendTimeout = const Duration(seconds: 15);
