@@ -162,7 +162,7 @@ class StoreLogic extends GetxController {
   }
 
   String get chartUrl {
-    return _SpUtil()._getString(_SpKeys.chartUrl, defaultValue: Urls.chartUrl);
+    return _SpUtil()._getString(_SpKeys.chartUrl, defaultValue: 'assets/files/t18.html');
   }
 
   Future<bool> saveUniappDomain(String uniappDomain) {

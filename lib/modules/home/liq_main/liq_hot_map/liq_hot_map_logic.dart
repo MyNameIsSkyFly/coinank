@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -72,7 +73,9 @@ class LiqHotMapLogic extends GetxController {
     final data = await Apis().getLiqHeatMapData();
     state.symbolList.value = data ?? [];
     state.symbol.value = data?[0] ?? '';
-    _updateChart();
+    Timer(const Duration(seconds: 1), () {
+      _updateChart();
+    });
   }
 
   _updateChart() async {
@@ -82,7 +85,7 @@ class LiqHotMapLogic extends GetxController {
     };
     final options = {
       'theme': StoreLogic.to.isDarkMode ??
-          Get.mediaQuery.platformBrightness == Brightness.dark
+              Get.mediaQuery.platformBrightness == Brightness.dark
           ? 'night'
           : 'light',
       'locale': AppUtil.shortLanguageName,
@@ -92,11 +95,9 @@ class LiqHotMapLogic extends GetxController {
     };
     var platformString = Platform.isAndroid ? 'android' : 'ios';
     var jsSource = '''
-setChartData(${jsonEncode(
-        dataParams)}, "$platformString", "liqHeatMap", ${jsonEncode(options)});    
+setChartData(${jsonEncode(dataParams)}, "$platformString", "liqHeatMap", ${jsonEncode(options)});    
     ''';
-    await state.webCtrl
-        ?.evaluateJavascript(source: jsSource);
+    await state.webCtrl?.evaluateJavascript(source: jsSource);
     state.isLoading.value = false;
   }
 
