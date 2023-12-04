@@ -14,7 +14,7 @@ class MarketState {
     tabPage = [
       keepAlivePage(const ContractPage()),
       keepAlivePage(const ContractMarketPage()),
-      keepAlivePage(CommonWebView(url: Urls.urlLiquidation)),
+      keepAlivePage(CommonWebView(url: Urls.urlLiquidation,showLoading: true)),
       keepAlivePage(const FundingRatePage()),
     ];
   }
