@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/util/jpush_util.dart';
@@ -35,7 +37,7 @@ class Application {
     final result = await Dio()
         .get('https://coinsoho.s3.us-east-2.amazonaws.com/app/config.txt');
     if (result.statusCode != 200) return false;
-    final data = result.data['data'] as Map<String, dynamic>;
+    final data = (jsonDecode(result.data) as Map<String, dynamic>)['data'];
 
     await Future.wait([
       StoreLogic.to.saveChartUrl(data['ank_charturl']),
