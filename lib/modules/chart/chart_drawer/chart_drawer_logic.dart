@@ -19,6 +19,7 @@ class ChartDrawerLogic extends GetxController {
   }
 
   Future<void> onRefresh() async {
+    if (Get.find<MainLogic>().state.networkConnected == false) return;
     final result =
         await Apis().getChartLeftData(locale: AppUtil.shortLanguageName);
     if (result != null) {

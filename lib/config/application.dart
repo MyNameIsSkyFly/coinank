@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/export.dart';
@@ -24,7 +23,7 @@ class Application {
   }
 
   Future initConfig() async {
-    if (!StoreLogic.to.isFirst || Platform.isAndroid) {
+    if (!StoreLogic.to.isFirst) {
       await getConfig();
     } else {
       StoreLogic.to.saveIsFirst(false);
@@ -33,7 +32,10 @@ class Application {
 
   Future<bool> getConfig() async {
     final result = await Dio()
-        .get('https://coinsoho.s3.us-east-2.amazonaws.com/app/config.txt');
+        .get('https://coinsoho.s3.us-east-2.amazonaws.com/app/config.txt')
+        .catchError((e) {
+      return Response(requestOptions: RequestOptions());
+    });
     if (result.statusCode != 200) return false;
     final data = jsonDecode(result.data)['data'];
 

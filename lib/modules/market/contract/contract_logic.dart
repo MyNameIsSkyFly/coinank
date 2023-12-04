@@ -52,7 +52,7 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
         state.priceChangSort = SortStatus.normal;
         sortBy = 'openInterestCh24';
         sortType = state.oiChangeSort == SortStatus.down ? 'descend' : 'ascend';
-        if(state.oiChangeSort == SortStatus.normal) {
+        if (state.oiChangeSort == SortStatus.normal) {
           sortBy = 'openInterest';
           sortType = 'descend';
           state.oiSort = SortStatus.down;
@@ -61,14 +61,14 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
         state.priceSort = state.priceSort == SortStatus.normal
             ? SortStatus.down
             : state.priceSort == SortStatus.down
-            ? SortStatus.up
-            : SortStatus.normal;
+                ? SortStatus.up
+                : SortStatus.normal;
         state.oiSort = SortStatus.normal;
         state.oiChangeSort = SortStatus.normal;
         state.priceChangSort = SortStatus.normal;
         sortBy = 'price';
         sortType = state.priceSort == SortStatus.down ? 'descend' : 'ascend';
-        if(state.priceSort == SortStatus.normal) {
+        if (state.priceSort == SortStatus.normal) {
           sortBy = 'openInterest';
           sortType = 'descend';
           state.oiSort = SortStatus.down;
@@ -77,15 +77,15 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
         state.priceChangSort = state.priceChangSort == SortStatus.normal
             ? SortStatus.down
             : state.priceChangSort == SortStatus.down
-            ? SortStatus.up
-            : SortStatus.normal;
+                ? SortStatus.up
+                : SortStatus.normal;
         state.oiSort = SortStatus.normal;
         state.oiChangeSort = SortStatus.normal;
         state.priceSort = SortStatus.normal;
         sortBy = 'priceChangeH24';
         sortType =
             state.priceChangSort == SortStatus.down ? 'descend' : 'ascend';
-        if(state.priceChangSort == SortStatus.normal) {
+        if (state.priceChangSort == SortStatus.normal) {
           sortBy = 'openInterest';
           sortType = 'descend';
           state.oiSort = SortStatus.down;
@@ -121,6 +121,7 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
   }
 
   Future<void> onRefresh({bool showLoading = false}) async {
+    if (Get.find<MainLogic>().state.networkConnected == false) return;
     state.oldData = List.from(state.originalData ?? []);
     if (showLoading) {
       Loading.show();

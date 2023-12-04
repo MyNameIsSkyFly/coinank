@@ -1,6 +1,14 @@
+import 'dart:async';
+
 import 'package:ank_app/entity/event/logged_event.dart';
+import 'package:ank_app/modules/chart/chart_drawer/chart_drawer_logic.dart';
+import 'package:ank_app/modules/chart/chart_logic.dart';
+import 'package:ank_app/modules/home/home_logic.dart';
+import 'package:ank_app/modules/market/contract/contract_logic.dart';
+import 'package:ank_app/modules/market/market_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/util/jpush_util.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:get/get.dart';
 
@@ -9,13 +17,38 @@ import 'main_state.dart';
 
 class MainLogic extends GetxController {
   final MainState state = MainState();
+  StreamSubscription? connectivitySubscription;
 
   @override
   void onReady() {
     CommonWebView.setCookieValue();
-    tryLogin();
     AppUtil.checkUpdate(Get.context!);
+    handleNetwork();
     super.onReady();
+  }
+
+  Future<void> handleNetwork() async {
+    var connectivity = Connectivity();
+    final result = await connectivity.checkConnectivity();
+    state.networkConnected = result != ConnectivityResult.none;
+    if (state.networkConnected == true) {
+      tryLogin();
+      return;
+    }
+    AppUtil.showToast(S.current.networkConnectFailed);
+    connectivitySubscription =
+        connectivity.onConnectivityChanged.listen((ConnectivityResult result) {
+      if (state.networkConnected == true) return;
+      state.networkConnected = result != ConnectivityResult.none;
+      if (result != ConnectivityResult.none) {
+        Get.find<HomeLogic>().onRefresh();
+        Get.find<ContractLogic>().onRefresh();
+        state.webViewController?.reload();
+        tryLogin();
+        Get.find<ChartLogic>().onRefresh();
+        Get.find<ChartDrawerLogic>().onRefresh();
+      }
+    });
   }
 
   void selectTab(int currentIndex) {
@@ -24,12 +57,12 @@ class MainLogic extends GetxController {
     }
   }
 
-  void tryLogin() {
+  Future<void> tryLogin() async {
     final userInfo = StoreLogic.to.loginUserInfo;
     final pwd = AppUtil.decodeBase64(StoreLogic.to.loginPassword);
     final username = AppUtil.decodeBase64(StoreLogic.to.loginUsername);
     if (userInfo != null && pwd.isNotEmpty) {
-      Apis().login(username, pwd, StoreLogic.to.deviceId).then((value) {
+      await Apis().login(username, pwd, StoreLogic.to.deviceId).then((value) {
         StoreLogic.to.saveLoginUserInfo(value);
         AppConst.eventBus.fire(LoginStatusChangeEvent(isLogin: true));
       });

@@ -53,7 +53,7 @@ class CommonWebView extends StatefulWidget {
     ]);
     cookieList.add(('i18n_redirected', AppUtil.shortLanguageName));
 
-    await _syncCookie(domain: '.${Urls.strDomain}', cookies: cookieList);
+    await _syncCookie(domain: Urls.h5Prefix, cookies: cookieList);
     //实时挂单数据url cookie
     await _syncCookie(domain: Urls.depthOrderDomain, cookies: cookieList);
     await _syncCookie(domain: Urls.uniappDomain, cookies: cookieList);
