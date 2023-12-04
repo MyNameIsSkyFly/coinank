@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:ank_app/entity/event/theme_event.dart';
+import 'package:ank_app/entity/event/web_js_event.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fgbg/flutter_fgbg.dart';
@@ -83,9 +84,12 @@ class _CommonWebViewState extends State<CommonWebView>
 
   StreamSubscription? _themeChangeSubscription;
   StreamSubscription? _loginStatusSubscription;
+  StreamSubscription? _evJsSubscription;
+
   DateTime? lastLeftTime;
   StreamSubscription<FGBGType>? _fgbgSubscription;
   int _progress = 0;
+  String _evJs = '';
 
   @override
   void initState() {
@@ -101,6 +105,10 @@ class _CommonWebViewState extends State<CommonWebView>
       await webCtrl?.clearCache();
       await CommonWebView.setCookieValue();
       reload();
+    });
+    _evJsSubscription =
+        AppConst.eventBus.on<WebJSEvent>().listen((event) async {
+      _evJs = event.evJS;
     });
     startWebRefreshCounter();
     super.initState();
@@ -143,6 +151,7 @@ class _CommonWebViewState extends State<CommonWebView>
     _themeChangeSubscription?.cancel();
     _loginStatusSubscription?.cancel();
     _fgbgSubscription?.cancel();
+    _evJsSubscription?.cancel();
     super.dispose();
   }
 
@@ -195,6 +204,11 @@ class _CommonWebViewState extends State<CommonWebView>
                     widget.urlGetter?.call().contains('proChart') == true) {
                   controller.evaluateJavascript(
                       source: "changeSymbolInfo('BTC')");
+                  if (_evJs.isNotEmpty) {
+                    controller
+                        .evaluateJavascript(source: _evJs)
+                        .then((value) => _evJs = '');
+                  }
                 }
               },
               onConsoleMessage: (controller, consoleMessage) {

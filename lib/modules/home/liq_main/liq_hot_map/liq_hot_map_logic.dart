@@ -73,9 +73,8 @@ class LiqHotMapLogic extends GetxController {
     final data = await Apis().getLiqHeatMapData();
     state.symbolList.value = data ?? [];
     state.symbol.value = data?[0] ?? '';
-    Timer(const Duration(seconds: 1), () {
-      _updateChart();
-    });
+    await Future.delayed(const Duration(seconds: 1));
+    _updateChart();
   }
 
   _updateChart() async {
