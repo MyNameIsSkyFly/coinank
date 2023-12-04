@@ -5,7 +5,6 @@
 <html lang="zh-CN" style="height: 100%">
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <style type="text/css">
         .tooltip-box {
@@ -199,7 +198,6 @@
                     },
                     formatter: (params, ticket, callback) => {
 
-                        console.log(params);
 
                         let dataIndex = params[0].dataIndex;
 
@@ -292,30 +290,6 @@
                     right: 8
                 },
                 yAxis: [
-                    // {
-                    //     type: 'value',
-                    //     min: 0,
-                    //     max: 1,
-                    //     interval: 0.5,
-                    //     // z:10,
-                    //     axisLabel: {
-                    //         inside:inside,
-                    //     }
-                    // },
-                    // {
-                    //     type: 'value',
-                    //     min: 0,
-                    //     max: 100,
-                    //     interval: 25,
-                    //     // z:10,
-                    //     axisLabel: {
-                    //         formatter: "{value} %",
-                    //         inside:inside,
-                    //     },
-                    //     splitLine:{
-                    //       // show:false
-                    //     }
-                    // },
                     {
                         type: 'value',
                         show: true,
@@ -347,10 +321,7 @@
                     // text: "long vs short",
                     // left: "center"
                 },
-                showLoading: {
-                    text: '',
-                    maskColor: '#333',
-                },
+                      
                 tooltip: {
                     confine: true,
                     trigger: 'axis',
@@ -510,7 +481,6 @@
                                 if (params.axisDimension == "x") {
                                     return moment(parseInt(params.value)).format("YYYY-MM-DD")
                                 } else if (params.axisDimension == "y") {
-                                    console.log(params);
                                     return params.value.toFixed(2);
                                 }
                             }
@@ -539,11 +509,11 @@
 
         }
 
-        const buildLiqMapChart = (data, dataOptinos = {}) => {
+        const buildLiqMapChart = (data, dataOptions = {}) => {
 
             let feeColor;
             let rewardColor;
-            let { theme,locale } = dataOptinos;
+            let { theme,locale,long,short,low,mid,high } = dataOptions;
 
             if (theme == 'dark') {
                 feeColor = "#ffb3ad";
@@ -624,7 +594,7 @@
                     }
                 },
                 {
-                    name: dataOptinos.long || "Long",
+                    name: dataOptions.long || "Long",
                     type: 'line',
                     large: true,
                     lineStyle: {
@@ -644,7 +614,7 @@
                     data: longTotals
                 },
                 {
-                    name: dataOptinos.short || "Short",
+                    name: dataOptions.short || "Short",
                     type: 'line',
                     large: true,
                     showSymbol: false,
@@ -665,7 +635,7 @@
                 },
 
                 {
-                    name: dataOptinos.low || "Low",
+                    name: dataOptions.low || "Low",
                     type: 'bar',
                     barGap: 0,
                     large: true,
@@ -699,7 +669,7 @@
                     data: x40
                 },
                 {
-                    name: dataOptinos.mid || "Mid",
+                    name: dataOptions.mid || "Mid",
                     type: 'bar',
                     large: true,
                     largeThreshold: 1000,
@@ -750,7 +720,7 @@
                     data: x90
                 },
                 {
-                    name: dataOptinos.high || "High",
+                    name: dataOptions.high || "High",
                     type: 'bar',
                     itemStyle: {
                         color: "rgb(253,134,8)"
@@ -761,7 +731,7 @@
                 }
 
             ]
-            let legendData = [dataOptinos.low, dataOptinos.mid, dataOptinos.high];
+            let legendData = [dataOptions.low, dataOptions.mid, dataOptions.high];
 
 
             let chartData = {
@@ -780,7 +750,7 @@
                         // z:10,
                         //min:0.01,
                         //max:1000000,
-                        // splitLine:false,
+                        splitLine:false,
                         axisLabel: {
                             formatter: (value) => {
                                 return formatAmount(Math.abs(value), locale)
@@ -887,7 +857,7 @@
         }
 
 
-        const buildHeatMapChart = async (data, dataOptinos = {}) => {
+        const buildHeatMapChart = async (data, dataOptions = {}) => {
 
             let { exchangeName, symbol, interval } = data;
 
@@ -953,19 +923,18 @@
                 kbarArray.push(item);
             }
 
-            let chartOptions=  buildHeatMapChartData(liqHeatMapResp.data, kbarArray, dataOptinos)
-            console.log("chart options", chartOptions)
+            let chartOptions=  buildHeatMapChartData(liqHeatMapResp.data, kbarArray, dataOptions)
             return chartOptions;
 
         }
 
 
-        const buildHeatMapChartData = (data, kbarArray, dataOptinos={}) =>{
+        const buildHeatMapChartData = (data, kbarArray, dataOptions={}) =>{
 
             let feeColor;
             let rewardColor;
 
-            let {theme, locale} = dataOptinos;
+            let {theme, locale} = dataOptions;
             if (theme == 'dark') {
                 feeColor = "#ffb3ad";
                 rewardColor = "#bfd9c3";
@@ -975,15 +944,14 @@
             }
             let liqHeatMap = data.liqHeatMap;
             // 做圖
-            let {lcaole} = dataOptinos;
             const xArray = liqHeatMap.chartTimeArray;
             const timeArray = xArray.map(ts => moment(parseInt(ts)).format("MM-DD HH:mm"));
             const yArray = liqHeatMap.priceArray;
             const liqData = liqHeatMap.data.map(item => [Number(item[0]), Number(item[1]), Number(item[2])]);
             const maxValue = liqHeatMap.maxLiqValue;
             const lan = locale;
-            const priceStr = dataOptinos.price||"Price";
-            const liqHeatStr = dataOptinos.liqHeat||"Liq Heat"
+            const priceStr = dataOptions.price||"Price";
+            const liqHeatStr = dataOptions.liqHeat||"Liq Heat"
             const tickSize = yArray[1] - yArray[0];
             const minLiqPrice = yArray[0];
             const maxLiqPrice = yArray[yArray.length - 1];
@@ -1114,7 +1082,7 @@
                     {
                         type: 'heatmap',
 
-                        name: dataOptinos.liqHeapMap,
+                        name: dataOptions.liqHeapMap||"Liq Heat Map",
                         data: liqData,
                         label: {
                             show: false
@@ -1182,12 +1150,12 @@
             // dom.append("<br/>");
             let option 
             if("liqHeatMap" === dataType){
+                myChart.showLoading("default", {color:"#4363F2"});
                 option = await funcTarget(dataParams, dataOptions);
             }else {
                 option = funcTarget(data, dataOptions);
             }
 
-            console.log("option", option);
 
             // dom.append("func6");
             // dom.append("<br/>");
@@ -1195,6 +1163,7 @@
             if (option && typeof option === 'object') {
                 myChart.setOption(option, true);
             }
+            myChart.hideLoading();
 
             // dom.append("func7");
             // dom.append("<br/>");
@@ -1204,6 +1173,16 @@
 
 
         // setChartData(sourceData, "android", "liqHeatMap", {
+        //     theme: "light",
+        //     exchangeName: "exchangeName",
+        //     long: "Long",
+        //     short: "Short",
+        //     mid: "Mid",
+        //     low: "Low",
+        //     high: "High"
+        // })
+
+        // setChartData(sourceData, "android", "liqMap", {
         //     theme: "light",
         //     exchangeName: "exchangeName",
         //     long: "Long",
