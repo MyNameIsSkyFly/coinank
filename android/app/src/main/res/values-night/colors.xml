@@ -6,33 +6,17 @@
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#477dd7</color>
     <color name="white">#fff</color>
-    <color name="black3B">#3E424B</color>
-    <color name="gray8B">#878d9b</color>
     <color name="redEB">#e4455a</color>
     <color name="green4C">#37bc88</color>
-    <color name="purple">#B230ED</color>
-    <color name="yellow">#EFBB40</color>
-    <color name="blue_ma">#ffffffff</color>
     <color name="blackgray">#999999</color>
-    <color name="text_color_gray">#999999</color>
-    <color name="refresh_text_color_gray">#999999</color>
-    <color name="btn_color">#323546</color>
 
     <color name="blue_color">#1B9AF7</color>
 
     <color name="floatview_color">#Af000000</color>
     <color name="lv_second_color">#848e9c</color>
-    <color name="black_white">#ffffff</color>
     <color name="gray_dashline">#40878d9b</color>
-    <color name="highlight_view_bg">#29313c</color>
     <color name="transparent_color">#00ffffff</color>
-    <color name="symbol_bg">#2a2c41</color>
 
-    <color name="highlight_line_color">#65707d</color>
-
-    <color name="oi_progressbar_bg_color">#222531</color>
-    <color name="oi_progressbar_color">#323646</color>
     <color name="lv_line">#20878d9b</color>
-    <color name="sub_chart_single_line_color">#2196f3</color>
 
 </resources>

@@ -32,14 +32,15 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import com.ank.ankapp.MainActivity;
 import com.ank.ankapp.R;
+import com.ank.ankapp.original.App;
 import com.ank.ankapp.original.Config;
-import com.ank.ankapp.original.activity.KLineActivity;
 import com.ank.ankapp.original.activity.SelectFloatViewSymbolActivity;
 import com.ank.ankapp.original.bean.SymbolRealPriceVo;
 import com.ank.ankapp.original.bean.SymbolVo;
@@ -47,6 +48,7 @@ import com.ank.ankapp.original.language.LanguageUtil;
 import com.ank.ankapp.original.language.PrefUtils;
 import com.ank.ankapp.original.utils.MLog;
 import com.ank.ankapp.original.utils.WebSocketUtils;
+import com.ank.ankapp.pigeon_plugin.Messages;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -448,26 +450,27 @@ public class FloatViewService extends Service implements View.OnClickListener {
             ) {
                 MLog.d("doclick item:" + i);
                 Intent firstIntent = new Intent(this, MainActivity.class);
-                firstIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                firstIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 firstIntent.setAction(Intent.ACTION_MAIN);
                 firstIntent.addCategory(Intent.CATEGORY_LAUNCHER);
                 firstIntent.putExtra(Config.CONF_HIDE_WELCOME_PAGE, true);//此种方式，隐藏启动页
 
-                Intent kIntent = new Intent(this, KLineActivity.class);
-                kIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                kIntent.putExtra(Config.TYPE_EXCHANGENAME, symbolList.get(i).getExchangeName());
-                kIntent.putExtra(Config.TYPE_SYMBOL, symbolList.get(i).getSymbol());
-                kIntent.putExtra(Config.TYPE_TITLE, symbolList.get(i).getSymbol());
-                kIntent.putExtra(Config.TYPE_SWAP, symbolList.get(i).getDeliveryType());
-                kIntent.putExtra(Config.TYPE_BASECOIN, symbolList.get(i).getBaseCoin());
+//                Intent kIntent = new Intent(this, KLineActivity.class);
+//                kIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                kIntent.putExtra(Config.TYPE_EXCHANGENAME, symbolList.get(i).getExchangeName());
+//                kIntent.putExtra(Config.TYPE_SYMBOL, symbolList.get(i).getSymbol());
+//                kIntent.putExtra(Config.TYPE_TITLE, symbolList.get(i).getSymbol());
+//                kIntent.putExtra(Config.TYPE_SWAP, symbolList.get(i).getDeliveryType());
+//                kIntent.putExtra(Config.TYPE_BASECOIN, symbolList.get(i).getBaseCoin());
                 //String str = LanguageUtil.getSwapString(getApplicationContext(), symbol.getDeliveryType());
 
-                kIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                kIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 //getApplicationContext().startActivity(kIntent);//此种方式启动在某些系统版本上面会延时5秒，所以弃用
 
                 //Global.notifyBaseActivityMsg(getApplicationContext(), 0);
 
-                Intent[] intents = new Intent[]{firstIntent, kIntent};
+//                Intent[] intents = new Intent[]{firstIntent, kIntent};
+                Intent[] intents = new Intent[]{firstIntent};
 
                 PendingIntent pi = null;
 
@@ -481,6 +484,18 @@ public class FloatViewService extends Service implements View.OnClickListener {
 
                 try {
                     pi.send();//后台服务可立即启动目标activity,部分手机还是会延时5秒
+                    SymbolVo symbolVo = symbolList.get(i);
+                    App.getApplication().messageFlutterApi.toKLine(symbolVo.getExchangeName(), symbolVo.getSymbol(), symbolVo.getBaseCoin(), symbolVo.getProductType(), new Messages.Result<Void>() {
+                        @Override
+                        public void success(@NonNull Void result) {
+
+                        }
+
+                        @Override
+                        public void error(@NonNull Throwable error) {
+
+                        }
+                    });
                 } catch (PendingIntent.CanceledException e) {
                     e.printStackTrace();
                 }
@@ -570,7 +585,6 @@ public class FloatViewService extends Service implements View.OnClickListener {
         if (Config.getMMKV(this).getBoolean(Config.CONF_STOP_STATUS, false)) {
             MLog.d("*********service stop deinit*******");
             deinit();
-            System.exit(0);//退出进程
         }
     }
 

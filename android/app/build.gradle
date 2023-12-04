@@ -98,8 +98,8 @@ dependencies {
     implementation 'com.github.Justson:dispatch-queue:v1.0.5'
 
 
-    implementation project(':agentweb-core')
-    implementation project(':MPChartLib')
+//    implementation project(':agentweb-core')
+//    implementation project(':MPChartLib')
     implementation project(':library-hslistview')
 
     implementation 'com.squareup.okhttp3:okhttp:3.12.13'

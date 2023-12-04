@@ -5,12 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.ank.ankapp.original.activity.MulKLineActivity;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class Global {
 
-    public static MulKLineActivity mulKLineActivity;
     public static Bundle createBundle(String itemid, String className)
     {
         Bundle bundle = new Bundle();

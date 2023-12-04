@@ -130,7 +130,7 @@ public class SetFloatViewActivity extends BaseActivity implements View.OnClickLi
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(this)) {
-                Toast.makeText(this, R.string.s_auth_none, Toast.LENGTH_SHORT);
+                Toast.makeText(this, R.string.s_auth_none, Toast.LENGTH_SHORT).show();
                 startActivityForResult(new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                         Uri.parse("package:" + getPackageName())), 1);
                 return;

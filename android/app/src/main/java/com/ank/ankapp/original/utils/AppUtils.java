@@ -15,7 +15,7 @@ import com.ank.ankapp.original.Config;
 import com.ank.ankapp.original.bean.JsonVo;
 import com.ank.ankapp.original.bean.UserInfoVo;
 import com.ank.ankapp.original.language.LanguageUtil;
-import com.github.mikephil.charting.formatter.LargeValueFormatter;
+//import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -234,39 +234,39 @@ public class AppUtils {
         return jsonVo;
     }
 
-    public static String getLargeFormatString(float val)
-    {
-        LargeValueFormatter largeValueFormatter = new LargeValueFormatter();
-        return largeValueFormatter.getFormattedValue(val, null);
-    }
-
-    public static String getLargeFormatString(String val)
-    {
-        LargeValueFormatter largeValueFormatter = new LargeValueFormatter();
-        return largeValueFormatter.getFormattedValue(Float.valueOf(val), null);
-    }
-
-    public static String getLargeFormatString(float val, String local)
-    {
-        if (local.equalsIgnoreCase("zh"))
-        {
-            return FormatterDoubleVal.amountConversion(Double.valueOf(val));
-        }
-
-        LargeValueFormatter largeValueFormatter = new LargeValueFormatter();
-        return largeValueFormatter.getFormattedValue(val, null);
-    }
-
-    public static String getLargeFormatString(String val, String local)
-    {
-        if (local.equalsIgnoreCase("zh"))
-        {
-            return FormatterDoubleVal.amountConversion(Double.valueOf(val));
-        }
-
-        LargeValueFormatter largeValueFormatter = new LargeValueFormatter();
-        return largeValueFormatter.getFormattedValue(Float.valueOf(val), null);
-    }
+//    public static String getLargeFormatString(float val)
+//    {
+//        LargeValueFormatter largeValueFormatter = new LargeValueFormatter();
+//        return largeValueFormatter.getFormattedValue(val, null);
+//    }
+//
+//    public static String getLargeFormatString(String val)
+//    {
+//        LargeValueFormatter largeValueFormatter = new LargeValueFormatter();
+//        return largeValueFormatter.getFormattedValue(Float.valueOf(val), null);
+//    }
+//
+//    public static String getLargeFormatString(float val, String local)
+//    {
+//        if (local.equalsIgnoreCase("zh"))
+//        {
+//            return FormatterDoubleVal.amountConversion(Double.valueOf(val));
+//        }
+//
+//        LargeValueFormatter largeValueFormatter = new LargeValueFormatter();
+//        return largeValueFormatter.getFormattedValue(val, null);
+//    }
+//
+//    public static String getLargeFormatString(String val, String local)
+//    {
+//        if (local.equalsIgnoreCase("zh"))
+//        {
+//            return FormatterDoubleVal.amountConversion(Double.valueOf(val));
+//        }
+//
+//        LargeValueFormatter largeValueFormatter = new LargeValueFormatter();
+//        return largeValueFormatter.getFormattedValue(Float.valueOf(val), null);
+//    }
 
     public static void setCookieValue(Context context) {
         ArrayList<String> cookieList = new ArrayList<>();
@@ -280,7 +280,7 @@ public class AppUtils {
         if (AppUtils.getLoginInfo(context) != null) {
             cookieList.add("COINSOHO_KEY=" + AppUtils.getToken(context));
         } else {
-            cookieList.add("COINSOHO_KEY=" + "");
+            cookieList.add("COINSOHO_KEY=");
         }
 
         if (Config.getMMKV(context).getBoolean(Config.IS_GREEN_UP, true)) {

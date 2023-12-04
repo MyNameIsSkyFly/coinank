@@ -16,7 +16,7 @@ pluginManagement {
 }
 
 include ":app"
-include 'agentweb-core'
-include 'MPChartLib'
+//include 'agentweb-core'
+//include 'MPChartLib'
 include 'library-hslistview'
 apply from: "${settings.ext.flutterSdkPath}/packages/flutter_tools/gradle/app_plugin_loader.gradle"
