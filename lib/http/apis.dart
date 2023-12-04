@@ -13,7 +13,6 @@ import 'package:ank_app/entity/user_info_entity.dart';
 import 'package:ank_app/http/base_interceptor.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:talker_dio_logger/talker_dio_logger.dart';
 
 import '../entity/futures_big_data_entity.dart';
 import '../entity/head_statistics_entity.dart';

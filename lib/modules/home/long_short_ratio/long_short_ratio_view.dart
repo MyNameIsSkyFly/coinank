@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
+import '../../../constants/urls.dart';
 import 'long_short_ratio_logic.dart';
 
 class LongShortRatioPage extends StatelessWidget {
@@ -97,8 +98,7 @@ class LongShortRatioPage extends StatelessWidget {
                       : null,
                   child: Column(
                     children: [
-                      if (state.isLoading.value)
-                        const LottieIndicator(),
+                      if (state.isLoading.value) const LottieIndicator(),
                       if (!state.isLoading.value)
                         Column(
                           children: [
@@ -232,7 +232,7 @@ class LongShortRatioPage extends StatelessWidget {
                         width: double.infinity,
                         margin: const EdgeInsets.all(15),
                         child: CommonWebView(
-                          url: 'assets/files/t18.html',
+                          url: Urls.chartUrl,
                           isFile: true,
                           onWebViewCreated: (controller) {
                             state.webCtrl = controller;
@@ -252,7 +252,7 @@ class LongShortRatioPage extends StatelessWidget {
 }
 
 class _DataItem extends StatelessWidget {
-  const _DataItem({super.key, required this.item});
+  const _DataItem({required this.item});
 
   final ShortRateEntity item;
 

@@ -198,7 +198,7 @@ class _CommonWebViewState extends State<CommonWebView>
                 }
               },
               onConsoleMessage: (controller, consoleMessage) {
-                print(consoleMessage.toString());
+                debugPrint(consoleMessage.toString());
               },
               onProgressChanged: (controller, progress) {
                 _progress = progress;

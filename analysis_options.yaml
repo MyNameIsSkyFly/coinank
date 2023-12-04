@@ -29,7 +29,7 @@ linter:
     # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
 analyzer:
   language:
-    strict-casts: true
+    strict-casts: false
   exclude: [ build/**, lib/**.freezed.dart, lib/**.g.dart, lib/generated/** ]
 
 # Additional information about this file can be found at

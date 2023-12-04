@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:ank_app/res/export.dart';
-import 'package:ank_app/util/store.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -32,8 +31,8 @@ class RegisterLogic extends GetxController {
     final mail = mailCtrl.text;
     final pwd = pwdCtrl.text;
     final verifyCode = verifyCodeCtrl.text;
-    final userInfo = await Apis().register(mail, pwd, verifyCode, strType);
-    AppUtil.showToast('SUCCESS');
+    await Apis().register(mail, pwd, verifyCode, strType);
+    AppUtil.showToast(S.current.registerSuccessfully);
     Get.back();
   }
 
@@ -41,8 +40,8 @@ class RegisterLogic extends GetxController {
     final mail = mailCtrl.text;
     final pwd = pwdCtrl.text;
     final verifyCode = verifyCodeCtrl.text;
-    final userInfo = await Apis().register(mail, pwd, verifyCode, strType);
-    AppUtil.showToast('SUCCESS');
+    await Apis().register(mail, pwd, verifyCode, strType);
+    AppUtil.showToast(S.current.success_login);
     Get.back();
   }
 
@@ -66,7 +65,6 @@ class RegisterLogic extends GetxController {
     sendBtnCounter.value = 60;
     startCounter();
   }
-
 
   void startCounter() {
     Timer.periodic(const Duration(seconds: 1), (timer) {

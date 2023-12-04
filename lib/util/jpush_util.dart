@@ -4,8 +4,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:ank_app/res/export.dart';
-import 'package:ank_app/route/app_nav.dart';
-import 'package:ank_app/util/store.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:jpush_flutter/jpush_flutter.dart';

@@ -223,7 +223,8 @@ class FundingRatePage extends StatelessWidget {
                                             padding: EdgeInsets.zero,
                                             physics:
                                                 const NeverScrollableScrollPhysics(),
-                                            itemExtent: state.isHide.value ? 48 : 58,
+                                            itemExtent:
+                                                state.isHide.value ? 48 : 58,
                                             itemCount:
                                                 state.contentDataList.length,
                                             itemBuilder: (cnt, idx) {
@@ -313,7 +314,6 @@ class FundingRatePage extends StatelessWidget {
 
 class _Segment extends StatelessWidget {
   const _Segment({
-    super.key,
     required this.isFirst,
     required this.titles,
     this.onTap,

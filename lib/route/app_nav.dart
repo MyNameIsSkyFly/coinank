@@ -14,12 +14,15 @@ class AppNav {
       bool isFile = false,
       bool showLoading = false}) async {
     await CommonWebView.setCookieValue();
-    Get.to(() => CommonWebView(
-          title: title,
-          url: url,
-          isFile: isFile,
-          showLoading: showLoading,
-        ));
+    Get.to(
+      preventDuplicates: false,
+      () => CommonWebView(
+        title: title,
+        url: url,
+        isFile: isFile,
+        showLoading: showLoading,
+      ),
+    );
   }
 
   static Future toLogin() async {

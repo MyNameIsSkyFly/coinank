@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
+import '../../../constants/urls.dart';
 import 'exchange_oi_logic.dart';
 
 class ExchangeOiPage extends StatefulWidget {
@@ -170,7 +171,7 @@ class _ExchangeOiPageState extends State<ExchangeOiPage> {
                           width: double.infinity,
                           margin: const EdgeInsets.all(15),
                           child: CommonWebView(
-                            url: 'assets/files/t18.html',
+                            url: Urls.chartUrl,
                             isFile: true,
                             onWebViewCreated: (controller) {
                               logic.webCtrl = controller;

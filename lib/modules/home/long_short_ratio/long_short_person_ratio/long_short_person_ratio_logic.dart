@@ -31,12 +31,6 @@ class LongShortPersonRatioLogic extends GetxController {
     super.onInit();
   }
 
-  void _startPolling() {
-    _pollingTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
-      onRefresh();
-    });
-  }
-
   Future<void> onRefresh() async {
     refreshing = true;
     await Future.wait([loadChartData01(), loadChartData02()]).then((value) {
@@ -115,7 +109,7 @@ class LongShortPersonRatioLogic extends GetxController {
       const CustomBottomSheetPage(),
       isScrollControlled: true,
       isDismissible: true,
-      settings:  RouteSettings(
+      settings: RouteSettings(
         arguments: {
           'title': S.current.s_choose_time,
           'list': const ['5m', '15m', '30m', '1h', '2h', '4h', '12h', '1d'],

@@ -3,6 +3,7 @@ import 'package:ank_app/widget/common_webview.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../constants/urls.dart';
 import 'liq_map_logic.dart';
 
 class LiqMapPage extends StatelessWidget {
@@ -109,7 +110,7 @@ class LiqMapPage extends StatelessWidget {
                 width: double.infinity,
                 margin: const EdgeInsets.all(15),
                 child: CommonWebView(
-                  url: 'assets/files/t18.html',
+                  url: Urls.chartUrl,
                   isFile: true,
                   onWebViewCreated: (controller) {
                     state.webCtrl = controller;

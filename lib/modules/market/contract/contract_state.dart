@@ -33,5 +33,5 @@ class ContractState {
   double offset = 0;
   RxBool isScrollDown = true.obs;
   RxBool isLoading = true.obs;
-  ContractState() {}
+  ContractState();
 }

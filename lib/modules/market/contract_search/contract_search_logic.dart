@@ -1,7 +1,5 @@
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/res/export.dart';
-import 'package:ank_app/route/app_nav.dart';
-import 'package:ank_app/util/store.dart';
 import 'package:get/get.dart';
 
 import 'contract_search_state.dart';

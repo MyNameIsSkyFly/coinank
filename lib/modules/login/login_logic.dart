@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:ank_app/entity/event/logged_event.dart';
 import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/export.dart';
-import 'package:ank_app/util/store.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 

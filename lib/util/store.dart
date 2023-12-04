@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../constants/urls.dart';
+
 class StoreLogic extends GetxController {
   static StoreLogic get to => Get.find();
 
@@ -154,6 +156,69 @@ class StoreLogic extends GetxController {
   String get deviceId {
     return _SpUtil()._getString(_SpKeys.deviceId);
   }
+
+  Future<bool> saveChartUrl(String chartUrl) {
+    return _SpUtil()._saveString(_SpKeys.chartUrl, chartUrl);
+  }
+
+  String get chartUrl {
+    return _SpUtil()._getString(_SpKeys.chartUrl, defaultValue: Urls.chartUrl);
+  }
+
+  Future<bool> saveUniappDomain(String uniappDomain) {
+    return _SpUtil()._saveString(_SpKeys.uniappDomain, uniappDomain);
+  }
+
+  String get uniappDomain {
+    var withoutHttps = _SpUtil()._getString(_SpKeys.uniappDomain,
+        defaultValue: 'coinsoto-h5.s3.ap-northeast-1.amazonaws.com');
+    return 'https://$withoutHttps';
+  }
+
+  Future<bool> saveDomain(String domain) {
+    return _SpUtil()._saveString(_SpKeys.domain, domain);
+  }
+
+  String get domain {
+    return _SpUtil()._getString(_SpKeys.domain, defaultValue: 'coinsoto.com');
+  }
+
+  Future<bool> saveWebsocketUrl(String websocketUrl) {
+    return _SpUtil()._saveString(_SpKeys.websocketUrl, websocketUrl);
+  }
+
+  String get websocketUrl {
+    return _SpUtil()._getString(_SpKeys.websocketUrl,
+        defaultValue: 'wss://coinsoto.com/wsKline/wsKline');
+  }
+
+  Future<bool> saveApiPrefix(String apiPrefix) {
+    return _SpUtil()._saveString(_SpKeys.apiPrefix, apiPrefix);
+  }
+
+  String get apiPrefix {
+    return _SpUtil()
+        ._getString(_SpKeys.apiPrefix, defaultValue: 'https://coinsoto.com');
+  }
+
+  Future<bool> saveH5Prefix(String h5Prefix) {
+    return _SpUtil()._saveString(_SpKeys.h5Prefix, h5Prefix);
+  }
+
+  String get h5Prefix {
+    return _SpUtil()
+        ._getString(_SpKeys.h5Prefix, defaultValue: 'https://coinsoto.com');
+  }
+
+  //depthOrderDomain
+  Future<bool> saveDepthOrderDomain(String depthOrderDomain) {
+    return _SpUtil()._saveString(_SpKeys.depthOrderDomain, depthOrderDomain);
+  }
+
+  String get depthOrderDomain {
+    return _SpUtil()._getString(_SpKeys.depthOrderDomain,
+        defaultValue: 'cdn01.coinsoto.com');
+  }
 }
 
 class _SpKeys {
@@ -171,7 +236,20 @@ class _SpKeys {
   static const loginUserInfo = 'loginUserInfo';
   static const lastSendCodeTime = 'lastSendCodeTime';
 
+//"ank_charturl":"assets/files/t18.html",
+//     "ank_uniappDomain": "coinsoto-h5.s3.ap-northeast-1.amazonaws.com",
+//     "ank_domain": "coinsoto.com",
+//     "ank_websocketUrl": "wss://coinsoto.com/wsKline/wsKline",
+//     "ank_apiPrefix": "https://coinsoto.com",
+//     "ank_h5Prefix": "https://coinsoto.com"
   static const deviceId = 'deviceId';
+  static const chartUrl = 'ank_charturl';
+  static const uniappDomain = 'ank_uniappDomain';
+  static const domain = 'ank_domain';
+  static const websocketUrl = 'ank_websocketUrl';
+  static const apiPrefix = 'ank_apiPrefix';
+  static const h5Prefix = 'ank_h5Prefix';
+  static const depthOrderDomain = 'ank_depthOrderDomain';
 }
 
 class _SpUtil {

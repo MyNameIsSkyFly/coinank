@@ -78,7 +78,6 @@ class ExchangeOiLogic extends GetxController {
   }
 
   Future<void> loadOIData() async {
-    final t1 = DateTime.now().millisecondsSinceEpoch;
     final result = await Apis().getExchangeOIChartJson(
         baseCoin: menuParamEntity.value.baseCoin,
         interval: menuParamEntity.value.interval,
@@ -132,7 +131,7 @@ setChartData($jsonData, "$platformString", "openInterest", ${jsonEncode(options)
 
   Future<String?> openSelector(List<String> items) async {
     final result = await Get.bottomSheet(
-      CustomBottomSheetPage(),
+      const CustomBottomSheetPage(),
       isScrollControlled: true,
       isDismissible: true,
       settings: RouteSettings(

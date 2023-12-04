@@ -1,3 +1,4 @@
+import 'package:ank_app/entity/event/logged_event.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/util/jpush_util.dart';
 import 'package:flutter_fgbg/flutter_fgbg.dart';
@@ -30,6 +31,7 @@ class MainLogic extends GetxController {
     if (userInfo != null && pwd.isNotEmpty) {
       Apis().login(username, pwd, StoreLogic.to.deviceId).then((value) {
         StoreLogic.to.saveLoginUserInfo(value);
+        AppConst.eventBus.fire(LoginStatusChangeEvent(isLogin: true));
       });
     }
   }

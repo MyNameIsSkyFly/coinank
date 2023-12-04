@@ -1,11 +1,13 @@
-import 'package:ank_app/util/app_util.dart';
+import 'package:ank_app/res/export.dart';
 
 class Urls {
-  static String strDomain = 'coinsoto.com';
-  static String h5Prefix = 'https://$strDomain';
-  static String depthOrderDomain = 'cdn01.coinsoto.com';
-  static String uniappDomain =
-      'https://coinsoto-h5.s3.ap-northeast-1.amazonaws.com';
+  static String get strDomain => StoreLogic.to.domain;
+  static String get h5Prefix => StoreLogic.to.h5Prefix;
+  static String get apiPrefix => StoreLogic.to.apiPrefix;
+  static String get chartUrl => StoreLogic.to.chartUrl;
+  static String get depthOrderDomain => StoreLogic.to.depthOrderDomain;
+  static String get uniappDomain => StoreLogic.to.uniappDomain;
+  static String get websocketUrl => StoreLogic.to.websocketUrl;
 
   static String get webLanguage => AppUtil.webLanguage;
 

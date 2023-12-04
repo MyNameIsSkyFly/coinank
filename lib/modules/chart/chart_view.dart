@@ -79,7 +79,6 @@ class ChartPage extends StatelessWidget {
 
 class _ChartItem extends StatelessWidget {
   const _ChartItem({
-    super.key,
     required this.data,
     required this.title,
     required this.iconName,

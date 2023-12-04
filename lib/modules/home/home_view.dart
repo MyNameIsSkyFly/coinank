@@ -184,7 +184,7 @@ class _FearGreedInfo extends StatelessWidget {
                 _ => '',
               },
               style: TextStyle(
-                decoration: TextDecoration.underline,
+                  decoration: TextDecoration.underline,
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                   color: switch (double.tryParse(

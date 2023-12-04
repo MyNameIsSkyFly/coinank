@@ -2,12 +2,11 @@ import 'package:get/get.dart';
 
 class CustomSearchBottomSheetState {
   late List<String> originalDataList;
-   RxList<String> dataList = RxList.empty();
+  RxList<String> dataList = RxList.empty();
 
   RxString current = ''.obs;
 
   CustomSearchBottomSheetState() {
-    print(Get.arguments);
     Map<String, dynamic> arg = Get.arguments as Map<String, dynamic>;
     originalDataList = arg['list'] as List<String>;
     dataList.value = List.from(originalDataList);

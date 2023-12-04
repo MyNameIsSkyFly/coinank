@@ -152,7 +152,6 @@ class PriceChangePage extends StatelessWidget {
 
 class _DataItem extends StatelessWidget {
   const _DataItem({
-    super.key,
     required this.logic,
     required this.index,
   });

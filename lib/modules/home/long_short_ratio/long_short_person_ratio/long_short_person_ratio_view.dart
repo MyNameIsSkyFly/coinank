@@ -3,6 +3,7 @@ import 'package:ank_app/widget/common_webview.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../constants/urls.dart';
 import 'long_short_person_ratio_logic.dart';
 
 class LongShortPersonRatioPage extends StatefulWidget {
@@ -37,7 +38,8 @@ class _LongShortPersonRatioPageState extends State<LongShortPersonRatioPage> {
                     return _PickerBar(
                       title: 'Binance BTC ${S.of(context).s_longshort_person}',
                       onTap: () async {
-                        final result = await logic.openSelector(logic.interval1.value);
+                        final result =
+                            await logic.openSelector(logic.interval1.value);
                         if (result == null) return;
                         logic.interval1.value = result;
                         logic.loadChartData01();
@@ -51,7 +53,7 @@ class _LongShortPersonRatioPageState extends State<LongShortPersonRatioPage> {
                     width: double.infinity,
                     height: 280,
                     child: CommonWebView(
-                      url: 'assets/files/t18.html',
+                      url: Urls.chartUrl,
                       isFile: true,
                       onWebViewCreated: (controller) {
                         logic.webCtrl1 = controller;
@@ -66,7 +68,8 @@ class _LongShortPersonRatioPageState extends State<LongShortPersonRatioPage> {
                     return _PickerBar(
                       title: 'Binance BTC ${S.of(context).s_longshort_person}',
                       onTap: () async {
-                        final result = await logic.openSelector(logic.interval2.value);
+                        final result =
+                            await logic.openSelector(logic.interval2.value);
                         if (result == null) return;
                         logic.interval2.value = result;
                         logic.loadChartData02();
@@ -80,7 +83,7 @@ class _LongShortPersonRatioPageState extends State<LongShortPersonRatioPage> {
                     width: double.infinity,
                     height: 280,
                     child: CommonWebView(
-                      url: 'assets/files/t18.html',
+                      url: Urls.chartUrl,
                       isFile: true,
                       onWebViewCreated: (controller) {
                         logic.webCtrl2 = controller;
@@ -103,7 +106,6 @@ class _LongShortPersonRatioPageState extends State<LongShortPersonRatioPage> {
 
 class _PickerBar extends StatelessWidget {
   const _PickerBar({
-    super.key,
     required this.title,
     required this.onTap,
     required this.logic,

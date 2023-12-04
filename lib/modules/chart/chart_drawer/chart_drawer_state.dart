@@ -11,5 +11,5 @@ class ChartDrawerState {
     Assets.chartLeftIconOnChainData,
   ];
 
-  ChartDrawerState() {}
+  ChartDrawerState();
 }
