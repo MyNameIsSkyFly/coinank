@@ -63,11 +63,11 @@ class BaseInterceptor extends Interceptor {
       default:
         switch (err.type) {
           case DioExceptionType.connectionTimeout:
-            errorMessage = 'Connection Timeout';
+            errorMessage = S.current.error_request_out;
           case DioExceptionType.sendTimeout:
-            errorMessage = 'Send Timeout';
+            errorMessage = S.current.error_request_out;
           case DioExceptionType.receiveTimeout:
-            errorMessage = 'Receive Timeout';
+            errorMessage = S.current.error_request_out;
           case DioExceptionType.badCertificate:
             errorMessage = 'Bad Certificate';
           case DioExceptionType.badResponse:
@@ -75,7 +75,7 @@ class BaseInterceptor extends Interceptor {
           case DioExceptionType.cancel:
             errorMessage = 'Cancelled';
           case DioExceptionType.connectionError:
-            errorMessage = 'Connection Error';
+            errorMessage = S.current.error_network;
           case DioExceptionType.unknown:
             errorMessage = 'Something went wrong';
         }

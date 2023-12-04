@@ -284,5 +284,12 @@
   "s_choose_coin": "選擇代幣",
   "s_hot": "熱門",
   "s_add_star": "添加自選",
-  "s_del_star": "取消自選"
+  "s_del_star": "取消自選",
+  "error_login_no_user": "用戶名不存在",
+  "error_request_out": "請求逾時",
+  "error_network": "網路連線失敗",
+  "error_pwd": "密碼錯誤",
+  "success_login": "登入成功",
+  "error_email_registered": "此帳號已被註冊",
+  "error_code": "驗證碼錯誤"
 }

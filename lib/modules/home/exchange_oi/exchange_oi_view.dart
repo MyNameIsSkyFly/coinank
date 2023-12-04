@@ -210,7 +210,8 @@ class _FilterChip extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+          padding: const EdgeInsets.symmetric(horizontal: 5),
+          height: 30,
           decoration: BoxDecoration(
             color: Theme.of(context).dividerTheme.color,
             borderRadius: BorderRadius.circular(4),

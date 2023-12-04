@@ -287,5 +287,12 @@
   "s_choose_coin": "Select Currency",
   "s_hot": "Hot",
   "s_add_star": "Add to Watchlist",
-  "s_del_star": "Cancel from Watchlist"
+  "s_del_star": "Cancel from Watchlist",
+  "error_login_no_user": "username is not exist",
+  "error_request_out": "Request timed out",
+  "error_network": "Network Connection Failure",
+  "error_pwd": "Incorrect password",
+  "success_login": "Login successfully",
+  "error_email_registered": "This email address has already been registered",
+  "error_code": "Incorrect code"
 }

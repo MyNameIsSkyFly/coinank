@@ -30,7 +30,10 @@ abstract class Apis {
       BaseInterceptor(),
     ])
     ..options.headers.addAll({'client': Platform.isAndroid ? 'android' : 'ios'})
-    ..options.baseUrl = 'https://coinsoto.com';
+    ..options.baseUrl = 'https://coinsoto.com'
+    ..options.connectTimeout = const Duration(seconds: 15)
+    ..options.receiveTimeout = const Duration(seconds: 15)
+    ..options.sendTimeout = const Duration(seconds: 15);
 
   factory Apis() => _instance;
 
