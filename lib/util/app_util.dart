@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:ank_app/entity/event/theme_event.dart';
+import 'package:ank_app/entity/event/web_js_event.dart';
 import 'package:ank_app/modules/chart/chart_drawer/chart_drawer_logic.dart';
 import 'package:ank_app/modules/chart/chart_logic.dart';
 import 'package:ank_app/modules/main/main_logic.dart';
@@ -263,6 +264,7 @@ class AppUtil {
       'productType': productType ?? 'SWAP',
     };
     String js = "flutterOpenKline('${jsonEncode(map)}');";
+    AppConst.eventBus.fire(WebJSEvent(evJS: js));
     Get.find<MainLogic>()
         .state
         .webViewController
