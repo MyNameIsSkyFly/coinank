@@ -114,52 +114,54 @@ class _SettingPageState extends State<SettingPage> {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: StoreLogic.isLogin
-                ? FilledButton(
-                    style: FilledButton.styleFrom(
-                        backgroundColor: Theme.of(context).dividerTheme.color),
-                    onPressed: () {
-                      showAdaptiveDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog.adaptive(
-                            title: Text(
-                              '${S.of(context).s_exit_login}?',
-                              style: TextStyle(
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium!
-                                      .color),
-                            ),
-                            backgroundColor: Theme.of(context).cardColor,
-                            actions: [
-                              AdaptiveDialogAction(
-                                  child: Text(S.of(context).s_cancel),
-                                  onPressed: () {
-                                    Get.back();
-                                  }),
-                              AdaptiveDialogAction(
-                                  child: Text(S.of(context).s_ok),
-                                  onPressed: () async {
-                                    await Loading.wrap(
-                                        () async => logic.logout());
-                                    Get.back();
-                                  }),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                    child: Text(
-                      S.of(context).s_exit_login,
-                      style: Styles.tsBody_16(context),
-                    ))
-                : FilledButton(
-                    onPressed: AppNav.toLogin,
-                    child: Text(S.of(context).s_login)),
-          ),
+          if (!StoreLogic.isLogin)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: StoreLogic.isLogin
+                  ? FilledButton(
+                      style: FilledButton.styleFrom(
+                          backgroundColor:
+                              Theme.of(context).dividerTheme.color),
+                      onPressed: () {
+                        showAdaptiveDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog.adaptive(
+                              title: Text(
+                                '${S.of(context).s_exit_login}?',
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium!
+                                        .color),
+                              ),
+                              backgroundColor: Theme.of(context).cardColor,
+                              actions: [
+                                AdaptiveDialogAction(
+                                    child: Text(S.of(context).s_cancel),
+                                    onPressed: () {
+                                      Get.back();
+                                    }),
+                                AdaptiveDialogAction(
+                                    child: Text(S.of(context).s_ok),
+                                    onPressed: () async {
+                                      await Loading.wrap(
+                                          () async => logic.logout());
+                                      Get.back();
+                                    }),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: Text(
+                        S.of(context).s_exit_login,
+                        style: Styles.tsBody_16(context),
+                      ))
+                  : FilledButton(
+                      onPressed: AppNav.toLogin,
+                      child: Text(S.of(context).s_login)),
+            ),
           const Gap(44),
         ],
       ),
@@ -454,32 +456,50 @@ class _DeleteAccountDialog extends StatelessWidget {
               ),
             ],
           ),
-          const Gap(20),
+          const Gap(10),
           InkWell(
-              onTap: () async {
-                Loading.wrap(() async {
-                  await Apis()
-                      .sendCode(
-                          AppUtil.decodeBase64(StoreLogic.to.loginUsername),
-                          'logOff')
-                      .whenComplete(() {
-                    Get.back();
-                    showCupertinoModalPopup(
-                      context: context,
-                      builder: (context) => _DeleteAccountInputDialog(),
-                    );
-                  });
+            onTap: () async {
+              await Loading.wrap(() async {
+                await Apis().logout(header: StoreLogic.to.loginUserInfo?.token);
+                await StoreLogic.clearUserInfo();
+              });
+              Get.back();
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              child: Row(
+                children: [
+                  Expanded(child: Text(S.of(context).s_exit_login)),
+                  CupertinoListTileChevron(),
+                ],
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () async {
+              Loading.wrap(() async {
+                await Apis()
+                    .sendCode(AppUtil.decodeBase64(StoreLogic.to.loginUsername),
+                        'logOff')
+                    .whenComplete(() {
+                  Get.back();
+                  showCupertinoModalPopup(
+                    context: context,
+                    builder: (context) => _DeleteAccountInputDialog(),
+                  );
                 });
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(15),
-                child: Row(
-                  children: [
-                    Expanded(child: Text(S.of(context).s_deleteAccount)),
-                    CupertinoListTileChevron(),
-                  ],
-                ),
-              )),
+              });
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              child: Row(
+                children: [
+                  Expanded(child: Text(S.of(context).s_deleteAccount)),
+                  CupertinoListTileChevron(),
+                ],
+              ),
+            ),
+          ),
           Gap(MediaQuery.of(context).padding.bottom + 20)
         ],
       ),

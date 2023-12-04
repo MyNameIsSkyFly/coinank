@@ -41,6 +41,13 @@ class JPushUtil {
         print('flutter onInAppMessageClick: $message');
       }, onConnected: (Map<String, dynamic> message) async {
         print('flutter onConnected: $message');
+        _jpush.getRegistrationID().then((rid) async {
+          print('getRegistrationID:$rid');
+          if (rid.isNotEmpty) {
+            await StoreLogic.to.saveDeviceId(rid);
+            await AppUtil.updateAppInfo();
+          }
+        });
       });
     } on PlatformException {
       print('Failed to get platform version.');
@@ -58,13 +65,6 @@ class JPushUtil {
 
     _jpush.applyPushAuthority(
         const NotificationSettingsIOS(sound: true, alert: true, badge: true));
-    _jpush.getRegistrationID().then((rid) async {
-      print('getRegistrationID:$rid');
-      if (rid.isNotEmpty) {
-        await StoreLogic.to.saveDeviceId(rid);
-        await AppUtil.updateAppInfo();
-      }
-    });
   }
 
   _handeData(Map<String, dynamic> message) {

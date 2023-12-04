@@ -285,5 +285,12 @@
   "s_choose_coin": "通貨を選択",
   "s_hot": "人気",
   "s_add_star": "ウォッチリストに追加",
-  "s_del_star": "ウォッチリストから削除"
+  "s_del_star": "ウォッチリストから削除",
+  "error_login_no_user": "ユーザー名が存在しません",
+  "error_request_out": "要求がタイムアウトしました",
+  "error_network": "ネットワーク接続に失敗しました",
+  "error_pwd": "パスワードが正しくありません",
+  "success_login": "ログインに成功しました",
+  "error_email_registered": "このEメールはすでに登録されています",
+  "error_code": "検証コードエラー"
 }
