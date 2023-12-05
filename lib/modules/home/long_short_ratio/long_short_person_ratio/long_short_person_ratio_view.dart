@@ -56,11 +56,9 @@ class _LongShortPersonRatioPageState extends State<LongShortPersonRatioPage> {
                       url: Urls.chartUrl,
                       onWebViewCreated: (controller) {
                         logic.webCtrl1 = controller;
-                        Future.delayed(const Duration(milliseconds: 300))
-                            .then((value) {
-                          logic.updateChart01();
-                        });
                       },
+                      onLoadStop: () =>
+                          logic.updateReadyStatus1(webReady: true),
                     ),
                   ),
                   Obx(() {
@@ -85,11 +83,9 @@ class _LongShortPersonRatioPageState extends State<LongShortPersonRatioPage> {
                       url: Urls.chartUrl,
                       onWebViewCreated: (controller) {
                         logic.webCtrl2 = controller;
-                        Future.delayed(const Duration(milliseconds: 300))
-                            .then((value) {
-                          logic.updateChart02();
-                        });
                       },
+                      onLoadStop: () =>
+                          logic.updateReadyStatus2(webReady: true),
                     ),
                   ),
                 ],

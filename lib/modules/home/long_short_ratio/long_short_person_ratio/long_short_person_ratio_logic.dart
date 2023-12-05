@@ -24,6 +24,12 @@ class LongShortPersonRatioLogic extends GetxController {
   String jsonData1 = '';
   String jsonData2 = '';
 
+  ({bool dataReady, bool webReady, String evJS}) readyStatus1 =
+      (dataReady: false, webReady: false, evJS: '');
+
+  ({bool dataReady, bool webReady, String evJS}) readyStatus2 =
+      (dataReady: false, webReady: false, evJS: '');
+
   @override
   void onInit() {
     // _startPolling();
@@ -72,7 +78,7 @@ class LongShortPersonRatioLogic extends GetxController {
     var jsSource = '''
     setChartData($jsonData1, "$platformString", "longShortChart", ${jsonEncode(options)});    
     ''';
-    webCtrl1?.evaluateJavascript(source: jsSource);
+    updateReadyStatus1(dataReady: true, evJS: jsSource);
   }
 
   Future<void> loadChartData02() async {
@@ -101,7 +107,7 @@ class LongShortPersonRatioLogic extends GetxController {
     var jsSource = '''
     setChartData($jsonData2, "$platformString", "longShortChart", ${jsonEncode(options)});    
     ''';
-    webCtrl2?.evaluateJavascript(source: jsSource);
+    updateReadyStatus2(dataReady: true, evJS: jsSource);
   }
 
   Future<String?> openSelector(String current) async {
@@ -118,5 +124,27 @@ class LongShortPersonRatioLogic extends GetxController {
       ),
     );
     return result as String?;
+  }
+
+  void updateReadyStatus1({bool? dataReady, bool? webReady, String? evJS}) {
+    readyStatus1 = (
+      dataReady: dataReady ?? readyStatus1.dataReady,
+      webReady: webReady ?? readyStatus1.webReady,
+      evJS: evJS ?? readyStatus1.evJS
+    );
+    if (readyStatus1.dataReady && readyStatus1.webReady) {
+      webCtrl1?.evaluateJavascript(source: readyStatus1.evJS);
+    }
+  }
+
+  void updateReadyStatus2({bool? dataReady, bool? webReady, String? evJS}) {
+    readyStatus2 = (
+      dataReady: dataReady ?? readyStatus2.dataReady,
+      webReady: webReady ?? readyStatus2.webReady,
+      evJS: evJS ?? readyStatus2.evJS
+    );
+    if (readyStatus2.dataReady && readyStatus2.webReady) {
+      webCtrl2?.evaluateJavascript(source: readyStatus2.evJS);
+    }
   }
 }
