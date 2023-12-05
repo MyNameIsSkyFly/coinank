@@ -31,6 +31,9 @@ class ExchangeOiLogic extends GetxController {
   final loading = true.obs;
   var refreshing = false;
   var webViewLoaded = false;
+  ({bool dataReady, bool webReady, String evJS}) readyStatus =
+      (dataReady: false, webReady: false, evJS: '');
+
   @override
   void onInit() {
     _fgbgSubscription = FGBGEvents.stream.listen((event) {
@@ -48,7 +51,7 @@ class ExchangeOiLogic extends GetxController {
   void startPolling() {
     _pollingTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
       if (!isAppVisible) return;
-      onRefresh();
+      onRefresh(isPolling: true);
     });
   }
 
@@ -58,10 +61,11 @@ class ExchangeOiLogic extends GetxController {
     _pollingTimer?.cancel();
   }
 
-  Future onRefresh() async {
+  Future onRefresh({bool isPolling = false}) async {
     if (refreshing) return;
     refreshing = true;
-    return Future.wait([loadData(), loadOIData()]).whenComplete(() {
+    return Future.wait([loadData(), if (!isPolling) loadOIData()])
+        .whenComplete(() {
       refreshing = false;
     });
   }
@@ -109,7 +113,8 @@ class ExchangeOiLogic extends GetxController {
     var jsSource = '''
 setChartData($jsonData, "$platformString", "openInterest", ${jsonEncode(options)});    
     ''';
-    webCtrl?.evaluateJavascript(source: jsSource);
+    updateReadyStatus(dataReady: true, evJS: jsSource);
+    // webCtrl?.evaluateJavascript(source: jsSource);
   }
 
   Future<void> toSearch() async {
@@ -139,6 +144,19 @@ setChartData($jsonData, "$platformString", "openInterest", ${jsonEncode(options)
       ),
     );
     return result as String?;
+  }
+
+  void updateReadyStatus({bool? dataReady, bool? webReady, String? evJS}) {
+    print('==========dateReady $dataReady webReady $webReady evJS $evJS');
+    readyStatus = (
+      dataReady: dataReady ?? readyStatus.dataReady,
+      webReady: webReady ?? readyStatus.webReady,
+      evJS: evJS ?? readyStatus.evJS
+    );
+    if (readyStatus.dataReady && readyStatus.webReady) {
+      print('runJS');
+      webCtrl?.evaluateJavascript(source: readyStatus.evJS);
+    }
   }
 
   final exchangeItems = const [

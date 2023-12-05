@@ -172,14 +172,10 @@ class _ExchangeOiPageState extends State<ExchangeOiPage> {
                           margin: const EdgeInsets.all(15),
                           child: CommonWebView(
                             url: Urls.chartUrl,
+                            onLoadStop: () =>
+                                logic.updateReadyStatus(webReady: true),
                             onWebViewCreated: (controller) {
                               logic.webCtrl = controller;
-                              if (logic.webViewLoaded) return;
-                              logic.webViewLoaded = true;
-                              Future.delayed(const Duration(milliseconds: 500))
-                                  .then((value) {
-                                logic.updateChart();
-                              });
                             },
                           ),
                         ),

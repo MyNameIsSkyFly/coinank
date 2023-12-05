@@ -22,12 +22,14 @@ class CommonWebView extends StatefulWidget {
     this.onWebViewCreated,
     this.showLoading = false,
     this.safeArea = false,
+    this.onLoadStop,
   });
 
   final String? title;
   final String url;
   final String Function()? urlGetter;
   final void Function(InAppWebViewController controller)? onWebViewCreated;
+  final VoidCallback? onLoadStop;
   final bool showLoading;
   final bool safeArea;
 
@@ -202,6 +204,7 @@ class _CommonWebViewState extends State<CommonWebView>
                   );
               },
               onLoadStop: (controller, url) {
+                widget.onLoadStop?.call();
                 if (widget.url.contains('proChart') ||
                     widget.urlGetter?.call().contains('proChart') == true) {
                   controller.evaluateJavascript(
