@@ -72,15 +72,15 @@ class MainLogic extends GetxController {
     super.onClose();
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-    FGBGEvents.stream.listen((event) {
-      if (event == FGBGType.foreground) {
-        JPushUtil.setBadge();
-      }
-    });
-  }
+  // @override
+  // void onInit() {
+  //   super.onInit();
+  //   FGBGEvents.stream.listen((event) {
+  //     if (event == FGBGType.foreground) {
+  //       JPushUtil.setBadge();
+  //     }
+  //   });
+  // }
 
   Future<void> checkIfNeedOpenOrderFlow() async {
     if(Platform.isIOS) return;

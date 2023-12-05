@@ -22,7 +22,6 @@ class JPushUtil {
         print('flutter onReceiveNotification: $message');
       }, onOpenNotification: (Map<String, dynamic> message) async {
         print('flutter onOpenNotification: $message');
-        _jpush.setBadge(0);
         _handeData(message);
       }, onReceiveMessage: (Map<String, dynamic> message) async {
         print('flutter onReceiveMessage: $message');
@@ -73,6 +72,9 @@ class JPushUtil {
 
   _handeData(Map<String, dynamic> message) {
     if (Platform.isAndroid) {
+      _jpush.clearNotification(
+          notificationId: message['extras']
+              ['cn.jpush.android.NOTIFICATION_ID']);
       final extra = message['extras']['cn.jpush.android.EXTRA'] as String;
       final map = jsonDecode(extra) as Map<String, dynamic>;
       if (map.containsKey('url')) {
@@ -83,6 +85,7 @@ class JPushUtil {
         );
       }
     } else {
+      _jpush.setBadge(message['aps']['badge']-1);
       final map = message['extras'];
       if (map.containsKey('url')) {
         AppNav.openWebUrl(
@@ -92,9 +95,5 @@ class JPushUtil {
         );
       }
     }
-  }
-
-  static setBadge() {
-    _instance._jpush.setBadge(0);
   }
 }
