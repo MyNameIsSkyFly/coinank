@@ -42,6 +42,10 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 - (void)toAndroidFloatingWindowWithError:(FlutterError * _Nullable __autoreleasing * _Nonnull)error {
 }
 
+- (nullable NSArray<NSString *> *)getToKlineParamsWithError:(FlutterError * _Nullable __autoreleasing * _Nonnull)error { 
+    return  @[];
+}
+
 
 @end
 
