@@ -3,9 +3,8 @@
 -->
 <!DOCTYPE html>
 <html lang="zh-CN" style="height: 100%">
-
-<head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<head>
     <meta charset="utf-8">
     <style type="text/css">
         .tooltip-box {
@@ -46,8 +45,8 @@
 
         let inside = true;
         let grid = {
-            left: 0,
-            right: 0
+            left: 8,
+            right: 8
         }
 
 
@@ -566,6 +565,7 @@
                     type: 'bar',
                     yAxisIndex: 1,
                     data: [0],
+                    barGap:0,
                     markLine: {
                         lineStyle: {
                             width: 3,
@@ -651,6 +651,7 @@
                 {
                     name: 'x30',
                     type: 'bar',
+                    barGap:0,
                     itemStyle: {
                         color: '#6a7df8'
                     },
@@ -662,6 +663,7 @@
                 {
                     name: 'x40',
                     type: 'bar',
+                    barGap:0,
                     large: true,
                     largeThreshold: 1000,
                     itemStyle: {
@@ -672,6 +674,7 @@
                 {
                     name: dataOptions.mid || "Mid",
                     type: 'bar',
+                    barGap:0,
                     large: true,
                     largeThreshold: 1000,
                     itemStyle: {
@@ -682,6 +685,7 @@
                 {
                     name: 'x60',
                     type: 'bar',
+                    barGap:0,
                     large: true,
                     largeThreshold: 1000,
                     itemStyle: {
@@ -692,6 +696,7 @@
                 {
                     name: 'x70',
                     type: 'bar',
+                    barGap:0,
                     large: true,
                     largeThreshold: 1000,
                     itemStyle: {
@@ -702,6 +707,7 @@
                 {
                     name: 'x80',
                     type: 'bar',
+                    barGap:0,
                     itemStyle: {
                         color: '#efc029',
                     },
@@ -712,6 +718,7 @@
                 {
                     name: 'x90',
                     type: 'bar',
+                    barGap:0,
                     large: true,
                     largeThreshold: 1000,
                     itemStyle: {
@@ -723,6 +730,7 @@
                 {
                     name: dataOptions.high || "High",
                     type: 'bar',
+                    barGap:0,
                     itemStyle: {
                         color: "rgb(253,134,8)"
                     },
@@ -959,14 +967,13 @@
             let grid;
             if (inside) {
                 grid = {
-                    height: '75%',
-                    top: '12.5%',
-                    right: 6,
+                    top:5,
+                    bottom:50,
+                    right:5,
+                    left:5
                 };
             } else {
                 grid = {
-                    height: '75%',
-                    top: '12.5%'
                 };
             }
 
@@ -974,7 +981,6 @@
 
                 animation: false,
                 tooltip: {
-                    position: 'top',
                     trigger: 'item',
                 },
                 grid: grid,
@@ -1047,13 +1053,10 @@
                     min: 0,
                     max: maxValue,
                     calculable: false,
-                    orient: 'vertical',
-                    align: 'rihgt',
-                    left: '0%',
-                    top: 'center',
+                    orient: 'horizontal',
                     text: [formatAmount(maxValue, lan), 0],
-                    itemHeight: window.innerHeight * 0.6,
-                    itemWidth: window.innerWidth * 0.02,
+                    itemHeight: window.innerWidth * 0.8,
+                    // itemWidth: window.innerWidth * 0.02,
                     seriesIndex: 1,
                     hoverLink: 0,
                     textStyle: {
@@ -1091,6 +1094,12 @@
                         progressiveThreshold: liqData.length + 1000,
                         itemStyle: {
                             borderWidth: 0
+                        },
+                        emphasis: {
+                            itemStyle: {
+                            borderColor: '#fff',
+                            borderWidth: 1
+                            }
                         },
                         tooltip: {
                             formatter: function (params) {
@@ -1151,7 +1160,7 @@
             // dom.append("<br/>");
             let option 
             if("liqHeatMap" === dataType){
-                myChart.showLoading("default", {color:"#4363F2"});
+                myChart.showLoading("default", {color:"#4363F2", maskColor:"transparent"});
                 option = await funcTarget(dataParams, dataOptions);
             }else {
                 option = funcTarget(data, dataOptions);

@@ -434,7 +434,8 @@ class _HotMarket extends StatelessWidget {
                           (index) => _DataWithIcon(
                               title: logic.oiList?[index].baseCoin ?? '',
                               icon: logic.oiList?[index].coinImage ?? '',
-                              value: logic.oiList?[index].priceChangeH24 ?? 0),
+                              value:
+                                  logic.oiList?[index].openInterestCh24 ?? 0),
                         )
                       ],
                     );
