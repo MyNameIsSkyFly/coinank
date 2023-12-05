@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:ank_app/entity/event/logged_event.dart';
 import 'package:ank_app/modules/chart/chart_drawer/chart_drawer_logic.dart';
@@ -82,6 +83,7 @@ class MainLogic extends GetxController {
   }
 
   Future<void> checkIfNeedOpenOrderFlow() async {
+    if(Platform.isIOS) return;
     final result = await MessageHostApi().getToKlineParams();
     // AppUtil.showToast(result?.toString() ?? 'nu');
     if (result == null) return;
