@@ -168,15 +168,15 @@ class _CommonWebViewState extends State<CommonWebView>
             padding: EdgeInsets.only(
                 top: widget.safeArea ? AppConst.statusBarHeight : 0),
             child: InAppWebView(
-              initialFile: !widget.url.startsWith('https://') ||
+              initialFile: !widget.url.startsWith('https://') &&
                       !widget.url.startsWith('http://')
                   ? widget.url
                   : null,
-              initialUrlRequest: !widget.url.startsWith('https://') ||
-                      !widget.url.startsWith('http://')
-                  ? null
-                  : URLRequest(
-                      url: WebUri(widget.urlGetter?.call() ?? widget.url)),
+              initialUrlRequest: widget.url.startsWith('https://') ||
+                      widget.url.startsWith('http://')
+                  ? URLRequest(
+                      url: WebUri(widget.urlGetter?.call() ?? widget.url))
+                  : null,
               initialSettings: InAppWebViewSettings(
                 userAgent: Platform.isAndroid
                     ? 'CoinsohoWeb-flutter-Android'

@@ -121,7 +121,7 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
   }
 
   Future<void> onRefresh({bool showLoading = false}) async {
-    if (Get.find<MainLogic>().state.networkConnected == false) return;
+    if (AppConst.networkConnected == false) return;
     state.oldData = List.from(state.originalData ?? []);
     if (showLoading) {
       Loading.show();

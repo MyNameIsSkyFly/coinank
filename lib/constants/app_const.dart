@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AppConst {
+  static bool networkConnected = true;
   static const isPlayVersion = bool.fromEnvironment('PLAY');
   static final eventBus = EventBus();
   static String imageHost(String imageName) {
@@ -12,5 +13,6 @@ class AppConst {
   static double get width => MediaQuery.of(Get.context!).size.width;
   static double get height => MediaQuery.of(Get.context!).size.height;
   static double get statusBarHeight => MediaQuery.of(Get.context!).padding.top;
-  static double get bottomBarHeight => MediaQuery.of(Get.context!).padding.bottom;
+  static double get bottomBarHeight =>
+      MediaQuery.of(Get.context!).padding.bottom;
 }

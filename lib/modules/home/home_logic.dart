@@ -7,9 +7,9 @@ import 'package:ank_app/entity/home_fund_rate_entity.dart';
 import 'package:ank_app/http/apis.dart';
 import 'package:ank_app/modules/market/market_logic.dart';
 import 'package:ank_app/pigeon/host_api.g.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get/get.dart';
 
+import '../../constants/app_const.dart';
 import '../../route/router_config.dart';
 import '../main/main_logic.dart';
 
@@ -53,7 +53,7 @@ class HomeLogic extends GetxController {
   }
 
   Future<void> onRefresh() async {
-    if (Get.find<MainLogic>().state.networkConnected == false) return;
+    if (AppConst.networkConnected == false) return;
     isRefreshing = true;
     await Future.wait([
       loadPriceChgData(),

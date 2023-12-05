@@ -12,8 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../constants/urls.dart';
-
 class StoreLogic extends GetxController {
   static StoreLogic get to => Get.find();
 

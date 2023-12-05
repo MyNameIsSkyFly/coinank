@@ -470,7 +470,7 @@ class _DeleteAccountDialog extends StatelessWidget {
               child: Row(
                 children: [
                   Expanded(child: Text(S.of(context).s_exit_login)),
-                  CupertinoListTileChevron(),
+                  const CupertinoListTileChevron(),
                 ],
               ),
             ),
@@ -485,7 +485,7 @@ class _DeleteAccountDialog extends StatelessWidget {
                   Get.back();
                   showCupertinoModalPopup(
                     context: context,
-                    builder: (context) => _DeleteAccountInputDialog(),
+                    builder: (context) => const _DeleteAccountInputDialog(),
                   );
                 });
               });
@@ -495,7 +495,7 @@ class _DeleteAccountDialog extends StatelessWidget {
               child: Row(
                 children: [
                   Expanded(child: Text(S.of(context).s_deleteAccount)),
-                  CupertinoListTileChevron(),
+                  const CupertinoListTileChevron(),
                 ],
               ),
             ),

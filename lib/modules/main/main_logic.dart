@@ -5,7 +5,6 @@ import 'package:ank_app/modules/chart/chart_drawer/chart_drawer_logic.dart';
 import 'package:ank_app/modules/chart/chart_logic.dart';
 import 'package:ank_app/modules/home/home_logic.dart';
 import 'package:ank_app/modules/market/contract/contract_logic.dart';
-import 'package:ank_app/modules/market/market_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/util/jpush_util.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -17,7 +16,7 @@ import 'main_state.dart';
 
 class MainLogic extends GetxController {
   final MainState state = MainState();
-  StreamSubscription? connectivitySubscription;
+  StreamSubscription? _connectivitySubscription;
 
   @override
   void onReady() {
@@ -29,17 +28,13 @@ class MainLogic extends GetxController {
 
   Future<void> handleNetwork() async {
     var connectivity = Connectivity();
-    final result = await connectivity.checkConnectivity();
-    state.networkConnected = result != ConnectivityResult.none;
-    if (state.networkConnected == true) {
-      tryLogin();
-      return;
+    if (!AppConst.networkConnected) {
+      AppUtil.showToast(S.current.networkConnectFailed);
     }
-    AppUtil.showToast(S.current.networkConnectFailed);
-    connectivitySubscription =
+    _connectivitySubscription =
         connectivity.onConnectivityChanged.listen((ConnectivityResult result) {
-      if (state.networkConnected == true) return;
-      state.networkConnected = result != ConnectivityResult.none;
+      if (AppConst.networkConnected == true) return;
+      AppConst.networkConnected = result != ConnectivityResult.none;
       if (result != ConnectivityResult.none) {
         Get.find<HomeLogic>().onRefresh();
         Get.find<ContractLogic>().onRefresh();
@@ -67,6 +62,12 @@ class MainLogic extends GetxController {
         AppConst.eventBus.fire(LoginStatusChangeEvent(isLogin: true));
       });
     }
+  }
+
+  @override
+  void onClose() {
+    _connectivitySubscription?.cancel();
+    super.onClose();
   }
 
   @override

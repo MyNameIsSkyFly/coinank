@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/util/jpush_util.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 
 class Application {
@@ -15,7 +16,7 @@ class Application {
   }
 
   Future<void> init() async {
-    await StoreLogic.init();
+    await Future.wait([StoreLogic.init(), checkNetwork()]);
     MessageFlutterApi.setup(FlutterApiManager());
     EasyRefresh.defaultHeaderBuilder = () => const MaterialHeader();
     JPushUtil().initPlatformState();
@@ -49,6 +50,12 @@ class Application {
       StoreLogic.to.saveDepthOrderDomain(data['newDepthOrderDomain']),
     ]);
     return true;
+  }
+
+  static Future<void> checkNetwork() async {
+    var connectivity = Connectivity();
+    final result = await connectivity.checkConnectivity();
+    AppConst.networkConnected = result != ConnectivityResult.none;
   }
 }
 

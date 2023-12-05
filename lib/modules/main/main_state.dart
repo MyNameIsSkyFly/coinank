@@ -7,7 +7,6 @@ class MainState {
   late List<Widget> tabPage;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   InAppWebViewController? webViewController;
-  bool networkConnected = false;
 }
 
 class BottomBarItem {

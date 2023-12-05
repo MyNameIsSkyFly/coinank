@@ -2,14 +2,13 @@ import 'package:ank_app/entity/chart_entity.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:get/get.dart';
 
-import '../main/main_logic.dart';
 import 'chart_state.dart';
 
 class ChartLogic extends GetxController {
   final ChartState state = ChartState();
 
   Future<void> onRefresh() async {
-    if (Get.find<MainLogic>().state.networkConnected == false) return;
+    if (AppConst.networkConnected == false) return;
     Map<String, List<ChartEntity>> dataMap = {
       'hotData': [],
       'btcData': [],

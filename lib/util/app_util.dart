@@ -43,7 +43,7 @@ class AppUtil {
       backgroundColor: Colors.black,
       textColor: Colors.white,
       webBgColor: 'linear-gradient(to right, #000000, #000000)',
-      gravity: ToastGravity.BOTTOM,
+      gravity: ToastGravity.CENTER,
       webPosition: 'center',
       fontSize: 16.0,
     );
