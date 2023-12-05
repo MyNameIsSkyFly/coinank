@@ -20,7 +20,6 @@ class CommonWebView extends StatefulWidget {
     required this.url,
     this.urlGetter,
     this.onWebViewCreated,
-    this.isFile = false,
     this.showLoading = false,
     this.safeArea = false,
   });
@@ -29,7 +28,6 @@ class CommonWebView extends StatefulWidget {
   final String url;
   final String Function()? urlGetter;
   final void Function(InAppWebViewController controller)? onWebViewCreated;
-  final bool isFile;
   final bool showLoading;
   final bool safeArea;
 
@@ -170,8 +168,12 @@ class _CommonWebViewState extends State<CommonWebView>
             padding: EdgeInsets.only(
                 top: widget.safeArea ? AppConst.statusBarHeight : 0),
             child: InAppWebView(
-              initialFile: widget.isFile ? widget.url : null,
-              initialUrlRequest: widget.isFile
+              initialFile: !widget.url.startsWith('https://') ||
+                      !widget.url.startsWith('http://')
+                  ? widget.url
+                  : null,
+              initialUrlRequest: !widget.url.startsWith('https://') ||
+                      !widget.url.startsWith('http://')
                   ? null
                   : URLRequest(
                       url: WebUri(widget.urlGetter?.call() ?? widget.url)),

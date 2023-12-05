@@ -54,7 +54,6 @@ class _LongShortPersonRatioPageState extends State<LongShortPersonRatioPage> {
                     height: 280,
                     child: CommonWebView(
                       url: Urls.chartUrl,
-                      isFile: true,
                       onWebViewCreated: (controller) {
                         logic.webCtrl1 = controller;
                         Future.delayed(const Duration(milliseconds: 300))
@@ -84,7 +83,6 @@ class _LongShortPersonRatioPageState extends State<LongShortPersonRatioPage> {
                     height: 280,
                     child: CommonWebView(
                       url: Urls.chartUrl,
-                      isFile: true,
                       onWebViewCreated: (controller) {
                         logic.webCtrl2 = controller;
                         Future.delayed(const Duration(milliseconds: 300))

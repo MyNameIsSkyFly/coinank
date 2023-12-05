@@ -172,7 +172,6 @@ class _ExchangeOiPageState extends State<ExchangeOiPage> {
                           margin: const EdgeInsets.all(15),
                           child: CommonWebView(
                             url: Urls.chartUrl,
-                            isFile: true,
                             onWebViewCreated: (controller) {
                               logic.webCtrl = controller;
                               if (logic.webViewLoaded) return;

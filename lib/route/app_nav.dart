@@ -11,7 +11,6 @@ class AppNav {
   static Future<void> openWebUrl(
       {String? title,
       required String url,
-      bool isFile = false,
       bool showLoading = false}) async {
     await CommonWebView.setCookieValue();
     Get.to(
@@ -19,7 +18,6 @@ class AppNav {
       () => CommonWebView(
         title: title,
         url: url,
-        isFile: isFile,
         showLoading: showLoading,
       ),
     );
