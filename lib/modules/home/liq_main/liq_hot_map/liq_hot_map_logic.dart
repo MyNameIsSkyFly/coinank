@@ -82,10 +82,7 @@ class LiqHotMapLogic extends GetxController {
       'interval': state.interval.value,
     };
     final options = {
-      'theme': StoreLogic.to.isDarkMode ??
-              Get.mediaQuery.platformBrightness == Brightness.dark
-          ? 'night'
-          : 'light',
+      'theme': StoreLogic.to.isDarkMode ? 'night' : 'light',
       'locale': AppUtil.shortLanguageName,
       'price': S.current.s_price,
       'liqHeat': S.current.liqHeat,

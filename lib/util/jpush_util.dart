@@ -20,7 +20,6 @@ class JPushUtil {
       _jpush.addEventHandler(
           onReceiveNotification: (Map<String, dynamic> message) async {
         print('flutter onReceiveNotification: $message');
-        _handeData(message);
       }, onOpenNotification: (Map<String, dynamic> message) async {
         print('flutter onOpenNotification: $message');
         _jpush.setBadge(0);

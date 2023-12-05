@@ -12,7 +12,6 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:get/get.dart';
 
-import '../../widget/common_webview.dart';
 import 'main_state.dart';
 
 class MainLogic extends GetxController {
@@ -21,7 +20,6 @@ class MainLogic extends GetxController {
 
   @override
   void onReady() {
-    CommonWebView.setCookieValue();
     AppUtil.checkUpdate(Get.context!);
     handleNetwork();
     AppUtil.syncSettingToHost();

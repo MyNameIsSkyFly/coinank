@@ -71,11 +71,11 @@ class StoreLogic extends GetxController {
                 : 0);
   }
 
-  bool? get isDarkMode {
-    return switch (_SpUtil()._getInt(_SpKeys.darkMode, defaultValue: -1)) {
+  bool get isDarkMode {
+    return switch (_SpUtil()._getInt(_SpKeys.darkMode, defaultValue: 0)) {
       1 => true,
       0 => false,
-      _ => null,
+      _ => false,
     };
   }
 

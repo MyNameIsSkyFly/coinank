@@ -8,7 +8,6 @@ import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:get/get.dart';
 
 import '../constants/urls.dart';
 import '../entity/event/logged_event.dart';
@@ -36,13 +35,7 @@ class CommonWebView extends StatefulWidget {
   static Future<void> setCookieValue() async {
     final cookieList = <(String, String)>[];
     cookieList.addAll([
-      (
-        'theme',
-        StoreLogic.to.isDarkMode ??
-                Get.mediaQuery.platformBrightness == Brightness.dark
-            ? 'night'
-            : 'light'
-      ),
+      ('theme', StoreLogic.to.isDarkMode ? 'night' : 'light'),
       (
         'COINSOHO_KEY',
         StoreLogic.to.loginUserInfo == null

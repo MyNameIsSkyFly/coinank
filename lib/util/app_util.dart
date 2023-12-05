@@ -275,8 +275,7 @@ class AppUtil {
   static void syncSettingToHost() {
     MessageHostApi()
         .changeLanguage((StoreLogic.to.locale ?? Get.deviceLocale).toString());
-    MessageHostApi().changeDarkMode(StoreLogic.to.isDarkMode ??
-        Get.mediaQuery.platformBrightness == Brightness.dark);
+    MessageHostApi().changeDarkMode(StoreLogic.to.isDarkMode);
     MessageHostApi().changeUpColor(StoreLogic.to.isUpGreen);
   }
 }

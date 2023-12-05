@@ -91,10 +91,7 @@ class LiqMapLogic extends GetxController {
 
   void _updateChart(String jsData) {
     final options = {
-      'theme': StoreLogic.to.isDarkMode ??
-              Get.mediaQuery.platformBrightness == Brightness.dark
-          ? 'night'
-          : 'light',
+      'theme': StoreLogic.to.isDarkMode ? 'night' : 'light',
       'locale': AppUtil.shortLanguageName,
       'long': S.current.s_liq_map_long,
       'short': S.current.s_liq_map_short,
