@@ -106,7 +106,18 @@ class LiqMapLogic extends GetxController {
     var jsSource = '''
 setChartData($jsData, "$platformString", "liqMap", ${jsonEncode(options)});    
     ''';
-    state.webCtrl?.evaluateJavascript(source: jsSource);
+    updateReadyStatus(dataReady: true, evJS: jsSource);
+  }
+
+  void updateReadyStatus({bool? dataReady, bool? webReady, String? evJS}) {
+    state.readyStatus = (
+      dataReady: dataReady ?? state.readyStatus.dataReady,
+      webReady: webReady ?? state.readyStatus.webReady,
+      evJS: evJS ?? state.readyStatus.evJS
+    );
+    if (state.readyStatus.dataReady && state.readyStatus.webReady) {
+      state.webCtrl?.evaluateJavascript(source: state.readyStatus.evJS);
+    }
   }
 
   @override

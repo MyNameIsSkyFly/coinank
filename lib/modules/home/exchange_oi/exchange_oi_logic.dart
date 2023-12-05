@@ -147,14 +147,12 @@ setChartData($jsonData, "$platformString", "openInterest", ${jsonEncode(options)
   }
 
   void updateReadyStatus({bool? dataReady, bool? webReady, String? evJS}) {
-    print('==========dateReady $dataReady webReady $webReady evJS $evJS');
     readyStatus = (
       dataReady: dataReady ?? readyStatus.dataReady,
       webReady: webReady ?? readyStatus.webReady,
       evJS: evJS ?? readyStatus.evJS
     );
     if (readyStatus.dataReady && readyStatus.webReady) {
-      print('runJS');
       webCtrl?.evaluateJavascript(source: readyStatus.evJS);
     }
   }

@@ -233,9 +233,10 @@ class LongShortRatioPage extends StatelessWidget {
                         margin: const EdgeInsets.all(15),
                         child: CommonWebView(
                           url: Urls.chartUrl,
-                          onWebViewCreated: (controller) {
-                            state.webCtrl = controller;
-                          },
+                          onWebViewCreated: (controller) =>
+                              state.webCtrl = controller,
+                          onLoadStop: () =>
+                              logic.updateReadyStatus(webReady: true),
                         ),
                       ),
                     ],

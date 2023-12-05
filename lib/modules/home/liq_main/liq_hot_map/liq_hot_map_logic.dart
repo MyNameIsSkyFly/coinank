@@ -73,7 +73,6 @@ class LiqHotMapLogic extends GetxController {
     final data = await Apis().getLiqHeatMapData();
     state.symbolList.value = data ?? [];
     state.symbol.value = data?[0] ?? '';
-    await Future.delayed(const Duration(seconds: 1));
     _updateChart();
   }
 
@@ -96,8 +95,19 @@ class LiqHotMapLogic extends GetxController {
     var jsSource = '''
 setChartData(${jsonEncode(dataParams)}, "$platformString", "liqHeatMap", ${jsonEncode(options)});    
     ''';
-    await state.webCtrl?.evaluateJavascript(source: jsSource);
     state.isLoading.value = false;
+    updateReadyStatus(dataReady: true, evJS: jsSource);
+  }
+
+  void updateReadyStatus({bool? dataReady, bool? webReady, String? evJS}) {
+    state.readyStatus = (
+      dataReady: dataReady ?? state.readyStatus.dataReady,
+      webReady: webReady ?? state.readyStatus.webReady,
+      evJS: evJS ?? state.readyStatus.evJS
+    );
+    if (state.readyStatus.dataReady && state.readyStatus.webReady) {
+      state.webCtrl?.evaluateJavascript(source: state.readyStatus.evJS);
+    }
   }
 
   @override

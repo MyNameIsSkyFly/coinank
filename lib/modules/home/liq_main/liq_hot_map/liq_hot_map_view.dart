@@ -110,9 +110,8 @@ class LiqHotMapPage extends StatelessWidget {
                 margin: const EdgeInsets.symmetric(horizontal: 5),
                 child: CommonWebView(
                   url: Urls.chartUrl,
-                  onWebViewCreated: (controller) {
-                    state.webCtrl = controller;
-                  },
+                  onWebViewCreated: (controller) => state.webCtrl = controller,
+                  onLoadStop: () => logic.updateReadyStatus(webReady: true),
                 ),
               ),
             ],

@@ -18,6 +18,9 @@ class LongShortRatioState {
   bool appVisible = true;
   InAppWebViewController? webCtrl;
   ShortRateEntity? jsData;
+  ({bool dataReady, bool webReady, String evJS}) readyStatus =
+      (dataReady: false, webReady: false, evJS: '');
+
   LongShortRatioState() {
     ///Initialize variables
   }

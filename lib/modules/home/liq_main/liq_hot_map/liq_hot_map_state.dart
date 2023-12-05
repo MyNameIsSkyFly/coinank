@@ -8,6 +8,9 @@ class LiqHotMapState {
   RxBool isLoading = true.obs;
   InAppWebViewController? webCtrl;
   bool refreshBCanPress = true;
+  ({bool dataReady, bool webReady, String evJS}) readyStatus =
+      (dataReady: false, webReady: false, evJS: '');
+
   LiqHotMapState() {
     ///Initialize variables
   }
