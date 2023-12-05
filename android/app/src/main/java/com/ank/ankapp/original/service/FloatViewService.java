@@ -448,12 +448,18 @@ public class FloatViewService extends Service implements View.OnClickListener {
                             v.getId() == res_price[i] ||
                             v.getId() == res_symbol[i]
             ) {
+                SymbolVo symbolVo = symbolList.get(i);
+
                 MLog.d("doclick item:" + i);
                 Intent firstIntent = new Intent(this, MainActivity.class);
                 firstIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 firstIntent.setAction(Intent.ACTION_MAIN);
                 firstIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-                firstIntent.putExtra(Config.CONF_HIDE_WELCOME_PAGE, true);//此种方式，隐藏启动页
+//                firstIntent.putExtra(Config.CONF_HIDE_WELCOME_PAGE, true);//此种方式，隐藏启动页
+                firstIntent.putExtra("klineExchangeName",symbolVo.getExchangeName());
+                firstIntent.putExtra("klineSymbol",symbolVo.getSymbol());
+                firstIntent.putExtra("klineBaseCoin",symbolVo.getBaseCoin());
+                firstIntent.putExtra("klineProductType",symbolVo.getProductType());
 
 //                Intent kIntent = new Intent(this, KLineActivity.class);
 //                kIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -484,7 +490,7 @@ public class FloatViewService extends Service implements View.OnClickListener {
 
                 try {
                     pi.send();//后台服务可立即启动目标activity,部分手机还是会延时5秒
-                    SymbolVo symbolVo = symbolList.get(i);
+                    if (App.getApplication().messageFlutterApi == null) return;
                     App.getApplication().messageFlutterApi.toKLine(symbolVo.getExchangeName(), symbolVo.getSymbol(), symbolVo.getBaseCoin(), symbolVo.getProductType(), new Messages.Result<Void>() {
                         @Override
                         public void success(@NonNull Void result) {

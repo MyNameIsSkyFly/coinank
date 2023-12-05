@@ -27,7 +27,7 @@ def dartEnvVar = [
         JPUSH_KEY     : project.hasProperty('JPUSH_KEY') ? JPUSH_KEY : "4c89cdc630a1fe6ac9a05f56",
         KEY_ALIAS     : project.hasProperty('KEY_ALIAS') ? KEY_ALIAS : "uukr",
         KEY_PASSWORD  : project.hasProperty('KEY_PASSWORD') ? KEY_PASSWORD : "uukr.com",
-        STORE_FILE    : project.hasProperty('STORE_FILE') ? STORE_FILE : "keystore/uukr.keystore",
+        STORE_FILE    : project.hasProperty('STORE_FILE') ? STORE_FILE : "keystore/uukr.key",
         STORE_PASSWORD: project.hasProperty('STORE_PASSWORD') ? STORE_PASSWORD : "uukr.com",
 ]
 

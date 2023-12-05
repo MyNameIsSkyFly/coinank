@@ -5,6 +5,7 @@ import 'package:ank_app/modules/chart/chart_drawer/chart_drawer_logic.dart';
 import 'package:ank_app/modules/chart/chart_logic.dart';
 import 'package:ank_app/modules/home/home_logic.dart';
 import 'package:ank_app/modules/market/contract/contract_logic.dart';
+import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/util/jpush_util.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -24,6 +25,7 @@ class MainLogic extends GetxController {
     AppUtil.checkUpdate(Get.context!);
     handleNetwork();
     AppUtil.syncSettingToHost();
+    checkIfNeedOpenOrderFlow();
     super.onReady();
   }
 
@@ -79,5 +81,13 @@ class MainLogic extends GetxController {
         JPushUtil.setBadge();
       }
     });
+  }
+
+  Future<void> checkIfNeedOpenOrderFlow() async {
+    final result = await MessageHostApi().getToKlineParams();
+    // AppUtil.showToast(result?.toString() ?? 'nu');
+    if (result == null) return;
+    AppUtil.toKLine(
+        result[0] ?? '', result[1] ?? '', result[2] ?? '', result[3] ?? '');
   }
 }

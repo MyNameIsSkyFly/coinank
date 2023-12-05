@@ -18,6 +18,9 @@ abstract class MessageHostApi {
 
   ///安卓悬浮窗设置
   void toAndroidFloatingWindow();
+
+  ///安卓关闭状态下通过悬浮窗打开app后拿到跳转kline数据
+  List<String?>? getToKlineParams();
 }
 
 @FlutterApi()
