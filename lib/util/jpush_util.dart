@@ -61,6 +61,13 @@ class JPushUtil {
       );
     }
 
+    _jpush.getRegistrationID().then((rid) async {
+      print('getRegistrationID:$rid');
+      if (rid.isNotEmpty) {
+        await StoreLogic.to.saveDeviceId(rid);
+        await AppUtil.updateAppInfo();
+      }
+    });
     _jpush.applyPushAuthority(
         const NotificationSettingsIOS(sound: true, alert: true, badge: true));
   }
@@ -70,13 +77,20 @@ class JPushUtil {
       final extra = message['extras']['cn.jpush.android.EXTRA'] as String;
       final map = jsonDecode(extra) as Map<String, dynamic>;
       if (map.containsKey('url')) {
-        AppNav.openWebUrl(url: map['url'] as String, title: 'Coinank');
+        AppNav.openWebUrl(
+          url: map['url'] as String,
+          title: 'Coinank',
+          showLoading: true,
+        );
       }
     } else {
-      final extra = message['extras'] as String;
-      final map = jsonDecode(extra) as Map<String, dynamic>;
+      final map = message['extras'];
       if (map.containsKey('url')) {
-        AppNav.openWebUrl(url: map['url'] as String, title: 'Coinank');
+        AppNav.openWebUrl(
+          url: map['url'] as String,
+          title: 'Coinank',
+          showLoading: true,
+        );
       }
     }
   }
