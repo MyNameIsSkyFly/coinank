@@ -23,6 +23,7 @@ class MainLogic extends GetxController {
     CommonWebView.setCookieValue();
     AppUtil.checkUpdate(Get.context!);
     handleNetwork();
+    AppUtil.syncSettingToHost();
     super.onReady();
   }
 

@@ -271,4 +271,12 @@ class AppUtil {
         ?.evaluateJavascript(source: js);
     Get.find<MainLogic>().selectTab(2);
   }
+
+  static void syncSettingToHost() {
+    MessageHostApi()
+        .changeLanguage((StoreLogic.to.locale ?? Get.deviceLocale).toString());
+    MessageHostApi().changeDarkMode(StoreLogic.to.isDarkMode ??
+        Get.mediaQuery.platformBrightness == Brightness.dark);
+    MessageHostApi().changeUpColor(StoreLogic.to.isUpGreen);
+  }
 }
