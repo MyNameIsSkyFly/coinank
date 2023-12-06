@@ -254,8 +254,8 @@ class AppUtil {
 
   static String decodeBase64(String data) => utf8.decode(base64.decode(data));
 
-  static void toKLine(String exchangeName, String symbol, String baseCoin,
-      String? productType) {
+  static toKLine(String exchangeName, String symbol, String baseCoin,
+      String? productType) async {
     Get.back();
     Map<String, dynamic> map = {
       'symbol': symbol,
@@ -265,10 +265,14 @@ class AppUtil {
     };
     String js = "flutterOpenKline('${jsonEncode(map)}');";
     AppConst.eventBus.fire(WebJSEvent(evJS: js));
+
     Get.find<MainLogic>()
         .state
         .webViewController
         ?.evaluateJavascript(source: js);
+    if (Get.find<MainLogic>().state.isFirstKLine) {
+      await Get.find<MainLogic>().state.webViewController?.reload();
+    }
     Get.find<MainLogic>().selectTab(2);
   }
 

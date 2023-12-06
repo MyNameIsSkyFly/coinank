@@ -47,6 +47,9 @@ class MainLogic extends GetxController {
   }
 
   void selectTab(int currentIndex) {
+    if (state.isFirstKLine && currentIndex == 2) {
+      state.isFirstKLine = false;
+    }
     if (state.selectedIndex.value != currentIndex) {
       state.selectedIndex.value = currentIndex;
     }
@@ -71,7 +74,7 @@ class MainLogic extends GetxController {
   }
 
   Future<void> checkIfNeedOpenOrderFlow() async {
-    if(Platform.isIOS) return;
+    if (Platform.isIOS) return;
     final result = await MessageHostApi().getToKlineParams();
     // AppUtil.showToast(result?.toString() ?? 'nu');
     if (result == null) return;
