@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:ank_app/constants/app_const.dart';
 import 'package:ank_app/http/apis.dart';
 import 'package:ank_app/util/store.dart';
 import 'package:get/get.dart';
@@ -16,7 +19,12 @@ class SettingLogic extends GetxController {
 
   Future<void> getVersionName() async {
     final pInfo = await PackageInfo.fromPlatform();
-    versionName.value = pInfo.version;
+    if (Platform.isAndroid) {
+      versionName.value =
+          '${AppConst.isPlayVersion ? 'GPlay AAB' : 'Apk'} ${pInfo.version}';
+    } else {
+      versionName.value = pInfo.version;
+    }
   }
 
   Future<void> logout() async {

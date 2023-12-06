@@ -1,9 +1,0 @@
-{
-  "APPLICATION_ID": "com.ank.ankapp",
-  "PLAY": true,
-  "JPUSH_KEY": "b475c5612b06aa19f6057a6a",
-  "KEY_ALIAS": "coinank",
-  "KEY_PASSWORD": "123456",
-  "STORE_FILE": "keystore/coinank.keystore",
-  "STORE_PASSWORD": "123456"
-}

@@ -3,10 +3,10 @@ package com.ank.ankapp;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PersistableBundle;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,16 +16,14 @@ import com.ank.ankapp.original.App;
 import com.ank.ankapp.original.Config;
 import com.ank.ankapp.original.Global;
 import com.ank.ankapp.original.activity.SetFloatViewActivity;
-import com.ank.ankapp.original.bean.SymbolVo;
 import com.ank.ankapp.original.language.LanguageUtil;
 import com.ank.ankapp.original.service.FloatViewService;
 import com.ank.ankapp.original.utils.AppUtils;
 import com.ank.ankapp.original.utils.MLog;
 import com.ank.ankapp.pigeon_plugin.Messages;
 
+import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import io.flutter.embedding.android.FlutterActivity;
@@ -45,7 +43,7 @@ public class MainActivity extends FlutterActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
-      }
+    }
 
     public static boolean isServiceRunning(Context mContext, String className) {
 
@@ -73,6 +71,11 @@ public class MainActivity extends FlutterActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        try {
+            getContext().getResources().openRawResource(R.raw.fall);
+        } catch (Resources.NotFoundException ignored) {
+        }
+
         klineInfo.add(getIntent().getStringExtra("klineExchangeName"));
         klineInfo.add(getIntent().getStringExtra("klineSymbol"));
         klineInfo.add(getIntent().getStringExtra("klineBaseCoin"));

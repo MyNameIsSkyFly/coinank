@@ -29,6 +29,8 @@ def dartEnvVar = [
         KEY_PASSWORD  : project.hasProperty('KEY_PASSWORD') ? KEY_PASSWORD : "uukr.com",
         STORE_FILE    : project.hasProperty('STORE_FILE') ? STORE_FILE : "keystore/uukr.key",
         STORE_PASSWORD: project.hasProperty('STORE_PASSWORD') ? STORE_PASSWORD : "uukr.com",
+        VERSION_NAME  : project.hasProperty('VERSION_NAME') ? VERSION_NAME : "2.0.0",
+        VERSION_CODE  : project.hasProperty('VERSION_CODE') ? VERSION_CODE : "200",
 ]
 
 android {
@@ -48,15 +50,15 @@ android {
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        versionCode dartEnvVar.VERSION_CODE.toInteger()
+        versionName dartEnvVar.VERSION_NAME
         ndk {
-            abiFilters 'arm64-v8a', 'armeabi' , 'x86', 'armeabi-v7a', 'x86_64'
+            abiFilters 'arm64-v8a', 'armeabi', 'x86', 'armeabi-v7a', 'x86_64'
         }
         manifestPlaceholders = [
-                JPUSH_PKGNAME : dartEnvVar.APPLICATION_ID,
+                JPUSH_PKGNAME: dartEnvVar.APPLICATION_ID,
                 JPUSH_APPKEY : dartEnvVar.JPUSH_KEY, // NOTE: JPush 上注册的包名对应的 Appkey.
-                JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+                JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
         ]
     }
     signingConfigs {
@@ -87,7 +89,7 @@ flutter {
 }
 
 dependencies {
-    api fileTree(include: ['*.jar','*.aar'], dir: 'libs')
+    api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
 
     implementation 'com.lcodecorex:tkrefreshlayout:1.0.7'
     implementation 'com.github.lzyzsd:jsbridge:1.0.4'

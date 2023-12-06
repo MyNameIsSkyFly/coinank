@@ -170,7 +170,8 @@ class StoreLogic extends GetxController {
 
   String get uniappDomain {
     var withoutHttps = _SpUtil()._getString(_SpKeys.uniappDomain,
-        defaultValue: 'coinsoto-h5.s3.ap-northeast-1.amazonaws.com');
+        defaultValue: ''
+            'coinsoto-h5.s3.ap-northeast-1.amazonaws.com');
     return 'https://$withoutHttps';
   }
 
@@ -179,7 +180,7 @@ class StoreLogic extends GetxController {
   }
 
   String get domain {
-    return _SpUtil()._getString(_SpKeys.domain, defaultValue: 'coinsoto.com');
+    return _SpUtil()._getString(_SpKeys.domain, defaultValue: 'coinank.com');
   }
 
   Future<bool> saveWebsocketUrl(String websocketUrl) {
@@ -188,7 +189,7 @@ class StoreLogic extends GetxController {
 
   String get websocketUrl {
     return _SpUtil()._getString(_SpKeys.websocketUrl,
-        defaultValue: 'wss://coinsoto.com/wsKline/wsKline');
+        defaultValue: 'wss://coinank.com/wsKline/wsKline');
   }
 
   Future<bool> saveApiPrefix(String apiPrefix) {
@@ -197,7 +198,7 @@ class StoreLogic extends GetxController {
 
   String get apiPrefix {
     return _SpUtil()
-        ._getString(_SpKeys.apiPrefix, defaultValue: 'https://coinsoto.com');
+        ._getString(_SpKeys.apiPrefix, defaultValue: 'https://coinank.com');
   }
 
   Future<bool> saveH5Prefix(String h5Prefix) {
@@ -206,7 +207,7 @@ class StoreLogic extends GetxController {
 
   String get h5Prefix {
     return _SpUtil()
-        ._getString(_SpKeys.h5Prefix, defaultValue: 'https://coinsoto.com');
+        ._getString(_SpKeys.h5Prefix, defaultValue: 'https://coinank.com');
   }
 
   //depthOrderDomain
@@ -216,7 +217,7 @@ class StoreLogic extends GetxController {
 
   String get depthOrderDomain {
     return _SpUtil()._getString(_SpKeys.depthOrderDomain,
-        defaultValue: 'cdn01.coinsoto.com');
+        defaultValue: 'cdn01.coinank.com');
   }
 
   //isFirst

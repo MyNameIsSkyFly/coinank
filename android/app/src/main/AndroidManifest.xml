@@ -78,7 +78,8 @@
 
         <service
             android:name="com.ank.ankapp.original.service.FloatViewService"
-            android:exported="true" />
+            android:exported="true"
+            android:foregroundServiceType="dataSync" />
 
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->

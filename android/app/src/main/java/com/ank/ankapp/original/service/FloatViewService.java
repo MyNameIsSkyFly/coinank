@@ -3,6 +3,7 @@ package com.ank.ankapp.original.service;
 import static androidx.core.app.NotificationCompat.PRIORITY_MAX;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityOptions;
 import android.app.KeyguardManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -456,10 +457,10 @@ public class FloatViewService extends Service implements View.OnClickListener {
                 firstIntent.setAction(Intent.ACTION_MAIN);
                 firstIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 //                firstIntent.putExtra(Config.CONF_HIDE_WELCOME_PAGE, true);//此种方式，隐藏启动页
-                firstIntent.putExtra("klineExchangeName",symbolVo.getExchangeName());
-                firstIntent.putExtra("klineSymbol",symbolVo.getSymbol());
-                firstIntent.putExtra("klineBaseCoin",symbolVo.getBaseCoin());
-                firstIntent.putExtra("klineProductType",symbolVo.getProductType());
+                firstIntent.putExtra("klineExchangeName", symbolVo.getExchangeName());
+                firstIntent.putExtra("klineSymbol", symbolVo.getSymbol());
+                firstIntent.putExtra("klineBaseCoin", symbolVo.getBaseCoin());
+                firstIntent.putExtra("klineProductType", symbolVo.getProductType());
 
 //                Intent kIntent = new Intent(this, KLineActivity.class);
 //                kIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

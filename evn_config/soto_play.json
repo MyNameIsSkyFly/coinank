@@ -1,11 +1,11 @@
 {
   "APPLICATION_ID": "com.coinsoho.app",
-  "PLAY": false,
+  "PLAY": true,
   "JPUSH_KEY": "4c89cdc630a1fe6ac9a05f56",
   "KEY_ALIAS": "uukr",
   "KEY_PASSWORD": "uukr.com",
   "STORE_FILE": "keystore/uukr.key",
   "STORE_PASSWORD": "uukr.com",
   "VERSION_NAME": "2.0.0",
-  "VERSION_CODE": "200"
+  "VERSION_CODE": "201"
 }
