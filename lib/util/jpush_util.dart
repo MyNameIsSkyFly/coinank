@@ -26,7 +26,6 @@ class JPushUtil {
         _handeData(message);
       }, onReceiveMessage: (Map<String, dynamic> message) async {
         print('flutter onReceiveMessage: $message');
-        _handeData(message);
       }, onReceiveNotificationAuthorization:
               (Map<String, dynamic> message) async {
         print('flutter onReceiveNotificationAuthorization: $message');
@@ -51,14 +50,12 @@ class JPushUtil {
     }
 
     _jpush.setAuth(enable: true);
-    // if (Platform.isIOS) {
     _jpush.setup(
       appKey: '8de9d5e306e08c49a078ab5f',
       channel: 'developer-default',
       production: !kDebugMode,
       debug: kDebugMode,
     );
-    // }
 
     _jpush.getRegistrationID().then((rid) async {
       print('getRegistrationID:$rid');
@@ -86,7 +83,6 @@ class JPushUtil {
         );
       }
     } else {
-      _jpush.setBadge(message['aps']['badge'] - 1);
       final map = message['extras'];
       if (map.containsKey('url')) {
         AppNav.openWebUrl(

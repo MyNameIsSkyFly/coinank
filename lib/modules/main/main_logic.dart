@@ -8,9 +8,7 @@ import 'package:ank_app/modules/home/home_logic.dart';
 import 'package:ank_app/modules/market/contract/contract_logic.dart';
 import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/export.dart';
-import 'package:ank_app/util/jpush_util.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:get/get.dart';
 
 import 'main_state.dart';
@@ -71,16 +69,6 @@ class MainLogic extends GetxController {
     _connectivitySubscription?.cancel();
     super.onClose();
   }
-
-  // @override
-  // void onInit() {
-  //   super.onInit();
-  //   FGBGEvents.stream.listen((event) {
-  //     if (event == FGBGType.foreground) {
-  //       JPushUtil.setBadge();
-  //     }
-  //   });
-  // }
 
   Future<void> checkIfNeedOpenOrderFlow() async {
     if(Platform.isIOS) return;
