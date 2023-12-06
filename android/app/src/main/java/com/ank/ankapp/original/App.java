@@ -62,8 +62,8 @@ public class App extends Application {
 
         String dir = getFilesDir().getAbsolutePath() + "/mmkv";
         MLog.d("libmmkv dir:" + dir);
-        Global.getAnalytics(this).logEvent("user_action",
-                Global.createBundle("MMKV.initialize " + dir, getClass().getSimpleName()));
+//        Global.getAnalytics(this).logEvent("user_action",
+//                Global.createBundle("MMKV.initialize " + dir, getClass().getSimpleName()));
 
 //        String rootDir = MMKV.initialize(this, dir, new MMKV.LibLoader() {
 //            @Override

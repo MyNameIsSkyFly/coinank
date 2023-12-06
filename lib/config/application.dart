@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/export.dart';
@@ -26,7 +27,7 @@ class Application {
   }
 
   Future initConfig() async {
-    if (!StoreLogic.to.isFirst) {
+    if (!StoreLogic.to.isFirst || Platform.isAndroid) {
       await getConfig();
     } else {
       StoreLogic.to.saveIsFirst(false);

@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
+//import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class Global {
 
@@ -19,11 +19,11 @@ public class Global {
         return bundle;
     }
 
-    public static FirebaseAnalytics getAnalytics(Context cot)
-    {
-        FirebaseAnalytics firebaseAnalytics= FirebaseAnalytics.getInstance(cot);
-        return firebaseAnalytics;
-    }
+//    public static FirebaseAnalytics getAnalytics(Context cot)
+//    {
+//        FirebaseAnalytics firebaseAnalytics= FirebaseAnalytics.getInstance(cot);
+//        return firebaseAnalytics;
+//    }
 
 //    public static FirstActivity firstActivity;
     public static void notifyMsg(Context cot, int arg)

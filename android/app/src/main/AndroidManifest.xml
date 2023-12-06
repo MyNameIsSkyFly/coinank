@@ -37,42 +37,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.ank.ankapp.original.activity.CommonFragmentActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:exported="true"
-            android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
-        <activity
-            android:name="com.ank.ankapp.original.activity.CommonWebActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:exported="true"
-            android:hardwareAccelerated="true"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
-        <activity
-            android:name="com.ank.ankapp.original.activity.IndicSettingActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:exported="true"
-            android:hardwareAccelerated="true"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
-        <activity
-            android:name="com.ank.ankapp.original.activity.KLineActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:exported="true"
-            android:hardwareAccelerated="true"
-            android:launchMode="singleTask" />
-        <activity
-            android:name="com.ank.ankapp.original.activity.MulKLineActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:exported="true"
-            android:hardwareAccelerated="true"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".original.activity.SelectFloatViewSymbolActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="true"

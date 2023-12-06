@@ -17,6 +17,7 @@ class JPushUtil {
 
   Future<void> initPlatformState() async {
     try {
+      _jpush.requestRequiredPermission();
       _jpush.addEventHandler(
           onReceiveNotification: (Map<String, dynamic> message) async {
         print('flutter onReceiveNotification: $message');
@@ -50,14 +51,14 @@ class JPushUtil {
     }
 
     _jpush.setAuth(enable: true);
-    if (Platform.isIOS) {
-      _jpush.setup(
-        appKey: '8de9d5e306e08c49a078ab5f',
-        channel: 'developer-default',
-        production: !kDebugMode,
-        debug: kDebugMode,
-      );
-    }
+    // if (Platform.isIOS) {
+    _jpush.setup(
+      appKey: '8de9d5e306e08c49a078ab5f',
+      channel: 'developer-default',
+      production: !kDebugMode,
+      debug: kDebugMode,
+    );
+    // }
 
     _jpush.getRegistrationID().then((rid) async {
       print('getRegistrationID:$rid');
@@ -85,7 +86,7 @@ class JPushUtil {
         );
       }
     } else {
-      _jpush.setBadge(message['aps']['badge']-1);
+      _jpush.setBadge(message['aps']['badge'] - 1);
       final map = message['extras'];
       if (map.containsKey('url')) {
         AppNav.openWebUrl(
