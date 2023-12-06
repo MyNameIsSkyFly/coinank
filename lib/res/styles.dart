@@ -62,6 +62,11 @@ class Styles {
   static TextStyle tsBody_18(BuildContext context) =>
       Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 18);
 
+  static TextStyle tsBody_18m(BuildContext context) => Theme.of(context)
+      .textTheme
+      .bodyMedium!
+      .copyWith(fontSize: 18, fontWeight: fontMedium);
+
   static TextStyle tsBody_20(BuildContext context) =>
       Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 20);
 

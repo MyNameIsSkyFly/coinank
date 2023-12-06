@@ -8,6 +8,7 @@ import 'package:ank_app/modules/home/home_logic.dart';
 import 'package:ank_app/modules/market/contract/contract_logic.dart';
 import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:ank_app/widget/activity_dialog.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get/get.dart';
 
@@ -23,6 +24,7 @@ class MainLogic extends GetxController {
     handleNetwork();
     AppUtil.syncSettingToHost();
     checkIfNeedOpenOrderFlow();
+    getActivity();
     super.onReady();
   }
 
@@ -36,6 +38,7 @@ class MainLogic extends GetxController {
       if (AppConst.networkConnected == true) return;
       AppConst.networkConnected = result != ConnectivityResult.none;
       if (result != ConnectivityResult.none) {
+        getActivity();
         Get.find<HomeLogic>().onRefresh();
         Get.find<ContractLogic>().onRefresh();
         state.webViewController?.reload();
@@ -64,6 +67,13 @@ class MainLogic extends GetxController {
         StoreLogic.to.saveLoginUserInfo(value);
         AppConst.eventBus.fire(LoginStatusChangeEvent(isLogin: true));
       });
+    }
+  }
+
+  Future<void> getActivity() async {
+    final data = await Apis().getActivityData(lan: AppUtil.shortLanguageName);
+    if (data?.isShow == true) {
+      Get.dialog(ActivityDialog(data: data!), barrierDismissible: false);
     }
   }
 

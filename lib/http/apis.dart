@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ank_app/entity/activity_entity.dart';
 import 'package:ank_app/entity/body/futures_big_data_body.dart';
 import 'package:ank_app/entity/body/test_body.dart';
 import 'package:ank_app/entity/chart_entity.dart';
@@ -213,4 +214,8 @@ abstract class Apis {
   //清算热图币种列表
   @GET('/api/liqMap/getLiqHeatMapSymbol')
   Future<List<String>?> getLiqHeatMapData();
+
+  //活动提醒
+  @GET('/api/app/getAppNotice')
+  Future<ActivityEntity?> getActivityData({@Query('lan') String? lan});
 }
