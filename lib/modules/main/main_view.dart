@@ -26,6 +26,7 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       key: state.scaffoldKey,
+      resizeToAvoidBottomInset: false,
       body: Obx(() {
         return IndexedStack(index: logic.state.selectedIndex.value, children: [
           const HomePage(),

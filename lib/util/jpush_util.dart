@@ -6,7 +6,7 @@ import 'dart:io';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:jpush_flutter/jpush_flutter.dart';
+import 'package:jpush_google_flutter/jpush_google_flutter.dart';
 
 class JPushUtil {
   JPushUtil._();

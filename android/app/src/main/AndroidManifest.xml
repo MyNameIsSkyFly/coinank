@@ -79,7 +79,35 @@
         <service
             android:name="com.ank.ankapp.original.service.FloatViewService"
             android:exported="true"
-            android:foregroundServiceType="dataSync" />
+            android:foregroundServiceType="dataSync"
+            android:permission="android.permission.FOREGROUND_SERVICE" />
+        <!-- 谷歌分析配置start 由于alipush里面已经有部分配置，
+               这里使用了tools:replace="android:value" 进行替换，否则谷歌无法上报分析-->
+        <meta-data
+            android:name="firebase_analytics_collection_deactivated"
+            android:value="false"
+            tools:replace="android:value"/>
+
+        <meta-data
+            android:name="firebase_analytics_collection_enabled"
+            android:value="true"
+            tools:replace="android:value" />
+
+        <meta-data
+            android:name="google_analytics_automatic_screen_reporting_enabled"
+            tools:replace="android:value"
+            android:value="true" />
+
+        <!-- 谷歌分析配置end   -->
+        <meta-data
+            android:name="gcm_appid"
+            android:value="1:640970033273:android:6ab79a8209fe81d902aca8" />
+        <meta-data
+            android:name="gcm_sender"
+            android:value="gcm:640970033273" />
+        <meta-data
+            android:name="gcm_kkk"
+            android:value="QUl6YVN5REkwdmhqZURjVGlmbFdCdTM2eE1XMjNZSkJqNWJzMDZF" />
 
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->

@@ -36,9 +36,9 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-//        Global.getAnalytics(this).setAnalyticsCollectionEnabled(true);
-//        Global.getAnalytics(this).logEvent("user_action",
-//                Global.createBundle("app oncreate", getClass().getSimpleName()));
+        Global.getAnalytics(this).setAnalyticsCollectionEnabled(true);
+        Global.getAnalytics(this).logEvent("user_action",
+                Global.createBundle("app oncreate", getClass().getSimpleName()));
 
 //        PushSetting.PackageName = getPackageName();
 

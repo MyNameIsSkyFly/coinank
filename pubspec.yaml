@@ -41,7 +41,7 @@ dependencies:
   flutter_inappwebview: ^6.0.0-beta.30
   package_info_plus: ^5.0.1
   event_bus: ^2.0.0
-  jpush_flutter: ^2.5.0
+  jpush_google_flutter: ^1.0.7
   flutter_fgbg: ^0.3.0
   #cell 侧滑按钮
   flutter_slidable: ^3.0.1

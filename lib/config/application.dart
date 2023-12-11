@@ -8,6 +8,8 @@ import 'package:ank_app/widget/common_webview.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 
+import '../constants/urls.dart';
+
 class Application {
   Application._privateConstructor();
 
@@ -23,11 +25,15 @@ class Application {
     EasyRefresh.defaultHeaderBuilder = () => const MaterialHeader();
     JPushUtil().initPlatformState();
     await CommonWebView.setCookieValue();
-    await initConfig();
+    if (Platform.isAndroid) {
+      initConfig();
+    } else {
+      await initConfig();
+    }
   }
 
   Future initConfig() async {
-    if (!StoreLogic.to.isFirst || Platform.isAndroid) {
+    if (!StoreLogic.to.isFirst) {
       await getConfig();
     } else {
       StoreLogic.to.saveIsFirst(false);
@@ -52,6 +58,7 @@ class Application {
       StoreLogic.to.saveH5Prefix(data['ank_h5Prefix']),
       StoreLogic.to.saveDepthOrderDomain(data['newDepthOrderDomain']),
     ]);
+    Apis.dio.options.baseUrl = Urls.apiPrefix;
     return true;
   }
 
