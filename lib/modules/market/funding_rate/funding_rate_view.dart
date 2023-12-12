@@ -256,7 +256,7 @@ class FundingRatePage extends StatelessWidget {
                                                                 ?.fundingRate,
                                                             precision: 4,
                                                             showAdd: false),
-                                                        style: Styles.tsBody_12(
+                                                        style: Styles.tsBody_12m(
                                                                 context)
                                                             .copyWith(
                                                           color: AppUtil
@@ -277,7 +277,7 @@ class FundingRatePage extends StatelessWidget {
                                                                 precision: 4,
                                                                 showAdd: false),
                                                             style: Styles
-                                                                    .tsBody_12(
+                                                                    .tsBody_12m(
                                                                         context)
                                                                 .copyWith(
                                                               color: AppUtil
