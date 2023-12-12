@@ -100,7 +100,7 @@ class AppUtil {
   }
 
   static String getLargeFormatString(String val) {
-    final locale = Get.locale.toString();
+    final locale = (Get.locale ?? Get.deviceLocale).toString();
     var amount = double.parse(val);
     if (locale.isCaseInsensitiveContains('zh')) {
       return FormatUtil.amountConversion(amount);
