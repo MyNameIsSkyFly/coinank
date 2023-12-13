@@ -6,6 +6,7 @@ import 'package:ank_app/modules/chart/chart_drawer/chart_drawer_logic.dart';
 import 'package:ank_app/modules/chart/chart_logic.dart';
 import 'package:ank_app/modules/home/home_logic.dart';
 import 'package:ank_app/modules/market/contract/contract_logic.dart';
+import 'package:ank_app/modules/setting/setting_logic.dart';
 import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/activity_dialog.dart';
@@ -21,7 +22,6 @@ class MainLogic extends GetxController {
   @override
   void onReady() {
     AppUtil.checkUpdate(Get.context!);
-    tryLogin();
     handleNetwork();
     AppUtil.syncSettingToHost();
     tryLogin();
@@ -47,6 +47,7 @@ class MainLogic extends GetxController {
         tryLogin();
         Get.find<ChartLogic>().onRefresh();
         Get.find<ChartDrawerLogic>().onRefresh();
+        Get.find<SettingLogic>().getAppSetting();
       }
     });
   }
@@ -73,6 +74,7 @@ class MainLogic extends GetxController {
   }
 
   Future<void> getActivity() async {
+    if (AppConst.networkConnected == false) return;
     final data = await Apis().getActivityData(lan: AppUtil.shortLanguageName);
     if (data?.isShow == true) {
       Get.dialog(ActivityDialog(data: data!), barrierDismissible: false);
