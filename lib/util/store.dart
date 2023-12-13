@@ -61,8 +61,8 @@ class StoreLogic extends GetxController {
     };
   }
 
-  Future<bool?> saveDarkMode(bool? isDarkMode) {
-    return _SpUtil()._saveInt(
+  Future<bool?> saveDarkMode(bool? isDarkMode) async {
+    return await _SpUtil()._saveInt(
         _SpKeys.darkMode,
         isDarkMode == null
             ? -1

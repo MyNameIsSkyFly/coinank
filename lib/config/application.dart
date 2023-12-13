@@ -7,6 +7,9 @@ import 'package:ank_app/util/jpush_util.dart';
 import 'package:ank_app/widget/common_webview.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:lottie/lottie.dart';
 
 import '../constants/urls.dart';
 
@@ -23,6 +26,7 @@ class Application {
     await Future.wait([StoreLogic.init(), checkNetwork()]);
     MessageFlutterApi.setup(FlutterApiManager());
     EasyRefresh.defaultHeaderBuilder = () => const MaterialHeader();
+    initLoading();
     JPushUtil().initPlatformState();
     await CommonWebView.setCookieValue();
     if (Platform.isAndroid) {
@@ -30,6 +34,25 @@ class Application {
     } else {
       await initConfig();
     }
+  }
+
+  initLoading() {
+    EasyLoading.instance
+      ..indicatorWidget = Lottie.asset(
+          StoreLogic.to.isDarkMode == true
+              ? 'assets/lottie/loading_dark.json'
+              : 'assets/lottie/loading_light.json',
+          repeat: true,
+          animate: true,
+          width: 60,
+          height: 60)
+      ..loadingStyle = EasyLoadingStyle.custom
+      ..backgroundColor =
+          StoreLogic.to.isDarkMode == true ? Colors.black : Colors.white
+      ..indicatorColor = Colors.white
+      ..textColor = Colors.white
+      ..radius = 12
+      ..userInteractions = false;
   }
 
   Future initConfig() async {

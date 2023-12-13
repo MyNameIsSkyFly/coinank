@@ -21,6 +21,7 @@ class MainLogic extends GetxController {
   @override
   void onReady() {
     AppUtil.checkUpdate(Get.context!);
+    tryLogin();
     handleNetwork();
     AppUtil.syncSettingToHost();
     checkIfNeedOpenOrderFlow();

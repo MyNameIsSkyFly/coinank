@@ -279,7 +279,7 @@
   "s_liq_map_low": "Low leverage",
   "s_liq_map_mid": "Medium leverage",
   "s_liq_map_high": "High leverage",
-  "liqHeat":"Liquidation Leverage",
+  "liqHeat": "Liquidation Leverage",
   "s_choose_time": "시간대 선택",
   "s_choose_coin": "암호화폐 선택",
   "s_hot": "인기 검색 ",
@@ -291,5 +291,10 @@
   "error_pwd": "암호가 잘못되었습니다",
   "success_login": "로그인에 성공했습니다",
   "error_email_registered": "이 사서함이 등록되었습니다",
-  "error_code": "확인 코드가 잘못되었습니다"
+  "error_code": "확인 코드가 잘못되었습니다",
+  "error_code_timeout": "验证码已过期",
+  "error_email_unregistered": "该邮箱未注册",
+  "error_email_format": "邮箱格式错误",
+  "error_code_format": "密码格式错误",
+  "error_old_pwd": "旧密码错误"
 }

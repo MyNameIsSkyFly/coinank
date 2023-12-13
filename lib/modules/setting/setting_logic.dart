@@ -1,8 +1,6 @@
 import 'dart:io';
 
-import 'package:ank_app/constants/app_const.dart';
-import 'package:ank_app/http/apis.dart';
-import 'package:ank_app/util/store.dart';
+import 'package:ank_app/res/export.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -15,6 +13,7 @@ class SettingLogic extends GetxController {
   @override
   void onReady() {
     getVersionName();
+    getAppSetting();
   }
 
   Future<void> getVersionName() async {
@@ -58,5 +57,10 @@ class SettingLogic extends GetxController {
         return '${name.substring(0, 2)}${'*' * 4}';
       }
     }
+  }
+
+  Future<void> getAppSetting() async {
+    final data = await Apis().getAppSetting(lan: AppUtil.shortLanguageName);
+    state.settingList.value = data ?? [];
   }
 }

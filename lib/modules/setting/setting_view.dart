@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:ank_app/constants/urls.dart';
+import 'package:ank_app/entity/app_setting_entity.dart';
 import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/adaptive_dialog_action.dart';
@@ -9,6 +10,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'setting_logic.dart';
 
@@ -57,6 +59,33 @@ class _SettingPageState extends State<SettingPage> {
                     },
                     title: S.of(context).s_floatviewsetting,
                   ),
+                Obx(() {
+                  return ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    itemCount:
+                        state.settingList.where((e) => e.isShow == true).length,
+                    itemBuilder: (cnt, index) {
+                      AppSettingEntity item = state.settingList
+                          .where((e) => e.isShow == true)
+                          .toList()[index];
+                      return _SettingLine(
+                        onTap: () {
+                          if (item.openType == '1') {
+                            launchUrl(Uri.parse(item.url ?? ''));
+                          } else if (item.openType == '2') {
+                            AppNav.openWebUrl(
+                              url: item.url ?? '',
+                              title: 'Coinank',
+                            );
+                          }
+                        },
+                        title: item.name ?? '',
+                      );
+                    },
+                  );
+                }),
                 const _ThemeChangeLine(),
                 _SettingLine(
                     onTap: () {

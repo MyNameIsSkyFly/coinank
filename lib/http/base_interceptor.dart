@@ -99,6 +99,36 @@ class BaseInterceptor extends Interceptor {
         StoreLogic.clearUserInfo();
         AppNav.toLogin();
         return true;
+      case '430':
+        AppUtil.showToast(S.current.error_login_no_user);
+        return true;
+      case '431':
+        AppUtil.showToast(S.current.error_pwd);
+        return true;
+      case '432':
+        AppUtil.showToast(S.current.error_code_timeout);
+        return true;
+      case '433':
+        AppUtil.showToast(S.current.s_verify_code_error);
+        return true;
+      case '434':
+        AppUtil.showToast(S.current.error_email_registered);
+        return true;
+      case '435':
+        AppUtil.showToast(S.current.error_email_unregistered);
+        return true;
+      case '436':
+        AppUtil.showToast(S.current.codeAlreadySent);
+        return true;
+      case '437':
+        AppUtil.showToast(S.current.error_email_format);
+        return true;
+      case '438':
+        AppUtil.showToast(S.current.error_code_format);
+        return true;
+      case '439':
+        AppUtil.showToast(S.current.error_old_pwd);
+        return true;
       default:
         return false;
     }

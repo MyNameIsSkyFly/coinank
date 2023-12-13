@@ -26,10 +26,10 @@ class ActivityDialog extends StatelessWidget {
               StoreLogic.to.isDarkMode
                   ? Assets.commonIcActivityNight
                   : Assets.commonIcActivityLight,
-              width: 61,
-              height: 61,
+              width: 40,
+              height: 40,
             ),
-            const Gap(10),
+            const Gap(15),
             Text(
               data.title ?? '',
               style: Styles.tsBody_18m(context),

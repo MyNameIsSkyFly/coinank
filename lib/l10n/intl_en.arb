@@ -294,5 +294,10 @@
   "error_pwd": "Incorrect password",
   "success_login": "Login successfully",
   "error_email_registered": "This email address has already been registered",
-  "error_code": "Incorrect code"
+  "error_code": "Incorrect code",
+  "error_code_timeout": "验证码已过期",
+  "error_email_unregistered": "该邮箱未注册",
+  "error_email_format": "邮箱格式错误",
+  "error_code_format": "密码格式错误",
+  "error_old_pwd": "旧密码错误"
 }

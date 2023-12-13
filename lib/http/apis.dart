@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:ank_app/entity/activity_entity.dart';
+import 'package:ank_app/entity/app_setting_entity.dart';
 import 'package:ank_app/entity/body/futures_big_data_body.dart';
 import 'package:ank_app/entity/body/test_body.dart';
 import 'package:ank_app/entity/chart_entity.dart';
@@ -27,8 +28,8 @@ part 'apis.g.dart';
 abstract class Apis {
   static final Dio dio = Dio()
     ..interceptors.addAll([
-      // TalkerDioLogger(
-      //     settings: const TalkerDioLoggerSettings(printRequestHeaders: true)),
+      TalkerDioLogger(
+          settings: const TalkerDioLoggerSettings(printRequestHeaders: true)),
       BaseInterceptor(),
     ])
     ..options.headers.addAll({'client': Platform.isAndroid ? 'android' : 'ios'})
@@ -218,4 +219,7 @@ abstract class Apis {
   //活动提醒
   @GET('/api/app/getAppNotice')
   Future<ActivityEntity?> getActivityData({@Query('lan') String? lan});
+
+  @GET('/api/app/getAppSetting')
+  Future<List<AppSettingEntity>?> getAppSetting({@Query('lan') String? lan});
 }

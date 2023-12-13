@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:ank_app/config/application.dart';
 import 'package:ank_app/entity/event/theme_event.dart';
 import 'package:ank_app/entity/event/web_js_event.dart';
 import 'package:ank_app/modules/chart/chart_drawer/chart_drawer_logic.dart';
@@ -43,7 +44,7 @@ class AppUtil {
       backgroundColor: Colors.black,
       textColor: Colors.white,
       webBgColor: 'linear-gradient(to right, #000000, #000000)',
-      gravity: ToastGravity.CENTER,
+      gravity: ToastGravity.BOTTOM,
       webPosition: 'center',
       fontSize: 16.0,
     );
@@ -77,13 +78,14 @@ class AppUtil {
     }
   }
 
-  static void changeTheme(bool? isDarkMode) {
-    StoreLogic.to.saveDarkMode(isDarkMode);
+  static Future<void> changeTheme(bool? isDarkMode) async{
+   await StoreLogic.to.saveDarkMode(isDarkMode);
     Get.changeThemeMode(isDarkMode == null
         ? ThemeMode.system
         : isDarkMode
             ? ThemeMode.dark
             : ThemeMode.light);
+    Application.instance.initLoading();
     MessageHostApi().changeDarkMode(
         isDarkMode ?? Get.mediaQuery.platformBrightness == Brightness.dark);
     AppConst.eventBus.fire(ThemeChangeEvent(type: ThemeChangeType.dark));
