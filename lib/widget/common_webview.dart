@@ -8,9 +8,12 @@ import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:get/get.dart';
 
 import '../constants/urls.dart';
 import '../entity/event/logged_event.dart';
+import '../modules/main/main_logic.dart';
+import '../modules/market/market_logic.dart';
 
 class CommonWebView extends StatefulWidget {
   const CommonWebView({
@@ -101,7 +104,14 @@ class _CommonWebViewState extends State<CommonWebView>
     });
     _evJsSubscription =
         AppConst.eventBus.on<WebJSEvent>().listen((event) async {
-      _evJs = event.evJS;
+      if (event.url == null) {
+        _evJs = event.evJS;
+      } else {
+        if (widget.url == event.url || widget.urlGetter?.call() == event.url) {
+          _evJs = event.evJS;
+          webCtrl?.evaluateJavascript(source: _evJs);
+        }
+      }
     });
     startWebRefreshCounter();
     super.initState();
@@ -193,6 +203,43 @@ class _CommonWebViewState extends State<CommonWebView>
                     handlerName: 'getUserInfo',
                     callback: (arguments) {
                       return jsonEncode(StoreLogic.to.loginUserInfo?.toJson());
+                    },
+                  )
+                  ..addJavaScriptHandler(
+                    handlerName: 'openUrl',
+                    callback: (arguments) {
+                      if (arguments.isEmpty) return;
+                      AppNav.openWebUrl(url: arguments[0]);
+                    },
+                  )
+                  ..addJavaScriptHandler(
+                    handlerName: 'openPage',
+                    callback: (arguments) {
+                      if (arguments.isEmpty) return;
+                      final uri = Uri.parse(arguments[0]);
+                      if (uri.path == '/') {
+                        Get.until((route) => route.settings.name == '/');
+                        var tabIndex = int.tryParse(
+                                uri.queryParameters['tabIndex'] ?? '') ??
+                            0;
+                        Get.find<MainLogic>().selectTab(tabIndex);
+                        if (tabIndex == 1) {
+                          var subTabIndex = int.tryParse(
+                                  uri.queryParameters['subTabIndex'] ?? '') ??
+                              0;
+                          Get.find<MarketLogic>().selectIndex(subTabIndex);
+                          if (subTabIndex == 2) {
+                            Future.delayed(const Duration(milliseconds: 100))
+                                .then((value) {
+                              AppConst.eventBus.fire(WebJSEvent(
+                                  evJS: uri.queryParameters['jsSource'] ?? '',
+                                  url: Urls.urlLiquidation));
+                            });
+                          }
+                        }
+                      } else {
+                        Get.toNamed(uri.path, arguments: uri.queryParameters);
+                      }
                     },
                   );
               },

@@ -36,6 +36,7 @@ class ExchangeOiLogic extends GetxController {
 
   @override
   void onInit() {
+    menuParamEntity.value.baseCoin = Get.arguments?['baseCoin'] ?? 'BTC';
     _fgbgSubscription = FGBGEvents.stream.listen((event) {
       isAppVisible = event == FGBGType.foreground;
     });
@@ -72,7 +73,10 @@ class ExchangeOiLogic extends GetxController {
 
   Future<void> loadAllBaseCoins() async {
     final result = await Apis().getMarketAllCurrencyData();
-    coinList.assignAll(result ?? []);
+    var list = result ?? [];
+    selectedCoinIndex =
+        list.indexOf(menuParamEntity.value.baseCoin?.toUpperCase() ?? 'BTC');
+    coinList.assignAll(list);
   }
 
   Future<void> loadData() async {
