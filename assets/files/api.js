@@ -1,4 +1,4 @@
-const apiHost = "https://coinsoto.com"
+const apiHost = "https://coinank.com"
 const getLiqHeatMap = (params)=>{
     let {exchangeName, symbol, interval} = params
     return fetch(`${apiHost}/api/liqMap/getLiqHeatMap?exchangeName=${exchangeName}&symbol=${symbol}&interval=${interval}`,

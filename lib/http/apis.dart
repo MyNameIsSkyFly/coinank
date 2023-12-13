@@ -28,8 +28,8 @@ part 'apis.g.dart';
 abstract class Apis {
   static final Dio dio = Dio()
     ..interceptors.addAll([
-      TalkerDioLogger(
-          settings: const TalkerDioLoggerSettings(printRequestHeaders: true)),
+      // TalkerDioLogger(
+      //     settings: const TalkerDioLoggerSettings(printRequestHeaders: true)),
       BaseInterceptor(),
     ])
     ..options.headers.addAll({'client': Platform.isAndroid ? 'android' : 'ios'})
@@ -201,6 +201,13 @@ abstract class Apis {
     @Query('exchange') required String exchange,
   });
 
+  //聚合清算地图html json
+  @GET('/api/liqMap/getAggLiqMap')
+  Future getAggLiqMap({
+    @Query('interval') required String interval,
+    @Query('baseCoin') required String baseCoin,
+  });
+
   //多空持仓人数比
   @GET('/api/longshort/longShortRatio')
   Future getLongShortPersonRatio({
@@ -220,6 +227,7 @@ abstract class Apis {
   @GET('/api/app/getAppNotice')
   Future<ActivityEntity?> getActivityData({@Query('lan') String? lan});
 
+  //设置页面动态配置的按钮
   @GET('/api/app/getAppSetting')
   Future<List<AppSettingEntity>?> getAppSetting({@Query('lan') String? lan});
 }

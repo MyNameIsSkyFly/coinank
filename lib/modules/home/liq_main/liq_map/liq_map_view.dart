@@ -16,106 +16,197 @@ class LiqMapPage extends StatelessWidget {
     return Obx(() {
       return Stack(
         children: [
-          Column(
-            children: [
-              if (!state.isLoading.value)
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Obx(() {
-                        return InkWell(
-                          onTap: () => logic.chooseSymbol(),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    state.symbol.value.split('/').last,
-                                    style: Styles.tsBody_14m(context),
-                                  ),
-                                  const Gap(10),
-                                  Image.asset(
-                                    Assets.commonIconArrowDown,
-                                    width: 10,
-                                    color: Theme.of(context).iconTheme.color,
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                state.symbol.value.split('/').first,
-                                style: Styles.tsSub_12(context),
-                              ),
-                            ],
-                          ),
-                        );
-                      }),
-                      const Spacer(),
-                      InkWell(
-                        onTap: () => logic.chooseTime(),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          height: 30,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context)
-                                .inputDecorationTheme
-                                .fillColor,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Row(
-                            children: [
-                              Obx(() {
-                                return Text(
-                                  state.interval.value,
-                                  style: Styles.tsSub_14m(context),
-                                );
-                              }),
-                              const Gap(10),
-                              Image.asset(
-                                Assets.commonIconArrowDown,
-                                width: 10,
-                                color: Theme.of(context).iconTheme.color,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const Gap(20),
-                      InkWell(
-                        onTap: () => logic.onRefresh(),
-                        child: Container(
-                          width: 30,
-                          height: 30,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context)
-                                .inputDecorationTheme
-                                .fillColor,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Icon(
-                            Icons.refresh_rounded,
-                            color: Theme.of(context).iconTheme.color,
-                            size: 20,
+          SingleChildScrollView(
+            padding: EdgeInsets.zero,
+            physics: const ClampingScrollPhysics(),
+            child: Column(
+              children: [
+                if (!state.isLoading.value)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 20),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Obx(() {
+                          return InkWell(
+                            onTap: () => logic.chooseSymbol(false),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      state.symbol.value.split('/').last,
+                                      style: Styles.tsBody_14m(context),
+                                    ),
+                                    const Gap(10),
+                                    Image.asset(
+                                      Assets.commonIconArrowDown,
+                                      width: 10,
+                                      color: Theme.of(context).iconTheme.color,
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                  state.symbol.value.split('/').first,
+                                  style: Styles.tsSub_12(context),
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                        const Spacer(),
+                        InkWell(
+                          onTap: () => logic.chooseTime(false),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            height: 30,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context)
+                                  .inputDecorationTheme
+                                  .fillColor,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Row(
+                              children: [
+                                Obx(() {
+                                  return Text(
+                                    state.interval.value,
+                                    style: Styles.tsSub_14m(context),
+                                  );
+                                }),
+                                const Gap(10),
+                                Image.asset(
+                                  Assets.commonIconArrowDown,
+                                  width: 10,
+                                  color: Theme.of(context).iconTheme.color,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                        const Gap(20),
+                        InkWell(
+                          onTap: () => logic.onRefresh(),
+                          child: Container(
+                            width: 30,
+                            height: 30,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context)
+                                  .inputDecorationTheme
+                                  .fillColor,
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Icon(
+                              Icons.refresh_rounded,
+                              color: Theme.of(context).iconTheme.color,
+                              size: 20,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                Offstage(
+                  offstage: state.isLoading.value,
+                  child: Container(
+                    height: 500,
+                    width: double.infinity,
+                    margin: const EdgeInsets.all(15),
+                    child: CommonWebView(
+                      url: Urls.chartUrl,
+                      onWebViewCreated: (controller) =>
+                          state.webCtrl = controller,
+                      onLoadStop: () => logic.updateReadyStatus(webReady: true),
+                    ),
                   ),
                 ),
-              Container(
-                height: 500,
-                width: double.infinity,
-                margin: const EdgeInsets.all(15),
-                child: CommonWebView(
-                  url: Urls.chartUrl,
-                  onWebViewCreated: (controller) => state.webCtrl = controller,
-                  onLoadStop: () => logic.updateReadyStatus(webReady: true),
+                if (!state.isLoading.value)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 20),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Obx(() {
+                          return InkWell(
+                            onTap: () => logic.chooseSymbol(true),
+                            child: Text(
+                              state.aggCoin.value,
+                              style: Styles.tsBody_14m(context),
+                            ),
+                          );
+                        }),
+                        const Spacer(),
+                        InkWell(
+                          onTap: () => logic.chooseTime(true),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            height: 30,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context)
+                                  .inputDecorationTheme
+                                  .fillColor,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Row(
+                              children: [
+                                Obx(() {
+                                  return Text(
+                                    state.aggInterval.value,
+                                    style: Styles.tsSub_14m(context),
+                                  );
+                                }),
+                                const Gap(10),
+                                Image.asset(
+                                  Assets.commonIconArrowDown,
+                                  width: 10,
+                                  color: Theme.of(context).iconTheme.color,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const Gap(20),
+                        InkWell(
+                          onTap: () => logic.onAggRefresh(),
+                          child: Container(
+                            width: 30,
+                            height: 30,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context)
+                                  .inputDecorationTheme
+                                  .fillColor,
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Icon(
+                              Icons.refresh_rounded,
+                              color: Theme.of(context).iconTheme.color,
+                              size: 20,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                Offstage(
+                  offstage: state.isLoading.value,
+                  child: Container(
+                    height: 500,
+                    width: double.infinity,
+                    margin: const EdgeInsets.all(15),
+                    child: CommonWebView(
+                      url: Urls.chartUrl,
+                      onWebViewCreated: (controller) =>
+                          state.aggWebCtrl = controller,
+                      onLoadStop: () =>
+                          logic.updateReadyStatus(aggWebReady: true),
+                    ),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           if (state.isLoading.value) const LottieIndicator(),
         ],
