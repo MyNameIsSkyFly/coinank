@@ -2,6 +2,7 @@ import 'package:ank_app/entity/activity_entity.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ActivityDialog extends StatelessWidget {
   const ActivityDialog({super.key, required this.data});
@@ -49,24 +50,77 @@ class ActivityDialog extends StatelessWidget {
               ),
             ),
             const Gap(20),
-            InkWell(
-              onTap: Get.back,
-              child: Container(
-                height: 44,
-                decoration: BoxDecoration(
-                  color: Styles.cMain,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                alignment: Alignment.center,
-                child: Text(
-                  S.current.s_ok,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
+            if (data.url != null && data.url!.isNotEmpty)
+              Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      onTap: Get.back,
+                      child: Container(
+                        height: 44,
+                        decoration: BoxDecoration(
+                          color:
+                              Theme.of(context).inputDecorationTheme.fillColor,
+                          borderRadius: BorderRadius.circular(22),
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(S.current.s_cancel,
+                            style: Styles.tsBody_16(context)),
+                      ),
+                    ),
+                  ),
+                  const Gap(15),
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        Get.back();
+                        if (data.openType == '1') {
+                          launchUrl(Uri.parse(data.url ?? ''));
+                        } else if (data.openType == '2') {
+                          AppNav.openWebUrl(
+                            url: data.url ?? '',
+                            title: 'Coinank',
+                          );
+                        }
+                      },
+                      child: Container(
+                        height: 44,
+                        decoration: BoxDecoration(
+                          color: Styles.cMain,
+                          borderRadius: BorderRadius.circular(22),
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          S.current.s_goto,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            else
+              InkWell(
+                onTap: Get.back,
+                child: Container(
+                  height: 44,
+                  decoration: BoxDecoration(
+                    color: Styles.cMain,
+                    borderRadius: BorderRadius.circular(22),
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(
+                    S.current.s_ok,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
                   ),
                 ),
-              ),
-            )
+              )
           ],
         ),
       ),

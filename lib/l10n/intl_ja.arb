@@ -297,5 +297,6 @@
   "error_email_unregistered": "该邮箱未注册",
   "error_email_format": "邮箱格式错误",
   "error_code_format": "密码格式错误",
-  "error_old_pwd": "旧密码错误"
+  "error_old_pwd": "旧密码错误",
+  "s_goto": "前往"
 }
