@@ -60,6 +60,7 @@ class SettingLogic extends GetxController {
   }
 
   Future<void> getAppSetting() async {
+    if (AppConst.networkConnected == false) return;
     final data = await Apis().getAppSetting(lan: AppUtil.shortLanguageName);
     state.settingList.value = data ?? [];
   }
