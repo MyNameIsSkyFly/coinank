@@ -236,6 +236,14 @@ class _CommonWebViewState extends State<CommonWebView>
                                   url: Urls.urlLiquidation));
                             });
                           }
+                        } else if (tabIndex == 2) {
+                          var symbol = uri.queryParameters['symbol'] ?? '';
+                          var baseCoin = uri.queryParameters['baseCoin'] ?? '';
+                          var exchangeName =
+                              uri.queryParameters['exchangeName'] ?? '';
+                          var productType = uri.queryParameters['productType'];
+                          AppUtil.toKLine(
+                              exchangeName, symbol, baseCoin, productType);
                         }
                       } else {
                         Get.toNamed(uri.path, arguments: uri.queryParameters);
