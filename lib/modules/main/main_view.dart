@@ -93,7 +93,7 @@ class MyBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(bottom: Get.mediaQuery.padding.bottom),
+      padding: EdgeInsets.only(bottom: Get.mediaQuery.viewPadding.bottom),
       decoration: BoxDecoration(
           color: Theme.of(context).bottomAppBarTheme.color,
           boxShadow: const [

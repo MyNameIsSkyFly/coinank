@@ -7,6 +7,7 @@ import 'package:ank_app/entity/event/web_js_event.dart';
 import 'package:ank_app/modules/chart/chart_drawer/chart_drawer_logic.dart';
 import 'package:ank_app/modules/chart/chart_logic.dart';
 import 'package:ank_app/modules/main/main_logic.dart';
+import 'package:ank_app/modules/setting/setting_logic.dart';
 import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/util/format_util.dart';
@@ -76,10 +77,13 @@ class AppUtil {
     if (Get.isRegistered<ChartDrawerLogic>()) {
       Get.find<ChartDrawerLogic>().onRefresh();
     }
+    if (Get.isRegistered<SettingLogic>()) {
+      Get.find<SettingLogic>().getAppSetting();
+    }
   }
 
-  static Future<void> changeTheme(bool? isDarkMode) async{
-   await StoreLogic.to.saveDarkMode(isDarkMode);
+  static Future<void> changeTheme(bool? isDarkMode) async {
+    await StoreLogic.to.saveDarkMode(isDarkMode);
     Get.changeThemeMode(isDarkMode == null
         ? ThemeMode.system
         : isDarkMode
