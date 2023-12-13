@@ -24,6 +24,7 @@ class MainLogic extends GetxController {
     tryLogin();
     handleNetwork();
     AppUtil.syncSettingToHost();
+    tryLogin();
     checkIfNeedOpenOrderFlow();
     getActivity();
     super.onReady();
