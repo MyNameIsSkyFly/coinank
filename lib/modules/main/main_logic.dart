@@ -23,6 +23,7 @@ class MainLogic extends GetxController {
     AppUtil.checkUpdate(Get.context!);
     handleNetwork();
     AppUtil.syncSettingToHost();
+    tryLogin();
     checkIfNeedOpenOrderFlow();
     getActivity();
     super.onReady();
