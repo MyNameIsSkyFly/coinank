@@ -25,6 +25,7 @@ class CommonWebView extends StatefulWidget {
     this.showLoading = false,
     this.safeArea = false,
     this.onLoadStop,
+    this.dynamicTitle = false,
   });
 
   final String? title;
@@ -34,6 +35,7 @@ class CommonWebView extends StatefulWidget {
   final VoidCallback? onLoadStop;
   final bool showLoading;
   final bool safeArea;
+  final bool dynamicTitle;
 
   static Future<void> setCookieValue() async {
     final cookieList = <(String, String)>[];
@@ -86,6 +88,7 @@ class _CommonWebViewState extends State<CommonWebView>
   StreamSubscription<FGBGType>? _fgbgSubscription;
   int _progress = 0;
   String _evJs = '';
+  late String? title = widget.title;
 
   @override
   void initState() {
@@ -162,17 +165,20 @@ class _CommonWebViewState extends State<CommonWebView>
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: widget.title == null
-          ? null
-          : AppTitleBar(
-              title: widget.title ?? '',
-            ),
+      appBar: title == null ? null : AppTitleBar(title: title ?? ''),
       body: Stack(
         children: [
           Padding(
             padding: EdgeInsets.only(
                 top: widget.safeArea ? AppConst.statusBarHeight : 0),
             child: InAppWebView(
+              onTitleChanged: (controller, title) {
+                if (!widget.dynamicTitle) return;
+                if (this.title == title) return;
+                setState(() {
+                  this.title = title;
+                });
+              },
               initialFile: !widget.url.startsWith('https://') &&
                       !widget.url.startsWith('http://')
                   ? widget.url
@@ -209,7 +215,7 @@ class _CommonWebViewState extends State<CommonWebView>
                     handlerName: 'openUrl',
                     callback: (arguments) {
                       if (arguments.isEmpty) return;
-                      AppNav.openWebUrl(url: arguments[0]);
+                      AppNav.openWebUrl(url: arguments[0], dynamicTitle: true);
                     },
                   )
                   ..addJavaScriptHandler(
@@ -242,8 +248,11 @@ class _CommonWebViewState extends State<CommonWebView>
                           var exchangeName =
                               uri.queryParameters['exchangeName'] ?? '';
                           var productType = uri.queryParameters['productType'];
-                          AppUtil.toKLine(
-                              exchangeName, symbol, baseCoin, productType);
+                          Future.delayed(const Duration(milliseconds: 200))
+                              .then((value) {
+                            AppUtil.toKLine(
+                                exchangeName, symbol, baseCoin, productType);
+                          });
                         }
                       } else {
                         Get.toNamed(uri.path, arguments: uri.queryParameters);
