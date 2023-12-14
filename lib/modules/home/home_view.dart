@@ -526,7 +526,7 @@ class _HotMarket extends StatelessWidget {
               const Gap(9),
               Expanded(
                 child: _OutlinedContainer(
-                  onTap: () => logic.toMarketModule(3),
+                  onTap: () => logic.toMarketModule(4),
                   child: Column(
                     children: [
                       Row(
