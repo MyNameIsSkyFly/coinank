@@ -37,7 +37,4 @@ class AppNav {
     Get.toNamed(RegisterPage.routeName, arguments: {'isFindPwd': true});
   }
 
-  static Future toExchangeOI() async {
-    Get.toNamed(ExchangeOiPage.routeName);
-  }
 }

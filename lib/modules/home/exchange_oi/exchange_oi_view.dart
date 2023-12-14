@@ -9,24 +9,13 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import '../../../constants/urls.dart';
 import 'exchange_oi_logic.dart';
 
-class ExchangeOiPage extends StatefulWidget {
+class ExchangeOiPage extends StatelessWidget {
   const ExchangeOiPage({super.key});
-
-  static const String routeName = '/exchange_oi';
-
-  @override
-  State<ExchangeOiPage> createState() => _ExchangeOiPageState();
-}
-
-class _ExchangeOiPageState extends State<ExchangeOiPage> {
-  final logic = Get.put(ExchangeOiLogic());
 
   @override
   Widget build(BuildContext context) {
+    final logic = Get.put(ExchangeOiLogic());
     return Scaffold(
-      appBar: AppTitleBar(
-        title: S.of(context).s_open_interest,
-      ),
       body: Obx(() {
         if (logic.loading.value) {
           return const LottieIndicator();

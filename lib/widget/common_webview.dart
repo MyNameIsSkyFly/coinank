@@ -234,7 +234,7 @@ class _CommonWebViewState extends State<CommonWebView>
                                   uri.queryParameters['subTabIndex'] ?? '') ??
                               0;
                           Get.find<MarketLogic>().selectIndex(subTabIndex);
-                          if (subTabIndex == 2) {
+                          if (subTabIndex == 3) {
                             Future.delayed(const Duration(milliseconds: 100))
                                 .then((value) {
                               AppConst.eventBus.fire(WebJSEvent(
@@ -248,11 +248,8 @@ class _CommonWebViewState extends State<CommonWebView>
                           var exchangeName =
                               uri.queryParameters['exchangeName'] ?? '';
                           var productType = uri.queryParameters['productType'];
-                          Future.delayed(const Duration(milliseconds: 200))
-                              .then((value) {
-                            AppUtil.toKLine(
-                                exchangeName, symbol, baseCoin, productType);
-                          });
+                          AppUtil.toKLine(
+                              exchangeName, symbol, baseCoin, productType);
                         }
                       } else {
                         Get.toNamed(uri.path, arguments: uri.queryParameters);

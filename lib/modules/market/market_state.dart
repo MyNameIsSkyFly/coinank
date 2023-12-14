@@ -1,3 +1,4 @@
+import 'package:ank_app/modules/home/exchange_oi/exchange_oi_view.dart';
 import 'package:ank_app/widget/keep_alive_page.dart';
 import 'package:flutter/material.dart';
 import 'package:ank_app/constants/urls.dart';
@@ -13,6 +14,7 @@ class MarketState {
   MarketState() {
     tabPage = [
       keepAlivePage(const ContractPage()),
+      keepAlivePage(const ExchangeOiPage()),
       keepAlivePage(const ContractMarketPage()),
       keepAlivePage(CommonWebView(url: Urls.urlLiquidation,showLoading: true)),
       keepAlivePage(const FundingRatePage()),

@@ -485,7 +485,7 @@ class _HotMarket extends StatelessWidget {
             children: [
               Expanded(
                 child: _OutlinedContainer(
-                  onTap: () => logic.toMarketModule(2),
+                  onTap: () => logic.toMarketModule(3),
                   child: Column(
                     children: [
                       Row(
@@ -580,7 +580,7 @@ class _TotalOiAndFuturesVol extends StatelessWidget {
       return Row(
         children: [
           _FirstLineItem(
-            onTap: () => AppNav.toExchangeOI(),
+            onTap: () => logic.toMarketModule(1),
             title: S.of(context).s_total_oi,
             value: AppUtil.getLargeFormatString(
                 logic.homeInfoData.value?.openInterest ?? '0'),

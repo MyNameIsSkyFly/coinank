@@ -54,9 +54,9 @@ class MainLogic extends GetxController {
   }
 
   void selectTab(int currentIndex) {
-    if (state.isFirstKLine && currentIndex == 2) {
-      state.isFirstKLine = false;
-    }
+    // if (state.isFirstKLine && currentIndex == 2) {
+    //   state.isFirstKLine = false;
+    // }
     if (state.selectedIndex.value != currentIndex) {
       state.selectedIndex.value = currentIndex;
     }

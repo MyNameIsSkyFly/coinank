@@ -77,7 +77,8 @@ class _SettingPageState extends State<SettingPage> {
                           } else if (item.openType == '2') {
                             AppNav.openWebUrl(
                               url: item.url ?? '',
-                              title: 'Coinank',
+                              title: item.name ?? '',
+                              showLoading: true,
                             );
                           }
                         },

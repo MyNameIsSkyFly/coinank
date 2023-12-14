@@ -111,7 +111,7 @@ class LiqMapPage extends StatelessWidget {
                 Offstage(
                   offstage: state.isLoading.value,
                   child: Container(
-                    height: 500,
+                    height: 400,
                     width: double.infinity,
                     margin: const EdgeInsets.all(15),
                     child: CommonWebView(
@@ -127,7 +127,6 @@ class LiqMapPage extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 15, vertical: 20),
                     child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Obx(() {
                           return InkWell(
@@ -138,6 +137,12 @@ class LiqMapPage extends StatelessWidget {
                             ),
                           );
                         }),
+                        const Gap(10),
+                        Image.asset(
+                          Assets.commonIconArrowDown,
+                          width: 10,
+                          color: Theme.of(context).iconTheme.color,
+                        ),
                         const Spacer(),
                         InkWell(
                           onTap: () => logic.chooseTime(true),
@@ -193,7 +198,7 @@ class LiqMapPage extends StatelessWidget {
                 Offstage(
                   offstage: state.isLoading.value,
                   child: Container(
-                    height: 500,
+                    height: 400,
                     width: double.infinity,
                     margin: const EdgeInsets.all(15),
                     child: CommonWebView(

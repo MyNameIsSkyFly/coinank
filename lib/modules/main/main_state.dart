@@ -2,12 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 
+import '../../constants/urls.dart';
+import '../../widget/common_webview.dart';
+import '../chart/chart_view.dart';
+import '../home/home_view.dart';
+import '../market/market_view.dart';
+import '../setting/setting_view.dart';
+
 class MainState {
   RxInt selectedIndex = 0.obs;
   late List<Widget> tabPage;
   final scaffoldKey = GlobalKey<ScaffoldState>();
   InAppWebViewController? webViewController;
   bool isFirstKLine = true;
+
+  MainState() {
+    tabPage = [
+      const HomePage(),
+      MarketPage(),
+      CommonWebView(
+          title: null,
+          showLoading: true,
+          safeArea: true,
+          url: Urls.urlProChart,
+          urlGetter: () => Urls.urlProChart,
+          onWebViewCreated: (controller) {
+            webViewController = controller;
+          }),
+      const ChartPage(),
+      const SettingPage(),
+    ];
+  }
 }
 
 class BottomBarItem {

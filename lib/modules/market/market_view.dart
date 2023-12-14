@@ -30,6 +30,7 @@ class MarketPage extends StatelessWidget {
           dividerColor: Colors.transparent,
           tabs: [
             Tab(text: S.current.s_crypto_coin),
+            Tab(text: S.current.s_open_interest),
             Tab(text: S.current.s_futures_market),
             Tab(text: S.current.s_liquidation_data),
             Tab(text: S.current.s_funding_rate),

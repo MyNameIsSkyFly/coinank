@@ -69,6 +69,7 @@ class AppUtil {
     }
     MessageHostApi().changeLanguage((locale ?? Get.deviceLocale).toString());
     AppConst.eventBus.fire(ThemeChangeEvent(type: ThemeChangeType.locale));
+    AppUtil.updateAppInfo();
     StoreLogic.to.saveLocale(locale);
     CommonWebView.setCookieValue();
     if (Get.isRegistered<ChartLogic>()) {
@@ -263,6 +264,11 @@ class AppUtil {
   static toKLine(String exchangeName, String symbol, String baseCoin,
       String? productType) async {
     Get.back();
+    if (Get.find<MainLogic>().state.isFirstKLine) {
+      Get.find<MainLogic>().selectTab(2);
+      Get.find<MainLogic>().state.isFirstKLine = false;
+      await Future.delayed(Duration(milliseconds: 100));
+    }
     Map<String, dynamic> map = {
       'symbol': symbol,
       'baseCoin': baseCoin,
@@ -271,14 +277,15 @@ class AppUtil {
     };
     String js = "flutterOpenKline('${jsonEncode(map)}');";
     AppConst.eventBus.fire(WebJSEvent(evJS: js));
-
     Get.find<MainLogic>()
         .state
         .webViewController
         ?.evaluateJavascript(source: js);
-    if (Get.find<MainLogic>().state.isFirstKLine) {
-      await Get.find<MainLogic>().state.webViewController?.reload();
-    }
+    // if (Get.find<MainLogic>().state.isFirstKLine) {
+    //   Get.find<MainLogic>().state.isFirstKLine = false;
+    // await Future.delayed(Duration(milliseconds: 100));
+    // await Get.find<MainLogic>().state.webViewController?.reload();
+    // }
     Get.find<MainLogic>().selectTab(2);
   }
 

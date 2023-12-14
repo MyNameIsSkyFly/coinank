@@ -80,6 +80,7 @@ class ActivityDialog extends StatelessWidget {
                           AppNav.openWebUrl(
                             url: data.url ?? '',
                             title: 'Coinank',
+                            showLoading: true,
                           );
                         }
                       },
