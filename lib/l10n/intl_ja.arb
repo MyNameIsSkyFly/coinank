@@ -293,10 +293,10 @@
   "success_login": "ログインに成功しました",
   "error_email_registered": "このEメールはすでに登録されています",
   "error_code": "検証コードエラー",
-  "error_code_timeout": "验证码已过期",
-  "error_email_unregistered": "该邮箱未注册",
-  "error_email_format": "邮箱格式错误",
-  "error_code_format": "密码格式错误",
-  "error_old_pwd": "旧密码错误",
-  "s_goto": "前往"
+  "error_code_timeout": "コード期限切れ",
+  "error_email_unregistered": "未登録メール",
+  "error_email_format": "メール形式不正",
+  "error_code_format": "パスワード形式不正",
+  "error_old_pwd": "旧パスワード不正",
+  "s_goto": "移動"
 }

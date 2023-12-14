@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:ank_app/entity/event/logged_event.dart';
+import 'package:ank_app/entity/event/theme_event.dart';
 import 'package:ank_app/modules/chart/chart_drawer/chart_drawer_logic.dart';
 import 'package:ank_app/modules/chart/chart_logic.dart';
 import 'package:ank_app/modules/home/home_logic.dart';
@@ -43,7 +44,7 @@ class MainLogic extends GetxController {
         getActivity();
         Get.find<HomeLogic>().onRefresh();
         Get.find<ContractLogic>().onRefresh();
-        state.webViewController?.reload();
+        AppConst.eventBus.fire(ThemeChangeEvent(type: ThemeChangeType.locale));
         tryLogin();
         Get.find<ChartLogic>().onRefresh();
         Get.find<ChartDrawerLogic>().onRefresh();

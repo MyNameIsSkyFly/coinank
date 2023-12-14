@@ -1127,12 +1127,305 @@
         }
 
 
+        const buildAggLiqMapChart = (data, dataOptions = {})=>{
+
+            let feeColor;
+            let rewardColor;
+
+            let { theme,locale,long,short,low,mid,high } = dataOptions;
+
+            if (theme == 'dark') {
+                feeColor = "#ffb3ad";
+                rewardColor = "#bfd9c3";
+            } else {
+                feeColor = "#eb5454";
+                rewardColor = "#47b262";
+            }
+
+            let xAxisList = data.prices;
+            let binance = data.Binance
+            let okex = data.Okex
+            let bybit = data.Bybit
+
+            let lastIndex = data.lastIndex
+            let lastPrice = data.lastPrice
+            let longTotals = [];
+            let shortTotals = [];
+            let longTotal = 0;
+            for (let i = lastIndex-1; i > 0 ; i--) {
+              longTotal = longTotal+(binance[i]+okex[i]+bybit[i])*0.05*0.2;
+              longTotals.push(longTotal)
+              // }
+
+            }
+            longTotals.reverse();
+
+            let shortTotal = 0;
+            for (let i = 0; i < xAxisList.length ; i++) {
+              if(i<lastIndex){
+                shortTotals.push(0);
+              }else {
+                shortTotal = shortTotal+(binance[i]+okex[i]+bybit[i])*0.05*0.2;
+                shortTotals.push(shortTotal)
+              }
+            }
+
+            let series = [
+
+              {
+                name:"11",
+                type: 'bar',
+                yAxisIndex : 1,
+                data:[0],
+                markLine: {
+                  lineStyle: {
+                    width: 3,
+                    color: '#F5222D',
+                  },
+                  label: {
+                    show: true,
+                    position: 'end',
+                    formatter: "$"+ lastPrice+"",
+                    //color: '#F5222D',
+                    height: 10,
+                    padding: [12, 12, 7, 12],
+                    lineHeight: 10,
+                    borderWidth: 2,
+                    // borderColor: '#F5222D',
+                    borderRadius: 2,
+                    fontWeight: 550,
+                    rotate: 0,
+                    fontFamily: 'HYQiHeiX1-GEW',
+                  },
+                  silent: true, // 鼠标悬停事件, true悬停不会出现实线
+                  symbol:['circle', 'arrow'], // 去掉箭头
+                  data: [[
+                    { coord: [lastIndex, 0] }, // [x第几个（从0开始），y轴起始点 ]
+                    { coord: [lastIndex, 100] } // [x第几个（从0开始），y轴起始点 ]
+                  ]]
+                }
+              },
+              {
+                name:long,
+                type: 'line',
+                large: true,
+                lineStyle:{
+                  width:1,
+                  color:"#96e39d",
+
+                },
+                smooth: 1,
+                yAxisIndex : 2,
+                areaStyle: {
+                  opacity: 0.3,
+                  color:'#405C65'
+                },
+                connectNulls:true,
+                largeThreshold: 1000,
+                data: longTotals
+              },
+              {
+                name:short,
+                type: 'line',
+                large: true,
+                yAxisIndex : 2,
+                smooth: 1,
+                lineStyle:{
+
+                  width:1,
+                  color: 'red',
+                  opacity:0.5
+                },
+                areaStyle: {
+                  opacity: 0.1,
+                  color:'red'
+                },
+                largeThreshold: 1000,
+                data: shortTotals
+              },
+
+              {
+                name: 'Binance',
+                type: 'bar',
+                stack: 'Ad',
+                large: true,
+                itemStyle:{
+                  color: "#f6b11f",
+
+                },
+                barGap:0.1,
+                largeThreshold: 1000,
+                data: binance
+
+              },
+              {
+                name: 'Bybit',
+                type: 'bar',
+                stack: 'Ad',
+                itemStyle:{
+                  color: "#b4e96e"
+                },
+                large: true,
+                barGap:0.1,
+                largeThreshold: 1000,
+                data: bybit
+              },
+
+              {
+                name: 'Okex',
+                type: 'bar',
+                large: true,
+                stack: 'Ad',
+                largeThreshold: 1000,
+                itemStyle:{
+                  color: "#6e9ced",
+
+                },
+                barWidth:2,
+                barGap:1,
+                data: okex
+              }
+
+            ]
+            let legendData = ["Binance","Bybit","Okex"];
+
+            // let inside = this.isMoble;
+            // let grid = buildGrid(inside);
+
+            let chartData =   {
+              xAxis: [
+                {
+                  type: 'category',
+                  data: xAxisList
+
+                }
+              ],
+
+              grid: grid,
+              yAxis: [
+                {
+                  type: 'value',
+                  // z:10,
+                  //min:0.01,
+                  //max:1000000,
+                  splitLine:false,
+                  axisLabel: {
+                    formatter: (value)=>{
+                      return formatAmount(Math.abs(value), locale)
+                    },
+                    inside:inside,
+                  }
+                },
+                {
+                  type: 'value',
+                  // z:10,
+                  splitLine:false,
+                  max:100,
+                  min:0,
+                  splitLine:false,
+                  show: false,
+                  axisLabel: {
+                    // formatter: (value)=>{
+                    //     return "$"+formatAmount(Math.abs(value), locale)
+                    // },
+                    inside:inside,
+                  }
+                },
+                {
+                  type: 'value',
+                  // z:10,
+                  splitLine:false,
+                  axisLabel: {
+                    formatter: (value)=>{
+                      return formatAmount(Math.abs(value), locale)
+                    },
+                    inside:inside,
+                  }
+                }
+              ],
+              dataZoom: [
+                {
+                  type: 'slider',
+                  showDetail:false,
+                  start: 0,
+                  end: 100,
+                  zoomOnMouseWheel:true,
+                  moveOnMouseMove:true,
+                  moveOnMouseWheel:false,
+                },
+                {
+                  type:"inside",
+                  zoomOnMouseWheel:true,
+                  moveOnMouseMove:true,
+                  moveOnMouseWheel:false,
+                  start: 0,
+                  end: 100,
+
+                },
+                {
+                  start: 0,
+                  end: 100,
+                  labelFormatter:  (value) => {
+                    return xAxisList[value]
+                  }
+                }
+              ],
+              tooltip: {
+                trigger: 'axis',
+                confine: true,
+                axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                  type: 'cross',        // 默认为直线，可选为：'line' | 'shadow'
+                  label:{
+                    formatter:(params)=>{
+                      if(params.axisDimension == "x"){
+                        return params.value
+                      }else if(params.axisDimension == "y"){
+                        return params.value.toFixed(2);
+                      }
+                    }
+                  }
+                },
+                formatter:(params, ticket, callback) =>{
+                  let h = "<div>"+"$"+params[0].axisValue +"</div>";//时间
+                  let pricesDiv = ""
+                  let detalDiv = ""
+                  params.forEach(item => {
+                    if( item.value > 0){
+                      let value = formatAmount(Math.abs(item.value), locale);
+                      if(item.seriesIndex > 2){
+                        value = formatAmount(Math.abs(item.value*0.05*0.2),locale);
+                      }
+                      pricesDiv += "<div><span style='display:inline-block;width:70%'>"+item.seriesName+
+                          "</span><span class='' style='display:inline-block;width:30%'>"+ value +"</span></div>"
+                    }
+                  });
+                  h += pricesDiv + detalDiv
+                  let d = "<div style='min-width:200px'>";
+                  if(locale == "zh" || locale == "zh-tw"){
+                    d = "<div style='min-width:200px'>";
+                  }
+                  return d+h+"</div>";
+                }
+
+              },
+              legend: {
+                data: legendData,
+                right: 50,
+                show: true
+              },
+              series: series
+            };
+
+            return chartData;
+        }
+
         const buildFunc = {
             "openInterest": buildOpenInterestOptions,
             "realtimeLongShort": buildRealtimeLongShort,
             "longShortChart": buildLongShortChart,
             "liqMap": buildLiqMapChart,
-            "liqHeatMap": buildHeatMapChart
+            "liqHeatMap": buildHeatMapChart,
+            "aggLiqMap":buildAggLiqMapChart
         }
 
 
@@ -1192,7 +1485,7 @@
         //     high: "High"
         // })
 
-        // setChartData(sourceData, "android", "liqMap", {
+        // setChartData(sourceData, "android", "aggLiqMap", {
         //     theme: "light",
         //     exchangeName: "exchangeName",
         //     long: "Long",
