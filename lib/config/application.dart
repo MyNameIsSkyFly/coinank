@@ -25,6 +25,9 @@ class Application {
   Future<void> init() async {
     await Future.wait([StoreLogic.init(), checkNetwork()]);
     MessageFlutterApi.setup(FlutterApiManager());
+    // material_indicator.dart 中修改以解决rebuild的问题
+    // double? get _value 中添加:
+    // if (_mode == IndicatorMode.inactive) return 0;
     EasyRefresh.defaultHeaderBuilder = () => const MaterialHeader();
     initLoading();
     JPushUtil().initPlatformState();
