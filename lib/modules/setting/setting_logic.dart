@@ -20,7 +20,7 @@ class SettingLogic extends GetxController {
     final pInfo = await PackageInfo.fromPlatform();
     if (Platform.isAndroid) {
       versionName.value =
-          '${AppConst.isPlayVersion ? 'GPlay AAB' : 'Apk'} ${pInfo.version}';
+          '${AppConst.isPlayVersion ? 'GPlay AAB' : 'Apk'} ${pInfo.version}(${pInfo.buildNumber})';
     } else {
       versionName.value = pInfo.version;
     }

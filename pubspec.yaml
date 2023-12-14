@@ -25,8 +25,8 @@ dependencies:
   retrofit: ^4.0.3
   cached_network_image: ^3.3.0
   collection: ^1.18.0
-  talker_dio_logger: ^2.3.3
-  easy_refresh: ^3.3.2+4
+  talker_dio_logger: ^2.3.4
+  easy_refresh: ^3.3.3+1
   fluttertoast: ^8.2.4
   json_annotation: ^4.8.1
   json_serializable: ^6.7.1
@@ -46,13 +46,13 @@ dependencies:
   #cell 侧滑按钮
   flutter_slidable: ^3.0.1
   lottie: ^2.7.0
-  flutter_native_splash: ^2.3.6
   connectivity_plus: ^5.0.2
 
 dev_dependencies:
+  flutter_native_splash: ^2.3.8
   build_runner: ^2.4.7
   flutter_lints: ^3.0.1
-  retrofit_generator: ^8.0.4
+  retrofit_generator: ^8.0.5
   pigeon: ^14.0.0
 
 flutter:
