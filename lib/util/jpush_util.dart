@@ -68,7 +68,7 @@ class JPushUtil {
         const NotificationSettingsIOS(sound: true, alert: true, badge: true));
   }
 
-  _handeData(Map<String, dynamic> message) {
+  _handeData(Map<String, dynamic> message) async{
     if (Platform.isAndroid) {
       _jpush.clearNotification(
           notificationId: message['extras']

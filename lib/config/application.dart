@@ -27,7 +27,6 @@ class Application {
     MessageFlutterApi.setup(FlutterApiManager());
     EasyRefresh.defaultHeaderBuilder = () => const MaterialHeader();
     initLoading();
-    JPushUtil().initPlatformState();
     await CommonWebView.setCookieValue();
     if (Platform.isAndroid) {
       initConfig();
