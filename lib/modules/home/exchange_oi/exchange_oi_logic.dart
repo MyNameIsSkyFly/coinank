@@ -76,6 +76,15 @@ class ExchangeOiLogic extends GetxController {
     var list = result ?? [];
     selectedCoinIndex =
         list.indexOf(menuParamEntity.value.baseCoin?.toUpperCase() ?? 'BTC');
+    if (selectedCoinIndex < 0) {
+      selectedCoinIndex = 0;
+      menuParamEntity.update((val) {
+        val?.baseCoin = 'BTC';
+      });
+      Future.wait([loadData(), loadOIData(), loadAllBaseCoins()]).then((value) {
+        loading.value = false;
+      });
+    }
     coinList.assignAll(list);
   }
 
