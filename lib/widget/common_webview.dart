@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:ank_app/entity/event/theme_event.dart';
 import 'package:ank_app/entity/event/web_js_event.dart';
+import 'package:ank_app/modules/home/exchange_oi/exchange_oi_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fgbg/flutter_fgbg.dart';
@@ -223,37 +224,7 @@ class _CommonWebViewState extends State<CommonWebView>
                     callback: (arguments) {
                       if (arguments.isEmpty) return;
                       final uri = Uri.parse(arguments[0]);
-                      if (uri.path == '/') {
-                        Get.until((route) => route.settings.name == '/');
-                        var tabIndex = int.tryParse(
-                                uri.queryParameters['tabIndex'] ?? '') ??
-                            0;
-                        Get.find<MainLogic>().selectTab(tabIndex);
-                        if (tabIndex == 1) {
-                          var subTabIndex = int.tryParse(
-                                  uri.queryParameters['subTabIndex'] ?? '') ??
-                              0;
-                          Get.find<MarketLogic>().selectIndex(subTabIndex);
-                          if (subTabIndex == 3) {
-                            Future.delayed(const Duration(milliseconds: 100))
-                                .then((value) {
-                              AppConst.eventBus.fire(WebJSEvent(
-                                  evJS: uri.queryParameters['jsSource'] ?? '',
-                                  url: Urls.urlLiquidation));
-                            });
-                          }
-                        } else if (tabIndex == 2) {
-                          var symbol = uri.queryParameters['symbol'] ?? '';
-                          var baseCoin = uri.queryParameters['baseCoin'] ?? '';
-                          var exchangeName =
-                              uri.queryParameters['exchangeName'] ?? '';
-                          var productType = uri.queryParameters['productType'];
-                          AppUtil.toKLine(
-                              exchangeName, symbol, baseCoin, productType);
-                        }
-                      } else {
-                        Get.toNamed(uri.path, arguments: uri.queryParameters);
-                      }
+                      _handleOpenPage(uri);
                     },
                   );
               },
@@ -285,5 +256,60 @@ class _CommonWebViewState extends State<CommonWebView>
         ],
       ),
     );
+  }
+
+  void _handleOpenPage(Uri uri) {
+    if (uri.path == '/') {
+      Get.until((route) => route.settings.name == '/');
+      final pageType = uri.queryParameters['pageType'];
+      if (pageType != null) {
+        switch (pageType.toUpperCase()) {
+          case 'FUNDINGRATE':
+            Get.find<MainLogic>().selectTab(1);
+            Get.find<MarketLogic>().selectIndex(4);
+          case 'LIQDATA':
+            Get.find<MainLogic>().selectTab(1);
+            Future.delayed(const Duration(milliseconds: 100)).then((value) {
+              AppConst.eventBus.fire(WebJSEvent(
+                  evJS: uri.queryParameters['jsSource'] ?? '',
+                  url: Urls.urlLiquidation));
+            });
+            Get.find<MarketLogic>().selectIndex(3);
+          case 'EXCHANGEOI':
+            Get.find<MainLogic>().selectTab(1);
+            var marketLogic = Get.find<MarketLogic>();
+            if (Get.isRegistered<ExchangeOiLogic>()) {
+              var exchangeOiLogic = Get.find<ExchangeOiLogic>();
+              exchangeOiLogic.menuParamEntity.value.baseCoin =
+                  uri.queryParameters['baseCoin'];
+              exchangeOiLogic.menuParamEntity.refresh();
+              exchangeOiLogic.selectedCoinIndex = exchangeOiLogic.coinList
+                  .indexOf(uri.queryParameters['baseCoin']);
+              exchangeOiLogic.coinList.refresh();
+              Loading.wrap(() async => exchangeOiLogic.onRefresh());
+            } else {
+              marketLogic.state.exchangeOIBaseCoin =
+                  uri.queryParameters['baseCoin'];
+            }
+            marketLogic.selectIndex(1);
+          case 'ORDERFLOW':
+            var symbol = uri.queryParameters['symbol'] ?? '';
+            var baseCoin = uri.queryParameters['baseCoin'] ?? '';
+            var exchangeName = uri.queryParameters['exchangeName'] ?? '';
+            var productType = uri.queryParameters['productType'];
+            AppUtil.toKLine(exchangeName, symbol, baseCoin, productType);
+        }
+      } else {
+        var tabIndex = int.tryParse(uri.queryParameters['tabIndex'] ?? '') ?? 0;
+        Get.find<MainLogic>().selectTab(tabIndex);
+        if (tabIndex == 1) {
+          var subTabIndex =
+              int.tryParse(uri.queryParameters['subTabIndex'] ?? '') ?? 0;
+          Get.find<MarketLogic>().selectIndex(subTabIndex);
+        }
+      }
+    } else {
+      Get.toNamed(uri.path, arguments: uri.queryParameters);
+    }
   }
 }

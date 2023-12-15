@@ -1,4 +1,5 @@
 import 'package:ank_app/entity/oi_entity.dart';
+import 'package:ank_app/modules/market/market_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/common_webview.dart';
 import 'package:collection/collection.dart';
@@ -14,7 +15,8 @@ class ExchangeOiPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final logic = Get.put(ExchangeOiLogic());
+    final logic = Get.put(ExchangeOiLogic(
+        baseCoin: Get.find<MarketLogic>().state.exchangeOIBaseCoin));
     return Scaffold(
       body: Obx(() {
         if (logic.loading.value) {

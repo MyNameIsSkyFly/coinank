@@ -14,6 +14,9 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import '../../../widget/custom_bottom_sheet/custom_bottom_sheet_view.dart';
 
 class ExchangeOiLogic extends GetxController {
+  ExchangeOiLogic({String? baseCoin}) {
+    menuParamEntity.value.baseCoin = baseCoin ?? 'BTC';
+  }
   final menuParamEntity = OIChartMenuParamEntity(
     baseCoin: 'BTC',
     exchange: 'ALL',
@@ -36,7 +39,6 @@ class ExchangeOiLogic extends GetxController {
 
   @override
   void onInit() {
-    menuParamEntity.value.baseCoin = Get.arguments?['baseCoin'] ?? 'BTC';
     _fgbgSubscription = FGBGEvents.stream.listen((event) {
       isAppVisible = event == FGBGType.foreground;
     });
