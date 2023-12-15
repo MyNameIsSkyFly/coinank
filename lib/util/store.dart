@@ -228,14 +228,6 @@ class StoreLogic extends GetxController {
   bool get isFirst {
     return _SpUtil()._getBool(_SpKeys.isFirst, defaultValue: true);
   }
-
-  Future<bool> saveBadge(int badge) {
-    return _SpUtil()._saveInt(_SpKeys.appBadge, badge);
-  }
-
-  int get badge {
-    return _SpUtil()._getInt(_SpKeys.appBadge, defaultValue: 0);
-  }
 }
 
 class _SpKeys {
@@ -262,7 +254,6 @@ class _SpKeys {
   static const h5Prefix = 'ank_h5Prefix';
   static const depthOrderDomain = 'ank_depthOrderDomain';
   static const isFirst = 'isFirst';
-  static const appBadge = 'appBadge';
 }
 
 class _SpUtil {

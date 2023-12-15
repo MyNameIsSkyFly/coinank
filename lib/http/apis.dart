@@ -144,6 +144,8 @@ abstract class Apis {
     @Query('offset') required int offset,
     @Query('deviceType') required String deviceType,
     @Query('pushPlatform') required String pushPlatform,
+    @Query('version') required String version,
+
   });
 
   //持仓html的json

@@ -117,7 +117,7 @@ class _CommonWebViewState extends State<CommonWebView>
         }
       }
     });
-    startWebRefreshCounter();
+    // startWebRefreshCounter();
     super.initState();
   }
 
@@ -216,7 +216,11 @@ class _CommonWebViewState extends State<CommonWebView>
                     handlerName: 'openUrl',
                     callback: (arguments) {
                       if (arguments.isEmpty) return;
-                      AppNav.openWebUrl(url: arguments[0], dynamicTitle: true);
+                      AppNav.openWebUrl(
+                        url: arguments[0],
+                        dynamicTitle: true,
+                        showLoading: true,
+                      );
                     },
                   )
                   ..addJavaScriptHandler(

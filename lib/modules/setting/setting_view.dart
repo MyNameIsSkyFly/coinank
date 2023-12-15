@@ -52,13 +52,6 @@ class _SettingPageState extends State<SettingPage> {
                             StoreLogic.to.loginUsername)) ??
                         '',
                   ),
-                if (Platform.isAndroid)
-                  _SettingLine(
-                    onTap: () {
-                      MessageHostApi().toAndroidFloatingWindow();
-                    },
-                    title: S.of(context).s_floatviewsetting,
-                  ),
                 Obx(() {
                   return ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
@@ -87,6 +80,13 @@ class _SettingPageState extends State<SettingPage> {
                     },
                   );
                 }),
+                if (Platform.isAndroid)
+                  _SettingLine(
+                    onTap: () {
+                      MessageHostApi().toAndroidFloatingWindow();
+                    },
+                    title: S.of(context).s_floatviewsetting,
+                  ),
                 const _ThemeChangeLine(),
                 _SettingLine(
                     onTap: () {

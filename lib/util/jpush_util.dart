@@ -21,9 +21,6 @@ class JPushUtil {
       _jpush.addEventHandler(
           onReceiveNotification: (Map<String, dynamic> message) async {
         print('flutter onReceiveNotification: $message');
-        if (Platform.isIOS) {
-          StoreLogic.to.saveBadge(message['aps']['badge']);
-        }
       }, onOpenNotification: (Map<String, dynamic> message) async {
         print('flutter onOpenNotification: $message');
         _handeData(message);
@@ -86,8 +83,6 @@ class JPushUtil {
         );
       }
     } else {
-      _jpush.setBadge(StoreLogic.to.badge - 1);
-      StoreLogic.to.saveBadge(StoreLogic.to.badge - 1);
       final map = message['extras'];
       if (map.containsKey('url')) {
         AppNav.openWebUrl(

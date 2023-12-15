@@ -28,12 +28,15 @@ class AppUtil {
   AppUtil._();
 
   static Future<void> updateAppInfo() async {
+    final info = await PackageInfo.fromPlatform();
     await Apis().getOtherInfo(
-        deviceId: StoreLogic.to.deviceId,
-        language: shortLanguageName,
-        offset: DateTime.now().timeZoneOffset.inMilliseconds,
-        deviceType: Platform.isAndroid ? 'android' : 'ios',
-        pushPlatform: 'jpush');
+      deviceId: StoreLogic.to.deviceId,
+      language: shortLanguageName,
+      offset: DateTime.now().timeZoneOffset.inMilliseconds,
+      deviceType: Platform.isAndroid ? 'android' : 'ios',
+      pushPlatform: 'jpush',
+      version: info.version,
+    );
   }
 
   static Future<void> showToast(String text) async {
