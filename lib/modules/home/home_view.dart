@@ -106,6 +106,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             children: [
               _TotalOiAndFuturesVol(logic: logic),
               const Gap(10),
+              _BRC(logic: logic),
+              const Gap(10),
 
               ///清算地图
               Row(
@@ -602,6 +604,41 @@ class _TotalOiAndFuturesVol extends StatelessWidget {
         ],
       );
     });
+  }
+}
+
+class _BRC extends StatelessWidget {
+  const _BRC({required this.logic});
+
+  final HomeLogic logic;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: _CheckDetailRow(
+            title: 'BRC-20',
+            onTap: () => AppNav.openWebUrl(
+              url: Urls.urlBRC,
+              title: 'BRC-20',
+              showLoading: true,
+            ),
+          ),
+        ),
+        const Gap(10),
+        Expanded(
+          child: _CheckDetailRow(
+            title: 'BRC-20 ${S.of(context).heat_map}',
+            onTap: () => AppNav.openWebUrl(
+              url: Urls.urlBRCHeatMap,
+              title: 'BRC-20 ${S.of(context).heat_map}',
+              showLoading: true,
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
 

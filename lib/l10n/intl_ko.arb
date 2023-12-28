@@ -297,5 +297,7 @@
   "error_email_format": "잘못된 이메일 형식",
   "error_code_format": "잘못된 비밀번호 형식",
   "error_old_pwd": "잘못된 기존 비밀번호",
-  "s_goto": "이동"
+  "s_goto": "이동",
+  "heat_map": "HeatMap"
+
 }

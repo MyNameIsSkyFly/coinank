@@ -297,5 +297,6 @@
   "error_email_format": "郵箱格式錯誤",
   "error_code_format": "密碼格式錯誤",
   "error_old_pwd": "舊密碼錯誤",
-  "s_goto": "前往"
+  "s_goto": "前往",
+  "heat_map": "熱圖"
 }
