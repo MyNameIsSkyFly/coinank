@@ -300,5 +300,6 @@
   "error_email_format": "Invalid Email Format",
   "error_code_format": "Invalid Password Format",
   "error_old_pwd": "Wrong Old Password",
-  "s_goto": "Go"
+  "s_goto": "Go",
+  "heat_map": "HeatMap"
 }

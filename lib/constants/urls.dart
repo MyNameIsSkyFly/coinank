@@ -19,6 +19,10 @@ class Urls {
 
   static String get urlAbout => '$h5Prefix/${webLanguage}about';
 
+  static String get urlBRC => '$h5Prefix/${webLanguage}ordinals/brc20';
+
+  static String get urlBRCHeatMap => '$h5Prefix/${webLanguage}ordinals/brc20/heatmap';
+
   //爆仓数据
   static String get urlLiquidation =>
       '$uniappDomain/index.html#/pages/liquidation/index';

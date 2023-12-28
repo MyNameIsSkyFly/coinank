@@ -298,5 +298,7 @@
   "error_email_format": "メール形式不正",
   "error_code_format": "パスワード形式不正",
   "error_old_pwd": "旧パスワード不正",
-  "s_goto": "移動"
+  "s_goto": "移動",
+  "heat_map": "HeatMap"
+
 }
