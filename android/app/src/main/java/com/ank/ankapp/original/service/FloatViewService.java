@@ -518,10 +518,14 @@ public class FloatViewService extends Service implements View.OnClickListener {
         if (symbolList == null)
             symbolList = new ArrayList<>();
 
-        if (symbolList.size() <= 0) {
-            ll_add_market.setVisibility(View.VISIBLE);
-        } else {
-            ll_add_market.setVisibility(View.GONE);
+        if (ll_add_market != null)
+        {
+            //ll_add_market = floatView.findViewById(R.id.ll_add_market);
+            if (symbolList.size() <= 0) {
+                ll_add_market.setVisibility(View.VISIBLE);
+            } else {
+                ll_add_market.setVisibility(View.GONE);
+            }
         }
 
         //取消之前所有的订阅
