@@ -1,9 +1,8 @@
+import 'package:ank_app/modules/order_flow/order_flow_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 
-import '../../constants/urls.dart';
-import '../../widget/common_webview.dart';
 import '../chart/chart_view.dart';
 import '../home/home_view.dart';
 import '../market/market_view.dart';
@@ -20,15 +19,7 @@ class MainState {
     tabPage = [
       const HomePage(),
       MarketPage(),
-      CommonWebView(
-          title: null,
-          showLoading: true,
-          safeArea: true,
-          url: Urls.urlProChart,
-          urlGetter: () => Urls.urlProChart,
-          onWebViewCreated: (controller) {
-            webViewController = controller;
-          }),
+      const OrderFlowPage(),
       const ChartPage(),
       const SettingPage(),
     ];

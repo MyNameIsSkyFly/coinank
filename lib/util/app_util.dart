@@ -264,7 +264,7 @@ class AppUtil {
 
   static toKLine(String exchangeName, String symbol, String baseCoin,
       String? productType) async {
-    Get.back();
+    Get.until((route) => route.settings.name == '/');
     if (Get.find<MainLogic>().state.isFirstKLine) {
       Get.find<MainLogic>().selectTab(2);
       Get.find<MainLogic>().state.isFirstKLine = false;
