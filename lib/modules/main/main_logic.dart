@@ -47,7 +47,7 @@ class MainLogic extends GetxController {
         AppConst.eventBus.fire(ThemeChangeEvent(type: ThemeChangeType.locale));
         tryLogin();
         Get.find<ChartLogic>().onRefresh();
-        Get.find<ChartDrawerLogic>().onRefresh();
+        Get.find<ChartLogic>().initTopData();
         Get.find<SettingLogic>().getAppSetting();
       }
     });

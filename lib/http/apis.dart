@@ -28,8 +28,8 @@ part 'apis.g.dart';
 abstract class Apis {
   static final Dio dio = Dio()
     ..interceptors.addAll([
-      // TalkerDioLogger(
-      //     settings: const TalkerDioLoggerSettings(printRequestHeaders: true)),
+      TalkerDioLogger(
+          settings: const TalkerDioLoggerSettings(printRequestHeaders: true)),
       BaseInterceptor(),
     ])
     ..options.headers.addAll({'client': Platform.isAndroid ? 'android' : 'ios'})
@@ -85,7 +85,7 @@ abstract class Apis {
       {@Query('locale') required String locale});
 
   @GET('/api/app/indicationNavs')
-  Future<List<ChartLeftEntity>?> getChartLeftData(
+  Future<List<ChartSubItem>?> getChartLeftData(
       {@Query('locale') required String locale});
 
   @POST('/api/User/login')

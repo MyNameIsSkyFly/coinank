@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../entity/chart_entity.dart';
+
 class StoreLogic extends GetxController {
   static StoreLogic get to => Get.find();
 
@@ -228,6 +230,32 @@ class StoreLogic extends GetxController {
   bool get isFirst {
     return _SpUtil()._getBool(_SpKeys.isFirst, defaultValue: true);
   }
+
+  Future<bool> saveRecentChart(ChartEntity recentChart) {
+    final old = recentCharts;
+    if (old.map((e) => e.key).contains(recentChart.key)) {
+      return Future.value(false);
+    } else {
+      old.insert(0, recentChart);
+      late List<ChartEntity> newList;
+      if (old.length > 20) {
+        newList = old.sublist(0, 20);
+      } else {
+        newList = old;
+      }
+      return _SpUtil()._saveString(_SpKeys.recentChart,
+          jsonEncode(newList.map((e) => e.toJson()).toList()));
+    }
+  }
+
+  List<ChartEntity> get recentCharts {
+    var recentChart =
+        _SpUtil()._getString(_SpKeys.recentChart, defaultValue: '');
+    if (recentChart.isEmpty) return [];
+    return (jsonDecode(recentChart) as List).map((e) {
+      return ChartEntity.fromJson(e as Map<String, dynamic>);
+    }).toList();
+  }
 }
 
 class _SpKeys {
@@ -254,6 +282,7 @@ class _SpKeys {
   static const h5Prefix = 'ank_h5Prefix';
   static const depthOrderDomain = 'ank_depthOrderDomain';
   static const isFirst = 'isFirst';
+  static const recentChart = 'recentChart';
 }
 
 class _SpUtil {

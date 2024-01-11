@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'chart_entity.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createToJson: true)
 class ChartEntity {
   final String? path;
   final String? title;
@@ -20,4 +20,6 @@ class ChartEntity {
 
   factory ChartEntity.fromJson(Map<String, dynamic> json) =>
       _$ChartEntityFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ChartEntityToJson(this);
 }

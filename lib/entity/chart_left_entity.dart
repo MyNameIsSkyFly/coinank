@@ -2,38 +2,19 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'chart_left_entity.g.dart';
 
-@JsonSerializable()
-class ChartLeftEntity {
+@JsonSerializable(createToJson: true)
+class ChartSubItem {
   final String? path;
   final String? title;
   final String? key;
-  final List<Subs>? subs;
+  final List<ChartSubItem>? subs;
 
-  const ChartLeftEntity({
-    this.path,
-    this.title,
-    this.key,
-    this.subs,
-  });
-
-  factory ChartLeftEntity.fromJson(Map<String, dynamic> json) =>
-      _$ChartLeftEntityFromJson(json);
-}
-
-@JsonSerializable()
-class Subs {
-  final String? path;
-  final String? title;
-  final String? key;
-  final List<Subs>? subs;
-
-  const Subs({
-    this.path,
-    this.title,
-    this.key,
+  const ChartSubItem({this.path, this.title, this.key,
     this.subs
   });
 
-  factory Subs.fromJson(Map<String, dynamic> json) =>
-      _$SubsFromJson(json);
+  factory ChartSubItem.fromJson(Map<String, dynamic> json) =>
+      _$ChartSubItemFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ChartSubItemToJson(this);
 }

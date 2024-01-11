@@ -77,9 +77,7 @@ class AppUtil {
     CommonWebView.setCookieValue();
     if (Get.isRegistered<ChartLogic>()) {
       Get.find<ChartLogic>().onRefresh();
-    }
-    if (Get.isRegistered<ChartDrawerLogic>()) {
-      Get.find<ChartDrawerLogic>().onRefresh();
+      Get.find<ChartLogic>().initTopData();
     }
     if (Get.isRegistered<SettingLogic>()) {
       Get.find<SettingLogic>().getAppSetting();

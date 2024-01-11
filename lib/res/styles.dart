@@ -147,3 +147,13 @@ class Styles {
   static const tsMain_22 = TextStyle(fontSize: 22, color: cMain, height: 1.4);
   static const tsMain_24 = TextStyle(fontSize: 24, color: cMain, height: 1.4);
 }
+
+extension ExTextStyle on TextStyle {
+  TextStyle get medium {
+    return copyWith(fontWeight: Styles.fontMedium);
+  }
+
+  TextStyle get semibold {
+    return copyWith(fontWeight: FontWeight.w600);
+  }
+}

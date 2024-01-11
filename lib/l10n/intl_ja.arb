@@ -299,6 +299,6 @@
   "error_code_format": "パスワード形式不正",
   "error_old_pwd": "旧パスワード不正",
   "s_goto": "移動",
-  "heat_map": "HeatMap"
-
+  "heat_map": "HeatMap",
+  "recentlyUsed": "最近使用"
 }

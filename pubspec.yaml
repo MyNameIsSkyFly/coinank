@@ -23,22 +23,22 @@ dependencies:
   flutter_easyloading: 3.0.5
   intl: ^0.18.1
   retrofit: ^4.0.3
-  cached_network_image: ^3.3.0
+  cached_network_image: ^3.3.1
   collection: ^1.18.0
-  talker_dio_logger: ^2.3.4
+  talker_dio_logger: ^2.4.0
   easy_refresh: ^3.3.3+1
   fluttertoast: ^8.2.4
   json_annotation: ^4.8.1
   json_serializable: ^6.7.1
   permission_handler: ^11.1.0
-  url_launcher: ^6.2.2
+  url_launcher: ^6.2.3
   gap: ^3.0.1
   font_awesome_flutter: ^10.6.0
   decimal: ^2.3.3
   auto_size_text: 3.0.0
   scrollable_positioned_list: 0.3.8
   expandable: 5.0.1
-  flutter_inappwebview: ^6.0.0-beta.30
+  flutter_inappwebview: ^6.0.0
   package_info_plus: ^5.0.1
   event_bus: ^2.0.0
   jpush_google_flutter: ^1.0.7
@@ -51,11 +51,11 @@ dependencies:
   flutter_app_badger: ^1.5.0
 
 dev_dependencies:
-  flutter_native_splash: ^2.3.8
+  flutter_native_splash: ^2.3.9
   build_runner: ^2.4.7
   flutter_lints: ^3.0.1
-  retrofit_generator: ^8.0.5
-  pigeon: ^14.0.0
+  retrofit_generator: ^8.0.6
+  pigeon: ^16.0.0
 
 flutter:
 

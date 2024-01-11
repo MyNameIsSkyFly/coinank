@@ -298,5 +298,6 @@
   "error_code_format": "密碼格式錯誤",
   "error_old_pwd": "舊密碼錯誤",
   "s_goto": "前往",
-  "heat_map": "熱圖"
+  "heat_map": "熱圖",
+  "recentlyUsed": "最近使用"
 }

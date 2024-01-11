@@ -1,7 +1,8 @@
 import 'package:ank_app/constants/urls.dart';
 import 'package:ank_app/entity/chart_entity.dart';
+import 'package:ank_app/modules/chart/_top_item_detail_page.dart';
+import 'package:ank_app/modules/chart/chart_state.dart';
 import 'package:ank_app/modules/home/liq_main/liq_main_view.dart';
-import 'package:ank_app/modules/main/main_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,19 +17,11 @@ class ChartPage extends StatelessWidget {
     final logic = Get.put(ChartLogic());
     final state = Get.find<ChartLogic>().state;
     return Scaffold(
-      appBar: AppTitleBar(
-        title: S.current.s_chart,
-        leftWidget: IconButton(
-          onPressed: () => Get.find<MainLogic>()
-              .state
-              .scaffoldKey
-              .currentState
-              ?.openDrawer(),
-          icon: Image.asset(
-            Assets.commonIconMenu,
-            color: Theme.of(context).iconTheme.color,
-            width: 20,
-            height: 20,
+      appBar: AppBar(
+        leading: Center(
+          child: Text(
+            S.current.s_chart,
+            style: Styles.tsBody_18m(context),
           ),
         ),
       ),
@@ -38,41 +31,104 @@ class ChartPage extends StatelessWidget {
             : EasyRefresh(
                 onRefresh: logic.onRefresh,
                 child: Obx(() {
-                  return Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: CustomScrollView(
-                      slivers: state.dataMap.isEmpty
-                          ? []
-                          : [
-                              SliverToBoxAdapter(
-                                child: _ChartItem(
-                                  iconName: Assets.chartLeftIconHotData,
-                                  title: S.current.hotData,
-                                  data: state.dataMap['hotData'] ?? [],
-                                ),
-                              ),
-                              const SliverToBoxAdapter(child: Gap(20)),
-                              SliverToBoxAdapter(
-                                child: _ChartItem(
-                                  iconName: Assets.chartLeftIconBtcData,
-                                  title: S.current.btcData,
-                                  data: state.dataMap['btcData'] ?? [],
-                                ),
-                              ),
-                              const SliverToBoxAdapter(child: Gap(20)),
-                              SliverToBoxAdapter(
-                                child: _ChartItem(
-                                  iconName: Assets.chartLeftIconOtherData,
-                                  title: S.current.otherData,
-                                  data: state.dataMap['otherData'] ?? [],
-                                ),
-                              ),
-                            ],
-                    ),
+                  return CustomScrollView(
+                    slivers: state.dataMap.isEmpty
+                        ? []
+                        : [
+                            _TopDataView(state: state),
+                            Obx(() {
+                              return state.recentList.isEmpty
+                                  ? const SizedBox().sliverBox
+                                  : _ChartItem(
+                                      iconName: Assets.chartLeftIconRecent,
+                                      title: S.of(context).recentlyUsed,
+                                      data: state.recentList,
+                                      logic: logic,
+                                    );
+                            }),
+                            _ChartItem(
+                                iconName: Assets.chartLeftIconHotData,
+                                title: S.current.hotData,
+                                data: state.dataMap['hotData'] ?? [],
+                                logic: logic),
+                            _ChartItem(
+                                iconName: Assets.chartLeftIconBtcData,
+                                title: S.current.btcData,
+                                data: state.dataMap['btcData'] ?? [],
+                                logic: logic),
+                            _ChartItem(
+                                iconName: Assets.chartLeftIconOtherData,
+                                title: S.current.otherData,
+                                data: state.dataMap['otherData'] ?? [],
+                                logic: logic),
+                          ],
                   );
                 }),
               );
       }),
+    );
+  }
+}
+
+class _TopDataView extends StatelessWidget {
+  const _TopDataView({
+    super.key,
+    required this.state,
+  });
+
+  final ChartState state;
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: SizedBox(
+        height: 79,
+        child: EasyRefresh(
+          child: ListView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            scrollDirection: Axis.horizontal,
+            itemCount: state.topDataList.length,
+            itemBuilder: (context, index) {
+              final item = state.topDataList.toList()[index];
+              String icon = '';
+              if (index > state.icoList.length - 1) {
+                icon = state.icoList.last;
+              } else {
+                icon = state.icoList[index];
+              }
+              return GestureDetector(
+                onTap: () {
+                  Get.to(() => TopItemDetailPage(
+                      title: item.title ?? '', subs: item.subs ?? []));
+                },
+                child: Container(
+                  height: 79,
+                  width: 86,
+                  decoration: BoxDecoration(
+                      color: state.topColorList[index],
+                      borderRadius: BorderRadius.circular(8)),
+                  margin: const EdgeInsets.only(right: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        icon,
+                        width: 30,
+                        height: 30,
+                      ),
+                      const Gap(5),
+                      Text(
+                        item.title ?? '',
+                        style: Styles.tsBody_12(context).medium,
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ),
     );
   }
 }
@@ -82,66 +138,80 @@ class _ChartItem extends StatelessWidget {
     required this.data,
     required this.title,
     required this.iconName,
+    required this.logic,
   });
 
   final List<ChartEntity> data;
   final String title;
   final String iconName;
+  final ChartLogic logic;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Row(
-          children: [
-            Image.asset(
-              iconName,
-              width: 20,
-              height: 20,
-            ),
-            const Gap(5),
-            Text(
-              title,
-              style: Styles.tsBody_16m(context),
-            ),
-          ],
-        ),
-        const Gap(15),
-        Wrap(
-          spacing: 10,
-          runSpacing: 10,
-          children: List.generate(
-            data.length,
-            (idx) => InkWell(
-              onTap: () =>
-                  ['liqMapChart', 'liqHeatMapChart'].contains(data[idx].key)
-                      ? Get.toNamed(LiqMainPage.routeName,
-                          arguments: data[idx].key == 'liqMapChart' ? 0 : 1)
-                      : AppNav.openWebUrl(
-                          url: '${Urls.h5Prefix}${data[idx].path}',
-                          title: data[idx].title,
-                          showLoading: true,
-                        ),
-              child: Container(
-                height: 46,
-                width: AppConst.width / 2 - 20,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: Theme.of(context).cardColor,
-                ),
-                alignment: Alignment.center,
-                child: Text(
-                  data[idx].title ?? '',
-                  style: Styles.tsBody_14(context),
-                  textAlign: TextAlign.center,
-                ),
+    return SliverPadding(
+      padding: const EdgeInsets.symmetric(horizontal: 15).copyWith(top: 20),
+      sliver: SliverMainAxisGroup(
+        slivers: [
+          Row(
+            children: [
+              Image.asset(
+                iconName,
+                width: 20,
+                height: 20,
               ),
+              const Gap(5),
+              Text(
+                title,
+                style: Styles.tsBody_16m(context),
+              ),
+            ],
+          ).sliverBox,
+          const Gap(20).sliverBox,
+          SliverGrid.builder(
+            itemCount: data.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 4,
+              mainAxisExtent: 75,
+              crossAxisSpacing: 20,
+              mainAxisSpacing: 8,
             ),
+            itemBuilder: (context, index) {
+              return InkWell(
+                onTap: () async {
+                  ['liqMapChart', 'liqHeatMapChart'].contains(data[index].key)
+                      ? Get.toNamed(LiqMainPage.routeName,
+                          arguments: data[index].key == 'liqMapChart' ? 0 : 1)
+                      : AppNav.openWebUrl(
+                          url: '${Urls.h5Prefix}${data[index].path}',
+                          title: data[index].title,
+                          showLoading: true,
+                        );
+                  await StoreLogic.to.saveRecentChart(data[index]);
+                  logic.initRecentList();
+                },
+                child: Column(
+                  children: [
+                    const SizedBox.square(
+                        dimension: 30,
+                        child: Placeholder(
+                          fallbackHeight: 30,
+                          fallbackWidth: 30,
+                        )),
+                    const Gap(5),
+                    Text(
+                      data[index].title ?? '',
+                      style: Styles.tsBody_12(context),
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

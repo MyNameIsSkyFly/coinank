@@ -22,9 +22,25 @@ class ChartLogic extends GetxController {
     state.dataMap.value = dataMap;
   }
 
+  void initRecentList() {
+    final list = StoreLogic.to.recentCharts;
+    state.recentList.assignAll(list);
+  }
+
+  Future<void> initTopData() async {
+    if (AppConst.networkConnected == false) return;
+    final result =
+        await Apis().getChartLeftData(locale: AppUtil.shortLanguageName);
+    if (result != null) {
+      state.topDataList.value = result;
+    }
+  }
+
   @override
   void onReady() {
     super.onReady();
     onRefresh();
+    initTopData();
+    initRecentList();
   }
 }

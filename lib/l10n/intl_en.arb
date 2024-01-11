@@ -301,5 +301,6 @@
   "error_code_format": "Invalid Password Format",
   "error_old_pwd": "Wrong Old Password",
   "s_goto": "Go",
-  "heat_map": "HeatMap"
+  "heat_map": "HeatMap",
+  "recentlyUsed": "最近使用"
 }

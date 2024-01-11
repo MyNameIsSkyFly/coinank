@@ -24,7 +24,6 @@ class MainPage extends StatelessWidget {
       body: Obx(() {
         return IndexedStack(index: logic.state.selectedIndex.value, children: state.tabPage);
       }),
-      drawer: ChartDrawerPage(),
       drawerEnableOpenDragGesture: false,
       bottomNavigationBar: Obx(() {
         return MyBottomBar(
