@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:ank_app/entity/event/theme_event.dart';
 import 'package:ank_app/entity/event/web_js_event.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
+import 'package:screenshot/screenshot.dart';
 
 import '../constants/urls.dart';
 import '../entity/event/logged_event.dart';
@@ -27,6 +29,7 @@ class CommonWebView extends StatefulWidget {
     this.safeArea = false,
     this.onLoadStop,
     this.dynamicTitle = false,
+    this.enableShare = false,
   });
 
   final String? title;
@@ -37,6 +40,7 @@ class CommonWebView extends StatefulWidget {
   final bool showLoading;
   final bool safeArea;
   final bool dynamicTitle;
+  final bool enableShare;
 
   static Future<void> setCookieValue() async {
     final cookieList = <(String, String)>[];
@@ -153,6 +157,30 @@ class _CommonWebViewState extends State<CommonWebView>
     }
   }
 
+  Future<void> _share() async {
+    final imageMemory = await webCtrl?.takeScreenshot(
+        screenshotConfiguration: ScreenshotConfiguration());
+    final screenShotCtrl = ScreenshotController();
+    if (!mounted) return;
+    var dialogWidget = SizedBox(
+      child: Column(
+        children: [
+          Image.memory(imageMemory ?? Uint8List(0)),
+          Container(
+            height: 100,
+            width: 100,
+            color: Colors.red,
+          ),
+        ],
+      ),
+    );
+    Get.dialog(Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 50),
+      child: dialogWidget,
+    ));
+    // screenShotCtrl.captureFromWidget(dialogWidget);
+  }
+
   @override
   void dispose() {
     _themeChangeSubscription?.cancel();
@@ -164,100 +192,124 @@ class _CommonWebViewState extends State<CommonWebView>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: title == null ? null : AppTitleBar(title: title ?? ''),
-      body: Stack(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(
-                top: widget.safeArea ? AppConst.statusBarHeight : 0),
-            child: InAppWebView(
-              onTitleChanged: (controller, title) {
-                if (!widget.dynamicTitle) return;
-                if (this.title == title) return;
-                setState(() {
-                  this.title = title;
-                });
-              },
-              initialFile: !widget.url.startsWith('https://') &&
-                      !widget.url.startsWith('http://')
-                  ? widget.url
-                  : null,
-              initialUrlRequest: widget.url.startsWith('https://') ||
-                      widget.url.startsWith('http://')
-                  ? URLRequest(
-                      url: WebUri(widget.urlGetter?.call() ?? widget.url))
-                  : null,
-              initialSettings: InAppWebViewSettings(
-                userAgent: Platform.isAndroid
-                    ? 'CoinsohoWeb-flutter-Android'
-                    : 'CoinsohoWeb-flutter-IOS',
-                javaScriptEnabled: true,
-                transparentBackground: true,
-                javaScriptCanOpenWindowsAutomatically: true,
-              ),
-              onWebViewCreated: (controller) {
-                widget.onWebViewCreated?.call(controller);
-                webCtrl = controller
-                  ..addJavaScriptHandler(
-                    handlerName: 'openLogin',
-                    callback: (arguments) {
-                      AppNav.toLogin();
-                    },
-                  )
-                  ..addJavaScriptHandler(
-                    handlerName: 'getUserInfo',
-                    callback: (arguments) {
-                      return jsonEncode(StoreLogic.to.loginUserInfo?.toJson());
-                    },
-                  )
-                  ..addJavaScriptHandler(
-                    handlerName: 'openUrl',
-                    callback: (arguments) {
-                      if (arguments.isEmpty) return;
-                      AppNav.openWebUrl(
-                        url: arguments[0],
-                        dynamicTitle: true,
-                        showLoading: true,
-                      );
-                    },
-                  )
-                  ..addJavaScriptHandler(
-                    handlerName: 'openPage',
-                    callback: (arguments) {
-                      if (arguments.isEmpty) return;
-                      final uri = Uri.parse(arguments[0]);
-                      _handleOpenPage(uri);
-                    },
-                  );
-              },
-              onLoadStop: (controller, url) {
-                widget.onLoadStop?.call();
-                if (widget.url.contains('proChart') ||
-                    widget.urlGetter?.call().contains('proChart') == true) {
-                  controller.evaluateJavascript(
-                      source: "changeSymbolInfo('BTC')");
-                  if (_evJs.isNotEmpty) {
-                    controller
-                        .evaluateJavascript(source: _evJs)
-                        .then((value) => _evJs = '');
+    return WillPopScope(
+      onWillPop: () async {
+        final canGoBack = await webCtrl?.canGoBack();
+        if (canGoBack == true) {
+          webCtrl?.goBack();
+          return false;
+        } else {
+          return true;
+        }
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: title == null || widget.enableShare
+            ? null
+            : AppTitleBar(
+                title: title ?? '',
+                onBack: () => navigator?.maybePop(),
+                actionWidget: widget.enableShare
+                    ? GestureDetector(
+                        onTap: () {},
+                        child: IconButton(
+                            onPressed: _share, icon: const Icon(Icons.share)))
+                    : null),
+        body: Stack(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                  top: widget.safeArea ? AppConst.statusBarHeight : 0),
+              child: InAppWebView(
+                onTitleChanged: (controller, title) {
+                  if (!widget.dynamicTitle) return;
+                  if (this.title == title) return;
+                  setState(() {
+                    this.title = title;
+                  });
+                },
+                initialFile: !widget.url.startsWith('https://') &&
+                        !widget.url.startsWith('http://')
+                    ? widget.url
+                    : null,
+                initialUrlRequest: widget.url.startsWith('https://') ||
+                        widget.url.startsWith('http://')
+                    ? URLRequest(
+                        url: WebUri(widget.urlGetter?.call() ?? widget.url))
+                    : null,
+                initialSettings: InAppWebViewSettings(
+                  userAgent: Platform.isAndroid
+                      ? 'CoinsohoWeb-flutter-Android'
+                      : 'CoinsohoWeb-flutter-IOS',
+                  javaScriptEnabled: true,
+                  hardwareAcceleration: !widget.enableShare,
+                  transparentBackground: true,
+                  javaScriptCanOpenWindowsAutomatically: true,
+                ),
+                onWebViewCreated: (controller) {
+                  widget.onWebViewCreated?.call(controller);
+                  webCtrl = controller
+                    ..addJavaScriptHandler(
+                      handlerName: 'openLogin',
+                      callback: (arguments) {
+                        AppNav.toLogin();
+                      },
+                    )
+                    ..addJavaScriptHandler(
+                      handlerName: 'getUserInfo',
+                      callback: (arguments) {
+                        return jsonEncode(
+                            StoreLogic.to.loginUserInfo?.toJson());
+                      },
+                    )
+                    ..addJavaScriptHandler(
+                      handlerName: 'openUrl',
+                      callback: (arguments) {
+                        if (arguments.isEmpty) return;
+                        AppNav.openWebUrl(
+                          url: arguments[0],
+                          dynamicTitle: true,
+                          showLoading: true,
+                        );
+                      },
+                    )
+                    ..addJavaScriptHandler(
+                      handlerName: 'openPage',
+                      callback: (arguments) {
+                        if (arguments.isEmpty) return;
+                        final uri = Uri.parse(arguments[0]);
+                        _handleOpenPage(uri);
+                      },
+                    );
+                },
+                onLoadStop: (controller, url) {
+                  widget.onLoadStop?.call();
+                  if (widget.url.contains('proChart') ||
+                      widget.urlGetter?.call().contains('proChart') == true) {
+                    // controller.evaluateJavascript(
+                    //     source: "changeSymbolInfo('BTC')");
+                    if (_evJs.isNotEmpty) {
+                      controller
+                          .evaluateJavascript(source: _evJs)
+                          .then((value) => _evJs = '');
+                      _evJs = '';
+                    }
                   }
-                }
-              },
-              onConsoleMessage: (controller, consoleMessage) {
-                debugPrint(consoleMessage.toString());
-              },
-              onProgressChanged: (controller, progress) {
-                _progress = progress;
-                if (progress == 100) {
-                  setState(() {});
-                }
-              },
+                },
+                onConsoleMessage: (controller, consoleMessage) {
+                  debugPrint(consoleMessage.toString());
+                },
+                onProgressChanged: (controller, progress) {
+                  _progress = progress;
+                  if (progress == 100) {
+                    setState(() {});
+                  }
+                },
+              ),
             ),
-          ),
-          if (widget.showLoading && _progress != 100) const LottieIndicator(),
-        ],
+            if (widget.showLoading && _progress != 100) const LottieIndicator(),
+          ],
+        ),
       ),
     );
   }

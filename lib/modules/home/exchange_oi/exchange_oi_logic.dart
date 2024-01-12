@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:ank_app/entity/oi_chart_menu_param_entity.dart';
 import 'package:ank_app/entity/oi_entity.dart';
+import 'package:ank_app/modules/market/market_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_fgbg/flutter_fgbg.dart';
@@ -12,6 +13,7 @@ import 'package:get/get.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../widget/custom_bottom_sheet/custom_bottom_sheet_view.dart';
+import '../../main/main_logic.dart';
 
 class ExchangeOiLogic extends GetxController {
   ExchangeOiLogic({String? baseCoin}) {
@@ -53,7 +55,9 @@ class ExchangeOiLogic extends GetxController {
 
   void startPolling() {
     _pollingTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
-      if (!isAppVisible) return;
+      if (!isAppVisible ||
+          Get.find<MainLogic>().state.selectedIndex.value != 1 ||
+          Get.find<MarketLogic>().state.tabController?.index != 1) return;
       onRefresh(isPolling: true);
     });
   }

@@ -1,6 +1,5 @@
 import 'package:ank_app/generated/assets.dart';
 import 'package:ank_app/generated/l10n.dart';
-import 'package:ank_app/modules/chart/chart_drawer/chart_drawer_view.dart';
 import 'package:ank_app/modules/main/main_state.dart';
 import 'package:ank_app/res/light_colors.dart';
 import 'package:ank_app/res/styles.dart';

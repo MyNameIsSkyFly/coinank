@@ -1,4 +1,3 @@
-import 'package:ank_app/modules/home/exchange_oi/exchange_oi_view.dart';
 import 'package:ank_app/modules/login/register_view.dart';
 import 'package:get/get.dart';
 

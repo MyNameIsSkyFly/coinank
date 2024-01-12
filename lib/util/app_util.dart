@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:ank_app/config/application.dart';
 import 'package:ank_app/entity/event/theme_event.dart';
 import 'package:ank_app/entity/event/web_js_event.dart';
-import 'package:ank_app/modules/chart/chart_drawer/chart_drawer_logic.dart';
 import 'package:ank_app/modules/chart/chart_logic.dart';
 import 'package:ank_app/modules/main/main_logic.dart';
 import 'package:ank_app/modules/setting/setting_logic.dart';

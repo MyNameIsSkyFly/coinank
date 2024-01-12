@@ -186,17 +186,19 @@ class _ChartItem extends StatelessWidget {
                           title: data[index].title,
                           showLoading: true,
                         );
-                  await StoreLogic.to.saveRecentChart(data[index]);
-                  logic.initRecentList();
+                  Future.delayed(const Duration(milliseconds: 300), () {
+                    StoreLogic.to
+                        .saveRecentChart(data[index])
+                        .then((value) => logic.initRecentList());
+                  });
                 },
                 child: Column(
                   children: [
-                    const SizedBox.square(
-                        dimension: 30,
-                        child: Placeholder(
-                          fallbackHeight: 30,
-                          fallbackWidth: 30,
-                        )),
+                    ImageUtil.networkImage(
+                      'https://cdn01.coinank.com/appicons/${data[index].key}.png',
+                      height: 30,
+                      width: 30,
+                    ),
                     const Gap(5),
                     Text(
                       data[index].title ?? '',

@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:ank_app/entity/event/logged_event.dart';
 import 'package:ank_app/entity/event/theme_event.dart';
-import 'package:ank_app/modules/chart/chart_drawer/chart_drawer_logic.dart';
 import 'package:ank_app/modules/chart/chart_logic.dart';
 import 'package:ank_app/modules/home/home_logic.dart';
 import 'package:ank_app/modules/market/contract/contract_logic.dart';
