@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:ank_app/res/export.dart';
-import 'package:ank_app/widget/custom_bottom_sheet/custom_bottom_sheet_view.dart';
 import 'package:ank_app/widget/custom_search_bottom_sheet/custom_search_bottom_sheet_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 import 'liq_hot_map_state.dart';
 
@@ -17,7 +17,11 @@ class LiqHotMapLogic extends GetxController {
     final result = await showModalBottomSheet(
       context: Get.context!,
       builder: (_) {
-        return const CustomSearchBottomSheetPage();
+        if (Platform.isIOS) {
+          return PointerInterceptor(child: const CustomSearchBottomSheetPage());
+        } else {
+          return const CustomSearchBottomSheetPage();
+        }
       },
       isScrollControlled: true,
       isDismissible: true,
@@ -38,11 +42,18 @@ class LiqHotMapLogic extends GetxController {
   }
 
   chooseTime() async {
-    final result = await Get.bottomSheet(
-      const CustomBottomSheetPage(),
+    final result = await showModalBottomSheet(
+      context: Get.context!,
+      builder: (_) {
+        if (Platform.isIOS) {
+          return PointerInterceptor(child: const CustomSearchBottomSheetPage());
+        } else {
+          return const CustomSearchBottomSheetPage();
+        }
+      },
       isScrollControlled: true,
       isDismissible: true,
-      settings: RouteSettings(
+      routeSettings: RouteSettings(
         arguments: {
           'title': S.current.s_choose_time,
           'list': const ['12h', '1d', '3d', '1w', '2w', '1M', '3M', '6M', '1Y'],
