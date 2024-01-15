@@ -128,12 +128,12 @@ class AppThemes {
 
 class StockColors extends ThemeExtension<StockColors> {
   static const upGreen = StockColors(
-    up: Color(0xff5CC389),
-    down: Color(0xffD8494A),
+    up: Color(0xff1DCA88),
+    down: Color(0xffEF424A),
   );
   static const upRed = StockColors(
-    up: Color(0xffD8494A),
-    down: Color(0xff5CC389),
+    up: Color(0xffEF424A),
+    down: Color(0xff1DCA88),
   );
 
   const StockColors({required this.up, required this.down});
@@ -163,38 +163,4 @@ class StockColors extends ThemeExtension<StockColors> {
 
   @override
   String toString() => 'StatusColors(up: $up, down: $down)';
-}
-
-///自定义颜色
-class CustomColors extends ThemeExtension<CustomColors> {
-  static const light = CustomColors(
-    homeFilledColor: Color(0xff5CC389),
-  );
-  static const dark = CustomColors(
-    homeFilledColor: Color(0xffD8494A),
-  );
-
-  const CustomColors({required this.homeFilledColor});
-
-  final Color? homeFilledColor;
-
-  @override
-  CustomColors copyWith({
-    Color? homeFilledColor,
-  }) {
-    return CustomColors(
-      homeFilledColor: homeFilledColor,
-    );
-  }
-
-  @override
-  CustomColors lerp(ThemeExtension<CustomColors>? other, double t) {
-    if (other is! CustomColors) return this;
-    return CustomColors(
-      homeFilledColor: Color.lerp(homeFilledColor, other.homeFilledColor, t),
-    );
-  }
-
-  @override
-  String toString() => 'StatusColors(homeFilledColor: $homeFilledColor)';
 }

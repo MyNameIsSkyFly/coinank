@@ -177,10 +177,10 @@ class AppUtil {
   static Color? getColorWithFundRate(double? rate) {
     if (rate != null) {
       if (rate * 100 > 0.01) {
-        return const Color(0xffD8494A);
+        return const Color(0xffEF424A);
       }
       if (rate * 100 < 0.01) {
-        return const Color(0xff5CC389);
+        return const Color(0xff1DCA88);
       }
       return Theme.of(Get.context!).textTheme.bodyMedium!.color;
     }

@@ -78,7 +78,7 @@ class JPushUtil {
       if (map.containsKey('url')) {
         AppNav.openWebUrl(
           url: map['url'] as String,
-          title: 'Coinank',
+          title: 'CoinAnk',
           showLoading: true,
         );
       }
@@ -87,7 +87,7 @@ class JPushUtil {
       if (map.containsKey('url')) {
         AppNav.openWebUrl(
           url: map['url'] as String,
-          title: 'Coinank',
+          title: 'CoinAnk',
           showLoading: true,
         );
       }

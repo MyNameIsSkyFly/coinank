@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           child: Padding(
             padding: const EdgeInsets.only(left: 15),
             child: Text(
-              'Coinank',
+              'CoinAnk',
               style: Styles.tsBody_20(context)
                   .copyWith(fontWeight: FontWeight.w700),
             ),
@@ -90,7 +90,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         height: 4,
                         width: 4,
                         decoration: const BoxDecoration(
-                            color: Color(0xffD8494A), shape: BoxShape.circle),
+                            color: Color(0xffEF424A), shape: BoxShape.circle),
                       ))
                 ],
               )),

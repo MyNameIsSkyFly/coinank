@@ -151,7 +151,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     const WidgetSpan(child: SizedBox(width: 3)),
                     TextSpan(
-                        text: 'Coinank${S.of(context).s_disclaimer}',
+                        text: 'CoinAnk${S.of(context).s_disclaimer}',
                         style: Styles.tsMain_12,
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {

@@ -40,7 +40,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Coinank',
+      title: 'CoinAnk',
       localizationsDelegates: const [
         S.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -75,7 +75,6 @@ class _MyAppState extends State<MyApp> {
       locale: StoreLogic.to.locale,
       initialRoute: RouteConfig.main,
       getPages: RouteConfig.getPages,
-      debugShowCheckedModeBanner: false,
       theme: AppThemes.lightTheme,
       darkTheme: AppThemes.darkTheme,
       themeMode: StoreLogic.to.isDarkMode ? ThemeMode.dark : ThemeMode.light,
