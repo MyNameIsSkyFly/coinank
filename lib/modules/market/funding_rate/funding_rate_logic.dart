@@ -180,7 +180,7 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin {
           !state.isRefresh &&
           Get.find<MarketLogic>().state.tabController?.index == 3 &&
           state.appVisible) {
-        onRefresh(showLoading: false);
+        onRefresh();
       }
     });
   }
@@ -195,7 +195,7 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin {
   void onReady() {
     // TODO: implement onReady
     super.onReady();
-    onRefresh(showLoading: false);
+    onRefresh();
   }
 
   @override

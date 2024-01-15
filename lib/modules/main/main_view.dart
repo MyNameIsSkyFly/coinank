@@ -106,7 +106,6 @@ class MyBottomBar extends StatelessWidget {
         width: itemWidth,
         padding: const EdgeInsets.symmetric(vertical: 6),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
             Offstage(

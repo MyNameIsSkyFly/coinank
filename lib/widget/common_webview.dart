@@ -238,7 +238,6 @@ class _CommonWebViewState extends State<CommonWebView>
                   userAgent: Platform.isAndroid
                       ? 'CoinsohoWeb-flutter-Android'
                       : 'CoinsohoWeb-flutter-IOS',
-                  javaScriptEnabled: true,
                   // hardwareAcceleration: !widget.enableShare,
                   transparentBackground: true,
                   javaScriptCanOpenWindowsAutomatically: true,

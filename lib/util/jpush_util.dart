@@ -49,11 +49,10 @@ class JPushUtil {
       print('Failed to get platform version.');
     }
 
-    _jpush.setAuth(enable: true);
+    _jpush.setAuth();
     _jpush.setup(
       appKey: '8de9d5e306e08c49a078ab5f',
       channel: 'developer-default',
-      production: !kDebugMode,
       debug: kDebugMode,
     );
 
@@ -64,8 +63,7 @@ class JPushUtil {
         await AppUtil.updateAppInfo();
       }
     });
-    _jpush.applyPushAuthority(
-        const NotificationSettingsIOS(sound: true, alert: true, badge: true));
+    _jpush.applyPushAuthority();
   }
 
   _handeData(Map<String, dynamic> message) async {

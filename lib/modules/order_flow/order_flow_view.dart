@@ -29,7 +29,6 @@ class _OrderFlowPageState extends State<OrderFlowPage> {
     return cookieSet == false
         ? const SizedBox()
         : CommonWebView(
-            title: null,
             showLoading: true,
             safeArea: true,
             url: Urls.urlProChart,

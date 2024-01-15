@@ -7,7 +7,6 @@ class AppThemes {
   static ThemeData get lightTheme => baseTheme.copyWith(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Styles.cMain,
-          brightness: Brightness.light,
           onBackground: Colors.black,
           tertiary: Colors.white,
         ),

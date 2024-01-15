@@ -72,7 +72,6 @@ class ChartPage extends StatelessWidget {
 
 class _TopDataView extends StatelessWidget {
   const _TopDataView({
-    super.key,
     required this.state,
   });
 

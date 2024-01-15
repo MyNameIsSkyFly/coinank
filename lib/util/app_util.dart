@@ -267,7 +267,7 @@ class AppUtil {
     if (Get.find<MainLogic>().state.isFirstKLine) {
       Get.find<MainLogic>().selectTab(2);
       Get.find<MainLogic>().state.isFirstKLine = false;
-      await Future.delayed(Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 100));
     }
     Map<String, dynamic> map = {
       'symbol': symbol,

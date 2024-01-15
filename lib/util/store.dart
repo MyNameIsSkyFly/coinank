@@ -289,7 +289,6 @@ class _SpKeys {
   static const depthOrderDomain = 'ank_depthOrderDomain';
   static const isFirst = 'isFirst';
   static const recentChart = 'recentChart';
-  static const webConfig = 'webConfig';
 }
 
 class _SpUtil {

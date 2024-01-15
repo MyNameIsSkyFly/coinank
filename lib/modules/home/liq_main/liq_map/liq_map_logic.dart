@@ -36,12 +36,12 @@ class LiqMapLogic extends GetxController {
       if (isAgg) {
         if (state.aggCoin.value != v) {
           state.aggCoin.value = v;
-          await getAggJsonData(showLoading: true, isAgg: true);
+          await getAggJsonData(isAgg: true);
         }
       } else {
         if (state.symbol.value != v) {
           state.symbol.value = v;
-          await getJsonData(showLoading: true, isAgg: false);
+          await getJsonData(isAgg: false);
         }
       }
     }
@@ -71,12 +71,12 @@ class LiqMapLogic extends GetxController {
       if (isAgg) {
         if (state.aggInterval.value != v) {
           state.aggInterval.value = v;
-          await getAggJsonData(showLoading: true, isAgg: true);
+          await getAggJsonData(isAgg: true);
         }
       } else {
         if (state.interval.value != v) {
           state.interval.value = v;
-          await getJsonData(showLoading: true, isAgg: false);
+          await getJsonData(isAgg: false);
         }
       }
     }
@@ -85,7 +85,7 @@ class LiqMapLogic extends GetxController {
   onRefresh() async {
     if (state.refreshBCanPress) {
       state.refreshBCanPress = false;
-      await getJsonData(showLoading: true, isAgg: false);
+      await getJsonData(isAgg: false);
       Future.delayed(const Duration(seconds: 5), () {
         state.refreshBCanPress = true;
       });
@@ -162,7 +162,7 @@ setChartData($jsData, "$platformString", "$type", ${jsonEncode(options)});
   onAggRefresh() async {
     if (state.aggRefreshBCanPress) {
       state.aggRefreshBCanPress = false;
-      await getAggJsonData(showLoading: true, isAgg: true);
+      await getAggJsonData(isAgg: true);
       Future.delayed(const Duration(seconds: 5), () {
         state.aggRefreshBCanPress = true;
       });

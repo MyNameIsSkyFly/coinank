@@ -255,7 +255,6 @@ class _BtcInfo extends StatelessWidget {
                     ),
                     const Gap(6),
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           '${((double.tryParse(logic.homeInfoData.value?.marketCpaValue ?? '') ?? 0) * 100).toStringAsFixed(2)}%',
@@ -656,7 +655,6 @@ class _CheckDetailRow extends StatelessWidget {
     return _OutlinedContainer(
       onTap: onTap,
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
             child: Text(

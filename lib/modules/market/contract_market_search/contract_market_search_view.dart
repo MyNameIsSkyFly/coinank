@@ -24,7 +24,6 @@ class ContractMarketSearchPage extends StatelessWidget {
                   child: TextField(
                     textInputAction: TextInputAction.search,
                     style: Styles.tsBody_16(context),
-                    maxLines: 1,
                     inputFormatters: [
                       LengthLimitingTextInputFormatter(10),
                       UpperCaseTextFormatter(),

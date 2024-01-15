@@ -46,7 +46,6 @@ class TopItemDetailPage extends StatelessWidget {
                         color: Color(0x19000000),
                         blurRadius: 4,
                         offset: Offset(0, 1),
-                        spreadRadius: 0,
                       )
                     ]),
                 child: Row(
@@ -75,7 +74,6 @@ class TopItemDetailPage extends StatelessWidget {
                     color: Color(0x19000000),
                     blurRadius: 4,
                     offset: Offset(0, 1),
-                    spreadRadius: 0,
                   )
                 ]),
             child: ExpandablePanel(

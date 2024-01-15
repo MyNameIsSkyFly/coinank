@@ -159,7 +159,7 @@ class FundingRatePage extends StatelessWidget {
                 )
               : Expanded(
                   child: EasyRefresh(
-                    onRefresh: () => logic.onRefresh(showLoading: false),
+                    onRefresh: () => logic.onRefresh(),
                     child: Obx(() {
                       return SingleChildScrollView(
                         controller: state.scrollController,

@@ -15,7 +15,8 @@ import 'package:ank_app/entity/user_info_entity.dart';
 import 'package:ank_app/http/base_interceptor.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:talker_dio_logger/talker_dio_logger.dart';
+
+// import 'package:talker_dio_logger/talker_dio_logger.dart';
 
 import '../constants/urls.dart';
 import '../entity/futures_big_data_entity.dart';
@@ -28,8 +29,8 @@ part 'apis.g.dart';
 abstract class Apis {
   static final Dio dio = Dio()
     ..interceptors.addAll([
-      TalkerDioLogger(
-          settings: const TalkerDioLoggerSettings(printRequestHeaders: true)),
+      // TalkerDioLogger(
+      //     settings: const TalkerDioLoggerSettings(printRequestHeaders: true)),
       BaseInterceptor(),
     ])
     ..options.headers.addAll({'client': Platform.isAndroid ? 'android' : 'ios'})
