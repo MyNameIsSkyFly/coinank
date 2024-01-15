@@ -74,7 +74,7 @@ class StoreLogic extends GetxController {
   }
 
   bool get isDarkMode {
-    return switch (_SpUtil()._getInt(_SpKeys.darkMode, defaultValue: 0)) {
+    return switch (_SpUtil()._getInt(_SpKeys.darkMode)) {
       1 => true,
       0 => false,
       _ => false,
@@ -101,7 +101,7 @@ class StoreLogic extends GetxController {
   }
 
   String get loginPassword {
-    return _SpUtil()._getString(_SpKeys.loginPassword, defaultValue: '');
+    return _SpUtil()._getString(_SpKeys.loginPassword);
   }
 
   Future<bool> removeLoginPassword() {
@@ -113,7 +113,7 @@ class StoreLogic extends GetxController {
   }
 
   String get loginUsername {
-    return _SpUtil()._getString(_SpKeys.loginUsername, defaultValue: '');
+    return _SpUtil()._getString(_SpKeys.loginUsername);
   }
 
   Future<bool> removeLoginUsername() {
@@ -130,8 +130,7 @@ class StoreLogic extends GetxController {
   }
 
   UserInfoEntity? get loginUserInfo {
-    var userInfo =
-        _SpUtil()._getString(_SpKeys.loginUserInfo, defaultValue: '');
+    var userInfo = _SpUtil()._getString(_SpKeys.loginUserInfo);
     if (userInfo.isEmpty) return null;
     return UserInfoEntity.fromJson(
         jsonDecode(userInfo) as Map<String, dynamic>);
@@ -144,7 +143,7 @@ class StoreLogic extends GetxController {
   }
 
   DateTime get lastSendCodeTime {
-    final time = _SpUtil()._getInt(_SpKeys.lastSendCodeTime, defaultValue: 0);
+    final time = _SpUtil()._getInt(_SpKeys.lastSendCodeTime);
     if (time == 0) return DateTime.fromMillisecondsSinceEpoch(0);
     return DateTime.fromMillisecondsSinceEpoch(time);
   }
@@ -249,12 +248,19 @@ class StoreLogic extends GetxController {
   }
 
   List<ChartEntity> get recentCharts {
-    var recentChart =
-        _SpUtil()._getString(_SpKeys.recentChart, defaultValue: '');
+    var recentChart = _SpUtil()._getString(_SpKeys.recentChart);
     if (recentChart.isEmpty) return [];
     return (jsonDecode(recentChart) as List).map((e) {
       return ChartEntity.fromJson(e as Map<String, dynamic>);
     }).toList();
+  }
+
+  Future<bool> saveWebConfig(String key, String value) {
+    return _SpUtil()._saveString('webConfig_$key', value);
+  }
+
+  String webConfig(String key) {
+    return _SpUtil()._getString('webConfig_$key');
   }
 }
 
@@ -283,6 +289,7 @@ class _SpKeys {
   static const depthOrderDomain = 'ank_depthOrderDomain';
   static const isFirst = 'isFirst';
   static const recentChart = 'recentChart';
+  static const webConfig = 'webConfig';
 }
 
 class _SpUtil {

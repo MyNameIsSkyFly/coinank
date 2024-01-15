@@ -12,6 +12,7 @@ import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 import 'package:screenshot/screenshot.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../constants/urls.dart';
 import '../entity/event/logged_event.dart';
@@ -100,13 +101,13 @@ class _CommonWebViewState extends State<CommonWebView>
     WidgetsBinding.instance.addObserver(this);
     _themeChangeSubscription =
         AppConst.eventBus.on<ThemeChangeEvent>().listen((event) async {
-      await webCtrl?.clearCache();
+      await InAppWebViewController.clearAllCache();
       await CommonWebView.setCookieValue();
       reload();
     });
     _loginStatusSubscription =
         AppConst.eventBus.on<LoginStatusChangeEvent>().listen((event) async {
-      await webCtrl?.clearCache();
+      await InAppWebViewController.clearAllCache();
       await CommonWebView.setCookieValue();
       reload();
     });
@@ -204,16 +205,14 @@ class _CommonWebViewState extends State<CommonWebView>
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: title == null || widget.enableShare
+        appBar: title == null || !widget.enableShare
             ? null
             : AppTitleBar(
                 title: title ?? '',
                 onBack: () => navigator?.maybePop(),
                 actionWidget: widget.enableShare
-                    ? GestureDetector(
-                        onTap: () {},
-                        child: IconButton(
-                            onPressed: _share, icon: const Icon(Icons.share)))
+                    ? IconButton(
+                        onPressed: _share, icon: const Icon(Icons.share))
                     : null),
         body: Stack(
           children: [
@@ -224,9 +223,7 @@ class _CommonWebViewState extends State<CommonWebView>
                 onTitleChanged: (controller, title) {
                   if (!widget.dynamicTitle) return;
                   if (this.title == title) return;
-                  setState(() {
-                    this.title = title;
-                  });
+                  setState(() => this.title = title);
                 },
                 initialFile: !widget.url.startsWith('https://') &&
                         !widget.url.startsWith('http://')
@@ -242,69 +239,22 @@ class _CommonWebViewState extends State<CommonWebView>
                       ? 'CoinsohoWeb-flutter-Android'
                       : 'CoinsohoWeb-flutter-IOS',
                   javaScriptEnabled: true,
-                  hardwareAcceleration: !widget.enableShare,
+                  // hardwareAcceleration: !widget.enableShare,
                   transparentBackground: true,
                   javaScriptCanOpenWindowsAutomatically: true,
                 ),
-                onWebViewCreated: (controller) {
-                  widget.onWebViewCreated?.call(controller);
-                  webCtrl = controller
-                    ..addJavaScriptHandler(
-                      handlerName: 'openLogin',
-                      callback: (arguments) {
-                        AppNav.toLogin();
-                      },
-                    )
-                    ..addJavaScriptHandler(
-                      handlerName: 'getUserInfo',
-                      callback: (arguments) {
-                        return jsonEncode(
-                            StoreLogic.to.loginUserInfo?.toJson());
-                      },
-                    )
-                    ..addJavaScriptHandler(
-                      handlerName: 'openUrl',
-                      callback: (arguments) {
-                        if (arguments.isEmpty) return;
-                        AppNav.openWebUrl(
-                          url: arguments[0],
-                          dynamicTitle: true,
-                          showLoading: true,
-                        );
-                      },
-                    )
-                    ..addJavaScriptHandler(
-                      handlerName: 'openPage',
-                      callback: (arguments) {
-                        if (arguments.isEmpty) return;
-                        final uri = Uri.parse(arguments[0]);
-                        _handleOpenPage(uri);
-                      },
-                    );
-                },
-                onLoadStop: (controller, url) {
-                  widget.onLoadStop?.call();
-                  if (widget.url.contains('proChart') ||
-                      widget.urlGetter?.call().contains('proChart') == true) {
-                    // controller.evaluateJavascript(
-                    //     source: "changeSymbolInfo('BTC')");
-                    if (_evJs.isNotEmpty) {
-                      controller
-                          .evaluateJavascript(source: _evJs)
-                          .then((value) => _evJs = '');
-                      _evJs = '';
-                    }
-                  }
-                },
-                onConsoleMessage: (controller, consoleMessage) {
-                  debugPrint(consoleMessage.toString());
-                },
+                onWebViewCreated: (controller) => _onWebViewCreated(controller),
+                onLoadStop: (controller, url) => _onLoadStop(controller),
+                onConsoleMessage: (controller, consoleMessage) =>
+                    debugPrint(consoleMessage.toString()),
                 onProgressChanged: (controller, progress) {
                   _progress = progress;
                   if (progress == 100) {
                     setState(() {});
                   }
                 },
+                onWebContentProcessDidTerminate: (controller) =>
+                    controller.reload(),
               ),
             ),
             if (widget.showLoading && _progress != 100) const LottieIndicator(),
@@ -312,6 +262,77 @@ class _CommonWebViewState extends State<CommonWebView>
         ),
       ),
     );
+  }
+
+  void _onLoadStop(InAppWebViewController controller) {
+    widget.onLoadStop?.call();
+    if (widget.url.contains('proChart') ||
+        widget.urlGetter?.call().contains('proChart') == true) {
+      // controller.evaluateJavascript(
+      //     source: "changeSymbolInfo('BTC')");
+      if (_evJs.isNotEmpty) {
+        controller
+            .evaluateJavascript(source: _evJs)
+            .then((value) => _evJs = '');
+        _evJs = '';
+      }
+    }
+  }
+
+  void _onWebViewCreated(InAppWebViewController controller) {
+    widget.onWebViewCreated?.call(controller);
+    webCtrl = controller
+      ..addJavaScriptHandler(
+        handlerName: 'openLogin',
+        callback: (arguments) {
+          AppNav.toLogin();
+        },
+      )
+      ..addJavaScriptHandler(
+        handlerName: 'getUserInfo',
+        callback: (arguments) {
+          return jsonEncode(StoreLogic.to.loginUserInfo?.toJson());
+        },
+      )
+      ..addJavaScriptHandler(
+        handlerName: 'openUrl',
+        callback: (arguments) {
+          if (arguments.isEmpty) return;
+          AppNav.openWebUrl(
+            url: arguments[0],
+            dynamicTitle: true,
+            showLoading: true,
+          );
+        },
+      )
+      ..addJavaScriptHandler(
+        handlerName: 'openPage',
+        callback: (arguments) {
+          if (arguments.isEmpty) return;
+          final uri = Uri.parse(arguments[0]);
+          _handleOpenPage(uri);
+        },
+      )
+      ..addJavaScriptHandler(
+        handlerName: 'openUrlWithBrowser',
+        callback: (arguments) {
+          final url = Uri.parse(arguments[0]);
+          launchUrl(url, mode: LaunchMode.externalApplication);
+        },
+      )
+      ..addJavaScriptHandler(
+        handlerName: 'copy',
+        callback: (arguments) => AppUtil.copy(arguments[0]),
+      )
+      ..addJavaScriptHandler(
+        handlerName: 'writeConfig',
+        callback: (arguments) =>
+            StoreLogic.to.saveWebConfig(arguments[0], arguments[1]),
+      )
+      ..addJavaScriptHandler(
+        handlerName: 'readConfig',
+        callback: (arguments) => StoreLogic.to.webConfig(arguments[0]),
+      );
   }
 
   void _handleOpenPage(Uri uri) {
