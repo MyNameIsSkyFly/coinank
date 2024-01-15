@@ -83,51 +83,53 @@ class _TopDataView extends StatelessWidget {
     return SliverToBoxAdapter(
       child: SizedBox(
         height: 79,
-        child: EasyRefresh(
-          child: ListView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            scrollDirection: Axis.horizontal,
-            itemCount: state.topDataList.length,
-            itemBuilder: (context, index) {
-              final item = state.topDataList.toList()[index];
-              String icon = '';
-              if (index > state.icoList.length - 1) {
-                icon = state.icoList.last;
-              } else {
-                icon = state.icoList[index];
-              }
-              return GestureDetector(
-                onTap: () {
-                  Get.to(() => TopItemDetailPage(
-                      title: item.title ?? '', subs: item.subs ?? []));
-                },
-                child: Container(
-                  height: 79,
-                  width: 86,
-                  decoration: BoxDecoration(
-                      color: state.topColorList[index],
-                      borderRadius: BorderRadius.circular(8)),
-                  margin: const EdgeInsets.only(right: 10),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        icon,
-                        width: 30,
-                        height: 30,
-                      ),
-                      const Gap(5),
-                      Text(
-                        item.title ?? '',
-                        style: Styles.tsBody_12(context).medium,
-                      ),
-                    ],
+        child: Obx(() {
+          return EasyRefresh(
+            child: ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              scrollDirection: Axis.horizontal,
+              itemCount: state.topDataList.length,
+              itemBuilder: (context, index) {
+                final item = state.topDataList.toList()[index];
+                String icon = '';
+                if (index > state.icoList.length - 1) {
+                  icon = state.icoList.last;
+                } else {
+                  icon = state.icoList[index];
+                }
+                return GestureDetector(
+                  onTap: () {
+                    Get.to(() => TopItemDetailPage(
+                        title: item.title ?? '', subs: item.subs ?? []));
+                  },
+                  child: Container(
+                    height: 79,
+                    width: 86,
+                    decoration: BoxDecoration(
+                        color: state.topColorList[index],
+                        borderRadius: BorderRadius.circular(8)),
+                    margin: const EdgeInsets.only(right: 10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          icon,
+                          width: 30,
+                          height: 30,
+                        ),
+                        const Gap(5),
+                        Text(
+                          item.title ?? '',
+                          style: Styles.tsBody_12(context).medium,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              );
-            },
-          ),
-        ),
+                );
+              },
+            ),
+          );
+        }),
       ),
     );
   }
