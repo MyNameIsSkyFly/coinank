@@ -18,6 +18,7 @@ class AppNav {
       () => CommonWebView(
         title: title,
         url: url,
+        enableShare: true,
         showLoading: showLoading,
         dynamicTitle: dynamicTitle,
       ),

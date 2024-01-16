@@ -51,6 +51,10 @@ dependencies:
   flutter_app_badger: ^1.5.0
   screenshot: ^2.1.0
   pointer_interceptor: ^0.10.1
+  ff_native_screenshot: ^1.0.0
+  share_plus: ^7.2.1
+  image_gallery_saver: ^2.0.3
+  path_provider: ^2.1.2
 
 dev_dependencies:
   flutter_native_splash: ^2.3.9

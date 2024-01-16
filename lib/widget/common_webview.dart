@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:ank_app/entity/event/theme_event.dart';
 import 'package:ank_app/entity/event/web_js_event.dart';
@@ -11,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
-import 'package:screenshot/screenshot.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../constants/urls.dart';
@@ -158,30 +156,6 @@ class _CommonWebViewState extends State<CommonWebView>
     }
   }
 
-  Future<void> _share() async {
-    final imageMemory = await webCtrl?.takeScreenshot(
-        screenshotConfiguration: ScreenshotConfiguration());
-    final screenShotCtrl = ScreenshotController();
-    if (!mounted) return;
-    var dialogWidget = SizedBox(
-      child: Column(
-        children: [
-          Image.memory(imageMemory ?? Uint8List(0)),
-          Container(
-            height: 100,
-            width: 100,
-            color: Colors.red,
-          ),
-        ],
-      ),
-    );
-    Get.dialog(Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 50),
-      child: dialogWidget,
-    ));
-    // screenShotCtrl.captureFromWidget(dialogWidget);
-  }
-
   @override
   void dispose() {
     _themeChangeSubscription?.cancel();
@@ -212,7 +186,8 @@ class _CommonWebViewState extends State<CommonWebView>
                 onBack: () => navigator?.maybePop(),
                 actionWidget: widget.enableShare
                     ? IconButton(
-                        onPressed: _share, icon: const Icon(Icons.share))
+                        onPressed: () => AppUtil.shareImage(),
+                        icon: const ImageIcon(AssetImage(Assets.commonIcShare)))
                     : null),
         body: Stack(
           children: [

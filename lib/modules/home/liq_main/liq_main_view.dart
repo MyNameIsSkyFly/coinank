@@ -58,6 +58,14 @@ class LiqMainPage extends StatelessWidget {
                 ),
               ),
             ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: IconButton(
+                icon:
+                    const ImageIcon(AssetImage(Assets.commonIcShare), size: 20),
+                onPressed: () => AppUtil.shareImage(),
+              ),
+            ),
           ],
         ),
       ),

@@ -11,6 +11,7 @@ import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/util/format_util.dart';
 import 'package:dio/dio.dart';
+import 'package:ff_native_screenshot/ff_native_screenshot.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,6 +23,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../widget/adaptive_dialog_action.dart';
 import '../widget/common_webview.dart';
+import '../widget/share_dialog.dart';
 
 class AppUtil {
   AppUtil._();
@@ -294,5 +296,11 @@ class AppUtil {
         .changeLanguage((StoreLogic.to.locale ?? Get.deviceLocale).toString());
     MessageHostApi().changeDarkMode(StoreLogic.to.isDarkMode);
     MessageHostApi().changeUpColor(StoreLogic.to.isUpGreen);
+  }
+
+  static Future<void> shareImage() async {
+    Uint8List? image = await FfNativeScreenshot().takeScreenshot();
+    if (image == null) return;
+    Get.dialog(ShareDialog(image: image), useSafeArea: false);
   }
 }

@@ -16,6 +16,7 @@ class UserInfoEntity {
   String? status;
   int? ts;
   bool? trialed;
+  String? referralCode;
 
   factory UserInfoEntity.fromJson(Map<String, dynamic> json) {
     return _$UserInfoEntityFromJson(json);

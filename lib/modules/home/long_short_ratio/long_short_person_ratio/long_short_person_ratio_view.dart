@@ -24,6 +24,9 @@ class _LongShortPersonRatioPageState extends State<LongShortPersonRatioPage> {
     return Scaffold(
       appBar: AppTitleBar(
         title: S.of(context).s_longshort_person,
+        actionWidget: IconButton(
+            onPressed: () => AppUtil.shareImage(),
+            icon: const ImageIcon(AssetImage(Assets.commonIcShare))),
       ),
       body: Obx(() {
         if (logic.loading.value) {
