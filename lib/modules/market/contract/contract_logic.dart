@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/modules/main/main_logic.dart';
 import 'package:ank_app/modules/market/market_logic.dart';
@@ -11,22 +12,48 @@ import 'contract_state.dart';
 class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
   final ContractState state = ContractState();
 
-  void tapAllCollect() {
-    state.isCollect = !state.isCollect;
-    update(['collect']);
-    sortCollect();
-  }
-
-  sortCollect() {
-    if (state.isCollect) {
-      state.data = List<MarkerTickerEntity>.from(state.originalData ?? [])
-          .where((element) => element.follow == true)
-          .toList();
-    } else {
-      state.data = List.from(state.originalData ?? []);
+  void sortFavorite({SortType? type}) {
+    if (type != null) state.favoriteSortBy = type.name;
+    final list = <MarkerTickerEntity>[];
+    for (var element in state.data) {
+      if (element.follow == true) {
+        list.add(element);
+      }
     }
-
-    update(['data']);
+    list.sort(
+      (a, b) {
+        if (state.favoriteSortBy == 'openInterestCh24') {
+          if (state.favoriteOiChangeSort.value == SortStatus.normal) {
+            return (b.openInterest ?? 0).compareTo((a.openInterest ?? 0));
+          }
+          var result =
+              (b.openInterestCh24 ?? 0).compareTo((a.openInterestCh24 ?? 0));
+          return state.favoriteOiChangeSort.value != SortStatus.down
+              ? -result
+              : result;
+        } else if (state.favoriteSortBy == 'price') {
+          if (state.favoritePriceSort.value == SortStatus.normal) {
+            return (b.openInterest ?? 0).compareTo((a.openInterest ?? 0));
+          }
+          var result = (b.price ?? 0).compareTo((a.price ?? 0));
+          return state.favoritePriceSort.value != SortStatus.down
+              ? -result
+              : result;
+        } else if (state.favoriteSortBy == 'priceChangeH24') {
+          if (state.favoritePriceChangeSort.value == SortStatus.normal) {
+            return (b.openInterest ?? 0).compareTo((a.openInterest ?? 0));
+          }
+          var result =
+              (b.priceChangeH24 ?? 0).compareTo((a.priceChangeH24 ?? 0));
+          return state.favoritePriceChangeSort.value != SortStatus.down
+              ? -result
+              : result;
+        }
+        var result = (b.openInterest ?? 0).compareTo((a.openInterest ?? 0));
+        return state.favoriteOiSort.value != SortStatus.down ? -result : result;
+      },
+    );
+    state.favoriteData.assignAll(list);
   }
 
   Future<void> tapSort(SortType type) async {
@@ -105,9 +132,15 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
         item.baseCoin ?? '', 'SWAP');
   }
 
-  tapCollect(MarkerTickerEntity item) async {
+  Future<void> tapCollect(MarkerTickerEntity item) async {
     if (!StoreLogic.isLogin) {
-      AppNav.toLogin();
+      if (item.follow == true) {
+        await StoreLogic.to.removeFavoriteContract(item.baseCoin!);
+        item.follow = false;
+      } else {
+        await StoreLogic.to.saveFavoriteContract(item.baseCoin!);
+        item.follow = true;
+      }
     } else {
       if (item.follow == true) {
         await Apis().getDelFollow(baseCoin: item.baseCoin!);
@@ -116,29 +149,66 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
         await Apis().getAddFollow(baseCoin: item.baseCoin!);
         item.follow = true;
       }
-      sortCollect();
     }
+    update(['data']);
+    sortFavorite();
+  }
+
+  Future<void> tapFavoriteCollect(String? baseCoin) async {
+    final item =
+        state.data.firstWhereOrNull((element) => element.baseCoin == baseCoin);
+    if (item == null) return;
+    if (!StoreLogic.isLogin) {
+      if (item.follow == true) {
+        await StoreLogic.to.removeFavoriteContract(item.baseCoin!);
+        item.follow = false;
+      } else {
+        await StoreLogic.to.saveFavoriteContract(item.baseCoin!);
+        item.follow = true;
+      }
+    } else {
+      if (item.follow == true) {
+        await Apis().getDelFollow(baseCoin: item.baseCoin!);
+        item.follow = false;
+      } else {
+        await Apis().getAddFollow(baseCoin: item.baseCoin!);
+        item.follow = true;
+      }
+    }
+    state.data.refresh();
+    update(['data']);
+    sortFavorite();
   }
 
   Future<void> onRefresh({bool showLoading = false}) async {
     if (AppConst.networkConnected == false) return;
-    state.oldData = List.from(state.originalData ?? []);
+    if (state.fetching.value) return;
+    state.oldData.assignAll(List.from(state.data.toList()));
     if (showLoading) {
       Loading.show();
     }
     state.isRefresh = true;
+    state.fetching.value = true;
     final data = await Apis().getFuturesBigData(
       page: 1,
       size: 500,
       sortBy: state.sortBy,
       sortType: state.sortType,
-    );
+        )
+        .catchError((e) => null);
+    state.fetching.value = false;
     Loading.dismiss();
     if (state.isLoading.value) {
       state.isLoading.value = false;
     }
-    state.originalData = data?.list;
-    sortCollect();
+    if (!StoreLogic.isLogin) {
+      final favorites = StoreLogic.to.favoriteContract;
+      for (final item in data?.list ?? <MarkerTickerEntity>[]) {
+        item.follow = favorites.contains(item.baseCoin);
+      }
+    }
+    state.data.assignAll(data?.list ?? []);
+    sortFavorite();
     state.isRefresh = false;
     StoreLogic.to.setContractData(data?.list ?? []);
   }
@@ -159,6 +229,28 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
     double offset = state.scrollController.offset;
     state.isScrollDown.value = offset <= 0 || state.offset - offset > 0;
     state.offset = offset;
+  }
+
+  Future<void> saveFixedCoin() async {
+    if (!StoreLogic.isLogin) {
+      for (final item in state.selectedFixedCoin) {
+        await StoreLogic.to.saveFavoriteContract(item);
+      }
+    } else {
+      await Future.wait(
+        state.selectedFixedCoin.map(
+          (element) => Apis().getAddFollow(baseCoin: element),
+        ),
+      );
+    }
+    for (var element in state.data) {
+      if (state.selectedFixedCoin.contains(element.baseCoin)) {
+        element.follow = true;
+      }
+    }
+    sortFavorite();
+    update(['data']);
+    state.selectedFixedCoin.clear();
   }
 
   @override

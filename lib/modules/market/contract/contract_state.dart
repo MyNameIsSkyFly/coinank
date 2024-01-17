@@ -21,11 +21,14 @@ class ContractState {
   //descend 降序
   //ascend 升序
   String sortType = 'descend';
-  List<MarkerTickerEntity>? data;
-  List<MarkerTickerEntity>? originalData;
-  List<MarkerTickerEntity>? oldData;
+  final data = RxList<MarkerTickerEntity>();
+  final oldData = RxList<MarkerTickerEntity>();
 
-  bool isCollect = false;
+  // List<MarkerTickerEntity> get favoriteData =>
+  //     data.where((element) => element.follow == true).toList();
+  final favoriteData = RxList<MarkerTickerEntity>();
+
+  // bool isCollect = false;
   Timer? pollingTimer;
   bool isRefresh = false;
   bool appVisible = true;
@@ -33,5 +36,17 @@ class ContractState {
   double offset = 0;
   RxBool isScrollDown = true.obs;
   RxBool isLoading = true.obs;
+
+  final favoriteOiSort = Rx(SortStatus.down);
+  final favoriteOiChangeSort = Rx(SortStatus.normal);
+  final favoritePriceSort = Rx(SortStatus.normal);
+  final favoritePriceChangeSort = Rx(SortStatus.normal);
+
+  String favoriteSortBy = 'openInterest';
+  String favoriteSortType = 'descend';
+  final fixedCoin = ['BTC', 'ETH', 'SOL', 'XRP', 'BNB', 'ORDI', 'DOGE', 'ARB'];
+  final selectedFixedCoin = RxList<String>();
+
+  final fetching = RxBool(false);
   ContractState();
 }

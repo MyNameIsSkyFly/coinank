@@ -28,8 +28,7 @@ class _ShareDialogState extends State<ShareDialog> {
     final image = await _screenshotController.capture();
     if (image == null) return;
     await ImageGallerySaver.saveImage(image);
-    //todo intl
-    AppUtil.showToast('保存成功');
+    AppUtil.showToast(S.current.saved);
     Get.back();
   }
 
@@ -40,14 +39,12 @@ class _ShareDialogState extends State<ShareDialog> {
     final result = await Share.shareXFiles([XFile(filePath)]);
     switch ((result.status)) {
       case ShareResultStatus.success:
-        //todo intl
-        AppUtil.showToast('分享成功');
+        AppUtil.showToast(S.current.endOfShare);
         Get.back();
       case ShareResultStatus.dismissed:
         break;
       case ShareResultStatus.unavailable:
-        //todo intl
-        AppUtil.showToast('不支持分享');
+        AppUtil.showToast(S.current.unsupported);
     }
   }
 
@@ -124,22 +121,24 @@ class _ShareDialogState extends State<ShareDialog> {
                               child: Row(
                                 children: [
                                   Expanded(
-                                    //todo intl
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text('您最值得信赖的加密货币数据平台',
+                                        Text(S.of(context).shareTitle,
                                             style: Styles.tsBody_10(context)
                                                 .medium),
                                         const Gap(2),
-                                        Text('扫码下载CoinAnk APP',
+                                        Text(S.of(context).shareSubTitle,
                                             style: Styles.tsSub_10(context)
                                                 .medium),
                                         const Gap(2),
                                         Text(
-                                            '邀请码: ${StoreLogic.to.loginUserInfo?.referralCode ?? '-'}',
+                                            S.of(context).invitationCodeX(
+                                                StoreLogic.to.loginUserInfo
+                                                        ?.referralCode ??
+                                                    '-'),
                                             style: Styles.tsSub_10(context)
                                                 .medium),
                                       ],
@@ -169,8 +168,8 @@ class _ShareDialogState extends State<ShareDialog> {
                     Row(
                       children: [
                         const Gap(15),
-                        //todo intl
-                        Text('分享', style: Styles.tsBody_16(context)),
+                        Text(S.of(context).share,
+                            style: Styles.tsBody_16(context)),
                         const Spacer(),
                         const CloseButton(),
                       ],
@@ -191,8 +190,8 @@ class _ShareDialogState extends State<ShareDialog> {
                                   width: 25,
                                   height: 25,
                                 )),
-                            //todo intl
-                            Text('保存图片', style: Styles.tsBody_12(context))
+                            Text(S.of(context).saveImage,
+                                style: Styles.tsBody_12(context))
                           ],
                         ),
                         const Gap(40),
@@ -209,8 +208,8 @@ class _ShareDialogState extends State<ShareDialog> {
                                   width: 25,
                                   height: 25,
                                 )),
-                            //todo intl
-                            Text('更多', style: Styles.tsBody_12(context))
+                            Text(S.of(context).more,
+                                style: Styles.tsBody_12(context))
                           ],
                         ),
                       ],

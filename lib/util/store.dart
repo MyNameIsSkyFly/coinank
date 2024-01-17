@@ -262,6 +262,30 @@ class StoreLogic extends GetxController {
   String webConfig(String key) {
     return _SpUtil()._getString('webConfig_$key');
   }
+
+  Future<bool> saveFavoriteContract(String baseCoin) {
+    final original = favoriteContract.toList();
+    if (original.contains(baseCoin)) {
+      return Future.value(true);
+    } else {
+      original.add(baseCoin);
+    }
+    return _SpUtil()._saveStringList(_SpKeys.favoriteContract, original);
+  }
+
+  Future<bool> removeFavoriteContract(String baseCoin) {
+    final original = favoriteContract;
+    if (!original.contains(baseCoin)) {
+      return Future.value(true);
+    } else {
+      original.remove(baseCoin);
+    }
+    return _SpUtil()._saveStringList(_SpKeys.favoriteContract, original);
+  }
+
+  List<String> get favoriteContract {
+    return _SpUtil()._getStringList(_SpKeys.favoriteContract, defaultValue: []);
+  }
 }
 
 class _SpKeys {
@@ -289,6 +313,7 @@ class _SpKeys {
   static const depthOrderDomain = 'ank_depthOrderDomain';
   static const isFirst = 'isFirst';
   static const recentChart = 'recentChart';
+  static const favoriteContract = 'favoriteContract';
 }
 
 class _SpUtil {

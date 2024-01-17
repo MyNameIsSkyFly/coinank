@@ -1,8 +1,8 @@
 import 'package:ank_app/entity/contract_market_entity.dart';
 import 'package:ank_app/modules/home/price_change/price_change_view.dart';
 import 'package:ank_app/modules/market/contract/contract_logic.dart';
-import 'package:flutter/material.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
@@ -208,7 +208,7 @@ class ContractMarketPage extends StatelessWidget {
                                         children: [
                                           AnimationColorText(
                                             text: '\$${item.lastPrice}',
-                                            style: Styles.tsBody_14m(context),
+                                            style: Styles.tsBody_16m(context),
                                             normalColor: normalColor,
                                             animationColor: animationColor,
                                             textAlign: TextAlign.right,
@@ -228,7 +228,7 @@ class ContractMarketPage extends StatelessWidget {
                                           children: [
                                             Text(
                                               '\$${AppUtil.getLargeFormatString('${item.oiUSD ?? 0}')}',
-                                              style: Styles.tsBody_14m(context),
+                                              style: Styles.tsBody_16m(context),
                                             ),
                                             const Gap(3),
                                             Text(

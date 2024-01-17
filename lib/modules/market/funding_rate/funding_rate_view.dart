@@ -257,8 +257,12 @@ class FundingRatePage extends StatelessWidget {
                                                             precision: 4,
                                                             showAdd: false),
                                                         style: Styles.tsBody_12m(
-                                                                context)
-                                                            .copyWith(
+                                                                    context)
+                                                                .copyWith(
+                                                          fontSize:
+                                                              state.isHide.value
+                                                                  ? 16
+                                                                  : 14,
                                                           color: AppUtil
                                                               .getColorWithFundRate(
                                                                   exchangeItem
@@ -280,6 +284,11 @@ class FundingRatePage extends StatelessWidget {
                                                                     .tsBody_12m(
                                                                         context)
                                                                 .copyWith(
+                                                              fontSize: state
+                                                                      .isHide
+                                                                      .value
+                                                                  ? 16
+                                                                  : 14,
                                                               color: AppUtil
                                                                   .getColorWithFundRate(
                                                                       exchangeItem

@@ -58,33 +58,6 @@ class ContractPage extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(15, 15, 15, 10),
                   child: Row(
                     children: [
-                      GetBuilder<ContractLogic>(
-                          id: 'collect',
-                          builder: (_) {
-                            return InkWell(
-                              onTap: () => logic.tapAllCollect(),
-                              child: state.isCollect
-                                  ? Image.asset(
-                                      Assets.commonIconStarFill,
-                                      width: 17,
-                                      height: 17,
-                                      color: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall
-                                          ?.color,
-                                    )
-                                  : Image.asset(
-                                      Assets.commonIconStar,
-                                      width: 17,
-                                      height: 17,
-                                      color: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall
-                                          ?.color,
-                                    ),
-                            );
-                          }),
-                      const Gap(15),
                       SortWithArrow(
                         title: S.current.s_oi_vol,
                         status: state.oiSort,
@@ -138,14 +111,14 @@ class ContractPage extends StatelessWidget {
                                 controller: state.scrollController,
                                 padding: const EdgeInsets.only(bottom: 10),
                                 itemBuilder: (cnt, idx) {
-                                  MarkerTickerEntity item = state.data![idx];
+                                  MarkerTickerEntity item = state.data[idx];
                                   return _DataItem(
                                     key: ValueKey(idx),
                                     item: item,
                                     logic: logic,
                                   );
                                 },
-                                itemCount: state.data?.length ?? 0,
+                                itemCount: state.data.length ?? 0,
                               ),
                             );
                           }),
@@ -172,11 +145,11 @@ class _DataItem extends StatelessWidget {
   Widget build(BuildContext context) {
     Color normalColor = Theme.of(context).textTheme.bodyMedium!.color!;
     Color animationColor = normalColor;
-    final old = logic.state.oldData?.firstWhere(
+    final old = logic.state.oldData.firstWhere(
         (element) => item.baseCoin == element.baseCoin,
         orElse: () => MarkerTickerEntity());
-    animationColor = old?.price != null
-        ? item.price! > old!.price!
+    animationColor = old.price != null
+        ? item.price! > old.price!
             ? Styles.cUp(context)
             : item.price! < old.price!
                 ? Styles.cDown(context)
@@ -189,7 +162,13 @@ class _DataItem extends StatelessWidget {
         motion: const ScrollMotion(),
         children: [
           CustomSlidableAction(
-            onPressed: (_) => logic.tapCollect(item),
+            onPressed: (_) {
+              if (logic.state.fetching.value) return;
+              logic.state.fetching.value = true;
+              logic
+                  .tapCollect(item)
+                  .then((value) => logic.state.fetching.value = false);
+            },
             backgroundColor: Styles.cMain,
             foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(vertical: 8),
@@ -274,7 +253,7 @@ class _DataItem extends StatelessWidget {
               Expanded(
                 child: AnimationColorText(
                   text: '\$${item.price}',
-                  style: Styles.tsBody_14m(context),
+                  style: Styles.tsBody_16m(context),
                   normalColor: normalColor,
                   animationColor: animationColor,
                   textAlign: TextAlign.right,
