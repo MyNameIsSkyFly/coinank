@@ -1,6 +1,7 @@
 // ignore_for_file: unused_element
 
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:ank_app/constants/app_const.dart';
 import 'package:ank_app/entity/event/logged_event.dart';
@@ -13,6 +14,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../entity/chart_entity.dart';
+import '../entity/search_v2_entity.dart';
 
 class StoreLogic extends GetxController {
   static StoreLogic get to => Get.find();
@@ -286,6 +288,71 @@ class StoreLogic extends GetxController {
   List<String> get favoriteContract {
     return _SpUtil()._getStringList(_SpKeys.favoriteContract, defaultValue: []);
   }
+
+  //==========================markedSearchResult==================================================================
+  Future<bool> saveMarkedSearchResult(SearchV2ItemEntity entity) {
+    final original = markedSearchResult;
+    if (original.contains(entity)) {
+      return Future.value(true);
+    } else {
+      original.add(entity);
+    }
+    return _SpUtil()._saveStringList(
+      _SpKeys.markedSearchResult,
+      original.map((e) => jsonEncode(e.toJson())).toList(),
+    );
+  }
+
+  Future<bool> removeMarkedSearchResult(SearchV2ItemEntity entity) {
+    final original = markedSearchResult;
+    if (!original.contains(entity)) {
+      return Future.value(true);
+    } else {
+      original.remove(entity);
+    }
+    return _SpUtil()._saveStringList(
+      _SpKeys.markedSearchResult,
+      original.map((e) => jsonEncode(e.toJson())).toList(),
+    );
+  }
+
+  List<SearchV2ItemEntity> get markedSearchResult {
+    final stringList =
+        _SpUtil()._getStringList(_SpKeys.markedSearchResult, defaultValue: []);
+    return stringList
+        .map((e) => SearchV2ItemEntity.fromJson(jsonDecode(e)))
+        .toList();
+  }
+
+  //===========================tappedSearchResult===================================================================
+  Future<bool> saveTappedSearchResult(SearchV2ItemEntity entity) {
+    final original = tappedSearchResult;
+    if (original.contains(entity)) {
+      original.remove(entity);
+      original.insert(0, entity);
+    } else {
+      original.add(entity);
+    }
+    return _SpUtil()._saveStringList(
+      _SpKeys.tappedSearchResult,
+      original
+          .map((e) => jsonEncode(e.toJson()))
+          .toList()
+          .sublist(0, min(original.length, 10)),
+    );
+  }
+
+  Future<bool> clearTappedSearchResult() {
+    return _SpUtil()._remove(_SpKeys.tappedSearchResult);
+  }
+
+  List<SearchV2ItemEntity> get tappedSearchResult {
+    final stringList =
+        _SpUtil()._getStringList(_SpKeys.tappedSearchResult, defaultValue: []);
+    return stringList
+        .map((e) => SearchV2ItemEntity.fromJson(jsonDecode(e)))
+        .toList();
+  }
 }
 
 class _SpKeys {
@@ -314,6 +381,8 @@ class _SpKeys {
   static const isFirst = 'isFirst';
   static const recentChart = 'recentChart';
   static const favoriteContract = 'favoriteContract';
+  static const markedSearchResult = 'markedSearchResult';
+  static const tappedSearchResult = 'tappedSearchResult';
 }
 
 class _SpUtil {

@@ -1,4 +1,5 @@
 import 'package:ank_app/constants/urls.dart';
+import 'package:ank_app/modules/home/home_search/home_search_view.dart';
 import 'package:ank_app/modules/home/liq_main/liq_main_view.dart';
 import 'package:ank_app/modules/home/long_short_ratio/long_short_ratio_view.dart';
 import 'package:ank_app/modules/home/price_change/price_change_view.dart';
@@ -59,7 +60,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         actions: [
           IconButton(
               visualDensity: VisualDensity.compact,
-              onPressed: () => Get.toNamed(RouteConfig.contractSearch),
+              onPressed: () => Get.toNamed(HomeSearchPage.routeName),
               icon: Image.asset(
                 Assets.imagesIcSearch,
                 height: 20,

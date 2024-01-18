@@ -9,6 +9,7 @@ import 'package:ank_app/entity/chart_left_entity.dart';
 import 'package:ank_app/entity/contract_market_entity.dart';
 import 'package:ank_app/entity/marker_funding_rate_entity.dart';
 import 'package:ank_app/entity/oi_entity.dart';
+import 'package:ank_app/entity/search_v2_entity.dart';
 import 'package:ank_app/entity/short_rate_entity.dart';
 import 'package:ank_app/entity/test_entity.dart';
 import 'package:ank_app/entity/user_info_entity.dart';
@@ -233,4 +234,8 @@ abstract class Apis {
   //设置页面动态配置的按钮
   @GET('/api/app/getAppSetting')
   Future<List<AppSettingEntity>?> getAppSetting({@Query('lan') String? lan});
+
+  //搜索v2
+  @GET('/api/baseCoin/searchV2?search=e')
+  Future<SearchV2Entity?> searchV2({@Query('search') String? keyword});
 }

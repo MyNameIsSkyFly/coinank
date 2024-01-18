@@ -15,6 +15,8 @@ import 'package:ank_app/modules/market/contract_search/contract_search_binding.d
 import 'package:ank_app/modules/market/contract_search/contract_search_view.dart';
 import 'package:get/get.dart';
 
+import '../modules/home/home_search/home_search_view.dart';
+
 class RouteConfig {
   static const String main = '/';
   static const String contractSearch = '/marker/contract/search';
@@ -53,6 +55,10 @@ class RouteConfig {
     GetPage(
       name: LongShortPersonRatioPage.routeName,
       page: () => const LongShortPersonRatioPage(),
+    ),
+    GetPage(
+      name: HomeSearchPage.routeName,
+      page: () => HomeSearchPage(),
     ),
   ];
 }
