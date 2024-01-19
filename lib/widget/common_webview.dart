@@ -345,7 +345,7 @@ class _CommonWebViewState extends State<CommonWebView>
         switch (pageType.toUpperCase()) {
           case 'FUNDINGRATE':
             Get.find<MainLogic>().selectTab(1);
-            Get.find<MarketLogic>().selectIndex(4);
+            Get.find<MarketLogic>().selectIndex(5);
           case 'LIQDATA':
             Get.find<MainLogic>().selectTab(1);
             Future.delayed(const Duration(milliseconds: 100)).then((value) {
@@ -353,7 +353,7 @@ class _CommonWebViewState extends State<CommonWebView>
                   evJS: uri.queryParameters['jsSource'] ?? '',
                   url: Urls.urlLiquidation));
             });
-            Get.find<MarketLogic>().selectIndex(3);
+            Get.find<MarketLogic>().selectIndex(4);
           case 'EXCHANGEOI':
             Get.find<MainLogic>().selectTab(1);
             var marketLogic = Get.find<MarketLogic>();
@@ -370,7 +370,7 @@ class _CommonWebViewState extends State<CommonWebView>
               marketLogic.state.exchangeOIBaseCoin =
                   uri.queryParameters['baseCoin'];
             }
-            marketLogic.selectIndex(1);
+            marketLogic.selectIndex(2);
           case 'ORDERFLOW':
             var symbol = uri.queryParameters['symbol'] ?? '';
             var baseCoin = uri.queryParameters['baseCoin'] ?? '';

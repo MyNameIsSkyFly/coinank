@@ -82,31 +82,36 @@ class HomeSearchLogic extends GetxController {
     switch (item.tag) {
       case SearchEntityType.ARC20:
         AppNav.openWebUrl(
-            url: 'https://coinank.com/ordinals/arc20/${item.baseCoin}',
+            url:
+                'https://coinank.com/${AppUtil.webLanguage}ordinals/arc20/${item.baseCoin}',
             showLoading: true,
             dynamicTitle: true,
             title: item.baseCoin);
       case SearchEntityType.BRC20:
         AppNav.openWebUrl(
-            url: 'https://coinank.com/ordinals/brc20/${item.baseCoin}',
+            url:
+                'https://coinank.com/${AppUtil.webLanguage}ordinals/brc20/${item.baseCoin}',
             dynamicTitle: true,
             showLoading: true,
             title: item.baseCoin);
       case SearchEntityType.ASC20:
         AppNav.openWebUrl(
-            url: 'https://coinank.com/scriptions/asc20/${item.baseCoin}',
+            url:
+                'https://coinank.com/${AppUtil.webLanguage}scriptions/asc20/${item.baseCoin}',
             dynamicTitle: true,
             showLoading: true,
             title: item.baseCoin);
       case SearchEntityType.ERC20:
         AppNav.openWebUrl(
-            url: 'https://coinank.com/scriptions/erc20/${item.baseCoin}',
+            url:
+                'https://coinank.com/${AppUtil.webLanguage}scriptions/erc20/${item.baseCoin}',
             dynamicTitle: true,
             showLoading: true,
             title: item.baseCoin);
       case SearchEntityType.BASECOIN:
         AppNav.openWebUrl(
-            url: 'https://coinank.com/instruments/${item.baseCoin}',
+            url:
+                'https://coinank.com/${AppUtil.webLanguage}instruments/${item.baseCoin}',
             dynamicTitle: true,
             showLoading: true,
             title: item.baseCoin);

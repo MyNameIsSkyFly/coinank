@@ -322,6 +322,5 @@
   "officialWebsite": "官方网站",
   "aboutCoinank": "关于CoinAnk",
   "customerServiceEmail": "客服邮箱",
-  "inviteScore": "邀请积分: ",
-  "inviteCodeX": "邀请码：{code}"
+  "inviteScore": "邀请积分: "
 }

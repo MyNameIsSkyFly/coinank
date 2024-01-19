@@ -83,7 +83,7 @@ class _SettingPageState extends State<SettingPage> {
                           child: Row(
                             children: [
                               Text(
-                                  S.of(context).inviteCodeX(StoreLogic
+                                  S.of(context).invitationCodeX(StoreLogic
                                           .to.loginUserInfo?.referralCode ??
                                       ''),
                                   style: Styles.tsSub_12(context)),

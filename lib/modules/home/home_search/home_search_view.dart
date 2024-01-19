@@ -604,7 +604,8 @@ class _Item extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                 )),
-            ImageUtil.networkImage(AppConst.imageHost(item.baseCoin ?? ''),
+            ImageUtil.networkImage(
+                'https://cdn01.coinank.com/image/coin/${item.tag?.name.toLowerCase()}/brc-${item.baseCoin}.png',
                 width: 24, height: 24),
             const Gap(10),
             Expanded(

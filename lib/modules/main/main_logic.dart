@@ -101,6 +101,8 @@ class MainLogic extends GetxController {
 
   Future<void> initPackageInfo() async {
     AppConst.packageInfo = await PackageInfo.fromPlatform();
-    AppConst.deviceInfo = await DeviceInfoPlugin().androidInfo;
+    if (Platform.isAndroid) {
+      AppConst.deviceInfo = await DeviceInfoPlugin().androidInfo;
+    }
   }
 }
