@@ -12,6 +12,7 @@ import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/activity_dialog.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get/get.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import 'main_state.dart';
 
@@ -27,6 +28,7 @@ class MainLogic extends GetxController {
     tryLogin();
     checkIfNeedOpenOrderFlow();
     getActivity();
+    initPackageInfo();
     super.onReady();
   }
 
@@ -94,5 +96,9 @@ class MainLogic extends GetxController {
     if (result == null) return;
     AppUtil.toKLine(
         result[0] ?? '', result[1] ?? '', result[2] ?? '', result[3] ?? '');
+  }
+
+  Future<void> initPackageInfo() async {
+    AppConst.packageInfo = await PackageInfo.fromPlatform();
   }
 }

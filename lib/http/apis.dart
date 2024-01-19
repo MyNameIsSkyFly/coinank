@@ -109,7 +109,8 @@ abstract class Apis {
       @Part(name: 'userName') String userName,
       @Part(name: 'passWord') String passWord,
       @Part(name: 'code') String code,
-      @Part(name: 'type') String type);
+      @Part(name: 'type') String type,
+      {@Part(name: 'referral') String? referral});
 
   @POST('/api/User/sendVerifyCode')
   @MultiPart()
@@ -236,6 +237,6 @@ abstract class Apis {
   Future<List<AppSettingEntity>?> getAppSetting({@Query('lan') String? lan});
 
   //搜索v2
-  @GET('/api/baseCoin/searchV2?search=e')
+  @GET('/api/baseCoin/searchV2')
   Future<SearchV2Entity?> searchV2({@Query('search') String? keyword});
 }

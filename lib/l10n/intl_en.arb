@@ -311,5 +311,20 @@
   "invitationCodeX": "邀请码：{code}",
   "share": "分享",
   "saveImage": "保存图片",
-  "more": "更多"
+  "more": "更多",
+  "viewMore": "查看更多",
+  "spotOrContract": "现货/合约",
+  "searchHistory": "搜索历史",
+  "contactUs": "联系我们",
+  "plsInputReferral": "请输入邀请码（选填）",
+  "noticeRecords": "提醒记录",
+  "businessTelegram": "商务Telegram",
+  "businessEmail": "商务邮箱",
+  "telegramGroup": "Telegram讨论组",
+  "telegramChannel": "Telegram频道",
+  "officialWebsite": "官方网站",
+  "aboutCoinank": "关于CoinAnk",
+  "customerServiceEmail": "客服邮箱",
+  "inviteScore": "邀请积分: ",
+  "inviteCodeX": "邀请码：{code}"
 }

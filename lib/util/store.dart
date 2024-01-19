@@ -233,28 +233,26 @@ class StoreLogic extends GetxController {
   }
 
   Future<bool> saveRecentChart(ChartEntity recentChart) {
-    final old = recentCharts;
-    if (old.map((e) => e.key).contains(recentChart.key)) {
-      return Future.value(false);
+    final original = recentCharts;
+    if (original.map((e) => e.key).contains(recentChart.key)) {
+      original.removeWhere((element) => element.key == recentChart.key);
+      original.insert(0, recentChart);
     } else {
-      old.insert(0, recentChart);
-      late List<ChartEntity> newList;
-      if (old.length > 20) {
-        newList = old.sublist(0, 20);
-      } else {
-        newList = old;
-      }
-      return _SpUtil()._saveString(_SpKeys.recentChart,
-          jsonEncode(newList.map((e) => e.toJson()).toList()));
+      original.insert(0, recentChart);
     }
+    return _SpUtil()._saveStringList(
+      _SpKeys.recentChart,
+      original
+          .map((e) => jsonEncode(e.toJson()))
+          .toList()
+          .sublist(0, min(original.length, 8)),
+    );
   }
 
   List<ChartEntity> get recentCharts {
-    var recentChart = _SpUtil()._getString(_SpKeys.recentChart);
-    if (recentChart.isEmpty) return [];
-    return (jsonDecode(recentChart) as List).map((e) {
-      return ChartEntity.fromJson(e as Map<String, dynamic>);
-    }).toList();
+    var recentChart =
+        _SpUtil()._getStringList(_SpKeys.recentChart, defaultValue: []);
+    return recentChart.map((e) => ChartEntity.fromJson(jsonDecode(e))).toList();
   }
 
   Future<bool> saveWebConfig(String key, String value) {
@@ -331,7 +329,7 @@ class StoreLogic extends GetxController {
       original.remove(entity);
       original.insert(0, entity);
     } else {
-      original.add(entity);
+      original.insert(0, entity);
     }
     return _SpUtil()._saveStringList(
       _SpKeys.tappedSearchResult,

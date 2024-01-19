@@ -114,6 +114,25 @@ class _RegisterPageState extends State<RegisterPage> {
                             contentPadding: const EdgeInsets.all(15),
                             prefixIcon: const Icon(Icons.lock_outline_rounded)),
                       ),
+                      const Gap(15),
+                      TextFormField(
+                        controller: logic.referralCtrl,
+                        decoration: InputDecoration(
+                          hintText: S.of(context).plsInputReferral,
+                          prefixIconColor: Styles.cBody(context),
+                          hintStyle: Styles.tsSub_14(context),
+                          contentPadding: const EdgeInsets.all(15),
+                          prefixIcon: const SizedBox.square(
+                            dimension: 48,
+                            child: Center(
+                              child: ImageIcon(
+                                AssetImage(Assets.imagesIcReferral),
+                                size: 24,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   )),
               const Gap(15),

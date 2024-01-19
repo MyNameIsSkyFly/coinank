@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:math';
 
-import 'package:ank_app/constants/urls.dart';
 import 'package:ank_app/entity/app_setting_entity.dart';
 import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/export.dart';
@@ -41,7 +40,7 @@ class _SettingPageState extends State<SettingPage> {
             child: ListView(
               children: [
                 const Gap(10),
-                if (StoreLogic.isLogin)
+                if (StoreLogic.isLogin) ...[
                   _SettingLine(
                     onTap: () {
                       showCupertinoModalPopup(
@@ -52,6 +51,52 @@ class _SettingPageState extends State<SettingPage> {
                             StoreLogic.to.loginUsername)) ??
                         '',
                   ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 15),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 14),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        image: const DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage(
+                              Assets.settingBgInvite,
+                            ))),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(S.of(context).inviteScore,
+                                style: Styles.tsBody_14(context).semibold),
+                            Text('${StoreLogic.to.loginUserInfo?.score ?? 0}',
+                                style: Styles.tsMain_14.semibold),
+                            const Gap(10),
+                            const Icon(Icons.keyboard_arrow_right_rounded,
+                                size: 18),
+                          ],
+                        ),
+                        const Gap(5),
+                        GestureDetector(
+                          onTap: () => AppUtil.copy(
+                              StoreLogic.to.loginUserInfo?.referralCode ?? ''),
+                          child: Row(
+                            children: [
+                              Text(
+                                  S.of(context).inviteCodeX(StoreLogic
+                                          .to.loginUserInfo?.referralCode ??
+                                      ''),
+                                  style: Styles.tsSub_12(context)),
+                              const Gap(5),
+                              ImageIcon(const AssetImage(Assets.commonIcCopy),
+                                  size: 15, color: Styles.cSub(context)),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
                 Obx(() {
                   return ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
@@ -107,31 +152,8 @@ class _SettingPageState extends State<SettingPage> {
                     title: S.of(context).s_language,
                     value: S.of(context).languageName),
                 _SettingLine(
-                  onTap: () {
-                    AppNav.openWebUrl(
-                      url: Urls.urlPrivacy,
-                      title: S.of(context).privacyPolicy,
-                    );
-                  },
-                  title: S.of(context).s_conditions_of_privacy,
-                ),
-                _SettingLine(
-                  onTap: () {
-                    AppNav.openWebUrl(
-                      url: Urls.urlDisclaimer,
-                      title: S.of(context).s_disclaimer,
-                    );
-                  },
-                  title: S.of(context).s_disclaimer,
-                ),
-                _SettingLine(
-                  onTap: () {
-                    AppNav.openWebUrl(
-                      url: Urls.urlAbout,
-                      title: S.of(context).s_about_us,
-                    );
-                  },
-                  title: S.of(context).s_about_us,
+                  onTap: () => AppNav.toContactUs(),
+                  title: S.of(context).contactUs,
                 ),
                 Obx(() {
                   return _SettingLine(

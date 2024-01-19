@@ -1,6 +1,7 @@
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class AppConst {
   static bool networkConnected = true;
@@ -15,4 +16,5 @@ class AppConst {
   static double get statusBarHeight => MediaQuery.of(Get.context!).padding.top;
   static double get bottomBarHeight =>
       MediaQuery.of(Get.context!).padding.bottom;
+  static late PackageInfo packageInfo;
 }

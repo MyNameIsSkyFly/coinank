@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:ank_app/entity/search_v2_entity.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:get/get.dart';
@@ -8,16 +10,32 @@ class HomeSearchLogic extends GetxController {
   final history = RxList<SearchV2ItemEntity>();
   final marked = RxList<SearchV2ItemEntity>();
   final hot = RxList<SearchV2ItemEntity>();
+  final keyword = ''.obs;
+
+  final arcList = RxList<SearchV2ItemEntity>();
+  final ascList = RxList<SearchV2ItemEntity>();
+  final brcList = RxList<SearchV2ItemEntity>();
+  final ercList = RxList<SearchV2ItemEntity>();
+  final baseList = RxList<SearchV2ItemEntity>();
+  Timer? _timer;
 
   @override
   void onReady() {
     initHot();
     initHistory();
     initMarked();
+    pollingHot();
+  }
+
+  void pollingHot() {
+    _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      if (keyword.isNotEmpty) return;
+      initHot();
+    });
   }
 
   Future<void> initHot() async {
-    final result = await Apis().searchV2();
+    final result = await Apis().searchV2(keyword: '');
     if (result == null) return;
 
     final list = <SearchV2ItemEntity>[];
@@ -56,6 +74,49 @@ class HomeSearchLogic extends GetxController {
     initHistory();
   }
 
+  Future<void> onTapItem(SearchV2ItemEntity item) async {
+    // https://coinank.com/ordinals/brc20/ORDI
+    // https://coinank.com/ordinals/arc20/quark
+    // https://coinank.com/scriptions/asc20/avav
+    // https://coinank.com/scriptions/erc20/eths
+    switch (item.tag) {
+      case SearchEntityType.ARC20:
+        AppNav.openWebUrl(
+            url: 'https://coinank.com/ordinals/arc20/${item.baseCoin}',
+            showLoading: true,
+            dynamicTitle: true,
+            title: item.baseCoin);
+      case SearchEntityType.BRC20:
+        AppNav.openWebUrl(
+            url: 'https://coinank.com/ordinals/brc20/${item.baseCoin}',
+            dynamicTitle: true,
+            showLoading: true,
+            title: item.baseCoin);
+      case SearchEntityType.ASC20:
+        AppNav.openWebUrl(
+            url: 'https://coinank.com/scriptions/asc20/${item.baseCoin}',
+            dynamicTitle: true,
+            showLoading: true,
+            title: item.baseCoin);
+      case SearchEntityType.ERC20:
+        AppNav.openWebUrl(
+            url: 'https://coinank.com/scriptions/erc20/${item.baseCoin}',
+            dynamicTitle: true,
+            showLoading: true,
+            title: item.baseCoin);
+      case SearchEntityType.BASECOIN:
+        AppNav.openWebUrl(
+            url: 'https://coinank.com/instruments/${item.baseCoin}',
+            dynamicTitle: true,
+            showLoading: true,
+            title: item.baseCoin);
+      case null:
+        break;
+    }
+    await StoreLogic.to.saveTappedSearchResult(item);
+    initHistory();
+  }
+
   Future<void> mark(SearchV2ItemEntity item) async {
     await StoreLogic.to.saveMarkedSearchResult(item);
     initMarked();
@@ -66,5 +127,20 @@ class HomeSearchLogic extends GetxController {
     initMarked();
   }
 
-  void search(String keyword) {}
+  Future<void> search(String keyword) async {
+    final result = await Apis().searchV2(keyword: keyword);
+    this.keyword.value = keyword;
+    if (result == null) return;
+    ascList.assignAll(result.asc20 ?? <SearchV2ItemEntity>[]);
+    brcList.assignAll(result.brc20 ?? <SearchV2ItemEntity>[]);
+    arcList.assignAll(result.arc20 ?? <SearchV2ItemEntity>[]);
+    ercList.assignAll(result.erc20 ?? <SearchV2ItemEntity>[]);
+    baseList.assignAll(result.baseCoin ?? <SearchV2ItemEntity>[]);
+  }
+
+  @override
+  void onClose() {
+    _timer?.cancel();
+    super.onClose();
+  }
 }

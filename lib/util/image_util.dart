@@ -13,6 +13,7 @@ class ImageUtil {
       errorWidget: (context, url, error) => Icon(
         Icons.hourglass_empty,
         size: min(width ?? 0, height ?? 0),
+        color: Colors.grey,
       ),
     );
   }

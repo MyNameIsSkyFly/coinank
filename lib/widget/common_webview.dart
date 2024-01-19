@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:ank_app/entity/event/theme_event.dart';
 import 'package:ank_app/entity/event/web_js_event.dart';
 import 'package:ank_app/modules/home/exchange_oi/exchange_oi_logic.dart';
+import 'package:ank_app/modules/setting/setting_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fgbg/flutter_fgbg.dart';
@@ -184,11 +185,7 @@ class _CommonWebViewState extends State<CommonWebView>
             : AppTitleBar(
                 title: title ?? '',
                 onBack: () => navigator?.maybePop(),
-                actionWidget: widget.enableShare
-                    ? IconButton(
-                        onPressed: () => AppUtil.shareImage(),
-                        icon: const ImageIcon(AssetImage(Assets.commonIcShare)))
-                    : null),
+                actionWidget: _actionWidget),
         body: Stack(
           children: [
             Padding(
@@ -237,6 +234,32 @@ class _CommonWebViewState extends State<CommonWebView>
       ),
     );
   }
+
+  Widget? get _actionWidget => widget.enableShare
+      ? Row(
+          children: [
+            IconButton(
+                onPressed: () => AppUtil.shareImage(),
+                icon: const ImageIcon(AssetImage(Assets.commonIcShare))),
+            if (widget.url.contains('users/noticeConfig') ||
+                widget.urlGetter?.call().contains('users/noticeConfig') == true)
+              IconButton(
+                  onPressed: () => AppNav.openWebUrl(
+                      showLoading: true,
+                      title: S.of(context).noticeRecords,
+                      url: Get.find<SettingLogic>()
+                              .state
+                              .settingList
+                              .firstWhereOrNull((element) =>
+                                  element.url?.contains('noticeRecords') ==
+                                  true)
+                              ?.url ??
+                          ''),
+                  icon: const ImageIcon(
+                      AssetImage(Assets.commonIcNoticeHistory))),
+          ],
+        )
+      : null;
 
   void _onLoadStop(InAppWebViewController controller) {
     widget.onLoadStop?.call();
@@ -306,6 +329,11 @@ class _CommonWebViewState extends State<CommonWebView>
       ..addJavaScriptHandler(
         handlerName: 'readConfig',
         callback: (arguments) => StoreLogic.to.webConfig(arguments[0]),
+      )
+      ..addJavaScriptHandler(
+        handlerName: 'getAppVersion',
+        callback: (arguments) =>
+            '${AppConst.packageInfo.version}+${AppConst.packageInfo.buildNumber}',
       );
   }
 

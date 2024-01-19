@@ -10,6 +10,7 @@ class RegisterLogic extends GetxController {
   final mailCtrl = TextEditingController();
   final pwdCtrl = TextEditingController();
   final verifyCodeCtrl = TextEditingController();
+  final referralCtrl = TextEditingController();
   bool isFindPwd = false;
 
   @override
@@ -31,7 +32,8 @@ class RegisterLogic extends GetxController {
     final mail = mailCtrl.text;
     final pwd = pwdCtrl.text;
     final verifyCode = verifyCodeCtrl.text;
-    await Apis().register(mail, pwd, verifyCode, strType);
+    final referral = referralCtrl.text.isEmpty ? null : referralCtrl.text;
+    await Apis().register(mail, pwd, verifyCode, strType, referral: referral);
     AppUtil.showToast(S.current.registerSuccessfully);
     Get.back();
   }
@@ -74,5 +76,14 @@ class RegisterLogic extends GetxController {
       }
       sendBtnCounter.value--;
     });
+  }
+
+  @override
+  void onClose() {
+    mailCtrl.dispose();
+    pwdCtrl.dispose();
+    verifyCodeCtrl.dispose();
+    referralCtrl.dispose();
+    super.onClose();
   }
 }

@@ -1,4 +1,6 @@
 import 'package:ank_app/modules/login/register_view.dart';
+import 'package:ank_app/modules/setting/about/about_view.dart';
+import 'package:ank_app/modules/setting/contact_us/contact_us_view.dart';
 import 'package:get/get.dart';
 
 import '../modules/login/login_view.dart';
@@ -37,4 +39,11 @@ class AppNav {
     Get.toNamed(RegisterPage.routeName, arguments: {'isFindPwd': true});
   }
 
+  static Future toContactUs() async {
+    Get.toNamed(ContactUsPage.routeName);
+  }
+
+  static Future toAbout() async {
+    Get.toNamed(AboutPage.routeName);
+  }
 }
