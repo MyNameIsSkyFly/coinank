@@ -333,7 +333,7 @@ class _CommonWebViewState extends State<CommonWebView>
       ..addJavaScriptHandler(
         handlerName: 'getAppVersion',
         callback: (arguments) =>
-            '${AppConst.packageInfo.version}+${AppConst.packageInfo.buildNumber}',
+            '${AppConst.packageInfo?.version}+${AppConst.packageInfo?.buildNumber}',
       );
   }
 

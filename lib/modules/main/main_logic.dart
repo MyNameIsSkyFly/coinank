@@ -11,6 +11,7 @@ import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/activity_dialog.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -100,5 +101,6 @@ class MainLogic extends GetxController {
 
   Future<void> initPackageInfo() async {
     AppConst.packageInfo = await PackageInfo.fromPlatform();
+    AppConst.deviceInfo = await DeviceInfoPlugin().androidInfo;
   }
 }

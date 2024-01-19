@@ -177,12 +177,15 @@ class _ShareDialogState extends State<ShareDialog> {
                     Row(
                       children: [
                         const Gap(26),
-                        Column(
-                          children: [
-                            IconButton(
-                                style: IconButton.styleFrom(
-                                    backgroundColor:
-                                        Theme.of(context).dividerTheme.color),
+                        if (Platform.isIOS ||
+                            (AppConst.deviceInfo?.version.sdkInt ?? 0) >=
+                                29) ...[
+                          Column(
+                            children: [
+                              IconButton(
+                                  style: IconButton.styleFrom(
+                                      backgroundColor:
+                                          Theme.of(context).dividerTheme.color),
                                 padding: const EdgeInsets.all(10),
                                 onPressed: _saveImage,
                                 icon: Image.asset(
@@ -193,8 +196,9 @@ class _ShareDialogState extends State<ShareDialog> {
                             Text(S.of(context).saveImage,
                                 style: Styles.tsBody_12(context))
                           ],
-                        ),
-                        const Gap(40),
+                          ),
+                          const Gap(40),
+                        ],
                         Column(
                           children: [
                             IconButton(

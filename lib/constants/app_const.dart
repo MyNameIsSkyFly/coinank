@@ -1,3 +1,4 @@
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,5 +17,6 @@ class AppConst {
   static double get statusBarHeight => MediaQuery.of(Get.context!).padding.top;
   static double get bottomBarHeight =>
       MediaQuery.of(Get.context!).padding.bottom;
-  static late PackageInfo packageInfo;
+  static PackageInfo? packageInfo;
+  static AndroidDeviceInfo? deviceInfo;
 }
