@@ -323,5 +323,6 @@
   "aboutCoinank": "CoinAnk에 대하여",
   "customerServiceEmail": "고객 서비스 이메일",
   "inviteScore": "초대 포인트 ",
-  "inviteCodeX": "초대 코드 {code}"
+  "inviteCodeX": "초대 코드 {code}",
+  "searchTrending": "토픽 트렌드"
 }

@@ -536,8 +536,7 @@ class _DefaultView extends StatelessWidget {
         SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           sliver: Text(
-            //todo intl
-            '热门搜索',
+            S.of(context).searchTrending,
             style: Styles.tsBody_16m(context),
           ).sliverBox,
         ),
