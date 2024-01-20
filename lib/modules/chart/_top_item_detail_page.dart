@@ -40,7 +40,7 @@ class TopItemDetailPage extends StatelessWidget {
                     .copyWith(top: 10),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
-                    color: Colors.white,
+                    color: Theme.of(context).cardColor,
                     boxShadow: const [
                       BoxShadow(
                         color: Color(0x19000000),
@@ -68,7 +68,7 @@ class TopItemDetailPage extends StatelessWidget {
                 const EdgeInsets.symmetric(horizontal: 15).copyWith(top: 10),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
-                color: Colors.white,
+                color: Theme.of(context).cardColor,
                 boxShadow: const [
                   BoxShadow(
                     color: Color(0x19000000),

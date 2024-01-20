@@ -17,7 +17,7 @@ class ChartState {
     Assets.chartLeftIconOnChainData,
   ];
   final topColorList = const [
-    Color(0x1a5CC389),
+    Color(0x1a1DCA88),
     Color(0x1a4363F2),
     Color(0x1a693BED),
     Color(0x1aF6A34D),

@@ -56,6 +56,7 @@ class ChartPage extends StatelessWidget {
                     slivers: state.dataMap.isEmpty
                         ? []
                         : [
+                            const SliverGap(15),
                             _TopDataView(state: state),
                             Obx(() {
                               return state.recentList.isEmpty
