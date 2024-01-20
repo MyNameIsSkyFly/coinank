@@ -605,7 +605,22 @@ class _Item extends StatelessWidget {
                   ),
                 )),
             ImageUtil.networkImage(
-                'https://cdn01.coinank.com/image/coin/${item.tag?.name.toLowerCase()}/brc-${item.baseCoin}.png',
+                item.tag == SearchEntityType.BASECOIN
+                    ? AppConst.imageHost(item.baseCoin ?? '')
+                    : 'https://cdn01.coinank.com/image/coin/${item.tag?.name.toLowerCase()}/brc-${item.baseCoin}.png',
+                errorWidget: Container(
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        color: Colors.black,
+                        border: Border.all(color: Colors.white24),
+                        shape: BoxShape.circle),
+                    child: Text(
+                      '${item.baseCoin?.substring(0, 1)}',
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w800),
+                    )),
                 width: 24, height: 24),
             const Gap(10),
             Expanded(

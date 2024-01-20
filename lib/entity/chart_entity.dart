@@ -5,12 +5,12 @@ part 'chart_entity.g.dart';
 @JsonSerializable(createToJson: true)
 class ChartEntity {
   final String? path;
-  final String? title;
+  String? title;
   final String? key;
   final String? color;
   final String? groupName;
 
-  const ChartEntity({
+  ChartEntity({
     this.path,
     this.title,
     this.key,
