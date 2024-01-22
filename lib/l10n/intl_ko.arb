@@ -324,5 +324,6 @@
   "customerServiceEmail": "고객 서비스 이메일",
   "inviteScore": "초대 포인트 ",
   "inviteCodeX": "초대 코드 {code}",
-  "searchTrending": "토픽 트렌드"
+  "searchTrending": "토픽 트렌드",
+  "addToFavorite": "관심 목록에 추가"
 }

@@ -45,7 +45,8 @@ class ContractState {
   String favoriteSortBy = 'openInterest';
   String favoriteSortType = 'descend';
   final fixedCoin = ['BTC', 'ETH', 'SOL', 'XRP', 'BNB', 'ORDI', 'DOGE', 'ARB'];
-  final selectedFixedCoin = RxList<String>();
+  final selectedFixedCoin = RxList<String>(
+      ['BTC', 'ETH', 'SOL', 'XRP', 'BNB', 'ORDI', 'DOGE', 'ARB']);
 
   final fetching = RxBool(false);
   ContractState();

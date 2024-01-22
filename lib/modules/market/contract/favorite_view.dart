@@ -170,36 +170,33 @@ class _FavoritePageState extends State<FavoritePage> {
                     );
             }),
           ),
-          Obx(() {
-            return state.isLoading.value
-                ? const LottieIndicator(
-                    margin: EdgeInsets.only(top: 200),
-                  )
-                : Expanded(
-                    child: Obx(() {
-                      return logic.state.favoriteData.isEmpty
-                          ? _EmptyView(state: state, logic: logic)
-                          : EasyRefresh(
-                              onRefresh: logic.onRefresh,
-                              child: SlidableAutoCloseBehavior(
-                                child: ListView.builder(
-                                  padding: const EdgeInsets.only(bottom: 10),
-                                  itemBuilder: (cnt, idx) {
-                                    MarkerTickerEntity item =
-                                        state.favoriteData[idx];
-                                    return _DataItem(
-                                      key: ValueKey(idx),
-                                      item: item,
-                                      logic: logic,
-                                    );
-                                  },
-                                  itemCount: state.favoriteData.length,
-                                ),
-                              ),
-                            );
-                    }),
-                  );
-          }),
+          Expanded(child: Obx(() {
+            return IndexedStack(
+              index: state.isLoading.value
+                  ? 0
+                  : state.favoriteData.isEmpty
+                      ? 1
+                      : 2,
+              children: [
+                const LottieIndicator(margin: EdgeInsets.only(top: 200)),
+                _EmptyView(state: state, logic: logic),
+                SlidableAutoCloseBehavior(
+                  child: ListView.builder(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    itemBuilder: (cnt, idx) {
+                      MarkerTickerEntity item = state.favoriteData[idx];
+                      return _DataItem(
+                        key: ValueKey(idx),
+                        item: item,
+                        logic: logic,
+                      );
+                    },
+                    itemCount: state.favoriteData.length,
+                  ),
+                )
+              ],
+            );
+          })),
         ],
       ),
     );
@@ -291,8 +288,7 @@ class _EmptyView extends StatelessWidget {
                             .saveFixedCoin()
                             .whenComplete(() => state.fetching.value = false);
                       },
-                //todo intl
-                child: Text('添加至自选'));
+                child: Text(S.of(context).addToFavorite));
           }),
         )
       ],

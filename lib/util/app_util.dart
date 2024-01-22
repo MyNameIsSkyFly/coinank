@@ -130,8 +130,8 @@ class AppUtil {
 
   static String get webLanguage {
     final locale = StoreLogic.to.locale ?? Get.deviceLocale;
-    if (locale?.languageCode == 'en') {
-      return '';
+    if (locale?.languageCode == 'zh' && locale?.scriptCode == 'Hans') {
+      return 'zh/';
     } else if (locale?.languageCode == 'zh' && locale?.scriptCode == 'Hant') {
       return 'zh-tw/';
     } else if (locale?.languageCode == 'ja') {
@@ -139,14 +139,14 @@ class AppUtil {
     } else if (locale?.languageCode == 'ko') {
       return 'ko/';
     } else {
-      return 'zh/';
+      return 'en/';
     }
   }
 
   static String get shortLanguageName {
     final locale = StoreLogic.to.locale ?? Get.deviceLocale;
-    if (locale?.languageCode == 'en') {
-      return 'en';
+    if (locale?.languageCode == 'zh' && locale?.scriptCode == 'Hans') {
+      return 'zh';
     } else if (locale?.languageCode == 'zh' && locale?.scriptCode == 'Hant') {
       return 'zh-tw';
     } else if (locale?.languageCode == 'ja') {
@@ -154,7 +154,7 @@ class AppUtil {
     } else if (locale?.languageCode == 'ko') {
       return 'ko';
     } else {
-      return 'zh';
+      return 'en';
     }
   }
 
@@ -191,6 +191,7 @@ class AppUtil {
 
   static Future<void> checkUpdate(BuildContext context,
       {bool showLoading = false}) async {
+    if (kDebugMode) return;
     final packageInfo = await PackageInfo.fromPlatform();
     if (showLoading) Loading.show();
     final res = await Dio()

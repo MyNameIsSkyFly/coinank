@@ -9,7 +9,7 @@ class AppConst {
   static const isPlayVersion = bool.fromEnvironment('PLAY');
   static final eventBus = EventBus();
   static String imageHost(String imageName) {
-    return 'https://cdn01.coinsoto.com/image/coin/64/$imageName.png';
+    return 'https://cdn01.coinank.com/image/coin/64/$imageName.png';
   }
 
   static double get width => MediaQuery.of(Get.context!).size.width;

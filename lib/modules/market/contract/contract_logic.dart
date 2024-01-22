@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ank_app/entity/event/logged_event.dart';
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/modules/main/main_logic.dart';
 import 'package:ank_app/modules/market/market_logic.dart';
@@ -11,6 +12,7 @@ import 'contract_state.dart';
 
 class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
   final ContractState state = ContractState();
+  StreamSubscription? loginSubscription;
 
   void sortFavorite({SortType? type}) {
     if (type != null) state.favoriteSortBy = type.name;
@@ -256,7 +258,7 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
   @override
   void onReady() {
     super.onReady();
-    onRefresh();
+    if (!StoreLogic.isLogin) onRefresh();
   }
 
   @override
@@ -265,6 +267,11 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
     WidgetsBinding.instance.addObserver(this);
     _startTimer();
     state.scrollController.addListener(_scrollListener);
+    if (StoreLogic.isLogin) {
+      loginSubscription = AppConst.eventBus.on<LoginStatusChangeEvent>().listen(
+            (event) => onRefresh(),
+          );
+    }
   }
 
   @override
@@ -273,6 +280,7 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
     state.scrollController.removeListener(_scrollListener);
     state.pollingTimer?.cancel();
     state.pollingTimer = null;
+    loginSubscription?.cancel();
     super.onClose();
   }
 

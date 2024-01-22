@@ -56,15 +56,15 @@ class _MyAppState extends State<MyApp> {
         if (locale?.scriptCode == 'Hant') {
           local =
               const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant');
-        } else if (locale?.languageCode == 'en') {
-          local = const Locale('en');
+        } else if (locale?.scriptCode == 'Hans') {
+          local =
+              const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans');
         } else if (locale?.languageCode == 'ja') {
           local = const Locale('ja');
         } else if (locale?.languageCode == 'ko') {
           local = const Locale('ko');
         } else {
-          local =
-              const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans');
+          local = const Locale('en');
         }
         if (StoreLogic.to.locale == null) {
           StoreLogic.to.saveLocale(local);
