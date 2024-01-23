@@ -95,35 +95,35 @@ class HomeSearchLogic extends GetxController {
       case SearchEntityType.ARC20:
         AppNav.openWebUrl(
             url:
-                'https://coinank.com/${AppUtil.webLanguage}ordinals/arc20/${item.baseCoin}',
+                'https://coinank.com/${AppUtil.webLanguage}ordinals/arc20/${Uri.encodeComponent(item.baseCoin ?? '')}',
             showLoading: true,
             dynamicTitle: true,
             title: item.baseCoin);
       case SearchEntityType.BRC20:
         AppNav.openWebUrl(
             url:
-                'https://coinank.com/${AppUtil.webLanguage}ordinals/brc20/${item.baseCoin}',
+                'https://coinank.com/${AppUtil.webLanguage}ordinals/brc20/${Uri.encodeComponent(item.baseCoin ?? '')}',
             dynamicTitle: true,
             showLoading: true,
             title: item.baseCoin);
       case SearchEntityType.ASC20:
         AppNav.openWebUrl(
             url:
-                'https://coinank.com/${AppUtil.webLanguage}scriptions/asc20/${item.baseCoin}',
+                'https://coinank.com/${AppUtil.webLanguage}scriptions/asc20/${Uri.encodeComponent(item.baseCoin ?? '')}',
             dynamicTitle: true,
             showLoading: true,
             title: item.baseCoin);
       case SearchEntityType.ERC20:
         AppNav.openWebUrl(
             url:
-                'https://coinank.com/${AppUtil.webLanguage}scriptions/erc20/${item.baseCoin}',
+                'https://coinank.com/${AppUtil.webLanguage}scriptions/erc20/${Uri.encodeComponent(item.baseCoin ?? '')}',
             dynamicTitle: true,
             showLoading: true,
             title: item.baseCoin);
       case SearchEntityType.BASECOIN:
         AppNav.openWebUrl(
             url:
-                'https://coinank.com/${AppUtil.webLanguage}instruments/${item.baseCoin}',
+                'https://coinank.com/${AppUtil.webLanguage}instruments/${Uri.encodeComponent(item.baseCoin ?? '')}',
             dynamicTitle: true,
             showLoading: true,
             title: item.baseCoin);

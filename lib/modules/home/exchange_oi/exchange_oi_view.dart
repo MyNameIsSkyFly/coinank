@@ -303,7 +303,7 @@ class _OiItem extends StatelessWidget {
                   children: [
                     Text(
                       '\$${AppUtil.getLargeFormatString('${item.coinValue}')}',
-                      style: Styles.tsBody_12(context),
+                      style: Styles.tsBody_14m(context),
                     ),
                     FittedBox(
                       child: Text(
@@ -357,7 +357,11 @@ class _OiItem extends StatelessWidget {
                         color: (item.change24H ?? 0) > 0
                             ? Styles.cUp(context)
                             : Styles.cDown(context),
-                      ))),
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
         ],
       ),
     );
