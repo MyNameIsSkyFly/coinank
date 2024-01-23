@@ -455,10 +455,7 @@ class _TabItemViewState extends State<_TabItemView>
           child: ListView.builder(
             itemCount: list.length,
             itemBuilder: (context, index) => _Item(
-                logic: widget.logic,
-                item: list[index],
-                index: index,
-                showIndex: true),
+                logic: widget.logic, item: list[index], index: index),
           ),
         )
       ],
@@ -552,7 +549,8 @@ class _DefaultView extends StatelessWidget {
                   logic: logic, item: item, index: index, showIndex: true);
             },
           );
-        })
+        }),
+        const SliverGap(50),
       ],
     );
   }
@@ -609,7 +607,9 @@ class _Item extends StatelessWidget {
                     style: Styles.tsBody_16m(context),
                     textAlign: TextAlign.center,
                   ),
-                )),
+                  )),
+            if (!showIndex && item.tag == SearchEntityType.BASECOIN)
+              const Gap(15),
             ImageUtil.networkImage(
                 item.tag == SearchEntityType.BASECOIN
                     ? AppConst.imageHost(item.baseCoin ?? '')

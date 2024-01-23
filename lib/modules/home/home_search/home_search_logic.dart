@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:ank_app/entity/search_v2_entity.dart';
+import 'package:ank_app/modules/market/contract/contract_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:get/get.dart';
 
@@ -66,7 +67,18 @@ class HomeSearchLogic extends GetxController {
 
   //init marked
   void initMarked() {
-    marked.assignAll(StoreLogic.to.markedSearchResult);
+    if (!StoreLogic.isLogin) {
+      marked.assignAll(StoreLogic.to.favoriteContract.map((e) =>
+          SearchV2ItemEntity(baseCoin: e, tag: SearchEntityType.BASECOIN)));
+    } else {
+      final list = Get.find<ContractLogic>()
+          .state
+          .data
+          .where((p0) => p0.follow == true)
+          .map((e) => SearchV2ItemEntity(
+              baseCoin: e.baseCoin, tag: SearchEntityType.BASECOIN));
+      marked.assignAll(list);
+    }
   }
 
   Future<void> clearHistory() async {
@@ -123,12 +135,12 @@ class HomeSearchLogic extends GetxController {
   }
 
   Future<void> mark(SearchV2ItemEntity item) async {
-    await StoreLogic.to.saveMarkedSearchResult(item);
+    await Get.find<ContractLogic>().tapFavoriteCollect(item.baseCoin);
     initMarked();
   }
 
   Future<void> unMark(SearchV2ItemEntity item) async {
-    await StoreLogic.to.removeMarkedSearchResult(item);
+    await Get.find<ContractLogic>().tapFavoriteCollect(item.baseCoin);
     initMarked();
   }
 

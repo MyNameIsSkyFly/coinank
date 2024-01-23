@@ -287,40 +287,6 @@ class StoreLogic extends GetxController {
     return _SpUtil()._getStringList(_SpKeys.favoriteContract, defaultValue: []);
   }
 
-  //==========================markedSearchResult==================================================================
-  Future<bool> saveMarkedSearchResult(SearchV2ItemEntity entity) {
-    final original = markedSearchResult;
-    if (original.contains(entity)) {
-      return Future.value(true);
-    } else {
-      original.add(entity);
-    }
-    return _SpUtil()._saveStringList(
-      _SpKeys.markedSearchResult,
-      original.map((e) => jsonEncode(e.toJson())).toList(),
-    );
-  }
-
-  Future<bool> removeMarkedSearchResult(SearchV2ItemEntity entity) {
-    final original = markedSearchResult;
-    if (!original.contains(entity)) {
-      return Future.value(true);
-    } else {
-      original.remove(entity);
-    }
-    return _SpUtil()._saveStringList(
-      _SpKeys.markedSearchResult,
-      original.map((e) => jsonEncode(e.toJson())).toList(),
-    );
-  }
-
-  List<SearchV2ItemEntity> get markedSearchResult {
-    final stringList =
-        _SpUtil()._getStringList(_SpKeys.markedSearchResult, defaultValue: []);
-    return stringList
-        .map((e) => SearchV2ItemEntity.fromJson(jsonDecode(e)))
-        .toList();
-  }
 
   //===========================tappedSearchResult===================================================================
   Future<bool> saveTappedSearchResult(SearchV2ItemEntity entity) {
