@@ -179,20 +179,26 @@ class _FavoritePageState extends State<FavoritePage> {
                       ? 1
                       : 2,
               children: [
-                const LottieIndicator(margin: EdgeInsets.only(top: 200)),
+                Visibility(
+                    visible: state.isLoading.value,
+                    child: const LottieIndicator(
+                        margin: EdgeInsets.only(top: 200))),
                 _EmptyView(state: state, logic: logic),
-                SlidableAutoCloseBehavior(
-                  child: ListView.builder(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    itemBuilder: (cnt, idx) {
-                      MarkerTickerEntity item = state.favoriteData[idx];
-                      return _DataItem(
-                        key: ValueKey(idx),
-                        item: item,
-                        logic: logic,
-                      );
-                    },
-                    itemCount: state.favoriteData.length,
+                EasyRefresh(
+                  onRefresh: logic.onRefresh,
+                  child: SlidableAutoCloseBehavior(
+                    child: ListView.builder(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      itemBuilder: (cnt, idx) {
+                        MarkerTickerEntity item = state.favoriteData[idx];
+                        return _DataItem(
+                          key: ValueKey(idx),
+                          item: item,
+                          logic: logic,
+                        );
+                      },
+                      itemCount: state.favoriteData.length,
+                    ),
                   ),
                 )
               ],

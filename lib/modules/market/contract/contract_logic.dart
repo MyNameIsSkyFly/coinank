@@ -219,9 +219,10 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
   _startTimer() async {
     state.pollingTimer =
         Timer.periodic(const Duration(seconds: 5), (timer) async {
+      var index2 = Get.find<MarketLogic>().state.tabController?.index;
       if (Get.find<MainLogic>().state.selectedIndex.value == 1 &&
           !state.isRefresh &&
-          Get.find<MarketLogic>().state.tabController?.index == 1 &&
+          (index2 == 0 || index2 == 1) &&
           state.appVisible) {
         await onRefresh();
       }
