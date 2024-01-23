@@ -57,10 +57,12 @@ class _SettingPageState extends State<SettingPage> {
                         horizontal: 20, vertical: 14),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        image: const DecorationImage(
+                        image: DecorationImage(
                             fit: BoxFit.cover,
                             image: AssetImage(
-                              Assets.settingBgInvite,
+                              Theme.of(context).brightness == Brightness.dark
+                                  ? Assets.settingBgInviteDark
+                                  : Assets.settingBgInvite,
                             ))),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

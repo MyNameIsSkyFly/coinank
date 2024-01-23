@@ -22,7 +22,7 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 def dartEnvVar = [
-        APP_NAME      : project.hasProperty('APP_NAME') ? APP_NAME : "Coinank",
+        APP_NAME      : project.hasProperty('APP_NAME') ? APP_NAME : "CoinAnk",
         APPLICATION_ID: project.hasProperty('APPLICATION_ID') ? APPLICATION_ID : "com.coinsoho.app",
         JPUSH_KEY     : project.hasProperty('JPUSH_KEY') ? JPUSH_KEY : "4c89cdc630a1fe6ac9a05f56",
         KEY_ALIAS     : project.hasProperty('KEY_ALIAS') ? KEY_ALIAS : "uukr",

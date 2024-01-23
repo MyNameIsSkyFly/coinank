@@ -136,7 +136,7 @@ class ContractMarketLogic extends FullLifeCycleController
         Timer.periodic(const Duration(seconds: 5), (timer) async {
       if (Get.find<MainLogic>().state.selectedIndex.value == 1 &&
           !state.isRefresh &&
-          Get.find<MarketLogic>().state.tabController?.index == 1 &&
+          Get.find<MarketLogic>().state.tabController?.index == 3 &&
           state.appVisible) {
         await onRefresh(false);
       }

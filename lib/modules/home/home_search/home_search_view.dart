@@ -82,14 +82,12 @@ class HomeSearchPage extends StatelessWidget {
         ),
       ),
       body: Obx(() {
-        return Container(
-          child: IndexedStack(
-            index: logic.keyword.value.isEmpty ? 0 : 1,
-            children: [
-              _DefaultView(logic: logic),
-              _ResultView(logic: logic),
-            ],
-          ),
+        return IndexedStack(
+          index: logic.keyword.value.isEmpty ? 0 : 1,
+          children: [
+            _DefaultView(logic: logic),
+            _ResultView(logic: logic),
+          ],
         );
       }),
     );
@@ -243,11 +241,12 @@ class _AllItem extends StatelessWidget {
                 _Item(logic: logic, item: list[index], index: index),
           ),
           const Gap(10),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: FilledButton.tonal(
-                style: FilledButton.styleFrom(
-                  backgroundColor: Theme.of(context).dividerTheme.color,
+          if (list.length > 3)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: FilledButton.tonal(
+                  style: FilledButton.styleFrom(
+                    backgroundColor: Theme.of(context).dividerTheme.color,
                 ),
                 onPressed: () {
                   tabController.animateTo(tabIndex,
@@ -455,8 +454,11 @@ class _TabItemViewState extends State<_TabItemView>
         Expanded(
           child: ListView.builder(
             itemCount: list.length,
-            itemBuilder: (context, index) =>
-                _Item(logic: widget.logic, item: list[index], index: index),
+            itemBuilder: (context, index) => _Item(
+                logic: widget.logic,
+                item: list[index],
+                index: index,
+                showIndex: true),
           ),
         )
       ],
@@ -546,7 +548,8 @@ class _DefaultView extends StatelessWidget {
             itemCount: logic.hot.length,
             itemBuilder: (context, index) {
               final item = logic.hot[index];
-              return _Item(logic: logic, item: item, index: index);
+              return _Item(
+                  logic: logic, item: item, index: index, showIndex: true);
             },
           );
         })
@@ -561,11 +564,13 @@ class _Item extends StatelessWidget {
     required this.logic,
     required this.item,
     required this.index,
+    this.showIndex = false,
   });
 
   final int index;
   final HomeSearchLogic logic;
   final SearchV2ItemEntity item;
+  final bool showIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -576,10 +581,11 @@ class _Item extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         child: Row(
           children: [
-            GestureDetector(
-              onTap: () {
-                if (logic.marked.contains(item)) {
-                  logic.unMark(item);
+            if (item.tag == SearchEntityType.BASECOIN)
+              GestureDetector(
+                onTap: () {
+                  if (logic.marked.contains(item)) {
+                    logic.unMark(item);
                 } else {
                   logic.mark(item);
                 }
@@ -593,10 +599,11 @@ class _Item extends StatelessWidget {
                 );
               }),
             ),
-            SizedBox(
-                width: 40,
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
+            if (showIndex)
+              SizedBox(
+                  width: 40,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
                   child: Text(
                     '${index + 1}',
                     style: Styles.tsBody_16m(context),

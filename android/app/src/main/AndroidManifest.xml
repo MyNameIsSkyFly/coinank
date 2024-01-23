@@ -11,7 +11,7 @@
     <application
         android:name="com.ank.ankapp.original.App"
         android:icon="@mipmap/ic_launcher"
-        android:label="Coinank"
+        android:label="CoinAnk"
         android:theme="@style/LightTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:label">

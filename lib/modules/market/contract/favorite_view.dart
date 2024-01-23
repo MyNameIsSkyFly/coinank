@@ -1,4 +1,5 @@
 import 'package:ank_app/entity/futures_big_data_entity.dart';
+import 'package:ank_app/modules/home/home_search/home_search_view.dart';
 import 'package:ank_app/modules/home/price_change/price_change_view.dart';
 import 'package:ank_app/modules/market/contract/contract_state.dart';
 import 'package:ank_app/res/export.dart';
@@ -32,7 +33,7 @@ class _FavoritePageState extends State<FavoritePage> {
               duration: const Duration(milliseconds: 100),
               alignment: Alignment.topCenter,
               child: InkWell(
-                onTap: () => Get.toNamed(RouteConfig.contractSearch),
+                onTap: () => Get.toNamed(HomeSearchPage.routeName),
                 child: Container(
                   margin: const EdgeInsets.symmetric(horizontal: 15),
                   height: state.isScrollDown.value ? 32 : 0,

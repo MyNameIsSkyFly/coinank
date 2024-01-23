@@ -125,7 +125,7 @@ class _TopDataView extends StatelessWidget {
                   },
                   child: Container(
                     height: 79,
-                    width: 86,
+                    width: (MediaQuery.of(context).size.width + 15) / 4 - 10,
                     decoration: BoxDecoration(
                         color: state.topColorList[index],
                         borderRadius: BorderRadius.circular(8)),

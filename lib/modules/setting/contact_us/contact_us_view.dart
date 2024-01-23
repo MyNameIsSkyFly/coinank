@@ -123,7 +123,8 @@ class _LinkItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 18),
       child: Row(
         children: [
-          Image.asset(asset, width: 20, height: 20),
+          Image.asset(asset,
+              width: 20, height: 20, color: Theme.of(context).iconTheme.color),
           const Gap(10),
           Expanded(child: Text(title, style: Styles.tsBody_14(context))),
           GestureDetector(
@@ -155,7 +156,8 @@ class _CopyItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 18),
       child: Row(
         children: [
-          Image.asset(asset, width: 20, height: 20),
+          Image.asset(asset,
+              width: 20, height: 20, color: Theme.of(context).iconTheme.color),
           const Gap(10),
           Expanded(child: Text(title, style: Styles.tsBody_14(context))),
           GestureDetector(
@@ -189,7 +191,10 @@ class _ArrowItem extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 18),
         child: Row(
           children: [
-            Image.asset(asset, width: 20, height: 20),
+            Image.asset(asset,
+                width: 20,
+                height: 20,
+                color: Theme.of(context).iconTheme.color),
             const Gap(10),
             Expanded(child: Text(title, style: Styles.tsBody_14(context))),
             const Icon(Icons.keyboard_arrow_right_rounded, size: 18),

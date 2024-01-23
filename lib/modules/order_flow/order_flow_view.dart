@@ -14,27 +14,27 @@ class OrderFlowPage extends StatefulWidget {
 
 class _OrderFlowPageState extends State<OrderFlowPage> {
   final mainLogic = Get.find<MainLogic>();
-  var cookieSet = false;
+
+  // var cookieSet = false;
 
   @override
   void initState() {
-    CommonWebView.setCookieValue().then((value) {
-      setState(() => cookieSet = true);
-    });
+    // CommonWebView.setCookieValue().then((value) {
+    //   setState(() => cookieSet = true);
+    // });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return cookieSet == false
-        ? const SizedBox()
-        : CommonWebView(
-            showLoading: true,
-            safeArea: true,
-            url: Urls.urlProChart,
-            urlGetter: () => Urls.urlProChart,
-            onWebViewCreated: (controller) {
-              mainLogic.state.webViewController = controller;
-            });
+    return CommonWebView(
+      showLoading: true,
+      safeArea: true,
+      url: Urls.urlProChart,
+      urlGetter: () => Urls.urlProChart,
+      onWebViewCreated: (controller) {
+        mainLogic.state.webViewController = controller;
+      },
+    );
   }
 }

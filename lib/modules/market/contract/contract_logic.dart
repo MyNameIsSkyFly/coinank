@@ -210,6 +210,7 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
       }
     }
     state.data.assignAll(data?.list ?? []);
+    update(['data']);
     sortFavorite();
     state.isRefresh = false;
     StoreLogic.to.setContractData(data?.list ?? []);
@@ -220,7 +221,7 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
         Timer.periodic(const Duration(seconds: 5), (timer) async {
       if (Get.find<MainLogic>().state.selectedIndex.value == 1 &&
           !state.isRefresh &&
-          Get.find<MarketLogic>().state.tabController?.index == 0 &&
+          Get.find<MarketLogic>().state.tabController?.index == 1 &&
           state.appVisible) {
         await onRefresh();
       }

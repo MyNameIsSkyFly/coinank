@@ -107,7 +107,24 @@ class FundingRatePage extends StatelessWidget {
         Row(
           children: [
             Container(
-              padding: const EdgeInsets.only(left: 15),
+              margin: const EdgeInsets.only(left: 15),
+              alignment: Alignment.centerLeft,
+              decoration: BoxDecoration(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white12
+                          : Colors.black12,
+                      blurRadius: 2,
+                      offset: const Offset(2, 1.5),
+                    ),
+                    BoxShadow(
+                        offset: const Offset(-2, 2),
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        spreadRadius: 2)
+                  ]),
+              height: 48,
               width: 100,
               child: Text(
                 'Coin',
@@ -171,6 +188,19 @@ class FundingRatePage extends StatelessWidget {
                               children: [
                                 Container(
                                   margin: const EdgeInsets.only(left: 15),
+                                  decoration: BoxDecoration(
+                                      color: Theme.of(context)
+                                          .scaffoldBackgroundColor,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Theme.of(context).brightness ==
+                                                  Brightness.dark
+                                              ? Colors.white12
+                                              : Colors.black12,
+                                          blurRadius: 2,
+                                          offset: const Offset(2, 0),
+                                        )
+                                      ]),
                                   width: 100,
                                   child: ListView.builder(
                                     shrinkWrap: true,

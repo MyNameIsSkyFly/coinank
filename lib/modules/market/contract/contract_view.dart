@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 
+import '../../home/home_search/home_search_view.dart';
 import 'contract_logic.dart';
 
 class ContractPage extends StatelessWidget {
@@ -24,7 +25,7 @@ class ContractPage extends StatelessWidget {
               duration: const Duration(milliseconds: 100),
               alignment: Alignment.topCenter,
               child: InkWell(
-                onTap: () => Get.toNamed(RouteConfig.contractSearch),
+                onTap: () => Get.toNamed(HomeSearchPage.routeName),
                 child: Container(
                   margin: const EdgeInsets.symmetric(horizontal: 15),
                   height: state.isScrollDown.value ? 32 : 0,

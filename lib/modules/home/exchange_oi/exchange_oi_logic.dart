@@ -57,7 +57,7 @@ class ExchangeOiLogic extends GetxController {
     _pollingTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
       if (!isAppVisible ||
           Get.find<MainLogic>().state.selectedIndex.value != 1 ||
-          Get.find<MarketLogic>().state.tabController?.index != 1) return;
+          Get.find<MarketLogic>().state.tabController?.index != 2) return;
       onRefresh(isPolling: true);
     });
   }
