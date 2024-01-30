@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:ank_app/entity/body/futures_big_data_body.dart';
+import 'package:ank_app/entity/btc_reduce_entity.dart';
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/entity/head_statistics_entity.dart';
 import 'package:ank_app/entity/home_fund_rate_entity.dart';
@@ -19,9 +20,11 @@ class HomeLogic extends GetxController {
   final oiChangeData = Rxn<TickersDataEntity>();
   final homeInfoData = Rxn<HomeInfoEntity>();
   final fundRateList = RxList<HomeFundRateEntity>();
+  final btcReduceData = Rxn<BtcReduceEntity>();
   final hostApi = MessageHostApi();
   bool appVisible = true;
   Timer? pollingTimer;
+  Timer? btcReduceTimer;
   bool isRefreshing = false;
 
   List<MarkerTickerEntity>? get priceList => priceChangeData.value?.list;
@@ -59,7 +62,8 @@ class HomeLogic extends GetxController {
       loadPriceChgData(),
       loadOIChgData(),
       loadHomeData(),
-      loadFundRateData()
+      loadFundRateData(),
+      loadBtcReduce(),
     ]).whenComplete(() {
       isRefreshing = false;
     });
@@ -90,6 +94,22 @@ class HomeLogic extends GetxController {
   Future<void> loadFundRateData() async {
     final data = await Apis().getHomeFundRateData();
     fundRateList.assignAll(data ?? []);
+  }
+
+  Future<void> loadBtcReduce() async {
+    final data = await Apis().getBtcReduce();
+    btcReduceData.value = data;
+    btcReduceTimer ??= Timer.periodic(const Duration(minutes: 1), (timer) {
+      btcReduceData.refresh();
+    });
+  }
+
+  @override
+  void onClose() {
+    btcReduceTimer?.cancel();
+    pollingTimer?.cancel();
+    btcReduceTimer = null;
+    super.onClose();
   }
 
   void toMarketModule(int index) {

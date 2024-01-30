@@ -20,6 +20,7 @@ import 'package:retrofit/retrofit.dart';
 // import 'package:talker_dio_logger/talker_dio_logger.dart';
 
 import '../constants/urls.dart';
+import '../entity/btc_reduce_entity.dart';
 import '../entity/futures_big_data_entity.dart';
 import '../entity/head_statistics_entity.dart';
 import '../entity/home_fund_rate_entity.dart';
@@ -239,4 +240,7 @@ abstract class Apis {
   //搜索v2
   @GET('/api/baseCoin/searchV2')
   Future<SearchV2Entity?> searchV2({@Query('search') String? keyword});
+
+  @POST('/api/app/getBtcReduce')
+  Future<BtcReduceEntity?> getBtcReduce();
 }

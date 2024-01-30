@@ -110,6 +110,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             children: [
               _TotalOiAndFuturesVol(logic: logic),
               const _ChartView(),
+              _BtcReduceView(logic: logic),
               _HotMarket(logic: logic),
               const Gap(20),
               _OiDistribution(logic: logic),
@@ -127,6 +128,90 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _BtcReduceView extends StatelessWidget {
+  const _BtcReduceView({
+    super.key,
+    required this.logic,
+  });
+
+  final HomeLogic logic;
+
+  Widget _box(BuildContext context, {required String text}) {
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4),
+          color: Theme.of(context).scaffoldBackgroundColor),
+      margin: const EdgeInsets.only(left: 8, right: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 6),
+      child: Text(
+        text,
+        style: Styles.tsBody_14m(context),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        gradient: const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Color(0x1aF7931A),
+            Color(0x00000000),
+          ],
+        ),
+      ),
+      child: Row(
+        children: [
+          ImageUtil.networkImage(AppConst.imageHost('BTC'),
+              width: 18, height: 18),
+          const Gap(4),
+          //todo intl
+          Text('BTC减半倒计时', style: Styles.tsBody_14m(context)),
+          Expanded(
+            child: Obx(() {
+              final time = DateTime.fromMillisecondsSinceEpoch(
+                  logic.btcReduceData.value?.halvingTime ?? 0);
+              final duration = time.difference(DateTime.now());
+              final style1 = TextStyle(
+                  color: Styles.cBody(context).withOpacity(0.5),
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500);
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  _box(context, text: '${duration.inDays}'),
+                  //todo intl
+                  Text(
+                    '天',
+                    style: style1,
+                  ),
+                  _box(context, text: '${duration.inHours % 24}'),
+                  //todo intl
+                  Text(
+                    '时',
+                    style: style1,
+                  ),
+                  _box(context, text: '${duration.inMinutes % 60}'),
+                  //todo intl
+                  Text(
+                    '分',
+                    style: style1,
+                  ),
+                ],
+              );
+            }),
+          )
+        ],
       ),
     );
   }
@@ -475,11 +560,12 @@ class _HotMarket extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const Gap(20),
           Text(
             S.of(context).hotMarket,
             style: Styles.tsBody_16m(context),
           ),
-          const Gap(15),
+          const Gap(10),
           Row(
             children: [
               Expanded(
