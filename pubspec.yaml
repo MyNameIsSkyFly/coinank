@@ -25,15 +25,15 @@ dependencies:
   retrofit: ^4.0.3
   cached_network_image: ^3.3.1
   collection: ^1.18.0
-  talker_dio_logger: ^2.4.0
+  talker_dio_logger: ^4.0.0
   easy_refresh: ^3.3.3+1
   fluttertoast: ^8.2.4
   json_annotation: ^4.8.1
   json_serializable: ^6.7.1
-  permission_handler: ^11.1.0
-  url_launcher: ^6.2.3
+  permission_handler: ^11.2.0
+  url_launcher: ^6.2.4
   gap: ^3.0.1
-  font_awesome_flutter: ^10.6.0
+  font_awesome_flutter: ^10.7.0
   decimal: ^2.3.3
   auto_size_text: 3.0.0
   scrollable_positioned_list: 0.3.8
@@ -45,7 +45,7 @@ dependencies:
   flutter_fgbg: ^0.3.0
   #cell 侧滑按钮
   flutter_slidable: ^3.0.1
-  lottie: ^2.7.0
+  lottie: ^3.0.0
   connectivity_plus: ^5.0.2
   #应用角标设置
   flutter_app_badger: ^1.5.0
@@ -57,13 +57,14 @@ dependencies:
   path_provider: ^2.1.2
   equatable: ^2.0.5
   device_info_plus: ^9.1.1
+  syncfusion_flutter_datagrid: ^24.1.47
 
 dev_dependencies:
-  flutter_native_splash: ^2.3.9
+  flutter_native_splash: ^2.3.10
   build_runner: ^2.4.8
   flutter_lints: ^3.0.1
   retrofit_generator: ^8.0.6
-  pigeon: ^16.0.0
+  pigeon: ^16.0.4
 
 flutter:
 

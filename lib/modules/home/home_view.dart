@@ -1,15 +1,18 @@
 import 'package:ank_app/constants/urls.dart';
 import 'package:ank_app/modules/home/home_search/home_search_view.dart';
 import 'package:ank_app/modules/home/liq_main/liq_main_view.dart';
-import 'package:ank_app/modules/home/long_short_ratio/long_short_ratio_view.dart';
 import 'package:ank_app/modules/home/price_change/price_change_view.dart';
+import 'package:ank_app/modules/home/widgets/dash_board_painter.dart';
+import 'package:ank_app/modules/home/widgets/trapezium_painter.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/rate_with_sign.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../entity/chart_entity.dart';
 import '../../widget/rate_with_arrow.dart';
+import '../chart/chart_logic.dart';
 import 'home_logic.dart';
 import 'long_short_ratio/long_short_person_ratio/long_short_person_ratio_view.dart';
 
@@ -106,53 +109,97 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _TotalOiAndFuturesVol(logic: logic),
-              const Gap(10),
-              _BRC(logic: logic),
-              const Gap(10),
-
-              ///清算地图
-              Row(
-                children: [
-                  Expanded(
-                    child: _CheckDetailRow(
-                      title: S.of(context).s_liqmap,
-                      onTap: () =>
-                          Get.toNamed(LiqMainPage.routeName, arguments: 0),
-                    ),
-                  ),
-                  const Gap(10),
-                  Expanded(
-                    child: _CheckDetailRow(
-                      title: S.of(context).s_liq_hot_map,
-                      onTap: () =>
-                          Get.toNamed(LiqMainPage.routeName, arguments: 1),
-                    ),
-                  ),
-                ],
-              ),
-              const Gap(20),
+              const _ChartView(),
               _HotMarket(logic: logic),
               const Gap(20),
               _OiDistribution(logic: logic),
               const Gap(20),
-              _BtcInfo(logic: logic),
-              const Gap(10),
               _FearGreedInfo(logic: logic),
-              const Gap(10),
 
-              ///灰度数据
-              _CheckDetailRow(
-                title: S.of(context).s_grayscale_data,
-                onTap: () => AppNav.openWebUrl(
-                    title: S.of(context).s_grayscale_data,
-                    url: Urls.urlGrayscale,
-                    showLoading: true),
-              )
+              //灰度数据
+              // _CheckDetailRow(
+              //   title: S.of(context).s_grayscale_data,
+              //   onTap: () => AppNav.openWebUrl(
+              //       title: S.of(context).s_grayscale_data,
+              //       url: Urls.urlGrayscale,
+              //       showLoading: true),
+              // )
             ],
           ),
         ),
       ),
     );
+  }
+}
+
+class _ChartView extends StatelessWidget {
+  const _ChartView();
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      final chartItems = [
+        ChartEntity(title: 'BRC-20', key: 'brc-20', path: Urls.urlBRC),
+        ChartEntity(
+            title: 'ERC-20',
+            key: 'erc-20',
+            path: '${Urls.h5Prefix}/${Urls.webLanguage}scriptions/erc20'),
+        ChartEntity(
+            title: 'ARC-20',
+            key: 'arc-20',
+            path: '${Urls.h5Prefix}/${Urls.webLanguage}ordinals/arc20'),
+        ChartEntity(
+            title: 'ASC-20',
+            key: 'asc-20',
+            path: '${Urls.h5Prefix}/${Urls.webLanguage}scriptions/asc20'),
+        ChartEntity(title: S.of(context).s_liqmap, key: 'liqMapChart'),
+        ChartEntity(title: S.of(context).s_liq_hot_map, key: 'liqHeatMapChart'),
+        ChartEntity(
+            title: S.of(context).ahr999Index,
+            key: 'ahrIndex',
+            path: '${Urls.h5Prefix}/${Urls.webLanguage}indexdata/ahrIndex'),
+        ChartEntity(title: S.of(context).more, key: 'more'),
+      ];
+      final chartLogic = Get.put(ChartLogic());
+      final allData = [
+        ...chartLogic.state.dataMap['hotData'] ?? [],
+        ...chartLogic.state.dataMap['btcData'] ?? [],
+        ...chartLogic.state.dataMap['otherData'] ?? [],
+      ];
+      if (allData.isNotEmpty) {
+        try {
+          chartItems[0] =
+              allData.firstWhere((element) => element.key == 'brc-20');
+          chartItems[1] =
+              allData.firstWhere((element) => element.key == 'erc-20');
+          chartItems[2] =
+              allData.firstWhere((element) => element.key == 'arc-20');
+          chartItems[3] =
+              allData.firstWhere((element) => element.key == 'asc-20');
+          chartItems[4] =
+              allData.firstWhere((element) => element.key == 'liqMapChart');
+          chartItems[5] =
+              allData.firstWhere((element) => element.key == 'liqHeatMapChart');
+          chartItems[6] =
+              allData.firstWhere((element) => element.key == 'ahrIndex');
+        } catch (e) {
+          debugPrint(e.toString());
+        }
+      }
+      return GridView.builder(
+        padding: const EdgeInsets.symmetric(vertical: 25),
+        shrinkWrap: true,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 4,
+          mainAxisExtent: 50,
+          mainAxisSpacing: 18,
+        ),
+        itemCount: chartItems.length,
+        itemBuilder: (context, index) {
+          return _ChartItem(item: chartItems[index]);
+        },
+      );
+    });
   }
 }
 
@@ -165,159 +212,126 @@ class _FearGreedInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _OutlinedContainer(
-      onTap: () => AppNav.openWebUrl(
-          title: S.of(context).s_greed_index,
-          url: Urls.urlGreedIndex,
-          showLoading: true),
-      child: Obx(() {
-        return Row(
-          children: [
-            Text(S.of(context).s_greed_index,
-                style: Styles.tsBody_14m(context)),
-            const Gap(10),
-            Text(
-              switch (
-                  double.tryParse(logic.homeInfoData.value?.cnnValue ?? '') ??
-                      -1) {
-                >= 0 && <= 25 => S.of(context).s_extreme_fear,
-                > 25 && <= 50 => S.of(context).s_fear,
-                > 50 && <= 75 => S.of(context).s_greed,
-                > 75 && <= 100 => S.of(context).s_extreme_greed,
-                _ => '',
-              },
-              style: TextStyle(
-                  decoration: TextDecoration.underline,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: switch (double.tryParse(
-                          logic.homeInfoData.value?.cnnValue ?? '') ??
-                      -1) {
-                    <= 50 => Styles.cDown(context),
-                    _ => Styles.cUp(context),
-                  }),
-            ),
-            const Spacer(),
-            Text(
-              (double.tryParse(logic.homeInfoData.value?.cnnValue ?? '') ?? 0)
-                  .toStringAsFixed(0),
-              style: Styles.tsBody_14m(context),
-            ),
-            const Gap(7),
-            RateWithArrow(
-                rate: (double.tryParse(
-                            logic.homeInfoData.value?.cnnChange ?? '') ??
-                        0) *
-                    100)
-          ],
-        );
-      }),
-    );
-  }
-}
-
-///btc市值占比+投资回报率
-class _BtcInfo extends StatelessWidget {
-  const _BtcInfo({
-    required this.logic,
-  });
-
-  final HomeLogic logic;
-
-  @override
-  Widget build(BuildContext context) {
-    return _OutlinedContainer(
-      child: Obx(() {
-        return Row(
-          children: [
-            Expanded(
-              child: InkWell(
-                onTap: () => AppNav.openWebUrl(
-                    title: S.of(context).s_marketcap_ratio,
-                    url: Urls.urlBTCMarketCap,
-                    showLoading: true),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Image.asset(
-                          Assets.imagesIcCoinBtc,
-                          height: 18,
-                          width: 18,
-                        ),
-                        const Gap(5),
-                        Text(
-                          S.of(context).s_marketcap_ratio,
-                          style: Styles.tsBody_12m(context),
-                        ),
-                        const Icon(CupertinoIcons.chevron_right, size: 12),
-                      ],
-                    ),
-                    const Gap(6),
-                    Row(
-                      children: [
-                        Text(
-                          '${((double.tryParse(logic.homeInfoData.value?.marketCpaValue ?? '') ?? 0) * 100).toStringAsFixed(2)}%',
-                          style: Styles.tsMain_18
-                              .copyWith(fontWeight: FontWeight.w600, height: 1),
-                        ),
-                        const Gap(5),
-                        RateWithArrow(
-                            rate: (double.tryParse(logic.homeInfoData.value
-                                            ?.marketCpaChange ??
-                                        '') ??
-                                    0) *
-                                100),
-                      ],
-                    )
-                  ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(S.of(context).s_greed_index, style: Styles.tsBody_16m(context)),
+        GestureDetector(
+          onTap: () => AppNav.openWebUrl(
+              title: S.of(context).s_greed_index,
+              url: Urls.urlGreedIndex,
+              showLoading: true),
+          child: Obx(() {
+            var degree =
+                double.tryParse(logic.homeInfoData.value?.cnnValue ?? '') ?? -1;
+            return Container(
+              margin: const EdgeInsets.only(top: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
+              decoration: BoxDecoration(
+                border: Border.all(
+                    color:
+                        Theme.of(context).dividerTheme.color ?? Colors.white),
+                borderRadius: BorderRadius.circular(8),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: const [0, 0.5],
+                  colors: degree <= 50
+                      ? const [
+                          Color(0x1af17077),
+                          Color(0x00000000),
+                        ]
+                      : const [
+                          Color(0x1a1DCA88),
+                          Color(0x00000000),
+                        ],
                 ),
               ),
-            ),
-            const SizedBox(height: 30, child: VerticalDivider()),
-            Expanded(
-              child: InkWell(
-                onTap: () => AppNav.openWebUrl(
-                    title: S.of(context).s_btc_profit,
-                    url: Urls.urlBTCProfit,
-                    showLoading: true),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
+                children: [
+                  Column(
                     children: [
-                      Row(
-                        children: [
-                          Image.asset(
-                            Assets.imagesIcCoinBtc,
-                            height: 18,
-                            width: 18,
-                          ),
-                          const Gap(5),
-                          Flexible(
-                            child: Text(
-                              S.of(context).s_btc_profit,
-                              style: Styles.tsBody_12m(context),
-                            ),
-                          ),
-                          const Icon(CupertinoIcons.chevron_right, size: 12),
-                        ],
-                      ),
-                      const Gap(6),
                       Text(
-                        '${((double.tryParse(logic.homeInfoData.value?.btcProfit ?? '') ?? 0)).toStringAsFixed(2)}%',
-                        style: Styles.tsMain_18
-                            .copyWith(fontWeight: FontWeight.w600, height: 1),
-                      )
+                        switch (degree) {
+                          >= 0 && <= 25 => S.of(context).s_extreme_fear,
+                          > 25 && <= 50 => S.of(context).s_fear,
+                          > 50 && <= 75 => S.of(context).s_greed,
+                          > 75 && <= 100 => S.of(context).s_extreme_greed,
+                          _ => '',
+                        },
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: switch (degree) {
+                              <= 50 => Styles.cDown(context),
+                              _ => Styles.cUp(context),
+                            }),
+                      ),
+                      const Gap(7),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 15,
+                          vertical: 3,
+                        ),
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).cardColor,
+                            borderRadius: BorderRadius.circular(4)),
+                        child: Row(
+                          children: [
+                            Text(
+                              (double.tryParse(
+                                          logic.homeInfoData.value?.cnnValue ??
+                                              '') ??
+                                      0)
+                                  .toStringAsFixed(0),
+                              style: Styles.tsBody_14m(context),
+                            ),
+                            const Gap(7),
+                            RateWithArrow(
+                                rate: (double.tryParse(logic.homeInfoData.value
+                                                ?.cnnChange ??
+                                            '') ??
+                                        0) *
+                                    100)
+                          ],
+                        ),
+                      ),
                     ],
                   ),
-                ),
+                  Expanded(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          S.of(context).s_fear,
+                          style: TextStyle(
+                                  color: Styles.cDown(context), fontSize: 12)
+                              .medium,
+                        ),
+                        CustomPaint(
+                          size: const Size(130, 60),
+                          painter: DashBoardPainter(
+                              Styles.cUp(context), Styles.cDown(context),
+                              radians: (degree - 50) / 100,
+                              isDarkMode: Theme.of(context).brightness ==
+                                  Brightness.dark),
+                        ),
+                        Text(
+                          S.of(context).s_greed,
+                          style: TextStyle(
+                                  color: Styles.cUp(context), fontSize: 12)
+                              .medium,
+                        ),
+                      ],
+                    ),
+                  )
+                ],
               ),
-            )
-          ],
-        );
-      }),
+            );
+          }),
+        ),
+      ],
     );
   }
 }
@@ -333,38 +347,94 @@ class _OiDistribution extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
+      final ratio = double.parse(logic.buySellLongShortRatio);
       return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Expanded(
-                  child: Text(S.of(context).s_longshort_ratio,
-                      style: Styles.tsBody_16m(context))),
-              _FilledContainer(
-                onTap: () => Get.toNamed(LongShortRatioPage.routeName),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.baseline,
-                  textBaseline: TextBaseline.alphabetic,
-                  children: [
-                    Text(
-                      S.of(context).s_buysel_longshort_ratio,
-                      style: Styles.tsBody_14m(context),
+          Text(S.of(context).s_longshort_ratio,
+              style: Styles.tsBody_16m(context)),
+          Container(
+            margin: const EdgeInsets.only(top: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
+            width: double.infinity,
+            decoration: BoxDecoration(
+              border: Border.all(
+                  color: Theme.of(context).dividerTheme.color ?? Colors.white),
+              borderRadius: BorderRadius.circular(8),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                stops: const [0, 0.5],
+                colors: ratio < 1
+                    ? const [
+                        Color(0x1af17077),
+                        Color(0x00000000),
+                      ]
+                    : const [
+                        Color(0x1a1DCA88),
+                        Color(0x00000000),
+                      ],
+              ),
+            ),
+            child: IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text(S.of(context).s_buysel_longshort_ratio,
+                              style: Styles.tsSub_14m(context)),
+                          const Gap(5),
+                          Icon(CupertinoIcons.chevron_right,
+                              color: Styles.cSub(context), size: 10)
+                        ],
+                      ),
+                      const Gap(5),
+                      Text(
+                        logic.buySellLongShortRatio,
+                        style: Styles.tsBody_18m(context).copyWith(
+                            color: ratio >= 1
+                                ? Styles.cUp(context)
+                                : Styles.cDown(context)),
+                      ),
+                    ],
+                  ),
+                  Expanded(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        //todo intl
+                        Text(
+                          '看空',
+                          style: TextStyle(
+                                  color: Styles.cDown(context), fontSize: 12)
+                              .medium,
+                        ),
+                        CustomPaint(
+                          size: const Size(130, 60),
+                          painter: DashBoardPainter(
+                              Styles.cUp(context), Styles.cDown(context),
+                              radians: (ratio - 1) / 2,
+                              isDarkMode: Theme.of(context).brightness ==
+                                  Brightness.dark),
+                        ),
+                        //todo intl
+                        Text(
+                          '看多',
+                          style: TextStyle(
+                                  color: Styles.cUp(context), fontSize: 12)
+                              .medium,
+                        ),
+                      ],
                     ),
-                    const Gap(7),
-                    Text(
-                      logic.buySellLongShortRatio,
-                      style: Styles.tsBody_14m(context).copyWith(
-                          decoration: TextDecoration.underline,
-                          color: double.parse(logic.buySellLongShortRatio) >= 1
-                              ? Styles.cUp(context)
-                              : Styles.cDown(context)),
-                    ),
-                  ],
-                ),
-              )
-            ],
+                  )
+                ],
+              ),
+            ),
           ),
           const Gap(15),
 
@@ -543,7 +613,6 @@ class _HotMarket extends StatelessWidget {
                           ),
                         ],
                       ),
-                      //todo 换成接口数据
                       ...List.generate(
                         3,
                         (index) {
@@ -601,44 +670,22 @@ class _TotalOiAndFuturesVol extends StatelessWidget {
                   0,
               value: AppUtil.getLargeFormatString(
                   logic.homeInfoData.value?.ticker ?? '0')),
+          const Gap(9),
+          _FirstLineItem(
+              onTap: () => AppNav.openWebUrl(
+                  title: S.of(context).s_marketcap_ratio,
+                  url: Urls.urlBTCMarketCap,
+                  showLoading: true),
+              title: S.of(context).s_marketcap_ratio,
+              rate: (double.tryParse(
+                          logic.homeInfoData.value?.marketCpaChange ?? '') ??
+                      0) *
+                  100,
+              value:
+                  '${((double.tryParse(logic.homeInfoData.value?.marketCpaValue ?? '') ?? 0) * 100).toStringAsFixed(2)}%'),
         ],
       );
     });
-  }
-}
-
-class _BRC extends StatelessWidget {
-  const _BRC({required this.logic});
-
-  final HomeLogic logic;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: _CheckDetailRow(
-            title: 'BRC-20',
-            onTap: () => AppNav.openWebUrl(
-              url: Urls.urlBRC,
-              title: 'BRC-20',
-              showLoading: true,
-            ),
-          ),
-        ),
-        const Gap(10),
-        Expanded(
-          child: _CheckDetailRow(
-            title: 'BRC-20 ${S.of(context).heat_map}',
-            onTap: () => AppNav.openWebUrl(
-              url: Urls.urlBRCHeatMap,
-              title: 'BRC-20 ${S.of(context).heat_map}',
-              showLoading: true,
-            ),
-          ),
-        ),
-      ],
-    );
   }
 }
 
@@ -698,38 +745,48 @@ class _LongShortRatio extends StatelessWidget {
               Expanded(
                 child: Text(
                   title,
-                  style: Styles.tsBody_12m(context),
+                  style: Styles.tsSub_14m(context),
                 ),
               ),
               Text((actualLong / short).toStringAsFixed(2),
                   style: Styles.tsBody_14m(context)),
               const Gap(5),
-              //todo 换成接口数据
               RateWithArrow(rate: rate * 100)
             ],
           ),
           const Gap(17),
-          SizedBox(
-            height: 6,
-            child: Row(children: [
-              Expanded(
-                  flex: (actualLong * 1000).toInt(),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Styles.cUp(context),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  )),
-              const Gap(2),
-              Expanded(
-                  flex: (short * 1000).toInt(),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Styles.cDown(context),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  )),
-            ]),
+          Stack(
+            children: [
+              SizedBox(
+                height: 6,
+                child: Row(children: [
+                  Expanded(
+                      flex: (actualLong * 1000).toInt(),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Styles.cUp(context),
+                        ),
+                      )),
+                  Expanded(
+                      flex: (short * 1000).toInt(),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Styles.cDown(context),
+                        ),
+                      )),
+                ]),
+              ),
+              Align(
+                alignment: Alignment(
+                    ((actualLong * 1000).toInt() - (short * 1000).toInt()) /
+                        ((actualLong * 1000).toInt() + (short * 1000).toInt()),
+                    0),
+                child: CustomPaint(
+                    size: const Size(0, 6),
+                    painter: TrapeziumPainter(
+                        width: 4, color: Theme.of(context).cardColor)),
+              )
+            ],
           ),
           const Gap(5),
           Row(
@@ -912,30 +969,27 @@ class _FirstLineItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: _OutlinedContainer(
+      child: _FilledContainer(
         onTap: onTap,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Styles.tsSub_12m(context),
+              ),
+            ),
+            const Gap(2),
             Text(
-              title,
+              value,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: Styles.tsSub_12(context),
+              style: Styles.tsBody_18m(context),
             ),
-            const Gap(5),
-            Row(
-              children: [
-                Text(
-                  value,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Styles.tsBody_14m(context),
-                ),
-                const Gap(5),
-                RateWithArrow(rate: (rate ?? 0) * 100),
-              ],
-            ),
+            RateWithArrow(rate: (rate ?? 0) * 100, fontSize: 12),
           ],
         ),
       ),
@@ -990,6 +1044,54 @@ class _FilledContainer extends StatelessWidget {
           padding: padding ?? const EdgeInsets.all(10),
           child: child,
         ),
+      ),
+    );
+  }
+}
+
+class _ChartItem extends StatelessWidget {
+  const _ChartItem({super.key, required this.item});
+
+  final ChartEntity item;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        ['liqMapChart', 'liqHeatMapChart'].contains(item.key)
+            ? Get.toNamed(LiqMainPage.routeName,
+                arguments: item.key == 'liqMapChart' ? 0 : 1)
+            : AppNav.openWebUrl(
+                url: '${Urls.h5Prefix}${item.path}',
+                title: item.title,
+                showLoading: true,
+              );
+      },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          item.key == 'more'
+              ? Image.asset(
+                  Assets.chartLeftIcMore,
+                  height: 30,
+                  width: 30,
+                )
+              : ImageUtil.networkImage(
+                  'https://cdn01.coinank.com/appicons/${item.key}.png',
+                  height: 30,
+                  width: 30,
+                ),
+          const Gap(2),
+          Expanded(
+            child: Text(
+              item.title ?? '',
+              style: Styles.tsBody_12(context),
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.visible,
+            ),
+          ),
+        ],
       ),
     );
   }

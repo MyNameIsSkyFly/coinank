@@ -23,6 +23,7 @@ class RateWithArrow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Icon(
           rate >= 0 ? FontAwesomeIcons.caretUp : FontAwesomeIcons.caretDown,
