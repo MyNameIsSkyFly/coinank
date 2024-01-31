@@ -36,7 +36,7 @@ class _FavoritePageState extends State<FavoritePage> {
                 onTap: () => Get.toNamed(HomeSearchPage.routeName),
                 child: Container(
                   margin: const EdgeInsets.symmetric(horizontal: 15),
-                  height: state.isScrollDown.value ? 32 : 0,
+                  height: state.isScrollDownF.value ? 32 : 0,
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   decoration: BoxDecoration(
                     color: Theme.of(context).inputDecorationTheme.fillColor,
@@ -188,6 +188,7 @@ class _FavoritePageState extends State<FavoritePage> {
                   onRefresh: logic.onRefresh,
                   child: SlidableAutoCloseBehavior(
                     child: ListView.builder(
+                      controller: state.scrollControllerF,
                       padding: const EdgeInsets.only(bottom: 10),
                       itemBuilder: (cnt, idx) {
                         MarkerTickerEntity item = state.favoriteData[idx];

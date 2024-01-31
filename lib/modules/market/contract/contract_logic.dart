@@ -235,6 +235,12 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
     state.offset = offset;
   }
 
+  _scrollFListener() {
+    double offset = state.scrollControllerF.offset;
+    state.isScrollDownF.value = offset <= 0 || state.offset - offset > 0;
+    state.offset = offset;
+  }
+
   Future<void> saveFixedCoin() async {
     if (!StoreLogic.isLogin) {
       for (final item in state.selectedFixedCoin) {
@@ -269,6 +275,7 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
     WidgetsBinding.instance.addObserver(this);
     _startTimer();
     state.scrollController.addListener(_scrollListener);
+    state.scrollControllerF.addListener(_scrollFListener);
     if (StoreLogic.isLogin) {
       loginSubscription = AppConst.eventBus.on<LoginStatusChangeEvent>().listen(
             (event) => onRefresh(),
@@ -280,6 +287,7 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
   void onClose() {
     WidgetsBinding.instance.removeObserver(this);
     state.scrollController.removeListener(_scrollListener);
+    state.scrollControllerF.removeListener(_scrollFListener);
     state.pollingTimer?.cancel();
     state.pollingTimer = null;
     loginSubscription?.cancel();

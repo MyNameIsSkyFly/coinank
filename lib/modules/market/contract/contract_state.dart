@@ -33,8 +33,10 @@ class ContractState {
   bool isRefresh = false;
   bool appVisible = true;
   ScrollController scrollController = ScrollController();
+  ScrollController scrollControllerF = ScrollController();
   double offset = 0;
   RxBool isScrollDown = true.obs;
+  RxBool isScrollDownF = true.obs;
   RxBool isLoading = true.obs;
 
   final favoriteOiSort = Rx(SortStatus.down);
