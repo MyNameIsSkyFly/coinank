@@ -328,7 +328,11 @@
   "inviteScore": "Invitation Points:",
   "searchTrending": "Trending",
   "addToFavorite": "Add to favorites",
-  "ahr999Index": "BTC Ahr999 Index"
+  "ahr999Index": "BTC Ahr999 Index",
+  "btcReduceCountDown": "BTC减半倒计时",
+  "days": "天",
+  "hours": "时",
+  "minutes": "分"
 }
 
 

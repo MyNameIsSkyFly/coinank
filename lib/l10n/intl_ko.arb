@@ -326,5 +326,9 @@
   "inviteCodeX": "초대 코드 {code}",
   "searchTrending": "토픽 트렌드",
   "addToFavorite": "관심 목록에 추가",
-  "ahr999Index": "BTC Ahr999 Index"
+  "ahr999Index": "BTC Ahr999 Index",
+  "btcReduceCountDown": "BTC减半倒计时",
+  "days": "天",
+  "hours": "时",
+  "minutes": "分"
 }

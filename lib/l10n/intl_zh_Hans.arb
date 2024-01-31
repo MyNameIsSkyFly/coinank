@@ -325,5 +325,9 @@
   "inviteScore": "邀请积分: ",
   "searchTrending": "热门搜索",
   "addToFavorite": "添加至自选",
-  "ahr999Index": "Ahr999指标"
+  "ahr999Index": "Ahr999指标",
+  "btcReduceCountDown": "BTC减半倒计时",
+  "days": "天",
+  "hours": "时",
+  "minutes": "分"
 }

@@ -326,5 +326,9 @@
   "inviteScore": "招待ポイント: ",
   "searchTrending": "トレンド",
   "addToFavorite": "お気に入りに追加",
-  "ahr999Index": "BTC Ahr999 Index"
+  "ahr999Index": "BTC Ahr999 Index",
+  "btcReduceCountDown": "BTC减半倒计时",
+  "days": "天",
+  "hours": "时",
+  "minutes": "分"
 }

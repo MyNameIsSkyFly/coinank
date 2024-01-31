@@ -2,6 +2,7 @@ import 'package:ank_app/constants/urls.dart';
 import 'package:ank_app/modules/home/home_search/home_search_view.dart';
 import 'package:ank_app/modules/home/liq_main/liq_main_view.dart';
 import 'package:ank_app/modules/home/price_change/price_change_view.dart';
+import 'package:ank_app/modules/home/widgets/btc_reduce_dialog.dart';
 import 'package:ank_app/modules/home/widgets/dash_board_painter.dart';
 import 'package:ank_app/modules/home/widgets/trapezium_painter.dart';
 import 'package:ank_app/res/export.dart';
@@ -104,7 +105,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       body: EasyRefresh(
         onRefresh: logic.onRefresh,
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          padding: const EdgeInsets.symmetric(vertical: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -112,9 +113,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               const _ChartView(),
               _BtcReduceView(logic: logic),
               _HotMarket(logic: logic),
-              const Gap(20),
               _OiDistribution(logic: logic),
-              const Gap(20),
               _FearGreedInfo(logic: logic),
 
               //灰度数据
@@ -135,7 +134,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
 class _BtcReduceView extends StatelessWidget {
   const _BtcReduceView({
-    super.key,
     required this.logic,
   });
 
@@ -157,61 +155,56 @@ class _BtcReduceView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        gradient: const LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Color(0x1aF7931A),
-            Color(0x00000000),
+    return GestureDetector(
+      onTap: () => showCupertinoDialog(
+          barrierDismissible: true,
+          context: context,
+          builder: (context) => BtcReduceDialog(logic: logic)),
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          gradient: const LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0x1aF7931A),
+              Color(0x00000000),
+            ],
+          ),
+        ),
+        child: Row(
+          children: [
+            ImageUtil.networkImage(AppConst.imageHost('BTC'),
+                width: 18, height: 18),
+            const Gap(4),
+            Text(S.of(context).btcReduceCountDown,
+                style: Styles.tsBody_14m(context)),
+            Expanded(
+              child: Obx(() {
+                final time = DateTime.fromMillisecondsSinceEpoch(
+                    logic.btcReduceData.value?.halvingTime ?? 0);
+                final duration = time.difference(DateTime.now());
+                final style1 = TextStyle(
+                    color: Styles.cBody(context).withOpacity(0.5),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500);
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    _box(context, text: '${duration.inDays}'),
+                    Text(S.of(context).days, style: style1),
+                    _box(context, text: '${duration.inHours % 24}'),
+                    Text(S.of(context).hours, style: style1),
+                    _box(context, text: '${duration.inMinutes % 60}'),
+                    Text(S.of(context).minutes, style: style1),
+                  ],
+                );
+              }),
+            )
           ],
         ),
-      ),
-      child: Row(
-        children: [
-          ImageUtil.networkImage(AppConst.imageHost('BTC'),
-              width: 18, height: 18),
-          const Gap(4),
-          //todo intl
-          Text('BTC减半倒计时', style: Styles.tsBody_14m(context)),
-          Expanded(
-            child: Obx(() {
-              final time = DateTime.fromMillisecondsSinceEpoch(
-                  logic.btcReduceData.value?.halvingTime ?? 0);
-              final duration = time.difference(DateTime.now());
-              final style1 = TextStyle(
-                  color: Styles.cBody(context).withOpacity(0.5),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500);
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  _box(context, text: '${duration.inDays}'),
-                  //todo intl
-                  Text(
-                    '天',
-                    style: style1,
-                  ),
-                  _box(context, text: '${duration.inHours % 24}'),
-                  //todo intl
-                  Text(
-                    '时',
-                    style: style1,
-                  ),
-                  _box(context, text: '${duration.inMinutes % 60}'),
-                  //todo intl
-                  Text(
-                    '分',
-                    style: style1,
-                  ),
-                ],
-              );
-            }),
-          )
-        ],
       ),
     );
   }
@@ -272,7 +265,7 @@ class _ChartView extends StatelessWidget {
         }
       }
       return GridView.builder(
-        padding: const EdgeInsets.symmetric(vertical: 25),
+        padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 5),
         shrinkWrap: true,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 4,
@@ -297,126 +290,131 @@ class _FearGreedInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(S.of(context).s_greed_index, style: Styles.tsBody_16m(context)),
-        GestureDetector(
-          onTap: () => AppNav.openWebUrl(
-              title: S.of(context).s_greed_index,
-              url: Urls.urlGreedIndex,
-              showLoading: true),
-          child: Obx(() {
-            var degree =
-                double.tryParse(logic.homeInfoData.value?.cnnValue ?? '') ?? -1;
-            return Container(
-              margin: const EdgeInsets.only(top: 10),
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
-              decoration: BoxDecoration(
-                border: Border.all(
-                    color:
-                        Theme.of(context).dividerTheme.color ?? Colors.white),
-                borderRadius: BorderRadius.circular(8),
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  stops: const [0, 0.5],
-                  colors: degree <= 50
-                      ? const [
-                          Color(0x1af17077),
-                          Color(0x00000000),
-                        ]
-                      : const [
-                          Color(0x1a1DCA88),
-                          Color(0x00000000),
-                        ],
-                ),
-              ),
-              child: Row(
-                children: [
-                  Column(
-                    children: [
-                      Text(
-                        switch (degree) {
-                          >= 0 && <= 25 => S.of(context).s_extreme_fear,
-                          > 25 && <= 50 => S.of(context).s_fear,
-                          > 50 && <= 75 => S.of(context).s_greed,
-                          > 75 && <= 100 => S.of(context).s_extreme_greed,
-                          _ => '',
-                        },
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                            color: switch (degree) {
-                              <= 50 => Styles.cDown(context),
-                              _ => Styles.cUp(context),
-                            }),
-                      ),
-                      const Gap(7),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 15,
-                          vertical: 3,
-                        ),
-                        decoration: BoxDecoration(
-                            color: Theme.of(context).cardColor,
-                            borderRadius: BorderRadius.circular(4)),
-                        child: Row(
-                          children: [
-                            Text(
-                              (double.tryParse(
-                                          logic.homeInfoData.value?.cnnValue ??
-                                              '') ??
-                                      0)
-                                  .toStringAsFixed(0),
-                              style: Styles.tsBody_14m(context),
-                            ),
-                            const Gap(7),
-                            RateWithArrow(
-                                rate: (double.tryParse(logic.homeInfoData.value
-                                                ?.cnnChange ??
-                                            '') ??
-                                        0) *
-                                    100)
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15).copyWith(top: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(S.of(context).s_greed_index, style: Styles.tsBody_16m(context)),
+          GestureDetector(
+            onTap: () => AppNav.openWebUrl(
+                title: S.of(context).s_greed_index,
+                url: Urls.urlGreedIndex,
+                showLoading: true),
+            child: Obx(() {
+              var degree =
+                  double.tryParse(logic.homeInfoData.value?.cnnValue ?? '') ??
+                      -1;
+              return Container(
+                margin: const EdgeInsets.only(top: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                      color:
+                          Theme.of(context).dividerTheme.color ?? Colors.white),
+                  borderRadius: BorderRadius.circular(8),
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: const [0, 0.5],
+                    colors: degree <= 50
+                        ? const [
+                            Color(0x1af17077),
+                            Color(0x00000000),
+                          ]
+                        : const [
+                            Color(0x1a1DCA88),
+                            Color(0x00000000),
                           ],
-                        ),
-                      ),
-                    ],
                   ),
-                  Expanded(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.end,
+                ),
+                child: Row(
+                  children: [
+                    Column(
                       children: [
                         Text(
-                          S.of(context).s_fear,
+                          switch (degree) {
+                            >= 0 && <= 25 => S.of(context).s_extreme_fear,
+                            > 25 && <= 50 => S.of(context).s_fear,
+                            > 50 && <= 75 => S.of(context).s_greed,
+                            > 75 && <= 100 => S.of(context).s_extreme_greed,
+                            _ => '',
+                          },
                           style: TextStyle(
-                                  color: Styles.cDown(context), fontSize: 12)
-                              .medium,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: switch (degree) {
+                                <= 50 => Styles.cDown(context),
+                                _ => Styles.cUp(context),
+                              }),
                         ),
-                        CustomPaint(
-                          size: const Size(130, 60),
-                          painter: DashBoardPainter(
-                              Styles.cUp(context), Styles.cDown(context),
-                              radians: (degree - 50) / 100,
-                              isDarkMode: Theme.of(context).brightness ==
-                                  Brightness.dark),
-                        ),
-                        Text(
-                          S.of(context).s_greed,
-                          style: TextStyle(
-                                  color: Styles.cUp(context), fontSize: 12)
-                              .medium,
+                        const Gap(7),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 15,
+                            vertical: 3,
+                          ),
+                          decoration: BoxDecoration(
+                              color: Theme.of(context).cardColor,
+                              borderRadius: BorderRadius.circular(4)),
+                          child: Row(
+                            children: [
+                              Text(
+                                (double.tryParse(logic
+                                                .homeInfoData.value?.cnnValue ??
+                                            '') ??
+                                        0)
+                                    .toStringAsFixed(0),
+                                style: Styles.tsBody_14m(context),
+                              ),
+                              const Gap(7),
+                              RateWithArrow(
+                                  rate: (double.tryParse(logic.homeInfoData
+                                                  .value?.cnnChange ??
+                                              '') ??
+                                          0) *
+                                      100)
+                            ],
+                          ),
                         ),
                       ],
                     ),
-                  )
-                ],
-              ),
-            );
-          }),
-        ),
-      ],
+                    Expanded(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            S.of(context).s_fear,
+                            style: TextStyle(
+                                    color: Styles.cDown(context), fontSize: 12)
+                                .medium,
+                          ),
+                          CustomPaint(
+                            size: const Size(130, 60),
+                            painter: DashBoardPainter(
+                                Styles.cUp(context), Styles.cDown(context),
+                                radians: (degree - 50) / 100,
+                                isDarkMode: Theme.of(context).brightness ==
+                                    Brightness.dark),
+                          ),
+                          Text(
+                            S.of(context).s_greed,
+                            style: TextStyle(
+                                    color: Styles.cUp(context), fontSize: 12)
+                                .medium,
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              );
+            }),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -431,118 +429,122 @@ class _OiDistribution extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      final ratio = double.parse(logic.buySellLongShortRatio);
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(S.of(context).s_longshort_ratio,
-              style: Styles.tsBody_16m(context)),
-          Container(
-            margin: const EdgeInsets.only(top: 10),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
-            width: double.infinity,
-            decoration: BoxDecoration(
-              border: Border.all(
-                  color: Theme.of(context).dividerTheme.color ?? Colors.white),
-              borderRadius: BorderRadius.circular(8),
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                stops: const [0, 0.5],
-                colors: ratio < 1
-                    ? const [
-                        Color(0x1af17077),
-                        Color(0x00000000),
-                      ]
-                    : const [
-                        Color(0x1a1DCA88),
-                        Color(0x00000000),
-                      ],
-              ),
-            ),
-            child: IntrinsicHeight(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text(S.of(context).s_buysel_longshort_ratio,
-                              style: Styles.tsSub_14m(context)),
-                          const Gap(5),
-                          Icon(CupertinoIcons.chevron_right,
-                              color: Styles.cSub(context), size: 10)
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15).copyWith(top: 20),
+      child: Obx(() {
+        final ratio = double.parse(logic.buySellLongShortRatio);
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(S.of(context).s_longshort_ratio,
+                style: Styles.tsBody_16m(context)),
+            Container(
+              margin: const EdgeInsets.only(top: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                border: Border.all(
+                    color:
+                        Theme.of(context).dividerTheme.color ?? Colors.white),
+                borderRadius: BorderRadius.circular(8),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: const [0, 0.5],
+                  colors: ratio < 1
+                      ? const [
+                          Color(0x1af17077),
+                          Color(0x00000000),
+                        ]
+                      : const [
+                          Color(0x1a1DCA88),
+                          Color(0x00000000),
                         ],
-                      ),
-                      const Gap(5),
-                      Text(
-                        logic.buySellLongShortRatio,
-                        style: Styles.tsBody_18m(context).copyWith(
-                            color: ratio >= 1
-                                ? Styles.cUp(context)
-                                : Styles.cDown(context)),
-                      ),
-                    ],
-                  ),
-                  Expanded(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.end,
+                ),
+              ),
+              child: IntrinsicHeight(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        //todo intl
-                        Text(
-                          '看空',
-                          style: TextStyle(
-                                  color: Styles.cDown(context), fontSize: 12)
-                              .medium,
+                        Row(
+                          children: [
+                            Text(S.of(context).s_buysel_longshort_ratio,
+                                style: Styles.tsSub_14m(context)),
+                            const Gap(5),
+                            Icon(CupertinoIcons.chevron_right,
+                                color: Styles.cSub(context), size: 10)
+                          ],
                         ),
-                        CustomPaint(
-                          size: const Size(130, 60),
-                          painter: DashBoardPainter(
-                              Styles.cUp(context), Styles.cDown(context),
-                              radians: (ratio - 1) / 2,
-                              isDarkMode: Theme.of(context).brightness ==
-                                  Brightness.dark),
-                        ),
-                        //todo intl
+                        const Gap(5),
                         Text(
-                          '看多',
-                          style: TextStyle(
-                                  color: Styles.cUp(context), fontSize: 12)
-                              .medium,
+                          logic.buySellLongShortRatio,
+                          style: Styles.tsBody_18m(context).copyWith(
+                              color: ratio >= 1
+                                  ? Styles.cUp(context)
+                                  : Styles.cDown(context)),
                         ),
                       ],
                     ),
-                  )
-                ],
+                    Expanded(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          //todo intl
+                          Text(
+                            '看空',
+                            style: TextStyle(
+                                    color: Styles.cDown(context), fontSize: 12)
+                                .medium,
+                          ),
+                          CustomPaint(
+                            size: const Size(130, 60),
+                            painter: DashBoardPainter(
+                                Styles.cUp(context), Styles.cDown(context),
+                                radians: (ratio - 1) / 2,
+                                isDarkMode: Theme.of(context).brightness ==
+                                    Brightness.dark),
+                          ),
+                          //todo intl
+                          Text(
+                            '看多',
+                            style: TextStyle(
+                                    color: Styles.cUp(context), fontSize: 12)
+                                .medium,
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-          const Gap(15),
+            const Gap(15),
 
-          ///多空持仓人数比
-          _LongShortRatio(
-              onTap: () => Get.toNamed(LongShortPersonRatioPage.routeName),
-              title: S.of(context).s_bn_longshort_person_ratio,
-              long: double.parse(
-                  logic.homeInfoData.value?.binancePersonValue ?? '0'),
-              // short: 9,
-              rate: double.parse(
-                  logic.homeInfoData.value?.binancePersonChange ?? '0')),
-          const Gap(10),
-          _LongShortRatio(
-              onTap: () => Get.toNamed(LongShortPersonRatioPage.routeName),
-              title: S.of(context).s_ok_longshort_person_ratio,
-              long: double.parse(
-                  logic.homeInfoData.value?.okexPersonValue ?? '0'),
-              rate: double.parse(
-                  logic.homeInfoData.value?.okexPersonChange ?? '0')),
-        ],
-      );
-    });
+            ///多空持仓人数比
+            _LongShortRatio(
+                onTap: () => Get.toNamed(LongShortPersonRatioPage.routeName),
+                title: S.of(context).s_bn_longshort_person_ratio,
+                long: double.parse(
+                    logic.homeInfoData.value?.binancePersonValue ?? '0'),
+                // short: 9,
+                rate: double.parse(
+                    logic.homeInfoData.value?.binancePersonChange ?? '0')),
+            const Gap(10),
+            _LongShortRatio(
+                onTap: () => Get.toNamed(LongShortPersonRatioPage.routeName),
+                title: S.of(context).s_ok_longshort_person_ratio,
+                long: double.parse(
+                    logic.homeInfoData.value?.okexPersonValue ?? '0'),
+                rate: double.parse(
+                    logic.homeInfoData.value?.okexPersonChange ?? '0')),
+          ],
+        );
+      }),
+    );
   }
 }
 
@@ -556,170 +558,175 @@ class _HotMarket extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Gap(20),
-          Text(
-            S.of(context).hotMarket,
-            style: Styles.tsBody_16m(context),
-          ),
-          const Gap(10),
-          Row(
-            children: [
-              Expanded(
-                child: _OutlinedContainer(
-                  onTap: () => Get.toNamed(PriceChangePage.priceChange,
-                      arguments: {'isPrice': false}),
-                  child: Obx(() {
-                    return Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              S.of(context).s_oi_chg,
-                              style: Styles.tsBody_12m(context),
-                            ),
-                            Text(
-                              ' (24H)',
-                              style: Styles.tsBody_12m(context),
-                            ),
-                          ],
-                        ),
-                        ...List.generate(
-                          3,
-                          (index) => _DataWithIcon(
-                              title: logic.oiList?[index].baseCoin ?? '',
-                              icon: logic.oiList?[index].coinImage ?? '',
-                              value:
-                                  (logic.oiList?[index].openInterestCh24 ?? 0) *
-                                      100),
-                        )
-                      ],
-                    );
-                  }),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      child: Obx(() {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Gap(20),
+            Text(
+              S.of(context).hotMarket,
+              style: Styles.tsBody_16m(context),
+            ),
+            const Gap(10),
+            Row(
+              children: [
+                Expanded(
+                  child: _OutlinedContainer(
+                    onTap: () => Get.toNamed(PriceChangePage.priceChange,
+                        arguments: {'isPrice': false}),
+                    child: Obx(() {
+                      return Column(
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                S.of(context).s_oi_chg,
+                                style: Styles.tsBody_12m(context),
+                              ),
+                              Text(
+                                ' (24H)',
+                                style: Styles.tsBody_12m(context),
+                              ),
+                            ],
+                          ),
+                          ...List.generate(
+                            3,
+                            (index) => _DataWithIcon(
+                                title: logic.oiList?[index].baseCoin ?? '',
+                                icon: logic.oiList?[index].coinImage ?? '',
+                                value: (logic.oiList?[index].openInterestCh24 ??
+                                        0) *
+                                    100),
+                          )
+                        ],
+                      );
+                    }),
+                  ),
                 ),
-              ),
-              const Gap(9),
-              Expanded(
-                child: _OutlinedContainer(
-                  onTap: () => Get.toNamed(PriceChangePage.priceChange,
-                      arguments: {'isPrice': true}),
-                  child: Obx(() {
-                    return Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              S.of(context).s_price_chg,
-                              style: Styles.tsBody_12m(context),
-                            ),
-                            Text(
-                              ' (24H)',
-                              style: Styles.tsBody_12m(context),
-                            ),
-                          ],
-                        ),
-                        ...List.generate(
-                          3,
-                          (index) => _DataWithIcon(
-                              title: logic.priceList?[index].baseCoin ?? '',
-                              icon: logic.priceList?[index].coinImage ?? '',
-                              value:
-                                  logic.priceList?[index].priceChangeH24 ?? 0),
-                        )
-                      ],
-                    );
-                  }),
+                const Gap(9),
+                Expanded(
+                  child: _OutlinedContainer(
+                    onTap: () => Get.toNamed(PriceChangePage.priceChange,
+                        arguments: {'isPrice': true}),
+                    child: Obx(() {
+                      return Column(
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                S.of(context).s_price_chg,
+                                style: Styles.tsBody_12m(context),
+                              ),
+                              Text(
+                                ' (24H)',
+                                style: Styles.tsBody_12m(context),
+                              ),
+                            ],
+                          ),
+                          ...List.generate(
+                            3,
+                            (index) => _DataWithIcon(
+                                title: logic.priceList?[index].baseCoin ?? '',
+                                icon: logic.priceList?[index].coinImage ?? '',
+                                value: logic.priceList?[index].priceChangeH24 ??
+                                    0),
+                          )
+                        ],
+                      );
+                    }),
+                  ),
                 ),
-              ),
-            ],
-          ),
-          const Gap(10),
+              ],
+            ),
+            const Gap(10),
 
-          ///爆仓数据
-          Row(
-            children: [
-              Expanded(
-                child: _OutlinedContainer(
-                  onTap: () => logic.toMarketModule(4),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            S.of(context).s_liquidation_data,
-                            style: Styles.tsBody_12m(context),
-                          ),
-                          Text(
-                            ' (24H)',
-                            style: Styles.tsBody_12m(context),
-                          ),
-                        ],
-                      ),
-                      _DataWithQuantity(
-                          title: '24H',
-                          value: AppUtil.getLargeFormatString(
-                              logic.homeInfoData.value?.liquidation ?? '0'),
-                          style: Styles.tsBody_14m(context),
-                          isLong: true),
-                      _DataWithQuantity(
-                          title: S.of(context).s_longs,
-                          textColor: Styles.cUp(context),
-                          value: AppUtil.getLargeFormatString(
-                              logic.homeInfoData.value?.liquidationLong ?? '0'),
-                          isLong: true),
-                      _DataWithQuantity(
-                          title: S.of(context).s_shorts,
-                          textColor: Styles.cDown(context),
-                          value: AppUtil.getLargeFormatString(
-                              logic.homeInfoData.value?.liquidationShort ??
-                                  '0'),
-                          isLong: false),
-                    ],
+            ///爆仓数据
+            Row(
+              children: [
+                Expanded(
+                  child: _OutlinedContainer(
+                    onTap: () => logic.toMarketModule(4),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              S.of(context).s_liquidation_data,
+                              style: Styles.tsBody_12m(context),
+                            ),
+                            Text(
+                              ' (24H)',
+                              style: Styles.tsBody_12m(context),
+                            ),
+                          ],
+                        ),
+                        _DataWithQuantity(
+                            title: '24H',
+                            value: AppUtil.getLargeFormatString(
+                                logic.homeInfoData.value?.liquidation ?? '0'),
+                            style: Styles.tsBody_14m(context),
+                            isLong: true),
+                        _DataWithQuantity(
+                            title: S.of(context).s_longs,
+                            textColor: Styles.cUp(context),
+                            value: AppUtil.getLargeFormatString(
+                                logic.homeInfoData.value?.liquidationLong ??
+                                    '0'),
+                            isLong: true),
+                        _DataWithQuantity(
+                            title: S.of(context).s_shorts,
+                            textColor: Styles.cDown(context),
+                            value: AppUtil.getLargeFormatString(
+                                logic.homeInfoData.value?.liquidationShort ??
+                                    '0'),
+                            isLong: false),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              const Gap(9),
-              Expanded(
-                child: _OutlinedContainer(
-                  onTap: () => logic.toMarketModule(5),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            S.of(context).s_funding_rate,
-                            style: Styles.tsBody_12m(context),
-                          ),
-                          Text(
-                            ' (24H)',
-                            style: Styles.tsBody_12m(context),
-                          ),
-                        ],
-                      ),
-                      ...List.generate(
-                        3,
-                        (index) {
-                          if (logic.fundRateList.isEmpty) {
-                            return const _DataWithoutIcon(title: '', value: 0);
-                          }
-                          var item = logic.fundRateList[index];
-                          return _DataWithoutIcon(
-                              title: item.symbol ?? '',
-                              value: item.fundingRate ?? 0);
-                        },
-                      ),
-                    ],
+                const Gap(9),
+                Expanded(
+                  child: _OutlinedContainer(
+                    onTap: () => logic.toMarketModule(5),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              S.of(context).s_funding_rate,
+                              style: Styles.tsBody_12m(context),
+                            ),
+                            Text(
+                              ' (24H)',
+                              style: Styles.tsBody_12m(context),
+                            ),
+                          ],
+                        ),
+                        ...List.generate(
+                          3,
+                          (index) {
+                            if (logic.fundRateList.isEmpty) {
+                              return const _DataWithoutIcon(
+                                  title: '', value: 0);
+                            }
+                            var item = logic.fundRateList[index];
+                            return _DataWithoutIcon(
+                                title: item.symbol ?? '',
+                                value: item.fundingRate ?? 0);
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ],
-      );
-    });
+              ],
+            ),
+          ],
+        );
+      }),
+    );
   }
 }
 
@@ -734,42 +741,46 @@ class _TotalOiAndFuturesVol extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      return Row(
-        children: [
-          _FirstLineItem(
-            onTap: () => logic.toMarketModule(2),
-            title: S.of(context).s_total_oi,
-            value: AppUtil.getLargeFormatString(
-                logic.homeInfoData.value?.openInterest ?? '0'),
-            rate:
-                double.tryParse(logic.homeInfoData.value?.oiChange ?? '0') ?? 0,
-          ),
-          const Gap(9),
-          _FirstLineItem(
-              onTap: () => AppNav.openWebUrl(
-                  title: S.of(context).s_futures_vol_24h,
-                  url: Urls.url24HOIVol,
-                  showLoading: true),
-              title: S.of(context).s_futures_vol_24h,
-              rate: double.tryParse(
-                      logic.homeInfoData.value?.tickerChange ?? '0') ??
-                  0,
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: Row(
+          children: [
+            _FirstLineItem(
+              onTap: () => logic.toMarketModule(2),
+              title: S.of(context).s_total_oi,
               value: AppUtil.getLargeFormatString(
-                  logic.homeInfoData.value?.ticker ?? '0')),
-          const Gap(9),
-          _FirstLineItem(
-              onTap: () => AppNav.openWebUrl(
-                  title: S.of(context).s_marketcap_ratio,
-                  url: Urls.urlBTCMarketCap,
-                  showLoading: true),
-              title: S.of(context).s_marketcap_ratio,
-              rate: (double.tryParse(
-                          logic.homeInfoData.value?.marketCpaChange ?? '') ??
-                      0) *
-                  100,
-              value:
-                  '${((double.tryParse(logic.homeInfoData.value?.marketCpaValue ?? '') ?? 0) * 100).toStringAsFixed(2)}%'),
-        ],
+                  logic.homeInfoData.value?.openInterest ?? '0'),
+              rate:
+                  double.tryParse(logic.homeInfoData.value?.oiChange ?? '0') ??
+                      0,
+            ),
+            const Gap(9),
+            _FirstLineItem(
+                onTap: () => AppNav.openWebUrl(
+                    title: S.of(context).s_futures_vol_24h,
+                    url: Urls.url24HOIVol,
+                    showLoading: true),
+                title: S.of(context).s_futures_vol_24h,
+                rate: double.tryParse(
+                        logic.homeInfoData.value?.tickerChange ?? '0') ??
+                    0,
+                value: AppUtil.getLargeFormatString(
+                    logic.homeInfoData.value?.ticker ?? '0')),
+            const Gap(9),
+            _FirstLineItem(
+                onTap: () => AppNav.openWebUrl(
+                    title: S.of(context).s_marketcap_ratio,
+                    url: Urls.urlBTCMarketCap,
+                    showLoading: true),
+                title: S.of(context).s_marketcap_ratio,
+                rate: (double.tryParse(
+                            logic.homeInfoData.value?.marketCpaChange ?? '') ??
+                        0) *
+                    100,
+                value:
+                    '${((double.tryParse(logic.homeInfoData.value?.marketCpaValue ?? '') ?? 0) * 100).toStringAsFixed(2)}%'),
+          ],
+        ),
       );
     });
   }
