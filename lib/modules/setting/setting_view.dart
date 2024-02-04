@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../constants/urls.dart';
 import 'setting_logic.dart';
 
 class SettingPage extends StatefulWidget {
@@ -29,9 +30,26 @@ class _SettingPageState extends State<SettingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: AppTitleBar(
-        title: S.of(context).s_setting,
-        hideBackBtn: true,
+      appBar: AppBar(
+        leadingWidth: 200,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 15),
+          child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(S.of(context).s_setting,
+                  style: Styles.tsBody_18m(context))),
+        ),
+        actions: [
+          IconButton(
+              onPressed: () => StoreLogic.isLogin
+                  ? AppNav.openWebUrl(
+                      title: S.current.s_add_alert,
+                      url: Urls.urlNotification,
+                      showLoading: true,
+                    )
+                  : AppNav.toLogin(),
+              icon: const ImageIcon(AssetImage(Assets.settingIcBell), size: 20))
+        ],
       ),
       backgroundColor: Colors.transparent,
       body: Column(
@@ -100,16 +118,16 @@ class _SettingPageState extends State<SettingPage> {
                   )
                 ],
                 Obx(() {
+                  var settingList = state.settingList.where((e) =>
+                      e.isShow == true &&
+                      e.url?.contains('noticeRecords') != true);
                   return ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     padding: EdgeInsets.zero,
                     shrinkWrap: true,
-                    itemCount:
-                        state.settingList.where((e) => e.isShow == true).length,
+                    itemCount: settingList.length,
                     itemBuilder: (cnt, index) {
-                      AppSettingEntity item = state.settingList
-                          .where((e) => e.isShow == true)
-                          .toList()[index];
+                      AppSettingEntity item = settingList.toList()[index];
                       return _SettingLine(
                         onTap: () {
                           if (item.openType == '1') {
@@ -153,6 +171,10 @@ class _SettingPageState extends State<SettingPage> {
                     },
                     title: S.of(context).s_language,
                     value: S.of(context).languageName),
+                _SettingLine(
+                  onTap: () => AppNav.toContactUs(),
+                  title: S.of(context).shareApp,
+                ),
                 _SettingLine(
                   onTap: () => AppNav.toContactUs(),
                   title: S.of(context).contactUs,

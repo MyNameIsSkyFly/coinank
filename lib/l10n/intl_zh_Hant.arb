@@ -326,8 +326,12 @@
   "searchTrending": "熱門搜索",
   "addToFavorite": "添加至自選",
   "ahr999Index": "比特幣Ahr999指標",
-  "btcReduceCountDown": "BTC减半倒计时",
+  "btcReduceCountDown": "BTC減半倒數計時",
   "days": "天",
-  "hours": "时",
-  "minutes": "分"
+  "hours": "時",
+  "minutes": "分",
+  "shareApp": "分享App",
+  "heatMap": "热力图",
+  "tradingPosition": "交易持仓量",
+  "weightedRate": "加权资金费率"
 }

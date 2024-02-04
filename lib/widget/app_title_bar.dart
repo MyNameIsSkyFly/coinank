@@ -81,10 +81,7 @@ class AppTitleBar extends StatelessWidget implements PreferredSizeWidget {
               title,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: Styles.tsBody_18(context).copyWith(
-                color: Theme.of(context).textTheme.bodyMedium?.color,
-                fontWeight: Styles.fontMedium,
-              ),
+              style: Styles.tsBody_18m(context),
             ),
             centerTitle: true,
             actions: [

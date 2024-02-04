@@ -60,7 +60,7 @@ class _LongShortPersonRatioPageState extends State<LongShortPersonRatioPage> {
                       onWebViewCreated: (controller) {
                         logic.webCtrl1 = controller;
                       },
-                      onLoadStop: () =>
+                      onLoadStop: (controller) =>
                           logic.updateReadyStatus1(webReady: true),
                     ),
                   ),
@@ -87,7 +87,7 @@ class _LongShortPersonRatioPageState extends State<LongShortPersonRatioPage> {
                       onWebViewCreated: (controller) {
                         logic.webCtrl2 = controller;
                       },
-                      onLoadStop: () =>
+                      onLoadStop: (controller) =>
                           logic.updateReadyStatus2(webReady: true),
                     ),
                   ),

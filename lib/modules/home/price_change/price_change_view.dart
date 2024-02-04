@@ -1,9 +1,8 @@
-import 'dart:async';
 import 'dart:math';
 
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/res/export.dart';
-import 'package:auto_size_text/auto_size_text.dart';
+import 'package:ank_app/widget/animated_color_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -172,9 +171,9 @@ class _DataItem extends StatelessWidget {
         itemBuilder: (cnt, idx) {
           MarkerTickerEntity item = logic.state.contentDataList.toList()[idx];
           List<String> textList = ['${item.price}'];
-          List<Color> colorList = [
-            Theme.of(context).textTheme.bodyMedium!.color!,
-          ];
+          // List<Color> colorList = [
+          //   Theme.of(context).textTheme.bodyMedium!.color!,
+          // ];
           if (logic.state.isPrice) {
             textList.addAll([
               AppUtil.getRate(
@@ -190,26 +189,26 @@ class _DataItem extends StatelessWidget {
               AppUtil.getRate(
                   rate: item.priceChangeH24, precision: 2, mul: false),
             ]);
-            colorList.addAll([
-              (item.priceChangeM5 ?? 0) >= 0
-                  ? Styles.cUp(context)
-                  : Styles.cDown(context),
-              (item.priceChangeM15 ?? 0) >= 0
-                  ? Styles.cUp(context)
-                  : Styles.cDown(context),
-              (item.priceChangeM30 ?? 0) >= 0
-                  ? Styles.cUp(context)
-                  : Styles.cDown(context),
-              (item.priceChangeH1 ?? 0) >= 0
-                  ? Styles.cUp(context)
-                  : Styles.cDown(context),
-              (item.priceChangeH4 ?? 0) >= 0
-                  ? Styles.cUp(context)
-                  : Styles.cDown(context),
-              (item.priceChangeH24 ?? 0) >= 0
-                  ? Styles.cUp(context)
-                  : Styles.cDown(context),
-            ]);
+            // colorList.addAll([
+            //   (item.priceChangeM5 ?? 0) >= 0
+            //       ? Styles.cUp(context)
+            //       : Styles.cDown(context),
+            //   (item.priceChangeM15 ?? 0) >= 0
+            //       ? Styles.cUp(context)
+            //       : Styles.cDown(context),
+            //   (item.priceChangeM30 ?? 0) >= 0
+            //       ? Styles.cUp(context)
+            //       : Styles.cDown(context),
+            //   (item.priceChangeH1 ?? 0) >= 0
+            //       ? Styles.cUp(context)
+            //       : Styles.cDown(context),
+            //   (item.priceChangeH4 ?? 0) >= 0
+            //       ? Styles.cUp(context)
+            //       : Styles.cDown(context),
+            //   (item.priceChangeH24 ?? 0) >= 0
+            //       ? Styles.cUp(context)
+            //       : Styles.cDown(context),
+            // ]);
           } else {
             textList.addAll([
               AppUtil.getLargeFormatString('${item.openInterest ?? 0}'),
@@ -217,31 +216,31 @@ class _DataItem extends StatelessWidget {
               AppUtil.getRate(rate: item.openInterestCh4, precision: 2),
               AppUtil.getRate(rate: item.openInterestCh24, precision: 2),
             ]);
-            colorList.addAll([
-              Theme.of(context).textTheme.bodyMedium!.color!,
-              (item.openInterestCh1 ?? 0) >= 0
-                  ? Styles.cUp(context)
-                  : Styles.cDown(context),
-              (item.openInterestCh4 ?? 0) >= 0
-                  ? Styles.cUp(context)
-                  : Styles.cDown(context),
-              (item.openInterestCh24 ?? 0) >= 0
-                  ? Styles.cUp(context)
-                  : Styles.cDown(context),
-            ]);
+            // colorList.addAll([
+            //   Theme.of(context).textTheme.bodyMedium!.color!,
+            //   (item.openInterestCh1 ?? 0) >= 0
+            //       ? Styles.cUp(context)
+            //       : Styles.cDown(context),
+            //   (item.openInterestCh4 ?? 0) >= 0
+            //       ? Styles.cUp(context)
+            //       : Styles.cDown(context),
+            //   (item.openInterestCh24 ?? 0) >= 0
+            //       ? Styles.cUp(context)
+            //       : Styles.cDown(context),
+            // ]);
           }
-          Color animationColor = colorList[index];
+          // Color animationColor = colorList[index];
           if (index == 0) {
             final old = logic.state.oldContentDataList.firstWhere(
                 (element) => item.baseCoin == element.baseCoin,
                 orElse: () => MarkerTickerEntity());
-            animationColor = old.price != null
-                ? item.price! > old.price!
-                    ? Styles.cUp(context)
-                    : item.price! < old.price!
-                        ? Styles.cDown(context)
-                        : colorList[index]
-                : colorList[index];
+            // animationColor = old.price != null
+            //     ? item.price! > old.price!
+            //         ? Styles.cUp(context)
+            //         : item.price! < old.price!
+            //             ? Styles.cDown(context)
+            //             : colorList[index]
+            //     : colorList[index];
           }
 
           return InkWell(
@@ -249,85 +248,21 @@ class _DataItem extends StatelessWidget {
             child: Align(
               alignment: Alignment.centerLeft,
               child: index == 0
-                  ? AnimationColorText(
+                  ? AnimatedColorText(
                       text: textList[index],
+                      value: item.price ?? 0,
                       style: Styles.tsBody_14m(context),
-                      normalColor: colorList[index],
-                      animationColor: animationColor,
+                      // normalColor: colorList[index],
+                      // animationColor: animationColor,
                     )
                   : Text(
                       textList[index],
-                      style: Styles.tsBody_14m(context)
-                          .copyWith(color: colorList[index]),
+                      style: Styles.tsBody_14m(context),
                     ),
             ),
           );
         },
       ),
     );
-  }
-}
-
-class AnimationColorText extends StatefulWidget {
-  const AnimationColorText({
-    super.key,
-    required this.text,
-    required this.style,
-    this.normalColor,
-    this.animationColor,
-    this.textAlign,
-  });
-
-  final String text;
-  final TextStyle style;
-  final Color? normalColor;
-  final Color? animationColor;
-  final TextAlign? textAlign;
-
-  @override
-  State<AnimationColorText> createState() => _AnimationColorTextState();
-}
-
-class _AnimationColorTextState extends State<AnimationColorText> {
-  Color? _color;
-
-  @override
-  Widget build(BuildContext context) {
-    return AutoSizeText(
-      widget.text,
-      style: widget.style.copyWith(color: _color),
-      textAlign: widget.textAlign,
-      minFontSize: 8,
-      maxLines: 1,
-    );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    if (mounted) {
-      updateColor();
-    }
-  }
-
-  @override
-  void didUpdateWidget(covariant AnimationColorText oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    updateColor();
-  }
-
-  updateColor() {
-    if (mounted) {
-      setState(() {
-        _color = widget.animationColor;
-      });
-    }
-    Timer(const Duration(milliseconds: 1000), () {
-      if (mounted) {
-        setState(() {
-          _color = widget.normalColor;
-        });
-      }
-    });
   }
 }

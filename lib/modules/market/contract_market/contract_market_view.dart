@@ -1,11 +1,11 @@
 import 'package:ank_app/entity/contract_market_entity.dart';
-import 'package:ank_app/modules/home/price_change/price_change_view.dart';
 import 'package:ank_app/modules/market/contract/contract_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
+import '../../../widget/animated_color_text.dart';
 import 'contract_market_logic.dart';
 
 class ContractMarketPage extends StatelessWidget {
@@ -155,18 +155,6 @@ class ContractMarketPage extends StatelessWidget {
                             itemCount: state.dataList?.length ?? 0,
                             itemBuilder: (cnt, idx) {
                               ContractMarketEntity item = state.dataList![idx];
-                              Color normalColor = Theme.of(context).textTheme.bodyMedium!.color!;
-                              Color animationColor = normalColor;
-                              final old = state.oldDataList?.firstWhere(
-                                      (element) => item.symbol == element.symbol,
-                                  orElse: () => const ContractMarketEntity());
-                              animationColor = old?.lastPrice != null
-                                  ? item.lastPrice! > old!.lastPrice!
-                                  ? Styles.cUp(context)
-                                  : item.lastPrice! < old.lastPrice!
-                                  ? Styles.cDown(context)
-                                  : normalColor
-                                  : normalColor;
                               return InkWell(
                                 onTap: () => AppUtil.toKLine(
                                     item.exchangeName ?? '',
@@ -185,43 +173,47 @@ class ContractMarketPage extends StatelessWidget {
                                         ),
                                       ),
                                       const Gap(10),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            item.exchangeName ?? '',
-                                            style: Styles.tsBody_14m(context),
-                                          ),
-                                          const Gap(5),
-                                          Text(
-                                            item.symbol ?? '',
-                                            style: Styles.tsSub_10(context)
-                                                .copyWith(fontSize: 9),
-                                          ),
-                                        ],
+                                      Expanded(
+                                        flex: 90,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              item.exchangeName ?? '',
+                                              style: Styles.tsBody_14m(context),
+                                            ),
+                                            const Gap(5),
+                                            Text(
+                                              item.symbol ?? '',
+                                              style: Styles.tsSub_10(context)
+                                                  .copyWith(fontSize: 9),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                      const Spacer(),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          AnimationColorText(
-                                            text: '\$${item.lastPrice}',
-                                            style: Styles.tsBody_16m(context),
-                                            normalColor: normalColor,
-                                            animationColor: animationColor,
-                                            textAlign: TextAlign.right,
-                                          ),
-                                          const Gap(3),
-                                          Text(
-                                            '\$${AppUtil.getLargeFormatString('${item.turnover24h ?? 0}')}',
-                                            style: Styles.tsSub_12(context),
-                                          ),
-                                        ],
+                                      Expanded(
+                                        flex: 80,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            AnimatedColorText(
+                                              text: '\$${item.lastPrice}',
+                                              value: item.lastPrice ?? 0,
+                                              style: Styles.tsBody_16m(context),
+                                              textAlign: TextAlign.right,
+                                            ),
+                                            const Gap(3),
+                                            Text(
+                                              '\$${AppUtil.getLargeFormatString('${item.turnover24h ?? 0}')}',
+                                              style: Styles.tsSub_12(context),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                      SizedBox(
-                                        width: 130,
+                                      Expanded(
+                                        flex: 80,
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.end,

@@ -35,7 +35,6 @@ class ExchangeOiLogic extends GetxController {
   var isAppVisible = true;
   final loading = true.obs;
   var refreshing = false;
-  var webViewLoaded = false;
   ({bool dataReady, bool webReady, String evJS}) readyStatus =
       (dataReady: false, webReady: false, evJS: '');
 
@@ -101,7 +100,7 @@ class ExchangeOiLogic extends GetxController {
   }
 
   Future<void> loadOIData() async {
-    final result = await Apis().getExchangeOIChartJson(
+    final result = await Apis().getChartJson(
         baseCoin: menuParamEntity.value.baseCoin,
         interval: menuParamEntity.value.interval,
         type: menuParamEntity.value.type);

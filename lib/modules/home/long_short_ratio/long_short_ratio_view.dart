@@ -235,7 +235,7 @@ class LongShortRatioPage extends StatelessWidget {
                           url: Urls.chartUrl,
                           onWebViewCreated: (controller) =>
                               state.webCtrl = controller,
-                          onLoadStop: () =>
+                          onLoadStop: (controller) =>
                               logic.updateReadyStatus(webReady: true),
                         ),
                       ),

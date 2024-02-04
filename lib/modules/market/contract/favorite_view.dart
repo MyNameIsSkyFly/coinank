@@ -1,6 +1,5 @@
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/modules/home/home_search/home_search_view.dart';
-import 'package:ank_app/modules/home/price_change/price_change_view.dart';
 import 'package:ank_app/modules/market/contract/contract_state.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 
+import '../../../widget/animated_color_text.dart';
 import 'contract_logic.dart';
 
 class FavoritePage extends StatefulWidget {
@@ -316,18 +316,6 @@ class _DataItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color normalColor = Theme.of(context).textTheme.bodyMedium!.color!;
-    Color animationColor = normalColor;
-    final old = logic.state.oldData.firstWhere(
-        (element) => item.baseCoin == element.baseCoin,
-        orElse: () => MarkerTickerEntity());
-    animationColor = old.price != null
-        ? item.price! > old.price!
-            ? Styles.cUp(context)
-            : item.price! < old.price!
-                ? Styles.cDown(context)
-                : normalColor
-        : normalColor;
     return Slidable(
       key: key,
       endActionPane: ActionPane(
@@ -429,11 +417,10 @@ class _DataItem extends StatelessWidget {
                 ],
               ),
               Expanded(
-                child: AnimationColorText(
+                child: AnimatedColorText(
                   text: '\$${item.price}',
+                  value: item.price ?? 0,
                   style: Styles.tsBody_16m(context),
-                  normalColor: normalColor,
-                  animationColor: animationColor,
                   textAlign: TextAlign.right,
                 ),
               ),

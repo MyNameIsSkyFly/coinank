@@ -5,6 +5,8 @@ class Urls {
   static String get h5Prefix => StoreLogic.to.h5Prefix;
   static String get apiPrefix => StoreLogic.to.apiPrefix;
   static String get chartUrl => StoreLogic.to.chartUrl;
+
+  static String get chart20Url => StoreLogic.to.chart20Url;
   static String get depthOrderDomain => StoreLogic.to.depthOrderDomain;
   static String get uniappDomain => StoreLogic.to.uniappDomain;
   static String get websocketUrl => StoreLogic.to.websocketUrl;

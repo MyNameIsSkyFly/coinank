@@ -167,6 +167,11 @@ class StoreLogic extends GetxController {
         ._getString(_SpKeys.chartUrl, defaultValue: 'assets/files/t18.html');
   }
 
+  String get chart20Url {
+    return _SpUtil()
+        ._getString(_SpKeys.chart20Url, defaultValue: 'assets/files/t20.html');
+  }
+
   Future<bool> saveUniappDomain(String uniappDomain) {
     return _SpUtil()._saveString(_SpKeys.uniappDomain, uniappDomain);
   }
@@ -336,6 +341,7 @@ class _SpKeys {
 
   static const deviceId = 'deviceId';
   static const chartUrl = 'ank_charturl';
+  static const chart20Url = 'ank_chart20url';
   static const uniappDomain = 'ank_uniappDomain';
   static const domain = 'ank_domain';
   static const websocketUrl = 'ank_websocketUrl';

@@ -1,3 +1,5 @@
+import 'package:ank_app/entity/futures_big_data_entity.dart';
+import 'package:ank_app/modules/coin_detail/coin_detail_view.dart';
 import 'package:ank_app/modules/login/register_view.dart';
 import 'package:ank_app/modules/setting/about/about_view.dart';
 import 'package:ank_app/modules/setting/contact_us/contact_us_view.dart';
@@ -45,5 +47,9 @@ class AppNav {
 
   static Future toAbout() async {
     Get.toNamed(AboutPage.routeName);
+  }
+
+  static Future toCoinDetail(MarkerTickerEntity coin) async {
+    Get.toNamed(CoinDetailPage.routeName, arguments: {'coin': coin});
   }
 }

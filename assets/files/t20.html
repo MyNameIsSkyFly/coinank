@@ -1,0 +1,1602 @@
+<!--
+	此示例下载自 https://echarts.apache.org/examples/zh/editor.html?c=line-simple
+-->
+<!DOCTYPE html>
+<html lang="zh-CN" style="height: 100%">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<head>
+    <meta charset="utf-8">
+    <style type="text/css">
+        .tooltip-box {
+            font-size: 0.6rem;
+            line-height: 0.8rem;
+            min-width: 8rem;
+        }
+    </style>
+</head>
+
+<body style="height: 100%; margin: 0">
+    <div id="container" style="height: 100%"></div>
+
+
+    <script type="text/javascript" src="./e.js"></script>
+    <script src="./numeral.min.js"></script>
+    <script src="./moment.min.js"></script>
+    <!-- <script src="./data.js"></script> -->
+    <script src="./api2.js"></script>
+
+
+    <script type="text/javascript">
+
+        let dom = document.getElementById('container');
+        let myChart = echarts.init(dom, null, {
+            renderer: 'canvas',
+            useDirtyRect: false
+        });
+
+
+        let options = {
+            platform: "andoird",
+            language: "zh",
+            height: "",
+            dataType: ""
+        }
+
+
+        let inside = true;
+        let grid = {
+            left: 8,
+            right: 8
+        }
+
+
+        window.addEventListener('resize', myChart.resize);
+
+        const formatAmount = function (value, local, format) {
+
+            if (format === undefined) {
+                format = "0,0.00";
+            }
+            if (local != undefined) {
+                local = local.toLowerCase();
+            }
+            if ("zh" == local || "zh-cn" == local) {
+                if (value >= 100000000) {
+                    return numeral((value / 100000000)).format(format) + "亿";
+                } else if (value >= 10000) {
+                    return numeral((value / 10000)).format(format) + "万";
+                } else {
+                    return numeral(value).format(format);
+                }
+            } else {//英文单位
+                return numeral(value).format(format + 'a').toLocaleUpperCase();
+            }
+        }
+
+
+        const buildOpenInterestOptions = (data, dataOptions = {}) => {
+
+            let xAxisData = data.tss;
+            let series = [];
+            let legendData = [];
+
+            let { exchangeName, interval, baseCoin, price, locale, viewType } = dataOptions;
+
+
+            let seriesPirceName = (baseCoin != undefined && baseCoin != "" ? baseCoin : "BTC") + " " + price;
+
+            series.push({
+                name: seriesPirceName,
+                showSymbol: false,
+                smooth: true,
+                type: 'line',
+                data: data.prices ? data.prices : [],
+                yAxisIndex: 1,
+                z: 20,
+                color:"#F7931A"
+            });
+
+            let colors = ['#2A82E4','#947E31', '#664DA1', '#00BAAD', '#14DAFC', '#CE8EE6', '#316387','#B02057',"#E88C3C","#42876F","#8C5D2B","#6E9C40" ]
+            // let i = 0;
+            // for (let key in data.dataValues) {
+            //     if (exchangeName === key || "" === exchangeName || undefined === exchangeName) {
+            //         legendData.push(key);
+            //         series.push({
+            //             name: key,
+            //             type: 'line',
+            //             lineStyle: {
+            //                 width: 1,
+            //             },
+            //             smooth: true,
+            //             showSymbol: false,
+            //             stack: 'Total',
+            //             color: colors[i],
+            //             areaStyle: {
+            //                 opacity: 1
+            //             },
+            //             emphasis: {
+            //                 focus: 'series'
+            //             },
+            //             data: data.dataValues[key]
+            //         });
+            //         i++;
+            //     }
+            // }
+            // let minPrice = 10000000;
+            // let maxPrice = 0;
+            // data.prices.forEach(v => {
+            //     if (minPrice > v) {
+            //         minPrice = v;
+            //     }
+            //     if (maxPrice < v) {
+            //         maxPrice = v;
+            //     }
+            // })
+
+
+
+            let dataList = [];
+            let keys = [];
+            if (exchangeName) {
+                keys = [exchangeName];
+            }else{
+                keys = Object.keys(data.dataValues);
+            }
+
+            let minVal = Number.MAX_VALUE;
+            let maxVal = 0;
+
+            for (let index =0; index <= xAxisData.length; index++) {
+                let total = 0;
+                keys.forEach((key) => {
+                    let dataValue = data.dataValues[key];
+                    total += dataValue[index]||0;
+                })
+                if (total > maxVal) {
+                    maxVal = total;
+                }
+                if (total < minVal) {
+                    minVal = total;
+                }
+                dataList.push(total);
+            }
+
+
+            if (viewType === 'Bar') {
+                series.push({
+                    name: "OI",
+                    type: "bar",
+                    showSymbol:false,
+                    color: 'rgb(22,119,255,  0.8)',
+                    emphasis: {
+                    disable:true
+                    },
+                    data: dataList
+                });
+            }else{
+                series.push({
+                    name: "OI",
+                    type: "line",
+                    lineStyle:{
+                    width:2,
+                    },
+                    smooth: true,
+                    showSymbol:false,
+                    color: 'rgb(22,119,255)',
+                    areaStyle: {
+                    color: {
+                        type: "linear",
+                        x: 0,
+                        y: 0,
+                        x2: 0,
+                        y2: 1,
+                        colorStops: [{
+                        offset: 0,
+                        color: "rgb(22,119,255)"
+                        }, {
+                        offset: 1,
+                        color: "rgba(22,119,255, 0.4)"
+                        }],
+                        global: false
+                    }
+                    },
+                    data: dataList
+                });
+            }
+
+
+
+
+            let chartData = {
+                darkMode: true,
+                grid: grid,
+                xAxis: [
+                    {
+                        data: xAxisData,
+                        inverse: true,
+                        axisLabel: {
+                            formatter: (value) => {
+                                if ("1d" === interval || "12h" === interval) {
+                                    return moment(parseInt(value)).format("MM-DD")
+                                } else {
+                                    return moment(parseInt(value)).format("HH:mm")
+                                }
+                            }
+                        }
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        splitLine: false,
+                        min:  function (value) {
+                            return value.min * 0.9;
+                        },
+                        axisLabel: {
+                            formatter: (value) => {
+                                return "$" + formatAmount(Math.abs(value), locale)
+                            },
+                            inside: inside,
+                        },
+                        // z:10,
+                    },
+                    {
+                        type: 'value',
+                        min:  function (value) {
+                            return value.min * 0.9;
+                        },
+                        // z:10,
+                        splitLine: false,
+                        axisLabel: {
+                            formatter: (value) => {
+                                return "$" + formatAmount(Math.abs(value), locale)
+                            },
+                            inside: inside,
+                        }
+                    }
+                ],
+                tooltip: {
+                    backgroundColor: "rgba(255,255,255,0.8)",
+                    trigger: 'axis',
+                    confine: true,
+                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                        type: 'cross',        // 默认为直线，可选为：'line' | 'shadow'
+                        label: {
+                            formatter: (params) => {
+                                if (params.axisDimension == "x") {
+                                    return moment(parseInt(params.value)).format("YYYY-MM-DD")
+                                } else if (params.axisDimension == "y") {
+                                    return "$" + formatAmount(Math.abs(params.value), locale)
+                                }
+                            }
+                        }
+                    },
+                    formatter: (params, ticket, callback) => {
+
+                        
+                        let dataIndex = params[0].dataIndex;
+
+                        debugger
+
+                        let h = "";
+                        h =  moment(parseInt(params[0].axisValue)).format("yyyy-MM-DD HH:mm")
+                        let detalDiv = ""
+                        let total = 0;
+
+                        let marker = `<span style="display:inline-block;margin-right:4px;border-radius:10px;width:10px;height:10px;background-color:#F7931A;"></span>`
+                        detalDiv += "<div><span style='display:inline-block;width:50%'>"+marker+seriesPirceName+"</span><span class='' style='display:inline-block;width:50%'>"+ "$"+(data.prices[dataIndex]||'-')+"</span></div>"
+                        detalDiv += "<hr/>";
+
+                        keys.forEach((key, index)=>{
+
+                            let value = data.dataValues[key][dataIndex]
+
+                            let marker = `<span style="display:inline-block;margin-right:4px;border-radius:10px;width:10px;height:10px;background-color:${colors[index]};"></span>`
+
+                            total += value||0
+
+                            detalDiv += "<div><span style='display:inline-block;width:50%'>"+marker+key+"</span><span class='' style='display:inline-block;width:50%'>"+ "$"+formatAmount(value, locale)+"</span></div>"
+
+                        })
+
+                        h += detalDiv
+                        let allDiv = "<div><span style='display:inline-block;width:50%'>ALL</span><span class='' style='display:inline-block;width:50%'>"+ "$"+formatAmount(total, locale)+"</span></div>"
+                        h += "<hr/>"+allDiv
+
+                        return "<div style='min-width:200px'>"+h+"</div>";
+                        
+                    }
+
+                },
+                legend: {
+                    right: 50,
+                    type: 'scroll'
+                },
+                series: series
+            };
+
+
+            return chartData;
+
+
+        }
+
+
+        const buildRealtimeLongShort = (data, dataOptions = {}) => {
+
+
+            let xAxisData = data.tss.map((value) => {
+                return moment(parseInt(value)).format("YYYY-MM-DD HH:mm")
+            })
+            let longData = data.longRatios;
+            let shortData = data.shortRatios;
+
+
+            let ratio = longData.map((item, index) => {
+                let shortV = shortData[index];
+                let longV = item;
+                if (shortV != 0) {
+                    return (longV / shortV).toFixed(2)
+                } else {
+                    return 0;
+                }
+            })
+
+
+            let shortColor;
+            let longColor;
+
+            shortColor = "#e4455a";
+            longColor = "#37bc88";
+
+            let { seriesLongName, seriesShortName, ratioName, interval } = dataOptions;
+
+
+
+            return {
+                xAxis: [
+                    {
+                        data: xAxisData,
+                        inverse: true,
+                        axisLabel: {
+                            formatter: (value) => {
+                                if (interval == '1d' || interval == '12h') {
+                                    return moment(value).format("MM-DD")
+                                } else {
+                                    return moment(value).format("HH:mm")
+                                }
+                            }
+                        }
+                    }
+                ],
+                grid: {
+                    left: 8,
+                    right: 8
+                },
+                yAxis: [
+                    {
+                        type: 'value',
+                        show: true,
+                        axisLabel: {
+                            inside: inside,
+                        },
+                        axisLine: {
+                            show: true,
+                        },
+                        splitLine: {
+                            show: false
+                        }
+                    },
+                    {
+                        type: 'value',
+                        show: true,
+                        axisLabel: {
+                            inside: inside,
+                        },
+                        axisLine: {
+                            show: true,
+                        },
+                        splitLine: {
+                            show: false
+                        }
+                    }
+                ],
+                title: {
+                    // text: "long vs short",
+                    // left: "center"
+                },
+                      
+                tooltip: {
+                    confine: true,
+                    trigger: 'axis',
+                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                        type: 'cross'        // 默认为直线，可选为：'line' | 'shadow'
+                    },
+                },
+                legend: {
+                    right: 50
+                },
+                series: [
+                    // {
+                    //     name: seriesLongName,
+                    //     type: "bar",
+                    //     label:{
+                    //         // show:true
+                    //     },
+                    //     stack: "longshort",
+                    //     data: longData,
+                    //     itemStyle:{
+                    //         color:longColor
+                    //     }
+                    // },
+                    // {
+                    //     name: seriesShortName,
+                    //     type: "bar",
+                    //     label:{
+                    //         // show:true
+                    //     },
+                    //     stack: "longshort",
+                    //     data: shortData,
+                    //     itemStyle:{
+                    //         color:shortColor
+                    //     }
+                    // },
+                    {
+                        name: ratioName,
+                        type: "line",
+                        data: ratio,
+                        symbol: "none",
+                        itemStyle: {
+                            // color:shortColor
+                        }
+                    }
+                ]
+            };
+
+
+        }
+
+        const buildLongShortChart = (data, dataOptions = {}) => {
+
+            let xAxisList = data.tss;
+            let longShortRatio = data.longShortRatio
+            let priceDate = data.prices.reverse();
+
+            let { price, baseCoin, ratioName, interval } = dataOptions;
+
+            let series = [
+                {
+                    name: ratioName,
+                    type: 'line',
+                    showSymbol: false,
+                    yAxisIndex: 0,
+                    lineStyle: {
+                        width: 2
+                    },
+                    color: 'RGB(55,188,136)',
+                    data: longShortRatio
+                },
+            ]
+
+            let chartData = {
+                xAxis: [
+                    {
+                        data: xAxisList,
+                        inverse: false,
+                        axisLabel: {
+                            formatter: (value) => {
+                                if (interval == "12h" || "1d" == interval) {
+                                    return moment(parseInt(value)).format("MM-DD")
+                                } else {
+                                    return moment(parseInt(value)).format("HH:mm")
+                                }
+                            }
+                        }
+                    }
+                ],
+                grid: grid,
+                yAxis: [
+                    {
+                        type: 'value',
+                        // splitLine:false,
+                        // z:10,
+                        axisLabel: {
+                            /* formatter: (value)=>{
+                                 return "$"+value;
+                             },*/
+                            inside: inside,
+                        },
+                        axisLine: {
+                            show: true,
+                        },
+                        splitLine: {
+                            show: false
+                        }
+                    },
+                    {
+                        type: 'value',
+                        z: 10,
+                        splitLine: false,
+                        axisLabel: {
+                            inside: inside,
+                        },
+                        axisLine: {
+                            show: true,
+                        },
+                        splitLine: {
+                            show: false
+                        }
+                    }
+                ],
+                // dataZoom: [
+                //     {
+                //         type: 'slider',
+                //         showDetail:false,
+                //         start: 0,
+                //         end: 100,
+                //         zoomOnMouseWheel:true,
+                //         moveOnMouseMove:true,
+                //         moveOnMouseWheel:false,
+                //     },
+                //     {
+                //         type:"inside",
+                //         zoomOnMouseWheel:true,
+                //         moveOnMouseMove:true,
+                //         moveOnMouseWheel:false,
+                //         start: 0,
+                //         end: 100,
+
+                //     },
+                //     {
+                //         start: 0,
+                //         end: 100,
+                //         labelFormatter:  (value) => {
+                //             return moment(parseInt(xAxisList[value])).format("YYYY-MM-DD")
+                //         }
+                //     }
+                // ],
+                tooltip: {
+                    trigger: 'axis',
+                    confine: true,
+                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                        type: 'cross',        // 默认为直线，可选为：'line' | 'shadow'
+                        label: {
+                            formatter: (params) => {
+                                if (params.axisDimension == "x") {
+                                    return moment(parseInt(params.value)).format("YYYY-MM-DD")
+                                } else if (params.axisDimension == "y") {
+                                    return params.value.toFixed(2);
+                                }
+                            }
+                        }
+                    },
+                    formatter: (params, ticket, callback) => {
+                        let h = "<div>" + moment(parseInt(params[0].axisValue)).format("MM-DD HH:mm") + "</div>"
+
+                        let pricesDiv = ""
+                        let detalDiv = ""
+                        params.forEach(item => {
+                            pricesDiv += "<div><span style='display:inline-block;width:60%'>" + item.marker + item.seriesName + "</span><span class='' style='display:inline-block;width:40%'>" + "$" + item.value.toFixed(2) + "</span></div>"
+                        });
+                        h += pricesDiv + detalDiv
+                        return "<div style='min-width:200px'>" + h + "</div>";
+                    }
+
+                },
+                legend: {
+                    right: 50
+                },
+                series: series
+            };
+
+            return chartData;
+
+        }
+
+        const buildLiqMapChart = (data, dataOptions = {}) => {
+
+            let feeColor;
+            let rewardColor;
+            let { theme,locale,long,short,low,mid,high } = dataOptions;
+
+            if (theme == 'dark') {
+                feeColor = "#ffb3ad";
+                rewardColor = "#bfd9c3";
+            } else {
+                feeColor = "#eb5454";
+                rewardColor = "#47b262";
+            }
+            let xAxisList = data.prices;
+            let x25 = data.x25
+            let x30 = data.x30
+            let x40 = data.x40
+            let x50 = data.x50
+            let x60 = data.x60
+            let x70 = data.x70
+            let x80 = data.x80
+            let x90 = data.x90
+            let x100 = data.x100
+            let lastIndex = data.lastIndex
+            let lastPrice = data.lastPrice
+            let longTotals = [];
+            let shortTotals = [];
+            let longTotal = 0;
+            for (let i = lastIndex - 1; i > 0; i--) {
+                // let curTotal = x100[i]+x90[i]+x80[i]+x70[i]+x60[i]+x50[i]+x40[i]+x30[i]+x25[i];
+                // if(curTotal == 0){
+                //   longTotals.push(null)
+                // }else {
+                longTotal = longTotal + (x100[i] + x90[i] + x80[i] + x70[i] + x60[i] + x50[i] + x40[i] + x30[i] + x25[i]) * 0.05;
+                longTotals.push(longTotal)
+                // }
+
+            }
+            longTotals.reverse();
+
+            let shortTotal = 0;
+            for (let i = 0; i < xAxisList.length; i++) {
+                if (i < lastIndex) {
+                    shortTotals.push(0);
+                } else {
+                    shortTotal = shortTotal + (x100[i] + x90[i] + x80[i] + x70[i] + x60[i] + x50[i] + x40[i] + x30[i] + x25[i]) * 0.05;
+                    shortTotals.push(shortTotal)
+                }
+            }
+
+            let series = [
+                {
+                    name: "11",
+                    type: 'bar',
+                    yAxisIndex: 1,
+                    data: [0],
+                    barGap:0,
+                    markLine: {
+                        lineStyle: {
+                            width: 3,
+                            color: '#F5222D',
+                        },
+                        label: {
+                            show: true,
+                            position: 'end',
+                            formatter: "$" + lastPrice + "",
+                            //color: '#F5222D',
+                            height: 10,
+                            padding: [12, 12, 7, 12],
+                            lineHeight: 10,
+                            borderWidth: 2,
+                            // borderColor: '#F5222D',
+                            borderRadius: 2,
+                            fontWeight: 550,
+                            rotate: 0,
+                            fontFamily: 'HYQiHeiX1-GEW',
+                        },
+                        silent: true, // 鼠标悬停事件, true悬停不会出现实线
+                        symbol: ['circle', 'arrow'], // 去掉箭头
+                        data: [[
+                            { coord: [lastIndex, 0] }, // [x第几个（从0开始），y轴起始点 ]
+                            { coord: [lastIndex, 100] } // [x第几个（从0开始），y轴起始点 ]
+                        ]]
+                    }
+                },
+                {
+                    name: dataOptions.long || "Long",
+                    type: 'line',
+                    large: true,
+                    lineStyle: {
+                        width: 1,
+                        color: "#96e39d",
+
+                    },
+                    showSymbol: false,
+                    smooth: 1,
+                    yAxisIndex: 2,
+                    areaStyle: {
+                        opacity: 0.3,
+                        color: '#405C65'
+                    },
+                    connectNulls: true,
+                    largeThreshold: 1000,
+                    data: longTotals
+                },
+                {
+                    name: dataOptions.short || "Short",
+                    type: 'line',
+                    large: true,
+                    showSymbol: false,
+                    yAxisIndex: 2,
+                    smooth: 1,
+                    lineStyle: {
+
+                        width: 1,
+                        color: 'red',
+                        opacity: 0.5
+                    },
+                    areaStyle: {
+                        opacity: 0.1,
+                        color: 'red'
+                    },
+                    largeThreshold: 1000,
+                    data: shortTotals
+                },
+
+                {
+                    name: dataOptions.low || "Low",
+                    type: 'bar',
+                    barGap: 0,
+                    large: true,
+                    itemStyle: {
+                        color: '#4c56ff'
+
+                    },
+                    largeThreshold: 1000,
+                    data: x25
+
+                },
+                {
+                    name: 'x30',
+                    type: 'bar',
+                    barGap:0,
+                    itemStyle: {
+                        color: '#6a7df8'
+                    },
+                    large: true,
+                    largeThreshold: 1000,
+                    data: x30
+                },
+
+                {
+                    name: 'x40',
+                    type: 'bar',
+                    barGap:0,
+                    large: true,
+                    largeThreshold: 1000,
+                    itemStyle: {
+                        color: "#6e9ced"
+                    },
+                    data: x40
+                },
+                {
+                    name: dataOptions.mid || "Mid",
+                    type: 'bar',
+                    barGap:0,
+                    large: true,
+                    largeThreshold: 1000,
+                    itemStyle: {
+                        color: '#96e39d'
+                    },
+                    data: x50
+                },
+                {
+                    name: 'x60',
+                    type: 'bar',
+                    barGap:0,
+                    large: true,
+                    largeThreshold: 1000,
+                    itemStyle: {
+                        color: "#8fddab"
+                    },
+                    data: x60
+                },
+                {
+                    name: 'x70',
+                    type: 'bar',
+                    barGap:0,
+                    large: true,
+                    largeThreshold: 1000,
+                    itemStyle: {
+                        color: "#b4e96e"
+                    },
+                    data: x70
+                },
+                {
+                    name: 'x80',
+                    type: 'bar',
+                    barGap:0,
+                    itemStyle: {
+                        color: '#efc029',
+                    },
+                    large: true,
+                    largeThreshold: 1000,
+                    data: x80
+                },
+                {
+                    name: 'x90',
+                    type: 'bar',
+                    barGap:0,
+                    large: true,
+                    largeThreshold: 1000,
+                    itemStyle: {
+                        color: "#f6b11f",
+
+                    },
+                    data: x90
+                },
+                {
+                    name: dataOptions.high || "High",
+                    type: 'bar',
+                    barGap:0,
+                    itemStyle: {
+                        color: "rgb(253,134,8)"
+                    },
+                    large: true,
+                    largeThreshold: 1000,
+                    data: x100
+                }
+
+            ]
+            let legendData = [dataOptions.low, dataOptions.mid, dataOptions.high];
+
+
+            let chartData = {
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: xAxisList
+
+                    }
+                ],
+
+                grid: grid,
+                yAxis: [
+                    {
+                        type: 'value',
+                        // z:10,
+                        //min:0.01,
+                        //max:1000000,
+                        splitLine:false,
+                        axisLabel: {
+                            formatter: (value) => {
+                                return formatAmount(Math.abs(value), locale)
+                            },
+                            inside: inside,
+                        }
+                    },
+                    {
+                        type: 'value',
+                        // z:10,
+                        splitLine: false,
+                        max: 100,
+                        min: 0,
+                        show: false,
+                        axisLabel: {
+                            // formatter: (value)=>{
+                            //     return "$"+formatAmount(Math.abs(value), locale)
+                            // },
+                            inside: inside,
+                        }
+                    },
+                    {
+                        type: 'value',
+                        // z:10,
+                        splitLine: false,
+                        axisLabel: {
+                            formatter: (value) => {
+                                return formatAmount(Math.abs(value), locale)
+                            },
+                            inside: inside,
+                        }
+                    }
+                ],
+                dataZoom: [
+                    {
+                        type: 'slider',
+                        showDetail: false,
+                        start: 0,
+                        end: 100,
+                        zoomOnMouseWheel: true,
+                        moveOnMouseMove: true,
+                        moveOnMouseWheel: false,
+                    },
+                    {
+                        type: "inside",
+                        zoomOnMouseWheel: true,
+                        moveOnMouseMove: true,
+                        moveOnMouseWheel: false,
+                        start: 0,
+                        end: 100,
+
+                    },
+                    {
+                        start: 0,
+                        end: 100,
+                        labelFormatter: (value) => {
+                            return xAxisList[value]
+                        }
+                    }
+                ],
+                tooltip: {
+                    trigger: 'axis',
+                    confine: true,
+                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                        type: 'cross',        // 默认为直线，可选为：'line' | 'shadow'
+                        label: {
+                            formatter: (params) => {
+                                if (params.axisDimension == "x") {
+                                    return params.value
+                                } else if (params.axisDimension == "y") {
+                                    return params.value.toFixed(2);
+                                }
+                            }
+                        }
+                    },
+                    formatter: (params, ticket, callback) => {
+                        let h = "<div>" + "$" + params[0].axisValue + "</div>";//时间
+                        let pricesDiv = ""
+                        let detalDiv = ""
+                        params.forEach(item => {
+                            if ((item.seriesIndex == 2 || item.seriesIndex == 1) && item.value > 0) {
+                                pricesDiv += "<div><span style='display:inline-block;width:70%'>" + item.seriesName +
+                                    "</span><span class='' style='display:inline-block;width:30%'>" + "" + formatAmount(Math.abs(item.value), locale) + "</span></div>"
+                            }
+                        });
+                        h += pricesDiv + detalDiv
+                        let d = "<div style='min-width:200px'>";
+                        if (locale == "zh" || locale == "zh-tw") {
+                            d = "<div style='min-width:200px'>";
+                        }
+                        return d + h + "</div>";
+                    }
+
+                },
+                legend: {
+                    data: legendData,
+                    right: 50,
+                    show: true
+                },
+                series: series
+            };
+
+            return chartData;
+        }
+
+
+        const buildHeatMapChart = async (data, dataOptions = {}) => {
+
+            let { exchangeName, symbol, interval } = data;
+
+
+            if ("1Y" === interval) {
+                interval = "1y";
+            }
+            if ("3M" === interval || "6M" === interval || "1y" === interval) {
+                if (!("BTCUSDT" == symbol || "ETHUSDT" == symbol)) {
+                    interval = "1d";
+                }
+            }
+
+            let liqHeatMapResp = await getLiqHeatMap({
+                exchangeName: exchangeName || "Binance",
+                symbol: symbol,
+                interval: interval
+            })
+
+            liqHeatMapResp = await liqHeatMapResp.json()
+
+            let liqHeatmap = liqHeatMapResp.data.liqHeatMap;
+
+            // ** interval 字串符對照分鐘數
+            const intervalMap = {
+                '1m': 1,
+                '3m': 3,
+                '5m': 5,
+                '15m': 15,
+                '30m': 30,
+                '1h': 60,
+                '2h': 120,
+                '4h': 480,
+                '6h': 360,
+                '8h': 480,
+                '12h': 720,
+                '1d': 1440
+            };
+
+
+            const endTime = liqHeatmap.chartTimeArray[liqHeatmap.chartTimeArray.length - 1];
+            const anchoredTime = liqHeatmap.chartTimeArray[0];
+            const intervalMs = liqHeatmap.chartTimeArray[1] - liqHeatmap.chartTimeArray[0];
+            const dataLen = (endTime - anchoredTime) / (intervalMs) + 1;
+            const chartInterval = Object.keys(intervalMap).find(key => intervalMap[key] === intervalMs / 60 / 1000);
+            let klineResp = await fetchKline({
+                "exchange": exchangeName || "Binance",
+                "symbol": symbol,
+                "interval": chartInterval,
+                "side": "to",
+                "ts": endTime,
+                "size": dataLen,
+            })
+            let { data: chartKline }  = await klineResp.json()
+            let kbarArray = [];
+            for (let i = 0; i < chartKline.length; i++) {
+                let item = [];
+                item.push(Number(chartKline[i][2]));    // o
+                item.push(Number(chartKline[i][3]));    // c
+                item.push(Number(chartKline[i][5]));    // l
+                item.push(Number(chartKline[i][4]));    // h
+                // item.push(Number(chartKline[i][6]));    // vol
+                kbarArray.push(item);
+            }
+
+            let chartOptions=  buildHeatMapChartData(liqHeatMapResp.data, kbarArray, dataOptions)
+            return chartOptions;
+
+        }
+
+
+        const buildHeatMapChartData = (data, kbarArray, dataOptions={}) =>{
+
+            let feeColor;
+            let rewardColor;
+
+            let {theme, locale} = dataOptions;
+            if (theme == 'dark') {
+                feeColor = "#ffb3ad";
+                rewardColor = "#bfd9c3";
+            } else {
+                feeColor = "#eb5454";
+                rewardColor = "#47b262";
+            }
+            let liqHeatMap = data.liqHeatMap;
+            // 做圖
+            const xArray = liqHeatMap.chartTimeArray;
+            const timeArray = xArray.map(ts => moment(parseInt(ts)).format("MM-DD HH:mm"));
+            const yArray = liqHeatMap.priceArray;
+            const liqData = liqHeatMap.data.map(item => [Number(item[0]), Number(item[1]), Number(item[2])]);
+            const maxValue = liqHeatMap.maxLiqValue;
+            const lan = locale;
+            const priceStr = dataOptions.price||"Price";
+            const liqHeatStr = dataOptions.liqHeat||"Liq Heat"
+            const tickSize = yArray[1] - yArray[0];
+            const minLiqPrice = yArray[0];
+            const maxLiqPrice = yArray[yArray.length - 1];
+            let grid;
+            if (inside) {
+                grid = {
+                    top:5,
+                    bottom:50,
+                    right:5,
+                    left:5
+                };
+            } else {
+                grid = {
+                };
+            }
+
+            let chartData = {
+
+                animation: false,
+                tooltip: {
+                    trigger: 'item',
+                },
+                grid: grid,
+                xAxis: {
+                    type: 'category',
+                    data: timeArray,
+                    splitLine: {
+                        show: false
+                    },
+                },
+                dataZoom: [
+                    {
+                        type: 'slider',
+                        showDetail: false,
+                        start: 0,
+                        end: 100,
+                        show: false,
+                        zoomOnMouseWheel: true,
+                        moveOnMouseMove: true,
+                        moveOnMouseWheel: false,
+                    },
+                    {
+                        type: "inside",
+                        zoomOnMouseWheel: true,
+                        moveOnMouseMove: true,
+                        moveOnMouseWheel: false,
+                        start: 0,
+                        end: 100,
+
+                    },
+                    {
+                        start: 0,
+                        end: 100,
+                        show: false,
+                        labelFormatter: (value) => {
+                            return timeArray[value]
+                        }
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'category',
+                        data: [],
+                        splitLine: {
+                            show: false
+                        },
+                        show: false,
+                        // splitArea: {
+                        //     show: true
+                        // }
+                    },
+                    {
+                        splitLine: {
+                            show: false
+                        },
+                        z: 10,
+                        type: 'value',
+                        name: priceStr,
+                        min: minLiqPrice,
+                        max: maxLiqPrice,
+                        axisLabel: {
+                            inside: inside,
+                            color: function (value, index) {
+                                return inside ? '#fff' : 'auto';
+                            }
+                        }
+                    }
+                ],
+                visualMap: {
+                    min: 0,
+                    max: maxValue,
+                    calculable: false,
+                    orient: 'horizontal',
+                    text: [formatAmount(maxValue, lan), 0],
+                    itemHeight: window.innerWidth * 0.8,
+                    // itemWidth: window.innerWidth * 0.02,
+                    seriesIndex: 1,
+                    hoverLink: 0,
+                    textStyle: {
+                        color: rewardColor
+                    },
+                    formatter: function (value) {
+                        return formatAmount(value, lan);
+                    },
+                    inRange: {
+                        color: ['#46035c', '#297090', '#1fa084', '#49c161', '#f2e805']
+                    }
+                },
+                series: [
+                    {
+                        type: 'candlestick',
+                        name: '',
+                        yAxisIndex: 1,
+                        data: kbarArray,
+                        barWidth: '80%',
+                        itemStyle: {
+                            color: '#14b143',
+                            color0: '#ef232a',
+                            borderColor: '#14b143',
+                            borderColor0: '#ef232a',
+                        }
+                    },
+                    {
+                        type: 'heatmap',
+
+                        name: dataOptions.liqHeapMap||"Liq Heat Map",
+                        data: liqData,
+                        label: {
+                            show: false
+                        },
+                        progressiveThreshold: liqData.length + 1000,
+                        itemStyle: {
+                            borderWidth: 0
+                        },
+                        emphasis: {
+                            itemStyle: {
+                            borderColor: '#fff',
+                            borderWidth: 1
+                            }
+                        },
+                        tooltip: {
+                            formatter: function (params) {
+                                const time = '<b>' + moment(parseInt(xArray[params.data[0]])).format("YYYY-MM-DD HH:mm") + '</b>';
+                                const price = '<b>' + yArray[params.data[1]] + '</b>';
+                                let datum = params.data[2];
+                                if (datum < 0) {
+                                    datum = 0;
+                                }
+                                let amount = formatAmount(datum, lan);
+                                const value = '<span style="color:' + params.color + '"><b>' + amount + '</b></span>';
+                                return '<table>' +
+                                    '<tr><td>' + time + '</td><td style="text-align: right;">' + '' + '</td></tr>' +
+                                    '<tr><td>' + priceStr + '</td><td style="text-align: right;">' + price + '</td></tr>' +
+                                    '<tr><td>' + liqHeatStr + '</td><td style="text-align: right;">' + value + '</td></tr>' +
+                                    '</table>'
+                            }
+                        },
+                    },
+                ]
+
+            };
+
+            return chartData;
+        }
+
+
+        const buildAggLiqMapChart = (data, dataOptions = {})=>{
+
+            let feeColor;
+            let rewardColor;
+
+            let { theme,locale,long,short,low,mid,high } = dataOptions;
+
+            if (theme == 'dark') {
+                feeColor = "#ffb3ad";
+                rewardColor = "#bfd9c3";
+            } else {
+                feeColor = "#eb5454";
+                rewardColor = "#47b262";
+            }
+
+            let xAxisList = data.prices;
+            let binance = data.Binance
+            let okex = data.Okex
+            let bybit = data.Bybit
+
+            let lastIndex = data.lastIndex
+            let lastPrice = data.lastPrice
+            let longTotals = [];
+            let shortTotals = [];
+            let longTotal = 0;
+            for (let i = lastIndex-1; i > 0 ; i--) {
+              longTotal = longTotal+(binance[i]+okex[i]+bybit[i])*0.05*0.2;
+              longTotals.push(longTotal)
+              // }
+
+            }
+            longTotals.reverse();
+
+            let shortTotal = 0;
+            for (let i = 0; i < xAxisList.length ; i++) {
+              if(i<lastIndex){
+                shortTotals.push(0);
+              }else {
+                shortTotal = shortTotal+(binance[i]+okex[i]+bybit[i])*0.05*0.2;
+                shortTotals.push(shortTotal)
+              }
+            }
+
+            let series = [
+
+              {
+                name:"11",
+                type: 'bar',
+                yAxisIndex : 1,
+                data:[0],
+                markLine: {
+                  lineStyle: {
+                    width: 3,
+                    color: '#F5222D',
+                  },
+                  label: {
+                    show: true,
+                    position: 'end',
+                    formatter: "$"+ lastPrice+"",
+                    //color: '#F5222D',
+                    height: 10,
+                    padding: [12, 12, 7, 12],
+                    lineHeight: 10,
+                    borderWidth: 2,
+                    // borderColor: '#F5222D',
+                    borderRadius: 2,
+                    fontWeight: 550,
+                    rotate: 0,
+                    fontFamily: 'HYQiHeiX1-GEW',
+                  },
+                  silent: true, // 鼠标悬停事件, true悬停不会出现实线
+                  symbol:['circle', 'arrow'], // 去掉箭头
+                  data: [[
+                    { coord: [lastIndex, 0] }, // [x第几个（从0开始），y轴起始点 ]
+                    { coord: [lastIndex, 100] } // [x第几个（从0开始），y轴起始点 ]
+                  ]]
+                }
+              },
+              {
+                name:long,
+                type: 'line',
+                large: true,
+                lineStyle:{
+                  width:1,
+                  color:"#96e39d",
+
+                },
+                smooth: 1,
+                yAxisIndex : 2,
+                areaStyle: {
+                  opacity: 0.3,
+                  color:'#405C65'
+                },
+                connectNulls:true,
+                largeThreshold: 1000,
+                data: longTotals
+              },
+              {
+                name:short,
+                type: 'line',
+                large: true,
+                yAxisIndex : 2,
+                smooth: 1,
+                lineStyle:{
+
+                  width:1,
+                  color: 'red',
+                  opacity:0.5
+                },
+                areaStyle: {
+                  opacity: 0.1,
+                  color:'red'
+                },
+                largeThreshold: 1000,
+                data: shortTotals
+              },
+
+              {
+                name: 'Binance',
+                type: 'bar',
+                stack: 'Ad',
+                large: true,
+                itemStyle:{
+                  color: "#f6b11f",
+
+                },
+                barGap:0.1,
+                largeThreshold: 1000,
+                data: binance
+
+              },
+              {
+                name: 'Bybit',
+                type: 'bar',
+                stack: 'Ad',
+                itemStyle:{
+                  color: "#b4e96e"
+                },
+                large: true,
+                barGap:0.1,
+                largeThreshold: 1000,
+                data: bybit
+              },
+
+              {
+                name: 'Okex',
+                type: 'bar',
+                large: true,
+                stack: 'Ad',
+                largeThreshold: 1000,
+                itemStyle:{
+                  color: "#6e9ced",
+
+                },
+                barWidth:2,
+                barGap:1,
+                data: okex
+              }
+
+            ]
+            let legendData = ["Binance","Bybit","Okex"];
+
+            // let inside = this.isMoble;
+            // let grid = buildGrid(inside);
+
+            let chartData =   {
+              xAxis: [
+                {
+                  type: 'category',
+                  data: xAxisList
+
+                }
+              ],
+
+              grid: grid,
+              yAxis: [
+                {
+                  type: 'value',
+                  // z:10,
+                  //min:0.01,
+                  //max:1000000,
+                  splitLine:false,
+                  axisLabel: {
+                    formatter: (value)=>{
+                      return formatAmount(Math.abs(value), locale)
+                    },
+                    inside:inside,
+                  }
+                },
+                {
+                  type: 'value',
+                  // z:10,
+                  splitLine:false,
+                  max:100,
+                  min:0,
+                  splitLine:false,
+                  show: false,
+                  axisLabel: {
+                    // formatter: (value)=>{
+                    //     return "$"+formatAmount(Math.abs(value), locale)
+                    // },
+                    inside:inside,
+                  }
+                },
+                {
+                  type: 'value',
+                  // z:10,
+                  splitLine:false,
+                  axisLabel: {
+                    formatter: (value)=>{
+                      return formatAmount(Math.abs(value), locale)
+                    },
+                    inside:inside,
+                  }
+                }
+              ],
+              dataZoom: [
+                {
+                  type: 'slider',
+                  showDetail:false,
+                  start: 0,
+                  end: 100,
+                  zoomOnMouseWheel:true,
+                  moveOnMouseMove:true,
+                  moveOnMouseWheel:false,
+                },
+                {
+                  type:"inside",
+                  zoomOnMouseWheel:true,
+                  moveOnMouseMove:true,
+                  moveOnMouseWheel:false,
+                  start: 0,
+                  end: 100,
+
+                },
+                {
+                  start: 0,
+                  end: 100,
+                  labelFormatter:  (value) => {
+                    return xAxisList[value]
+                  }
+                }
+              ],
+              tooltip: {
+                trigger: 'axis',
+                confine: true,
+                axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                  type: 'cross',        // 默认为直线，可选为：'line' | 'shadow'
+                  label:{
+                    formatter:(params)=>{
+                      if(params.axisDimension == "x"){
+                        return params.value
+                      }else if(params.axisDimension == "y"){
+                        return params.value.toFixed(2);
+                      }
+                    }
+                  }
+                },
+                formatter:(params, ticket, callback) =>{
+                  let h = "<div>"+"$"+params[0].axisValue +"</div>";//时间
+                  let pricesDiv = ""
+                  let detalDiv = ""
+                  params.forEach(item => {
+                    if( item.value > 0){
+                      let value = formatAmount(Math.abs(item.value), locale);
+                      if(item.seriesIndex > 2){
+                        value = formatAmount(Math.abs(item.value*0.05*0.2),locale);
+                      }
+                      pricesDiv += "<div><span style='display:inline-block;width:70%'>"+item.seriesName+
+                          "</span><span class='' style='display:inline-block;width:30%'>"+ value +"</span></div>"
+                    }
+                  });
+                  h += pricesDiv + detalDiv
+                  let d = "<div style='min-width:200px'>";
+                  if(locale == "zh" || locale == "zh-tw"){
+                    d = "<div style='min-width:200px'>";
+                  }
+                  return d+h+"</div>";
+                }
+
+              },
+              legend: {
+                data: legendData,
+                right: 50,
+                show: true
+              },
+              series: series
+            };
+
+            return chartData;
+        }
+
+        const buildFunc = {
+            "openInterest": buildOpenInterestOptions,
+            "realtimeLongShort": buildRealtimeLongShort,
+            "longShortChart": buildLongShortChart,
+            "liqMap": buildLiqMapChart,
+            "liqHeatMap": buildHeatMapChart,
+            "aggLiqMap":buildAggLiqMapChart
+        }
+
+
+        async function setChartData(dataParams, platform, dataType, dataOptions = {}) {
+
+            // data = 
+
+            // dom.append("func2");
+            // dom.append("<br/>");
+            if ("longShortChart" === dataType) {
+                dataParams.data.prices = dataParams.ext.prices;
+            }
+
+            let { data } = dataParams;
+
+            // dom.append("func3");
+            // dom.append("<br/>");
+
+            // dom.append("func4");
+            // dom.append("<br/>");
+
+            let funcTarget = buildFunc[dataType];
+
+            // dom.append("func5");
+            // dom.append("<br/>");
+            let option 
+            if("liqHeatMap" === dataType){
+                myChart.showLoading("default", {color:"#4363F2", maskColor:"transparent"});
+                option = await funcTarget(dataParams, dataOptions);
+            }else {
+                option = funcTarget(data, dataOptions);
+            }
+
+
+            // dom.append("func6");
+            // dom.append("<br/>");
+
+            if (option && typeof option === 'object') {
+                myChart.setOption(option, true);
+            }
+            myChart.hideLoading();
+
+            // dom.append("func7");
+            // dom.append("<br/>");
+        }
+
+
+
+
+        // setChartData(sourceData, "android", "liqHeatMap", {
+        //     theme: "light",
+        //     exchangeName: "exchangeName",
+        //     long: "Long",
+        //     short: "Short",
+        //     mid: "Mid",
+        //     low: "Low",
+        //     high: "High"
+        // })
+
+        // setChartData(sourceData, "android", "aggLiqMap", {
+        //     theme: "light",
+        //     exchangeName: "exchangeName",
+        //     long: "Long",
+        //     short: "Short",
+        //     mid: "Mid",
+        //     low: "Low",
+        //     high: "High"
+        // })
+
+        // setChartData(sourceData, "android", "openInterest", {
+        //     theme: "light",
+        //     viewType:"Bar"/"Line",
+        //     exchangeName: "",
+        //     long: "Long",
+        //     short: "Short",
+        //     mid: "Mid",
+        //     low: "Low",
+        //     high: "High"
+        // })
+
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>

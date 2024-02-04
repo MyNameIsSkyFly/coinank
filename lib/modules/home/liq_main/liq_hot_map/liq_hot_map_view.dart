@@ -111,7 +111,8 @@ class LiqHotMapPage extends StatelessWidget {
                 child: CommonWebView(
                   url: Urls.chartUrl,
                   onWebViewCreated: (controller) => state.webCtrl = controller,
-                  onLoadStop: () => logic.updateReadyStatus(webReady: true),
+                  onLoadStop: (controller) =>
+                      logic.updateReadyStatus(webReady: true),
                 ),
               ),
             ],

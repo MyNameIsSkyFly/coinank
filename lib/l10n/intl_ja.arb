@@ -327,8 +327,12 @@
   "searchTrending": "トレンド",
   "addToFavorite": "お気に入りに追加",
   "ahr999Index": "BTC Ahr999 Index",
-  "btcReduceCountDown": "BTC减半倒计时",
-  "days": "天",
-  "hours": "时",
-  "minutes": "分"
+  "btcReduceCountDown": "BTC半減カウントダウン",
+  "days": "日",
+  "hours": "時間",
+  "minutes": "分",
+  "shareApp": "アプリを共有する",
+  "heatMap": "热力图",
+  "tradingPosition": "交易持仓量",
+  "weightedRate": "加权资金费率"
 }

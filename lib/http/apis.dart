@@ -21,6 +21,7 @@ import 'package:retrofit/retrofit.dart';
 
 import '../constants/urls.dart';
 import '../entity/btc_reduce_entity.dart';
+import '../entity/coin_detail_entity.dart';
 import '../entity/futures_big_data_entity.dart';
 import '../entity/head_statistics_entity.dart';
 import '../entity/home_fund_rate_entity.dart';
@@ -154,10 +155,18 @@ abstract class Apis {
 
   //持仓html的json
   @GET('/api/openInterest/chart')
-  Future getExchangeOIChartJson({
+  Future getChartJson({
     @Query('baseCoin') String? baseCoin,
     @Query('interval') String? interval,
     @Query('type') String? type,
+    @Query('size') int size = 100,
+  });
+
+  @GET('/api/volume24h/chart')
+  Future getVol24hChartJson({
+    @Query('baseCoin') String? baseCoin,
+    @Query('interval') String? interval,
+    @Query('exchangeName') String? exchangeName,
     @Query('size') int size = 100,
   });
 
@@ -243,4 +252,13 @@ abstract class Apis {
 
   @POST('/api/app/getBtcReduce')
   Future<BtcReduceEntity?> getBtcReduce();
+
+  @GET('/api/tickers/agg')
+  Future<CoinDetailContractInfoEntity?> getCoinDetailContractInfo(
+      @Query('baseCoin') String baseCoin);
+
+  @GET('/api/instruments/getTicker24h')
+  Future<ContractMarketEntity?> getCoinInfo24h(
+      @Query('baseCoin') String baseCoin,
+      {@Query('productType') String productType = 'SWAP'});
 }

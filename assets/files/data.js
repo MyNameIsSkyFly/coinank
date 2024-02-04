@@ -1,2 +1,3 @@
-let sourceData = {symbol:"BTCUSDT", interval:"1Y"}
+let sourceData = {baseCoin:"BTC", productType:"SPOT", type:"vol"}
+
 

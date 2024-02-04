@@ -1,6 +1,6 @@
 import 'package:ank_app/entity/futures_big_data_entity.dart';
-import 'package:ank_app/modules/home/price_change/price_change_view.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:ank_app/widget/animated_color_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
@@ -119,7 +119,7 @@ class ContractPage extends StatelessWidget {
                                     logic: logic,
                                   );
                                 },
-                                itemCount: state.data.length ?? 0,
+                                itemCount: state.data.length,
                               ),
                             );
                           }),
@@ -144,18 +144,6 @@ class _DataItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color normalColor = Theme.of(context).textTheme.bodyMedium!.color!;
-    Color animationColor = normalColor;
-    final old = logic.state.oldData.firstWhere(
-        (element) => item.baseCoin == element.baseCoin,
-        orElse: () => MarkerTickerEntity());
-    animationColor = old.price != null
-        ? item.price! > old.price!
-            ? Styles.cUp(context)
-            : item.price! < old.price!
-                ? Styles.cDown(context)
-                : normalColor
-        : normalColor;
     return Slidable(
       key: key,
       endActionPane: ActionPane(
@@ -252,11 +240,12 @@ class _DataItem extends StatelessWidget {
                 ],
               ),
               Expanded(
-                child: AnimationColorText(
+                child: AnimatedColorText(
                   text: '\$${item.price}',
+                  value: item.price ?? 0,
                   style: Styles.tsBody_16m(context),
-                  normalColor: normalColor,
-                  animationColor: animationColor,
+                  // normalColor: normalColor,
+                  // animationColor: animationColor,
                   textAlign: TextAlign.right,
                 ),
               ),

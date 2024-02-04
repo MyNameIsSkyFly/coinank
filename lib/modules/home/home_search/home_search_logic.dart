@@ -36,7 +36,10 @@ class HomeSearchLogic extends GetxController {
   }
 
   Future<void> initHot() async {
+    final time1 = DateTime.now();
     final result = await Apis().searchV2(keyword: '');
+    final now1 = DateTime.now();
+    print(now1.difference(time1));
     if (result == null) return;
 
     final list = <SearchV2ItemEntity>[];

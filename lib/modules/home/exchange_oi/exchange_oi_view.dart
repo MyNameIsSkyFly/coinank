@@ -163,7 +163,7 @@ class ExchangeOiPage extends StatelessWidget {
                           margin: const EdgeInsets.all(15),
                           child: CommonWebView(
                             url: Urls.chartUrl,
-                            onLoadStop: () =>
+                            onLoadStop: (controller) =>
                                 logic.updateReadyStatus(webReady: true),
                             onWebViewCreated: (controller) {
                               logic.webCtrl = controller;

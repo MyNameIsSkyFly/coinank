@@ -179,30 +179,37 @@ class _BtcReduceView extends StatelessWidget {
             ImageUtil.networkImage(AppConst.imageHost('BTC'),
                 width: 18, height: 18),
             const Gap(4),
-            Text(S.of(context).btcReduceCountDown,
-                style: Styles.tsBody_14m(context)),
             Expanded(
-              child: Obx(() {
-                final time = DateTime.fromMillisecondsSinceEpoch(
-                    logic.btcReduceData.value?.halvingTime ?? 0);
-                final duration = time.difference(DateTime.now());
-                final style1 = TextStyle(
-                    color: Styles.cBody(context).withOpacity(0.5),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500);
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    _box(context, text: '${duration.inDays}'),
-                    Text(S.of(context).days, style: style1),
-                    _box(context, text: '${duration.inHours % 24}'),
-                    Text(S.of(context).hours, style: style1),
-                    _box(context, text: '${duration.inMinutes % 60}'),
-                    Text(S.of(context).minutes, style: style1),
-                  ],
-                );
-              }),
-            )
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(S.of(context).btcReduceCountDown,
+                      style: Styles.tsBody_14m(context)),
+                ),
+              ),
+            ),
+            Obx(() {
+              final time = DateTime.fromMillisecondsSinceEpoch(
+                  logic.btcReduceData.value?.halvingTime ??
+                      DateTime.now().millisecondsSinceEpoch);
+              final duration = time.difference(DateTime.now());
+              final style1 = TextStyle(
+                  color: Styles.cBody(context).withOpacity(0.5),
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500);
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  _box(context, text: '${duration.inDays}'),
+                  Text(S.of(context).days, style: style1),
+                  _box(context, text: '${duration.inHours % 24}'),
+                  Text(S.of(context).hours, style: style1),
+                  _box(context, text: '${duration.inMinutes % 60}'),
+                  Text(S.of(context).minutes, style: style1),
+                ],
+              );
+            })
           ],
         ),
       ),
@@ -1153,42 +1160,45 @@ class _ChartItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        ['liqMapChart', 'liqHeatMapChart'].contains(item.key)
-            ? Get.toNamed(LiqMainPage.routeName,
-                arguments: item.key == 'liqMapChart' ? 0 : 1)
-            : AppNav.openWebUrl(
-                url: '${Urls.h5Prefix}${item.path}',
-                title: item.title,
-                showLoading: true,
-              );
-      },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          item.key == 'more'
-              ? Image.asset(
-                  Assets.chartLeftIcMore,
-                  height: 30,
-                  width: 30,
-                )
-              : ImageUtil.networkImage(
-                  'https://cdn01.coinank.com/appicons/${item.key}.png',
-                  height: 30,
-                  width: 30,
-                ),
-          const Gap(2),
-          Expanded(
-            child: Text(
-              item.title ?? '',
-              style: Styles.tsBody_12(context),
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.visible,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: GestureDetector(
+        onTap: () {
+          ['liqMapChart', 'liqHeatMapChart'].contains(item.key)
+              ? Get.toNamed(LiqMainPage.routeName,
+                  arguments: item.key == 'liqMapChart' ? 0 : 1)
+              : AppNav.openWebUrl(
+                  url: '${Urls.h5Prefix}${item.path}',
+                  title: item.title,
+                  showLoading: true,
+                );
+        },
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            item.key == 'more'
+                ? Image.asset(
+                    Assets.chartLeftIcMore,
+                    height: 30,
+                    width: 30,
+                  )
+                : ImageUtil.networkImage(
+                    'https://cdn01.coinank.com/appicons/${item.key}.png',
+                    height: 30,
+                    width: 30,
+                  ),
+            const Gap(2),
+            Expanded(
+              child: Text(
+                item.title ?? '',
+                style: Styles.tsBody_12(context),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.visible,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -118,7 +118,8 @@ class LiqMapPage extends StatelessWidget {
                       url: Urls.chartUrl,
                       onWebViewCreated: (controller) =>
                           state.webCtrl = controller,
-                      onLoadStop: () => logic.updateReadyStatus(webReady: true),
+                      onLoadStop: (controller) =>
+                          logic.updateReadyStatus(webReady: true),
                     ),
                   ),
                 ),
@@ -205,7 +206,7 @@ class LiqMapPage extends StatelessWidget {
                       url: Urls.chartUrl,
                       onWebViewCreated: (controller) =>
                           state.aggWebCtrl = controller,
-                      onLoadStop: () =>
+                      onLoadStop: (controller) =>
                           logic.updateReadyStatus(aggWebReady: true),
                     ),
                   ),

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:ank_app/entity/event/logged_event.dart';
 import 'package:ank_app/entity/futures_big_data_entity.dart';
+import 'package:ank_app/modules/coin_detail/coin_detail_view.dart';
 import 'package:ank_app/modules/main/main_logic.dart';
 import 'package:ank_app/modules/market/market_logic.dart';
 import 'package:ank_app/res/export.dart';
@@ -130,8 +131,9 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
   }
 
   void tapItem(MarkerTickerEntity item) {
-    AppUtil.toKLine(item.exchangeName ?? '', item.symbol ?? '',
-        item.baseCoin ?? '', 'SWAP');
+    AppNav.toCoinDetail(item);
+    // AppUtil.toKLine(item.exchangeName ?? '', item.symbol ?? '',
+    //     item.baseCoin ?? '', 'SWAP');
   }
 
   Future<void> tapCollect(MarkerTickerEntity item) async {
@@ -218,12 +220,14 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
 
   _startTimer() async {
     state.pollingTimer =
-        Timer.periodic(const Duration(seconds: 5), (timer) async {
+        Timer.periodic(const Duration(seconds: 7), (timer) async {
       var index2 = Get.find<MarketLogic>().state.tabController?.index;
       if (Get.find<MainLogic>().state.selectedIndex.value == 1 &&
           !state.isRefresh &&
           (index2 == 0 || index2 == 1) &&
-          state.appVisible) {
+          state.appVisible &&
+          (Get.currentRoute == '/' ||
+              Get.currentRoute == CoinDetailPage.routeName)) {
         await onRefresh();
       }
     });

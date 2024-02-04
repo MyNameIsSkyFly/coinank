@@ -36,7 +36,7 @@ class CommonWebView extends StatefulWidget {
   final String url;
   final String Function()? urlGetter;
   final void Function(InAppWebViewController controller)? onWebViewCreated;
-  final VoidCallback? onLoadStop;
+  final void Function(InAppWebViewController controller)? onLoadStop;
   final bool showLoading;
   final bool safeArea;
   final bool dynamicTitle;
@@ -262,7 +262,7 @@ class _CommonWebViewState extends State<CommonWebView>
       : null;
 
   void _onLoadStop(InAppWebViewController controller) {
-    widget.onLoadStop?.call();
+    widget.onLoadStop?.call(controller);
     if (widget.url.contains('proChart') ||
         widget.urlGetter?.call().contains('proChart') == true) {
       // controller.evaluateJavascript(
@@ -297,6 +297,7 @@ class _CommonWebViewState extends State<CommonWebView>
           if (arguments.isEmpty) return;
           AppNav.openWebUrl(
             url: arguments[0],
+            title: '',
             dynamicTitle: true,
             showLoading: true,
           );

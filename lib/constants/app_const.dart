@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class AppConst {
+  AppConst._();
   static bool networkConnected = true;
   static const isPlayVersion = bool.fromEnvironment('PLAY');
   static final eventBus = EventBus();

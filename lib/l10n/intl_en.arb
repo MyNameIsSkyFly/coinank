@@ -329,10 +329,14 @@
   "searchTrending": "Trending",
   "addToFavorite": "Add to favorites",
   "ahr999Index": "BTC Ahr999 Index",
-  "btcReduceCountDown": "BTC减半倒计时",
-  "days": "天",
-  "hours": "时",
-  "minutes": "分"
+  "btcReduceCountDown": "BTC Halving Countdown",
+  "days": "days",
+  "hours": "hours",
+  "minutes": "minutes",
+  "shareApp": "Share App",
+  "heatMap": "热力图",
+  "tradingPosition": "交易持仓量",
+  "weightedRate": "加权资金费率"
 }
 
 

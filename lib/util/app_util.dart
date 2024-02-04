@@ -108,13 +108,13 @@ class AppUtil {
     CommonWebView.setCookieValue();
   }
 
-  static String getLargeFormatString(String val) {
+  static String getLargeFormatString(String val, {int precision = 1}) {
     final locale = (Get.locale ?? Get.deviceLocale).toString();
-    var amount = double.parse(val);
+    var amount = double.tryParse(val) ?? 0;
     if (locale.isCaseInsensitiveContains('zh')) {
       return FormatUtil.amountConversion(amount);
     }
-    final mFormat = NumberFormat('#,##0.0', 'en_US');
+    final mFormat = NumberFormat('#,##0.${'0' * precision}', 'en_US');
     if (amount < 1000) {
       return amount.toString();
     } else if (amount < 1000000) {

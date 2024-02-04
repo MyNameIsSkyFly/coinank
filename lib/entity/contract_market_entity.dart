@@ -5,6 +5,7 @@ part 'contract_market_entity.g.dart';
 @JsonSerializable()
 class ContractMarketEntity {
   final String? baseCoin;
+  final String? quoteCoin;
   final String? symbol;
   final String? exchangeName;
   final String? contractType;
@@ -27,12 +28,12 @@ class ContractMarketEntity {
   final double? oiChg24h;
   final double? buyTurnover;
   final double? sellTurnover;
-  final String? lsPersonRatio;
   final int? expireAt;
   final int? ts;
 
   const ContractMarketEntity({
     this.baseCoin,
+    this.quoteCoin,
     this.symbol,
     this.exchangeName,
     this.contractType,
@@ -55,7 +56,6 @@ class ContractMarketEntity {
     this.oiChg24h,
     this.buyTurnover,
     this.sellTurnover,
-    this.lsPersonRatio,
     this.expireAt,
     this.ts,
   });

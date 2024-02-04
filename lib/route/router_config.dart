@@ -1,3 +1,4 @@
+import 'package:ank_app/modules/coin_detail/coin_detail_view.dart';
 import 'package:ank_app/modules/home/liq_main/liq_main_binding.dart';
 import 'package:ank_app/modules/home/liq_main/liq_main_view.dart';
 import 'package:ank_app/modules/home/long_short_ratio/long_short_person_ratio/long_short_person_ratio_view.dart';
@@ -69,6 +70,10 @@ class RouteConfig {
     GetPage(
       name: AboutPage.routeName,
       page: () => AboutPage(),
+    ),
+    GetPage(
+      name: CoinDetailPage.routeName,
+      page: () => const CoinDetailPage(),
     ),
   ];
 }
