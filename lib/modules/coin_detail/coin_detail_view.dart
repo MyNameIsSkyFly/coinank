@@ -1,9 +1,11 @@
 import 'package:ank_app/modules/coin_detail/tab_items/coin_detail_contract/coin_detail_contract_view.dart';
+import 'package:ank_app/modules/coin_detail/tab_items/coin_detail_spot/coin_detail_spot_view.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'coin_detail_logic.dart';
+import 'tab_items/coin_detail_overview/coin_detail_overview_view.dart';
 
 class CoinDetailPage extends StatefulWidget {
   const CoinDetailPage({super.key});
@@ -22,8 +24,11 @@ class _CoinDetailPageState extends State<CoinDetailPage>
   @override
   void initState() {
     super.initState();
-    _tabController =
-        TabController(length: 4, vsync: this, animationDuration: Duration.zero);
+    _tabController = TabController(
+        length: 4,
+        vsync: this,
+        animationDuration: Duration.zero,
+        initialIndex: 2);
   }
 
   @override
@@ -50,10 +55,11 @@ class _CoinDetailPageState extends State<CoinDetailPage>
             isScrollable: true,
             controller: _tabController,
             tabs: [
+              //todo intl
               Tab(text: '合约'),
-              Tab(text: '合约'),
-              Tab(text: '合约'),
-              Tab(text: '合约'),
+              Tab(text: '现货'),
+              Tab(text: '总览'),
+              Tab(text: '持币'),
             ]),
         Expanded(
             child: TabBarView(
@@ -61,12 +67,8 @@ class _CoinDetailPageState extends State<CoinDetailPage>
                 controller: _tabController,
                 children: [
               const AliveWidget(child: CoinDetailContractView()),
-              Container(
-                color: Colors.blue,
-              ),
-              Container(
-                color: Colors.yellow,
-              ),
+              const AliveWidget(child: CoinDetailSpotView()),
+              const AliveWidget(child: CoinDetailOverviewView()),
               Container(
                 color: Colors.green,
               ),

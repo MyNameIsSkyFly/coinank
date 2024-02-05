@@ -8,9 +8,9 @@ import 'package:get/get.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 /// Set product's data collection to data grid source.
-class ProductDataGridSource extends DataGridSource {
+class GridDataSource extends DataGridSource {
   /// Creates the product data source class with required details.
-  ProductDataGridSource(this.items, this.baseCoin) {
+  GridDataSource(this.items, this.baseCoin) {
     buildDataGridRows();
   }
 
@@ -26,23 +26,13 @@ class ProductDataGridSource extends DataGridSource {
     dataGridRows = items.map<DataGridRow>((ContractMarketEntity entity) {
       return DataGridRow(cells: <DataGridCell<dynamic>>[
         //todo intl
-        DataGridCell<String>(columnName: '交易所', value: entity.exchangeName),
+        DataGridCell<String>(columnName: '1', value: entity.exchangeName),
         DataGridCell<(String?, String?, String?)>(
-            columnName: '货币',
+            columnName: '2',
             value: (entity.symbol, entity.exchangeName, entity.contractType)),
-        DataGridCell<double>(columnName: '价格', value: entity.lastPrice),
-        DataGridCell<double>(
-            columnName: '24H变化%', value: entity.priceChange24h),
-        DataGridCell<String>(
-            columnName: '24H成交额',
-            value: AppUtil.getLargeFormatString('${entity.turnover24h ?? 0}',
-                precision: 2)),
-        DataGridCell<String>(
-            columnName: '持仓',
-            value: AppUtil.getLargeFormatString('${entity.oiUSD ?? 0}',
-                precision: 2)),
-        DataGridCell<double>(columnName: '24H(%)', value: entity.oiChg24h),
-        DataGridCell<double>(columnName: '资金费率', value: entity.fundingRate),
+        DataGridCell<double>(columnName: '3', value: entity.lastPrice),
+        DataGridCell<double>(columnName: '4', value: entity.priceChange24h),
+        DataGridCell<double>(columnName: '5', value: entity.turnover24h),
       ]);
     }).toList();
   }
@@ -126,30 +116,8 @@ class ProductDataGridSource extends DataGridSource {
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.all(8),
         child: Text(
-          row.getCells()[4].value.toString(),
-          overflow: TextOverflow.ellipsis,
-          style: Styles.tsBody_14m(Get.context!),
-        ),
-      ),
-      Container(
-        alignment: Alignment.centerLeft,
-        padding: const EdgeInsets.all(8),
-        child: Text(
-          row.getCells()[5].value.toString(),
-          overflow: TextOverflow.ellipsis,
-          style: Styles.tsBody_14m(Get.context!),
-        ),
-      ),
-      Container(
-        alignment: Alignment.centerLeft,
-        padding: const EdgeInsets.all(8),
-        child: RateWithSign(rate: row.getCells()[6].value ?? 0, fontSize: 14),
-      ),
-      Container(
-        alignment: Alignment.centerLeft,
-        padding: const EdgeInsets.all(8),
-        child: Text(
-          '${((row.getCells()[7].value ?? 0) * 100).toStringAsFixed(4)}%',
+          AppUtil.getLargeFormatString('${row.getCells()[4].value ?? 0}',
+              precision: 2),
           overflow: TextOverflow.ellipsis,
           style: Styles.tsBody_14m(Get.context!),
         ),
@@ -164,6 +132,48 @@ class ProductDataGridSource extends DataGridSource {
 
   @override
   int compare(DataGridRow? a, DataGridRow? b, SortColumnDetails sortColumn) {
-    return super.compare(a, b, sortColumn);
+    if (sortColumn.name == '1') {
+      final String? valueA = a
+          ?.getCells()
+          .firstWhereOrNull(
+              (dynamic element) => element.columnName == sortColumn.name)
+          ?.value
+          ?.toString();
+      final String? valueB = b
+          ?.getCells()
+          .firstWhereOrNull(
+              (dynamic element) => element.columnName == sortColumn.name)
+          ?.value
+          ?.toString();
+      if (valueA == null || valueB == null) {
+        return 0;
+      }
+
+      if (sortColumn.sortDirection == DataGridSortDirection.ascending) {
+        return valueA.toLowerCase().compareTo(valueB.toLowerCase());
+      } else {
+        return valueB.toLowerCase().compareTo(valueA.toLowerCase());
+      }
+    } else {
+      final double? valueA = a
+          ?.getCells()
+          .firstWhereOrNull(
+              (dynamic element) => element.columnName == sortColumn.name)
+          ?.value;
+      final double? valueB = b
+          ?.getCells()
+          .firstWhereOrNull(
+              (dynamic element) => element.columnName == sortColumn.name)
+          ?.value;
+      if (valueA == null || valueB == null) {
+        return 0;
+      }
+
+      if (sortColumn.sortDirection == DataGridSortDirection.ascending) {
+        return valueA.compareTo(valueB);
+      } else {
+        return valueB.compareTo(valueA);
+      }
+    }
   }
 }

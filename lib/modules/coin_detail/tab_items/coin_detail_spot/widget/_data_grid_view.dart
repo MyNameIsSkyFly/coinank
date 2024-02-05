@@ -4,7 +4,7 @@ import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../../../res/export.dart';
-import '../coin_detail_contract_logic.dart';
+import '../coin_detail_spot_logic.dart';
 import '_datagrid_source.dart';
 
 class DataGridView extends StatelessWidget {
@@ -13,7 +13,7 @@ class DataGridView extends StatelessWidget {
     required this.logic,
   });
 
-  final CoinDetailContractLogic logic;
+  final CoinDetailSpotLogic logic;
 
   List<GridColumn> getColumns(BuildContext context) {
     List<GridColumn> columns;
@@ -64,6 +64,7 @@ class DataGridView extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               '24H变化(%)',
+              overflow: TextOverflow.ellipsis,
               style: Styles.tsSub_12(context),
             ),
           )),
@@ -73,44 +74,9 @@ class DataGridView extends StatelessWidget {
           label: Container(
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.all(8.0),
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                '24H成交额',
-                style: Styles.tsSub_12(context),
-              ),
-            ),
-          )),
-      GridColumn(
-          columnName: '6',
-          width: 90,
-          label: Container(
-            alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.all(8.0),
             child: Text(
-              '持仓(\$)',
-              style: Styles.tsSub_12(context),
-            ),
-          )),
-      GridColumn(
-          columnName: '7',
-          width: 100,
-          label: Container(
-            alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              '24H(%)',
-              style: Styles.tsSub_12(context),
-            ),
-          )),
-      GridColumn(
-          columnName: '8',
-          width: 100,
-          label: Container(
-            alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              '资金费率',
+              '24H成交额',
+              overflow: TextOverflow.ellipsis,
               style: Styles.tsSub_12(context),
             ),
           )),
@@ -165,10 +131,10 @@ class DataGridView extends StatelessWidget {
                 gridLinesVisibility: GridLinesVisibility.none,
                 headerGridLinesVisibility: GridLinesVisibility.none,
                 verticalScrollPhysics: const NeverScrollableScrollPhysics(),
-                allowSorting: true,
-                allowTriStateSorting: true,
                 shrinkWrapRows: true,
                 frozenColumnsCount: 1,
+                allowTriStateSorting: true,
+                allowSorting: true,
                 horizontalScrollPhysics: const ClampingScrollPhysics(),
                 source: productDataGridSource,
                 columns: getColumns(context)),

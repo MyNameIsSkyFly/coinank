@@ -31,6 +31,11 @@ class ContractMarketEntity {
   final int? expireAt;
   final int? ts;
 
+  //spot tickers 特有字段
+  final double? volumeChg24h;
+  final dynamic type;
+  final dynamic changeRate;
+
   const ContractMarketEntity({
     this.baseCoin,
     this.quoteCoin,
@@ -58,6 +63,9 @@ class ContractMarketEntity {
     this.sellTurnover,
     this.expireAt,
     this.ts,
+    this.volumeChg24h,
+    this.type,
+    this.changeRate,
   });
 
   factory ContractMarketEntity.fromJson(Map<String, dynamic> json) =>

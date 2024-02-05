@@ -14,8 +14,11 @@ const getLiqHeatMap = (params)=>{
 
 const fetchKline = (params)=>{
 
-    let {exchange, symbol, interval, side, ts, size} = params;
+    let {exchange, symbol, interval, side, ts, size, exchangeType} = params;
     let query = `exchange=${exchange}&symbol=${symbol}&interval=${interval}&side=${side}&ts=${ts}&size=${size}`
+    if(exchangeType){
+        query+=`&exchangeType=${exchangeType}`
+    }
     return fetch(`${apiHost}/api/kline/list?${query}`,
         {
             method: 'GET', // 请求方法

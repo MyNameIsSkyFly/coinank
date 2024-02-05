@@ -6,6 +6,7 @@ import 'package:ank_app/entity/body/futures_big_data_body.dart';
 import 'package:ank_app/entity/body/test_body.dart';
 import 'package:ank_app/entity/chart_entity.dart';
 import 'package:ank_app/entity/chart_left_entity.dart';
+import 'package:ank_app/entity/coin_detail_entity.dart';
 import 'package:ank_app/entity/contract_market_entity.dart';
 import 'package:ank_app/entity/marker_funding_rate_entity.dart';
 import 'package:ank_app/entity/oi_entity.dart';
@@ -21,10 +22,11 @@ import 'package:retrofit/retrofit.dart';
 
 import '../constants/urls.dart';
 import '../entity/btc_reduce_entity.dart';
-import '../entity/coin_detail_entity.dart';
+import '../entity/coin_detail_contract_info_entity.dart';
 import '../entity/futures_big_data_entity.dart';
 import '../entity/head_statistics_entity.dart';
 import '../entity/home_fund_rate_entity.dart';
+import '../entity/market_cap_entity.dart';
 
 part 'apis.g.dart';
 
@@ -261,4 +263,14 @@ abstract class Apis {
   Future<ContractMarketEntity?> getCoinInfo24h(
       @Query('baseCoin') String baseCoin,
       {@Query('productType') String productType = 'SWAP'});
+
+  @GET('/api/tickers/getSpotTickers')
+  Future<List<ContractMarketEntity>?> getSpotTickers(
+      @Query('baseCoin') String baseCoin);
+
+  @GET('/api/instruments/coinDetail')
+  Future<CoinDetailEntity?> getCoinDetail(@Query('baseCoin') String baseCoin);
+
+  @GET('/api/instruments/marketCapTop')
+  Future<List<MarketCapEntity>?> getMarketCapTop(@Query('limit') int limit);
 }

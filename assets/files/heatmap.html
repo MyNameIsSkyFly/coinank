@@ -28,7 +28,6 @@
 
 
     <script type="text/javascript">
-        console.log('========================')
 
         let dom = document.getElementById('container');
 
@@ -299,8 +298,6 @@
         const getHeatMapData = async (data, dataOptions = {}) => {
             
             let {productType, baseCoin, type} = data;
-
-            console.log(productType+' '+baseCoin+' '+ type)
             
             let resp;
             if("SPOT" === productType){
