@@ -25,6 +25,7 @@ import '../entity/btc_reduce_entity.dart';
 import '../entity/coin_detail_contract_info_entity.dart';
 import '../entity/futures_big_data_entity.dart';
 import '../entity/head_statistics_entity.dart';
+import '../entity/hold_address_entity.dart';
 import '../entity/home_fund_rate_entity.dart';
 import '../entity/market_cap_entity.dart';
 
@@ -172,6 +173,14 @@ abstract class Apis {
     @Query('size') int size = 100,
   });
 
+  @GET('/api/volume24h/spotChart')
+  Future getVol24hSpotChartJson({
+    @Query('baseCoin') String? baseCoin,
+    @Query('interval') String? interval,
+    @Query('exchangeName') String? exchangeName,
+    @Query('size') int size = 100,
+  });
+
   //合约持仓2
   @GET('/api/instruments/aggForIos')
   Future<TickersDataEntity?> getFuturesBigData2({
@@ -273,4 +282,18 @@ abstract class Apis {
 
   @GET('/api/instruments/marketCapTop')
   Future<List<MarketCapEntity>?> getMarketCapTop(@Query('limit') int limit);
+
+  @GET('/indicatorapi/chain/btc/holdAddress')
+  Future<HoldAddressEntity?> getHoldAddress(@Query('baseCoin') String baseCoin,
+      {@Query('code') String? code});
+
+  @GET('/api/liquidation/statistic')
+  Future getLiqStatistic(@Query('baseCoin') String baseCoin,
+      {@Query('interval') String? interval});
+
+  @GET('/api/fundingRate/getWeiFrChart')
+  Future getWeightFundingRate(@Query('baseCoin') String baseCoin,
+      {@Query('interval') String? interval,
+      @Query('endTime') int? endTime,
+      @Query('size') int? size});
 }

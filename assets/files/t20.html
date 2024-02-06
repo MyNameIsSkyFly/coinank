@@ -49,6 +49,56 @@
             right: 8
         }
 
+        langZh = {
+            price:"价格",
+            volume:"成交量",
+            exchangeName:"交易所",
+            long:"多单",
+            short:"空单",
+            oiWeight:"持仓加权资金费率",
+            volWeight:"成交量加权资金费率",
+            "top10rate":"前 10", 
+            "top20rate":"前 20", 
+            "top50rate":"前 50", 
+            "top100rate":"前 100"
+        }
+
+        langZhTw = {
+            price:"Price",
+            volume:"成交量",
+            exchangeName:"交易所",
+            long:"多单",
+            short:"空单",
+            oiWeight:"持仓加权资金费率",
+            volWeight:"成交量加权资金费率",
+            "top10rate":"前 10", 
+            "top20rate":"前 20", 
+            "top50rate":"前 50", 
+            "top100rate":"前 100" 
+        }
+
+        langEn = {
+            price:"Price",
+            volume:"Volume",
+            exchangeName:"Exchange",
+            long:"Long",
+            short:"Short",
+            oiWeight:"Funding Rate (OI Weight)",
+            volWeight:"Funding Rate (Vol Weight)",
+            "top10rate":"Top 10", 
+            "top20rate":"Top 20", 
+            "top50rate":"Top 50", 
+            "top100rate":"Top 100"
+        }
+
+        const langs = {
+            zh:langZh,
+            en:langEn,
+            "zt-tw":langZhTw
+        }
+
+        let lang  = langEn;
+
 
         window.addEventListener('resize', myChart.resize);
 
@@ -73,6 +123,68 @@
             }
         }
 
+        const formatPriceV2 = function (value){
+            if (value === "" || value === undefined || value === NaN || value === null || value === "NaN" || value === "null") {
+                return "-";
+            }
+            if (!value) {
+                return "-";
+            }
+            value = ""+value;
+            if(value.indexOf("e") != -1){
+                value = parseFloat(value)
+                let eformat = value.toExponential() // 转换为标准的科学计数法形式（字符串）
+                let tmpArray = eformat.match(/\d(?:\.(\d*))?e([+-]\d+)/) // 分离出小数值和指数值
+                value = value.toFixed(Math.max(0, (tmpArray[1] || '').length - tmpArray[2]))
+                if (value * 10000 >= 0.1) {
+                    return value;
+                }
+
+                let [a, b] = value.split(".");
+                let i = 0;
+                for (; i < b.length; i++) {
+                    if (b[i] !== '0') {
+                        break;
+                    }
+                }
+
+                let sub = b.substring(i, i + 4 > b.length ? b.length : i + 4);
+                return `0.0{${i - 1}}${sub}`
+
+            }
+
+            if(value == 0){
+                return value;
+            }
+            if(value > 1){
+                let input = numeral(value);
+                return input.format("0.00")
+            } else {
+                let price = value;
+                if (typeof value === "number") {
+                    price =  value.toPrecision(4);
+                }
+
+                if (price * 10000 >= 0.1) {
+                    return Number(value).toPrecision(4);
+                }
+                price = price + "";
+                let [a, b] = price.split(".");
+                let i = 0;
+                try{
+                    for (; i < b.length; i++) {
+                        if (b[i] !== '0') {
+                            break;
+                        }
+                    }
+                }catch (e){
+                }
+
+                let sub = b.substring(i, i + 4 > b.length ? b.length : i + 4);
+                return `0.0{${i - 1}}${sub}`
+
+            }
+        }
 
         const buildOpenInterestOptions = (data, dataOptions = {}) => {
 
@@ -1503,13 +1615,791 @@
             return chartData;
         }
 
+        const buildVolChart = (data, dataOptions)=>{
+
+            let {baseCoin, viewType, interval, locale} = dataOptions;
+
+            let xAxisData = data.tss
+            let series = [];
+
+            let seriesPirceName = (baseCoin != undefined && baseCoin != "" ? baseCoin : "BTC") + " " + lang.price
+
+            let legendData = [
+                {
+                name: seriesPirceName,
+                itemStyle: {
+                    color: "#F7931A"
+                }
+                }
+            ];
+
+            series.push({
+                name: seriesPirceName,
+                showSymbol: false,
+                type: 'line',
+                data: data.prices ? data.prices : [],
+                yAxisIndex: 1,
+                z: 20,
+                color: "#F7931A"
+            });
+
+            let colors = ['#2A82E4', '#947E31', '#664DA1', '#00BAAD', '#14DAFC', '#CE8EE6', '#316387', '#B02057', "#E88C3C", "#42876F", "#8C5D2B", "#6E9C40"]
+
+            let i = 0;
+            let values = data.single;
+
+            // legendData.push({
+            //   name: this.$t("instrument.turnover"),
+            //   itemStyle: {
+            //     color: colors[i],
+            //   }
+            // });
+
+            series.push({
+                name: lang.volume,
+                type: viewType === 'Bar' ? "bar" : "line",
+                lineStyle: {
+                width: 0,
+                },
+                showSymbol: false,
+                stack: 'Total',
+                color: 'rgb(22,119,255, 0.8)',
+                areaStyle: {
+                opacity: 1
+                },
+                emphasis: {
+                disabled: viewType === 'Bar',
+                focus: 'series'
+                },
+                data: values
+            });
+
+            let minPrice = 10000000;
+            let maxPrice = 0;
+            data.prices.forEach(v => {
+                if (v !== null) {
+                if (minPrice > v) {
+                    minPrice = v;
+                }
+                if (maxPrice < v) {
+                    maxPrice = v;
+                }
+                }
+            })
+            let inside = true;
+
+
+            let chartData = {
+                animation: viewType !== 'Bar',
+                xAxis: [
+                {
+                    data: xAxisData,
+                   // inverse: true,
+                    axisLabel: {
+                    formatter: (value) => {
+                        if ("1d" == interval) {
+                            return moment(parseInt(value)).format("MM-DD")
+                        } else {
+                            return moment(parseInt(value)).format("MM-DD HH:mm")
+                        }
+                    }
+                    }
+                }
+                ],
+                grid: grid,
+                yAxis: [
+                {
+                    type: 'value',
+                    axisLabel: {
+                    formatter: (value) => {
+                        return "$" + formatAmount(Math.abs(value), this.locale)
+                    },
+                    inside: inside,
+                    },
+                    // z:10,
+                },
+                {
+                    type: 'value',
+                    min: minPrice,
+                    max: maxPrice,
+                    // z:10,
+                    splitLine: false,
+                    axisLabel: {
+                    formatter: (value) => {
+                        return "$" + formatAmount(Math.abs(value), this.locale)
+                    },
+                    inside: inside,
+                    }
+                }
+                ],
+                dataZoom: [
+                {
+                    type: 'slider',
+                    showDetail: false,
+                    start: 0,
+                    end: 100,
+                    zoomOnMouseWheel: true,
+                    moveOnMouseMove: true,
+                    moveOnMouseWheel: false,
+                },
+                {
+                    type: "inside",
+                    zoomOnMouseWheel: true,
+                    moveOnMouseMove: true,
+                    moveOnMouseWheel: false,
+                    start: 0,
+                    end: 100,
+
+                },
+                {
+                    start: 0,
+                    end: 100,
+                    labelFormatter: (value) => {
+                    if ("1d" == interval) {
+                        return moment(parseInt(xAxisData[value])).format("MM-DD")
+                    } else {
+                        return moment(parseInt(xAxisData[value])).format("MM-DD HH:mm")
+                    }
+                    }
+                }
+                ],
+                tooltip: {
+                trigger: 'axis',
+                confine: true,
+                axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                    type: 'cross',        // 默认为直线，可选为：'line' | 'shadow'
+                    label: {
+                    formatter: (params) => {
+                        if (params.axisDimension == "x") {
+                        return moment(parseInt(params.value)).format("YYYY-MM-DD")
+                        } else if (params.axisDimension == "y") {
+                        return "$" + formatAmount(Math.abs(params.value), this.locale)
+                        }
+                    }
+                    }
+                },
+                formatter: (params, ticket, callback) => {
+
+
+                    let dataIndex = params[0].dataIndex;
+
+                    let h = "";
+                    h = moment(parseInt(params[0].axisValue)).format("yyyy-MM-DD HH:mm")
+                    let pricesDiv = ""
+                    let detalDiv = ""
+                    params.forEach((item, index) => {
+                    if (index <= 2) {
+                        pricesDiv += "<div><span style='display:inline-block;width:70%'>" + item.marker + item.seriesName + "</span><span class='' style='display:inline-block;width:70%'>" + "$" + formatAmount(item.value, locale) + "</span></div>"
+                    }
+                    });
+                    h += pricesDiv + detalDiv
+                    return "<div style='min-width:200px'>" + h + "</div>";
+                }
+
+                },
+                legend: {
+                // data: legendData,
+                right: 50,
+                type: 'scroll'
+                },
+                series: series
+            };
+
+            return chartData;
+
+
+        }
+
+        const buildLiqStatisticChart = (dataParams, dataOptions) => {
+
+            let {data} = dataParams;
+            let {baseCoin, locale, interval} = dataOptions;
+
+                let xAxisData = data.map(item =>item.ts);
+                let maxTurnover =0;
+                let yAxisLongData = data.map(item => {
+                    let v = item.all.longTurnover;
+                    if(v > maxTurnover){
+                        maxTurnover = v
+                    }
+                    return v
+                });
+                let yAxisShortData = data.map(item => {
+                    let v = item.all.shortTurnover
+                    if(v > maxTurnover){
+                        maxTurnover = v
+                    }
+                    return -v
+                });
+
+                let priceData = dataParams.ext.prices;
+
+                let minPrice = 10000000;
+                let maxPrice = 0;
+                priceData.forEach(v=>{
+                    if(minPrice> v){
+                        minPrice = v;
+                    }
+                    if(maxPrice < v){
+                        maxPrice = v;
+                    }
+                })
+
+                let seriesLongName = lang.long;
+                let seriesShortName = lang.short
+                let seriesPirceName = (baseCoin != "" ? baseCoin : "BTC")+" "+ lang.price;
+
+
+
+
+                    let inside = true;
+
+
+                    let chartData =   {
+                        xAxis:[
+                            {
+                                data:xAxisData,
+                                inverse:true,
+                                axisTick:{
+                                    show:false
+                                },
+                                axisLabel:{
+                                    formatter: (value)=>{
+                                        if(interval=="1d"){
+                                            return moment(parseInt(value)).format("MM-DD")
+                                        }else {
+                                            return moment(parseInt(value)).format("MM-DD HH:mm")
+                                        }
+                                    }
+                                }
+                            }
+                        ],
+                        grid: grid,
+                        yAxis: [
+                            {
+                                type: 'value',
+                                min: -maxTurnover,
+                                max: maxTurnover,
+                                // z:10,
+                                axisLabel: {
+                                    formatter: (value)=>{
+                                        return "$"+formatAmount(Math.abs(value), locale)
+                                    },
+                                    inside:inside,
+                                },
+                                // splitLine:false
+                            },
+                            {
+                                type: 'value',
+                                min: minPrice,
+                                max: maxPrice,
+                                // z:10,
+                                splitLine:false,
+                                axisLabel: {
+                                    formatter: (value)=>{
+                                        return "$"+formatAmount(Math.abs(value), locale)
+                                    },
+                                    inside:inside,
+                                }
+                            }
+                        ],
+                        tooltip: {
+                            trigger: 'axis',
+                            confine: true,
+                            axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                                type: 'cross',        // 默认为直线，可选为：'line' | 'shadow'
+                                label:{
+                                    formatter:(params)=>{
+                                        if(params.axisDimension == "x"){
+                                            return moment(parseInt(params.value)).format("YYYY-MM-DD")
+                                        }else if(params.axisDimension == "y"){
+                                            return "$"+formatAmount(Math.abs(params.value), this.locale)
+                                        }
+                                    }
+                                }
+                            },
+                            formatter:(params, ticket, callback) =>{
+
+                                
+                                // console.log(params);
+
+                                let dataIndex = params[0].dataIndex;
+                                let h = "";
+                                // if(this.filters.interval=="1d"){
+                                //      h =  moment(parseInt(params[0].axisValue)).format("MM-DD")
+                                // }else {
+                                     h =  moment(parseInt(params[0].axisValue)).format("YYYY-MM-DD HH:mm")
+                                // }
+
+
+                                if(params.length >=3 && params[2].value){
+                                    h += "<br/>" + params[2].seriesName +": $"+ params[2].value.toFixed(2);
+                                }
+
+                                h +="<hr/>";
+                                let targetData = data[dataIndex];
+                                let detalDiv = ""
+                                for(let key in targetData.details){
+                                    let v = targetData.details[key];
+                                    detalDiv += "<div><span style='display:inline-block;width:33.33%'>"+(key === 'Okex' ? 'Okx':key) +"</span><span class='text-long6' style='display:inline-block;width:33.33%'>"+ "$"+formatAmount(v.longTurnover, locale)+"</span><span class='text-short6' style='display:inline-block;width:33.33%'>"+"$"+formatAmount(v.shortTurnover, locale)+"</span></div>"
+                                }
+
+                                // console.log("tooltip", params, ticket, data[dataIndex], this.locale);
+
+                                h +="<div><span style='display:inline-block;width:33.33%'>"+lang.exchangeName+"</span><span style='display:inline-block;width:33.33%'>"+lang.long+"</span><span style='display:inline-block;width:33.33%'>"+lang.short+"</span></div>"
+                                h += detalDiv
+                                let allDiv = "<div><span style='display:inline-block;width:33.33%'>ALL</span><span class='text-long6' style='display:inline-block;width:33.33%'>"+ "$"+formatAmount(params[0].value, locale)+"</span><span class='text-short6' style='display:inline-block;width:33.33%'>"+"$"+formatAmount(-params[1].value, locale)+"</span></div>";
+                                h += "<hr/>"+allDiv
+                                
+                                return "<div style='min-width:250px'>"+h+"</div>";
+                            }
+                            
+                        },
+                        legend: {
+                           // data: [ seriesPirceName, seriesLongName, seriesShortName],
+                            right: 50
+                        },
+                        series: [
+                            {
+                                name: seriesLongName,
+                                type: "bar",
+                                label:{
+                                    // show:true
+                                },
+                                stack: "longshort",
+                                data: yAxisLongData,
+                                itemStyle:{
+                                    color: "#37bc88"
+                                }
+                            },
+                            {
+                                name: seriesShortName,
+                                type: "bar",
+                                label:{
+                                    // show:true
+                                },
+                                stack: "longshort",
+                                data: yAxisShortData,
+                                itemStyle:{
+                                    color: "#e4455a"
+                                }
+                            },
+                            {
+                                name: seriesPirceName,
+                                type: 'line',
+                                showSymbol:false,
+                                color:"#F7931A",
+                                data: priceData,
+                                yAxisIndex:1
+                            }
+                        ]
+                    };
+                
+                    return chartData
+
+        }
+
+
+        const buildWeightFundingRateChart = (data, dataOptions) => {
+
+            let {baseCoin, frType, locale, interval} = dataOptions;
+            let xAxisData = data.tss;
+            let series = [];
+
+            let seriesPirceName = (baseCoin !=undefined &&  baseCoin!= "" ? baseCoin : "BTC")+" "+ lang.price;
+
+            let legendData = [
+            {
+                name:seriesPirceName,
+                itemStyle:{
+                color:"#F7931A",
+                }
+            }
+            ];
+
+            series.push({
+            name: seriesPirceName,
+            showSymbol:false,
+            type: 'line',
+            data: data.prices?data.prices:[],
+            yAxisIndex:1,
+            z:20,
+            color:"#F7931A",
+            });
+
+            let colors = ['#2A82E4','#947E31', '#664DA1', '#00BAAD', '#14DAFC', '#CE8EE6', '#316387','#B02057',"#E88C3C","#42876F","#8C5D2B","#6E9C40" ]
+
+            let values =[];
+            let key = ""
+            if(frType === "fr-oi"){
+                values = data.frOis
+                key = lang.oiWeight
+            }else {
+                values = data.frVos
+                key = lang.volWeight
+            }
+
+
+                legendData.push({
+                    name:key,
+                    itemStyle:{
+                    color:  "#37bc88"
+                    }
+                });
+
+                series.push({
+                name: key,
+                type:  "bar",
+                lineStyle:{
+                    width:0,
+                },
+                showSymbol:false,
+                stack: 'Total',
+                    itemStyle: {
+                        normal: {
+                            color: function (farams){
+                                if(values[farams.dataIndex] > 0){ //根据真实数值正负显示不同柱形颜色
+                                    return "#37bc88"
+                                }else{
+                                    return "#e4455a"
+                                }
+                            }
+                        }
+                    },
+                emphasis:{
+                    disabled: true,
+                    focus: 'series'
+                },
+                data: values
+                });
+
+
+
+
+
+
+            let minPrice = 10000000;
+            let maxPrice = 0;
+            data.prices.forEach(v=>{
+                if(v!== null){
+                    if(minPrice> v){
+                        minPrice = v;
+                    }
+                    if(maxPrice < v){
+                        maxPrice = v;
+                    }
+                }
+            })
+            let inside = true
+
+            let chartData =   {
+            animation: false,
+            xAxis:[
+                {
+                data:xAxisData,
+                axisLabel:{
+                    formatter: (value)=>{
+                    if("1d"== interval){
+                        return moment(parseInt(value)).format("MM-DD")
+                    }else {
+                        return moment(parseInt(value)).format("MM-DD HH:mm")
+                    }
+                    }
+                }
+                }
+            ],
+            grid: grid,
+            yAxis: [
+                {
+                type: 'value',
+                axisLabel: {
+                    inside:inside,
+                },
+                z:0.0001,
+                },
+                {
+                type: 'value',
+                min: minPrice,
+                max: maxPrice,
+                splitLine:false,
+                axisLabel: {
+                    formatter: (value)=>{
+                    return "$"+formatAmount(Math.abs(value), locale)
+                    },
+                    inside:inside,
+                }
+                }
+            ],
+            dataZoom: [
+                {
+                type: 'slider',
+                showDetail:false,
+                start: 0,
+                end: 100,
+                zoomOnMouseWheel:true,
+                moveOnMouseMove:true,
+                moveOnMouseWheel:false,
+                },
+                {
+                type:"inside",
+                zoomOnMouseWheel:true,
+                moveOnMouseMove:true,
+                moveOnMouseWheel:false,
+                start: 0,
+                end: 100,
+
+                },
+                {
+                start: 0,
+                end: 100,
+                labelFormatter:  (value) => {
+                    if("1d"== interval){
+                    return moment(parseInt(xAxisData[value])).format("MM-DD")
+                    }else {
+                    return moment(parseInt(xAxisData[value])).format("MM-DD HH:mm")
+                    }
+                }
+                }
+            ],
+            tooltip: {
+                trigger: 'axis',
+                confine: true,
+                axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                type: 'cross',        // 默认为直线，可选为：'line' | 'shadow'
+                label:{
+                    formatter:(params)=>{
+                    if(params.axisDimension == "x"){
+                        return moment(parseInt(params.value)).format("YYYY-MM-DD")
+                    }else if(params.axisDimension == "y"){
+                        return "$"+formatAmount(Math.abs(params.value), locale)
+                    }
+                    }
+                }
+                },
+                formatter:(params, ticket, callback) =>{
+
+
+                let dataIndex = params[0].dataIndex;
+
+                let h = "";
+                h =  moment(parseInt(params[0].axisValue)).format("yyyy-MM-DD HH:mm")
+                    let pricesDiv = ""
+                    let detalDiv = ""
+                    params.forEach((item,index) => {
+                        if(index == 0){
+                            pricesDiv += "<div><span style='display:inline-block;width:70%;'>"+item.marker+item.seriesName+"</span><span class='' style='display:inline-block;width:70%'>"+ "$"+formatPriceV2(item.value) +"</span></div>"
+                        }else {
+                            pricesDiv += "<div><span style='display:inline-block;width:70%;font-size;12px'>"+item.marker+item.seriesName+"</span><span class='' style='display:inline-block;width:70%'>"+ item.value.toFixed(4)+"%" +"</span></div>"
+                        }
+                        // if(index<=2){
+                        //     pricesDiv += "<div><span style='display:inline-block;width:70%'>"+item.marker+item.seriesName+"</span><span class='' style='display:inline-block;width:70%'>"+ item.value +"</span></div>"
+                        // }
+                    });
+                    h += pricesDiv + detalDiv
+                    return "<div style='min-width:280px'>"+h+"</div>";
+                }
+
+            },
+            legend: {
+                data:legendData,
+                right: 50,
+                type: 'scroll'
+            },
+            series: series
+            };
+
+            return chartData
+
+        }
+
+
+        const getColorOpt = (key) => {
+            let color;
+            if (key == 'top10rate') {
+                color = {
+                type: "linear",
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                    offset: 0,
+                    color: "rgba(24, 144, 255, 0.2)"
+                }, {
+                    offset: 1,
+                    color: "rgba(24, 144, 255, 0)"
+                }],
+                global: !1
+                }
+            }else if (key == "top20rate") {
+                color = {
+                type: "linear",
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                    offset: 0,
+                    color: "rgba(186, 114, 234, 0.2)"
+                }, {
+                    offset: 1,
+                    color: "rgba(186, 114, 234, 0)"
+                }],
+                global: !1
+                };
+            }else if (key == "top50rate") {
+                color = {
+                type: "linear",
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                    offset: 0,
+                    color: "rgba(0, 180, 90, 0.2)"
+                }, {
+                    offset: 1,
+                    color: "rgba(0, 180, 90, 0)"
+                }],
+                global: !1
+                }
+            }else if (key == "top100rate") {
+
+                color = {
+                type: "linear",
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                    offset: 0,
+                    color: "rgba(255, 197, 61, 0.2)"
+                }, {
+                    offset: 1,
+                    color: "rgba(255, 197, 61, 0)"
+                }],
+                global: !1
+                }
+
+            }
+
+            return color;
+        }
+
+        const buildHoldAddressChart = (data, dataOptions) => {
+            data = data.holdingAddressCharts
+            let datasource = data.reverse();
+
+            let keys = ["top10rate", "top20rate", "top50rate", "top100rate"];
+            let series = keys.map(key=>{
+
+                if (key == 'addrcount') {
+
+                    return {
+                    name: i18n.t(`coinInfo.${key}`),
+                    showSymbol: false,
+                    type: 'line',
+                    data: datasource.map(item => Number(item[key])),
+                    yAxisIndex:  0 ,
+                    z:19,
+                    tooltip:{
+                        valueFormatter:value=> {
+                        return value
+                        }
+                    }
+                    };
+
+                }else {
+
+                    return {
+                        name: lang[key],
+                        showSymbol: false,
+                        smooth:true,
+                        type: 'line',
+                        data: datasource.map(item => Number(item[key])),
+                        yAxisIndex: 1 ,
+                        areaStyle: {
+                            color: getColorOpt(key),
+                        },
+                        tooltip:{
+                            valueFormatter:value=> {
+                                return value + "%";
+                            }
+                        }
+                    };
+
+                }
+                
+
+            })
+
+            let legendData = series.map(item => item.name);
+
+            let tss = datasource.map(item => item['updateDate']);
+
+            let inside = true
+
+            let chartData = {
+                color: ["rgba(24, 144, 255, 1)", "rgba(186, 114, 234, 1)", "rgba(0, 180, 90, 1)", "rgba(255, 197, 61, 1)"],
+                grid: grid,
+                xAxis: {
+                data: tss,
+                type: 'category',
+                axisLabel: {
+                    formatter: (value) => {
+                    return moment(value, "YYYYMMDD").format("YYYY-MM-DD");
+                    }
+                }
+                },
+                yAxis: [{
+                splitLine:false,
+                axisLabel: {
+                    formatter: (value) => {
+                    return formatAmount(value, locale.value, "0,0");
+                    }
+                }
+                },{
+                axisLabel: {
+                    formatter: (value) => {
+                    return value + "%";
+                    }
+                }
+                }],
+                tooltip: {
+                trigger: 'axis',
+                confine: true,
+                axisPointer:{
+                    label:{
+                    formatter: (params) => {
+                        return moment(params.value, "YYYYMMDD").format("YYYY-MM-DD")
+                    },
+                    }
+
+                }
+                },
+                legend: {
+                right: 50,
+                // data: legendData
+                },
+                series: series
+            };
+
+            return chartData;
+
+        }
+
         const buildFunc = {
             "openInterest": buildOpenInterestOptions,
             "realtimeLongShort": buildRealtimeLongShort,
             "longShortChart": buildLongShortChart,
             "liqMap": buildLiqMapChart,
             "liqHeatMap": buildHeatMapChart,
-            "aggLiqMap":buildAggLiqMapChart
+            "aggLiqMap":buildAggLiqMapChart,
+            // "olChart":buildVolChart,
+            "volChart":buildVolChart,
+            "liqStatistic":buildLiqStatisticChart,
+            "weightFundingRate":buildWeightFundingRateChart,
+            'holderAddress':buildHoldAddressChart,
         }
 
 
@@ -1521,6 +2411,11 @@
             // dom.append("<br/>");
             if ("longShortChart" === dataType) {
                 dataParams.data.prices = dataParams.ext.prices;
+            }
+
+            if(dataOptions){
+                let {locale} = dataOptions;
+                lang = langs[locale]||langEn
             }
 
             let { data } = dataParams;
@@ -1539,6 +2434,8 @@
             if("liqHeatMap" === dataType){
                 myChart.showLoading("default", {color:"#4363F2", maskColor:"transparent"});
                 option = await funcTarget(dataParams, dataOptions);
+            }else if("liqStatistic" === dataType){
+                option = funcTarget(dataParams, dataOptions);
             }else {
                 option = funcTarget(data, dataOptions);
             }
@@ -1590,6 +2487,46 @@
         //     high: "High"
         // })
 
+
+
+
+        // https://coinank.com/api/volume24h/spotChart?baseCoin=BTC&exchangeName=ALL&interval=1d
+        // https://coinank.com/api/volume24h/chart?baseCoin=BTC&exchangeName=ALL&interval=1d
+        // setChartData(sourceData, "android", "volChart", {
+        //     theme: "light",
+        //     locale:'zh',
+        //     baseCoin:"BTC",
+        //     interval:"1d",
+        //     viewType:"Bar" //"Line"
+        // })
+
+
+        //https://coinank.com/api/liquidation/statistic?baseCoin=BTC&interval=1d
+        // setChartData(sourceData, "android", "liqStatistic", {
+        //     theme: "light",
+        //     locale:'zh',
+        //     baseCoin:"BTC",
+        //     interval:"1d"
+        // })
+
+        //https://coinank.com/api/fundingRate/getWeiFrChart?baseCoin=BTC&interval=8h&endTime=1707116457521&size=180
+        // setChartData(sourceData, "android", "weightFundingRate", {
+        //     theme: "light",
+        //     locale:'en',
+        //     baseCoin:"BTC",
+        //     interval:"1d",
+        //     frType : "fr-oi",//fr-oi 持仓加权, fr-vol 成交量加权
+        // })
+
+
+        //https://coinank.com/indicatorapi/chain/btc/holdAddress?code=bitcoin&baseCoin=BTC
+        // setChartData(sourceData, "android", "holderAddress", {
+        //     theme: "light",
+        //     locale:'en',
+        //     baseCoin:"BTC",
+        //     interval:"1d",
+        //     frType : "fr-oi",//fr-oi 持仓加权, fr-vol 成交量加权
+        // })
 
 
 

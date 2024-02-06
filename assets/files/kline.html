@@ -318,6 +318,7 @@
       },
       grid: [
         {
+          top: '0%',
           left: '0',
           right: '12%',
           height: '68%'
@@ -425,6 +426,9 @@
             return chartData;
         }
 
+
+        
+
         async function setChartData(dataParams, platform, dataType, dataOptions = {}) {
 
             if ("longShortChart" === dataType) {
@@ -437,8 +441,10 @@
             
             lang = langConfig[locale] || langEn
 
-            option = await buildKlineChart(dataParams, dataOptions);
 
+            dataParams = getDataParams(dataParams);
+
+            option = await buildKlineChart(dataParams, dataOptions);
 
 
             if (option && typeof option === 'object') {
@@ -448,11 +454,33 @@
 
         }
 
+        const getDataParams = (dataParams)=>{
+            let {symbol, exchangeType, exchange, baseCoin} = dataParams;
+            if(exchangeType === "SPOT"){
+                if(exchange === "Binance"){
+
+                }else if(exchange === "Okex"){
+                    symbol = baseCoin+"-"+"USDT"
+                }else if(exchange === "Huobi"){
+                    symbol = baseCoin+"USDT"
+                }else if(exchange === "Gate"){
+                   
+                }else if(exchange === "Bitget"){
+                    symbol = baseCoin+"USDT"
+                }else if(exchange === "Bybit"){
+                }
+            }
+            dataParams["symbol"] = symbol;
+            return dataParams;
+        }
+
+        
 
 
-
-        // setChartData({exchange: "Okex",
-        //     symbol: "BTC-USDT",
+        // setChartData({
+        //         baseCoin:"BTC",
+        //         exchange: "Okex",
+        //     symbol: "BTC-USDT-SWAP",
         //     interval: "30m",
         //     exchangeType: "SPOT"}, 
         //     "android", 

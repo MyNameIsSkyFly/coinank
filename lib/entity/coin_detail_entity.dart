@@ -153,7 +153,7 @@ class Localization {
       _$LocalizationFromJson(json);
 }
 
-@JsonSerializable()
+@JsonSerializable(createToJson: true)
 class Description {
   final String? en;
   final String? de;
@@ -231,6 +231,8 @@ class Description {
 
   factory Description.fromJson(Map<String, dynamic> json) =>
       _$DescriptionFromJson(json);
+
+  Map<String, dynamic> toJson() => _$DescriptionToJson(this);
 }
 
 @JsonSerializable()

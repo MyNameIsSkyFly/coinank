@@ -24,7 +24,7 @@ class DataGridView extends StatelessWidget {
           width: 40,
           label: Container(
             alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0).copyWith(left: 15),
             child: Text(
               '#',
               overflow: TextOverflow.ellipsis,

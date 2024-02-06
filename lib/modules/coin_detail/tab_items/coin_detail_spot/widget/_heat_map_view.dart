@@ -28,8 +28,8 @@ class _HeatMapViewState extends State<HeatMapView> {
   Widget build(BuildContext context) {
     return AliveWidget(
       child: OverflowBox(
-        minHeight: 400,
-        maxHeight: 400,
+        minHeight: 600,
+        maxHeight: 600,
         minWidth: MediaQuery.of(context).size.width - 30,
         maxWidth: MediaQuery.of(context).size.width - 30,
         alignment: Alignment.topCenter,

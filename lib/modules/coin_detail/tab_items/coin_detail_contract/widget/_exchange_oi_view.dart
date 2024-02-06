@@ -3,13 +3,13 @@ import 'dart:io';
 
 import 'package:ank_app/constants/urls.dart';
 import 'package:ank_app/entity/oi_chart_menu_param_entity.dart';
+import 'package:ank_app/modules/coin_detail/coin_detail_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/common_webview.dart';
 import 'package:ank_app/widget/custom_bottom_sheet/custom_bottom_sheet_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
-import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 import '../coin_detail_contract_logic.dart';
 
@@ -62,7 +62,7 @@ class _ExchangeOiViewState extends State<ExchangeOiView> {
       'locale': AppUtil.shortLanguageName,
       'price': S.current.s_price,
       //Bar/Line
-      'viewType': 'Line'
+      'viewType': chartIndex.value == 0 ? 'Line' : 'Bar'
     };
     var platformString = Platform.isAndroid ? 'android' : 'ios';
     var jsSource = '''
@@ -72,7 +72,7 @@ setChartData($jsonData, "$platformString", "openInterest", ${jsonEncode(options)
     // webCtrl?.evaluateJavascript(source: jsSource);
   }
 
-  final showInterceptor = false.obs;
+  RxBool get showInterceptor => Get.find<CoinDetailLogic>().s1howInterceptor;
 
   Future<String?> openSelector(List<String> items) async {
     showInterceptor.value = true;
@@ -115,90 +115,97 @@ setChartData($jsonData, "$platformString", "openInterest", ${jsonEncode(options)
     'Bitfinex', 'Gate', 'Deribit', 'Huobi', 'Kraken' //end
   ];
   final intervalItems = const ['15m', '30m', '1h', '2h', '4h', '12h', '1d'];
+  final chartTypes = ['面积图', '柱状图'];
+  final chartIndex = 0.obs;
 
   @override
   Widget build(BuildContext context) {
     return AliveWidget(
       child: OverflowBox(
-        minHeight: 500,
-        maxHeight: 500,
+        minHeight: 515,
+        maxHeight: 515,
         minWidth: MediaQuery.of(context).size.width,
         maxWidth: MediaQuery.of(context).size.width,
         alignment: Alignment.topCenter,
         child: Column(
           children: [
-            Obx(() {
-              return Row(
-                children: [
-                  const Gap(15),
-                  Expanded(
-                    child: Text(
-                      '${S.of(context).s_exchange_oi}(${menuParamEntity.value.baseCoin})',
-                      style: Styles.tsBody_14m(context),
-                    ),
-                  ),
-                  const Gap(10),
-                  _filterChip(context, onTap: () async {
-                    final result = await openSelector(exchangeItems);
-                    if (result != null &&
-                        result.toLowerCase() !=
-                            menuParamEntity.value.exchange?.toLowerCase()) {
-                      menuParamEntity.value.exchange = result;
-                      updateChart();
-                      menuParamEntity.refresh();
-                    }
-                  }, text: menuParamEntity.value.exchange),
-                  const Gap(10),
-                  _filterChip(context, onTap: () async {
-                    final result = await openSelector(intervalItems);
-                    if (result != null &&
-                        result.toLowerCase() !=
-                            menuParamEntity.value.interval?.toLowerCase()) {
-                      menuParamEntity.value.interval = result;
-                      loadOIData();
-                      menuParamEntity.refresh();
-                    }
-                  }, text: menuParamEntity.value.interval),
-                  const Gap(10),
-                  _filterChip(context, onTap: () async {
-                    final result = await openSelector([
-                      'USD',
-                      menuParamEntity.value.baseCoin ?? '',
-                    ]);
-                    if (result != null &&
-                        result.toLowerCase() !=
-                            menuParamEntity.value.type?.toLowerCase()) {
-                      menuParamEntity.value.type = result;
-                      loadOIData();
-                      menuParamEntity.refresh();
-                    }
-                  }, text: menuParamEntity.value.type),
-                  const Gap(15),
-                ],
-              );
-            }),
-            Stack(
+            const Gap(15),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  height: 400,
-                  width: double.infinity,
-                  margin: const EdgeInsets.all(15),
-                  child: CommonWebView(
-                    url: Urls.chart20Url,
-                    onLoadStop: (controller) =>
-                        updateReadyStatus(webReady: true),
-                    onWebViewCreated: (controller) {
-                      webCtrl = controller;
-                    },
+                Padding(
+                  padding: const EdgeInsets.only(left: 15),
+                  child: Text(
+                    '${S.of(context).s_exchange_oi}(${menuParamEntity.value.baseCoin})',
+                    style: Styles.tsBody_14m(context),
                   ),
                 ),
-                if (Platform.isIOS)
-                  Positioned.fill(child: Obx(() {
-                    return Visibility(
-                        visible: showInterceptor.value,
-                        child: PointerInterceptor(child: const SizedBox()));
-                  }))
+                const Gap(10),
+                Obx(() {
+                  return Row(
+                    children: [
+                      const Gap(15),
+                      _filterChip(context, onTap: () async {
+                        final result = await openSelector(exchangeItems);
+                        if (result != null &&
+                            result.toLowerCase() !=
+                                menuParamEntity.value.exchange?.toLowerCase()) {
+                          menuParamEntity.value.exchange = result;
+                          updateChart();
+                          menuParamEntity.refresh();
+                        }
+                      }, text: menuParamEntity.value.exchange),
+                      const Gap(10),
+                      _filterChip(context, onTap: () async {
+                        final result = await openSelector(intervalItems);
+                        if (result != null &&
+                            result.toLowerCase() !=
+                                menuParamEntity.value.interval?.toLowerCase()) {
+                          menuParamEntity.value.interval = result;
+                          loadOIData();
+                          menuParamEntity.refresh();
+                        }
+                      }, text: menuParamEntity.value.interval),
+                      const Gap(10),
+                      _filterChip(context, onTap: () async {
+                        final result = await openSelector([
+                          'USD',
+                          menuParamEntity.value.baseCoin ?? '',
+                        ]);
+                        if (result != null &&
+                            result.toLowerCase() !=
+                                menuParamEntity.value.type?.toLowerCase()) {
+                          menuParamEntity.value.type = result;
+                          loadOIData();
+                          menuParamEntity.refresh();
+                        }
+                      }, text: menuParamEntity.value.type),
+                      const Gap(10),
+                      _filterChip(context, onTap: () async {
+                        final result = await openSelector(chartTypes);
+                        if (result != null &&
+                            result != chartTypes[chartIndex.value]) {
+                          chartIndex.value = chartTypes.indexOf(result);
+                          updateChart();
+                        }
+                      }, text: chartTypes[chartIndex.value]),
+                      const Gap(15),
+                    ],
+                  );
+                }),
               ],
+            ),
+            Container(
+              height: 400,
+              width: double.infinity,
+              margin: const EdgeInsets.all(15),
+              child: CommonWebView(
+                url: Urls.chart20Url,
+                onLoadStop: (controller) => updateReadyStatus(webReady: true),
+                onWebViewCreated: (controller) {
+                  webCtrl = controller;
+                },
+              ),
             ),
           ],
         ),

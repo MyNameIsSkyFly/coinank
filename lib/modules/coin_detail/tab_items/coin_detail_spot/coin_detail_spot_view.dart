@@ -1,9 +1,11 @@
 import 'package:ank_app/modules/coin_detail/tab_items/coin_detail_spot/widget/_heat_map_view.dart';
 import 'package:ank_app/widget/animated_color_text.dart';
+import 'package:ank_app/widget/rate_with_sign.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../res/export.dart';
+import '../coin_detail_contract/widget/_chart_kline_view.dart';
 import 'coin_detail_spot_logic.dart';
 import 'widget/_data_grid_view.dart';
 import 'widget/_vol_24h_view.dart';
@@ -38,7 +40,8 @@ class _CoinDetailSpotViewState extends State<CoinDetailSpotView>
                 .where((p0) => p0.baseCoin == logic.baseCoin)
                 .first;
             return SliverToBoxAdapter(
-              child: SizedBox(
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
                 height: 100,
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -51,15 +54,18 @@ class _CoinDetailSpotViewState extends State<CoinDetailSpotView>
                           AnimatedColorText(
                             text: '\$${coinInfo.price}',
                             value: coinInfo.price ?? 0,
+                            style: TextStyle(
+                                fontWeight: Styles.fontMedium, fontSize: 18),
                           ),
-                          Text('\$${coinInfo.priceChangeH24}'),
+                          RateWithSign(rate: coinInfo.priceChangeH24),
                         ],
                       ),
                     ),
                     FilledButton(
                         style: FilledButton.styleFrom(
-                            maximumSize: Size(100, 40),
-                            minimumSize: Size(100, 40),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 4),
+                            minimumSize: Size.zero,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(4),
                             )),
@@ -70,7 +76,17 @@ class _CoinDetailSpotViewState extends State<CoinDetailSpotView>
                               logic.baseCoin ?? '',
                               'SWAP');
                         },
-                        child: Text(S.of(context).s_order_flow))
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              S.of(context).s_order_flow,
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 14),
+                            ),
+                            Icon(Icons.keyboard_arrow_right_rounded, size: 17)
+                          ],
+                        ))
                   ],
                 ),
               ),
@@ -102,6 +118,13 @@ class _CoinDetailSpotViewState extends State<CoinDetailSpotView>
               ),
             );
           }),
+          SliverToBoxAdapter(
+              child: ChartKlineView(
+            baseCoin: logic.detailLogic.coin.baseCoin ?? '',
+            symbol: logic.detailLogic.coin.symbol ?? '',
+            exchangeName: logic.detailLogic.coin.exchangeName ?? '',
+            isSpot: true,
+          )),
         ];
       },
       body: Column(

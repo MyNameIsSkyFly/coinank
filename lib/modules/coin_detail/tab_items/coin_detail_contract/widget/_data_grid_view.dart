@@ -7,7 +7,7 @@ import '../../../../../res/export.dart';
 import '../coin_detail_contract_logic.dart';
 import '_datagrid_source.dart';
 
-class DataGridView extends StatelessWidget {
+class DataGridView extends StatefulWidget {
   const DataGridView({
     super.key,
     required this.logic,
@@ -15,16 +15,21 @@ class DataGridView extends StatelessWidget {
 
   final CoinDetailContractLogic logic;
 
+  @override
+  State<DataGridView> createState() => _DataGridViewState();
+}
+
+class _DataGridViewState extends State<DataGridView> {
   List<GridColumn> getColumns(BuildContext context) {
     List<GridColumn> columns;
     columns = <GridColumn>[
       //todo intl
       GridColumn(
           columnName: '1',
-          width: 110,
+          width: 120,
           label: Container(
             alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0).copyWith(left: 15),
             child: Text(
               '交易所',
               overflow: TextOverflow.ellipsis,
@@ -118,62 +123,107 @@ class DataGridView extends StatelessWidget {
     return columns;
   }
 
+  final typeIndex = 0.obs;
+
+  Widget _text(String text, int index) {
+    return GestureDetector(
+      onTap: () {
+        typeIndex.value = index;
+        widget.logic.coin24HDataList.refresh();
+      },
+      child: Padding(
+          padding: const EdgeInsets.only(left: 15),
+          child: Text(
+            text,
+            style: index == typeIndex.value
+                ? Styles.tsMain_14m
+                : Styles.tsSub_14m(context),
+          )),
+    );
+  }
+
+  final typeMap = {
+    1: 'SWAP',
+    2: 'FUTURES',
+  };
+
   @override
   Widget build(BuildContext context) {
     return AliveWidget(
       child: SingleChildScrollView(
         padding: const EdgeInsets.only(bottom: 50),
-        child: Obx(() {
-          var productDataGridSource =
-              GridDataSource(logic.coin24HDataList.value, logic.baseCoin);
-          return SfTheme(
-            data: SfThemeData(
-                dataGridThemeData: SfDataGridThemeData(
-                    frozenPaneLineColor: Colors.transparent,
-                    sortIcon: Builder(
-                      builder: (context) {
-                        Widget? icon;
-                        String columnName = '';
-                        context.visitAncestorElements((element) {
-                          if (element is GridHeaderCellElement) {
-                            columnName = element.column.columnName;
-                          }
-                          return true;
-                        });
-                        var column = productDataGridSource.sortedColumns
-                            .where((element) => element.name == columnName)
-                            .firstOrNull;
-                        if (column != null) {
-                          if (column.sortDirection ==
-                              DataGridSortDirection.ascending) {
-                            icon = Image.asset(Assets.commonIconSortUp,
-                                width: 9, height: 12);
-                          } else if (column.sortDirection ==
-                              DataGridSortDirection.descending) {
-                            icon = Image.asset(Assets.commonIconSortDown,
-                                width: 9, height: 12);
-                          }
-                        }
-                        return icon ??
-                            Image.asset(Assets.commonIconSortN,
-                                width: 9, height: 12);
-                      },
-                    ))),
-            child: SfDataGrid(
-                showHorizontalScrollbar: false,
-                showVerticalScrollbar: false,
-                gridLinesVisibility: GridLinesVisibility.none,
-                headerGridLinesVisibility: GridLinesVisibility.none,
-                verticalScrollPhysics: const NeverScrollableScrollPhysics(),
-                allowSorting: true,
-                allowTriStateSorting: true,
-                shrinkWrapRows: true,
-                frozenColumnsCount: 1,
-                horizontalScrollPhysics: const ClampingScrollPhysics(),
-                source: productDataGridSource,
-                columns: getColumns(context)),
-          );
-        }),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Gap(15),
+            Obx(() {
+              return Row(
+                children: [
+                  _text('所有', 0),
+                  _text('永续', 1),
+                  _text('交割', 2),
+                ],
+              );
+            }),
+            Obx(() {
+              var productDataGridSource = GridDataSource(
+                  widget.logic.coin24HDataList
+                      .where((p0) => typeIndex.value == 0
+                          ? true
+                          : p0.contractType?.toUpperCase() ==
+                              typeMap[typeIndex.value])
+                      .toList(),
+                  widget.logic.baseCoin);
+              return SfTheme(
+                data: SfThemeData(
+                    dataGridThemeData: SfDataGridThemeData(
+                        frozenPaneLineColor: Colors.transparent,
+                        sortIcon: Builder(
+                          builder: (context) {
+                            Widget? icon;
+                            String columnName = '';
+                            context.visitAncestorElements((element) {
+                              if (element is GridHeaderCellElement) {
+                                columnName = element.column.columnName;
+                              }
+                              return true;
+                            });
+                            var column = productDataGridSource.sortedColumns
+                                .where((element) => element.name == columnName)
+                                .firstOrNull;
+                            if (column != null) {
+                              if (column.sortDirection ==
+                                  DataGridSortDirection.ascending) {
+                                icon = Image.asset(Assets.commonIconSortUp,
+                                    width: 9, height: 12);
+                              } else if (column.sortDirection ==
+                                  DataGridSortDirection.descending) {
+                                icon = Image.asset(Assets.commonIconSortDown,
+                                    width: 9, height: 12);
+                              }
+                            }
+                            return icon ??
+                                Image.asset(Assets.commonIconSortN,
+                                    width: 9, height: 12);
+                          },
+                        ))),
+                child: SfDataGrid(
+                    showHorizontalScrollbar: false,
+                    showVerticalScrollbar: false,
+                    gridLinesVisibility: GridLinesVisibility.none,
+                    headerGridLinesVisibility: GridLinesVisibility.none,
+                    verticalScrollPhysics: const NeverScrollableScrollPhysics(),
+                    allowSorting: true,
+                    allowTriStateSorting: true,
+                    shrinkWrapRows: true,
+                    frozenColumnsCount: 1,
+                    horizontalScrollPhysics: const ClampingScrollPhysics(),
+                    source: productDataGridSource,
+                    columns: getColumns(context)),
+              );
+            }),
+          ],
+        ),
       ),
     );
   }

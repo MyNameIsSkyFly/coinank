@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:ank_app/constants/urls.dart';
 import 'package:ank_app/entity/oi_chart_menu_param_entity.dart';
-import 'package:ank_app/modules/coin_detail/coin_detail_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/common_webview.dart';
 import 'package:ank_app/widget/custom_bottom_sheet/custom_bottom_sheet_view.dart';
@@ -11,21 +10,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 
-import '../coin_detail_spot_logic.dart';
+import '../../../coin_detail_logic.dart';
+import '../coin_detail_contract_logic.dart';
 
-class Vol24hView extends StatefulWidget {
-  const Vol24hView({
+class ChartLiqView extends StatefulWidget {
+  const ChartLiqView({
     super.key,
     required this.logic,
   });
 
-  final CoinDetailSpotLogic logic;
+  final CoinDetailContractLogic logic;
 
   @override
-  State<Vol24hView> createState() => _Vol24hViewState();
+  State<ChartLiqView> createState() => _ChartLiqViewState();
 }
 
-class _Vol24hViewState extends State<Vol24hView> {
+class _ChartLiqViewState extends State<ChartLiqView> {
   final menuParamEntity = OIChartMenuParamEntity(
     baseCoin: 'BTC',
     exchange: 'ALL',
@@ -45,19 +45,18 @@ class _Vol24hViewState extends State<Vol24hView> {
 
   void updateChart() {
     final options = {
-      'exchangeName': menuParamEntity.value.exchange,
       'interval': menuParamEntity.value.interval,
       'baseCoin': menuParamEntity.value.baseCoin,
       'locale': AppUtil.shortLanguageName,
-      'price': S.current.s_price,
-      //Bar/Line
-      'viewType': chartIndex.value == 0 ? 'Line' : 'Bar'
+      'theme':
+          Theme.of(context).brightness == Brightness.dark ? 'dark' : 'light',
     };
     var platformString = Platform.isAndroid ? 'android' : 'ios';
     var jsSource = '''
-setChartData($jsonData, "$platformString", "volChart", ${jsonEncode(options)});    
+setChartData($jsonData, "$platformString", "liqStatistic", ${jsonEncode(options)});    
     ''';
     updateReadyStatus(dataReady: true, evJS: jsSource);
+    // webCtrl?.evaluateJavascript(source: jsSource);
   }
 
   RxBool get showInterceptor => Get.find<CoinDetailLogic>().s1howInterceptor;
@@ -89,23 +88,15 @@ setChartData($jsonData, "$platformString", "volChart", ${jsonEncode(options)});
   }
 
   Future<void> loadData() async {
-    final result = await Apis().getVol24hSpotChartJson(
-      baseCoin: menuParamEntity.value.baseCoin,
-      exchangeName: menuParamEntity.value.exchange,
+    final result = await Apis().getLiqStatistic(
+      menuParamEntity.value.baseCoin ?? '',
       interval: menuParamEntity.value.interval,
     );
-    final json = {'code': '1', 'success': true, 'data': result};
-    jsonData = jsonEncode(json);
+    jsonData = jsonEncode(result);
     updateChart();
   }
 
-  final exchangeItems = const [
-    'ALL', 'Binance', 'Okex', 'Bybit', 'CME', 'Bitget', 'Bitmex', //end
-    'Bitfinex', 'Gate', 'Deribit', 'Huobi', 'Kraken' //end
-  ];
   final intervalItems = const ['15m', '30m', '1h', '2h', '4h', '12h', '1d'];
-  final chartTypes = ['面积图', '柱状图'];
-  final chartIndex = 0.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -117,31 +108,18 @@ setChartData($jsonData, "$platformString", "volChart", ${jsonEncode(options)});
         maxWidth: MediaQuery.of(context).size.width,
         alignment: Alignment.topCenter,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Gap(15),
-            Padding(
-              padding: const EdgeInsets.only(left: 15),
-              child: Text(
-                '24h成交额',
-                style: Styles.tsBody_14m(context),
-              ),
-            ),
-            const Gap(10),
             Obx(() {
               return Row(
                 children: [
                   const Gap(15),
-                  _filterChip(context, onTap: () async {
-                    final result = await openSelector(exchangeItems);
-                    if (result != null &&
-                        result.toLowerCase() !=
-                            menuParamEntity.value.exchange?.toLowerCase()) {
-                      menuParamEntity.value.exchange = result;
-                      loadData();
-                      menuParamEntity.refresh();
-                    }
-                  }, text: menuParamEntity.value.exchange),
+                  Expanded(
+                    child: Text(
+                      S.of(context).s_liquidation_data,
+                      style: Styles.tsBody_14m(context),
+                    ),
+                  ),
                   const Gap(10),
                   _filterChip(context, onTap: () async {
                     final result = await openSelector(intervalItems);
@@ -153,15 +131,6 @@ setChartData($jsonData, "$platformString", "volChart", ${jsonEncode(options)});
                       menuParamEntity.refresh();
                     }
                   }, text: menuParamEntity.value.interval),
-                  const Gap(10),
-                  _filterChip(context, onTap: () async {
-                    final result = await openSelector(chartTypes);
-                    if (result != null &&
-                        result != chartTypes[chartIndex.value]) {
-                      chartIndex.value = chartTypes.indexOf(result);
-                      updateChart();
-                    }
-                  }, text: chartTypes[chartIndex.value]),
                   const Gap(15),
                 ],
               );

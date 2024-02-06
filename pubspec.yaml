@@ -22,7 +22,7 @@ dependencies:
   shared_preferences: 2.2.2
   flutter_easyloading: 3.0.5
   intl: ^0.18.1
-  retrofit: ^4.0.3
+  retrofit: ^4.1.0
   cached_network_image: ^3.3.1
   collection: ^1.18.0
   talker_dio_logger: ^4.0.0
@@ -52,19 +52,19 @@ dependencies:
   screenshot: ^2.1.0
   pointer_interceptor: ^0.10.1
   ff_native_screenshot: ^1.0.0
-  share_plus: ^7.2.1
+  share_plus: ^7.2.2
   image_gallery_saver: ^2.0.3
   path_provider: ^2.1.2
   equatable: ^2.0.5
-  device_info_plus: ^9.1.1
-  syncfusion_flutter_datagrid: ^24.1.47
-
+  device_info_plus: ^9.1.2
+  syncfusion_flutter_datagrid: ^24.2.3
+  expandable_text: ^2.3.0
 dev_dependencies:
   flutter_native_splash: ^2.3.10
   build_runner: ^2.4.8
   flutter_lints: ^3.0.1
-  retrofit_generator: ^8.0.6
-  pigeon: ^16.0.4
+  retrofit_generator: ^8.1.0
+  pigeon: ^16.0.5
 
 flutter:
 

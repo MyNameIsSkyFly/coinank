@@ -1,5 +1,8 @@
+import 'package:ank_app/modules/coin_detail/tab_items/coin_detail_overview/widget/_tip_dialog.dart';
+import 'package:ank_app/widget/animated_color_text.dart';
 import 'package:ank_app/widget/rate_with_sign.dart';
 import 'package:collection/collection.dart';
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -26,27 +29,36 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
     return SingleChildScrollView(
       child: Obx(() {
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
+            Container(
+              padding: const EdgeInsets.all(15),
               child: Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Column(
-                    children: [
-                      Text(
-                          '${detail.value?.marketData?.currentPrice?.usd ?? '0'}'),
-                      RateWithSign(
-                          rate: detail.value?.marketData
-                                  ?.priceChangePercentage24h ??
-                              0),
-                    ],
+                  Expanded(
+                    child: Obx(() {
+                      var coinInfo = logic.detailLogic.contractLogic.state.data
+                          .where((p0) => p0.baseCoin == logic.baseCoin)
+                          .first;
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AnimatedColorText(
+                            text: '\$${coinInfo.price}',
+                            value: coinInfo.price ?? 0,
+                            style: TextStyle(
+                                fontWeight: Styles.fontMedium, fontSize: 18),
+                          ),
+                          RateWithSign(rate: coinInfo.priceChangeH24),
+                        ],
+                      );
+                    }),
                   ),
-                  Spacer(),
-                  //todo intl
                 ],
               ),
             ),
-            const Gap(10),
             Divider(
               color: Theme.of(context).cardColor,
               height: 8,
@@ -54,7 +66,13 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
             ),
             const Gap(10),
             //todo intl
-            Text('基本信息'),
+            Padding(
+              padding: const EdgeInsets.only(left: 15, top: 4),
+              child: Text(
+                '基本信息',
+                style: Styles.tsBody_16m(context),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Column(
@@ -108,11 +126,59 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
                     showDollar: true,
                     hintText:
                         '加密货币终身可能存在的编码代币最大数量。这与股票市场中的最大发行股票类似。\n\n最大供应量 = 编码的理论最大值',
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 15),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 10,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                '简介',
+                                style: Styles.tsSub_14(context),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                            flex: 15,
+                            child: Builder(builder: (context) {
+                              var description = detail.value?.description
+                                      ?.toJson()[AppUtil.shortLanguageName]
+                                      .toString() ??
+                                  '';
+                              var en = detail.value?.description
+                                      ?.toJson()['en']
+                                      ?.toString() ??
+                                  '';
+                              return ExpandableText(
+                                description.isEmpty ? en : description,
+                                collapseOnTextTap: true,
+                                expandText: '展开',
+                                collapseText: '收起',
+                                maxLines: 6,
+                                linkStyle: Styles.tsMain_12,
+                              );
+                            })),
+                      ],
+                    ),
                   )
                 ],
               ),
             ),
-            Text('相关链接'),
+            const Gap(10),
+            Divider(
+                height: 8, thickness: 8, color: Theme.of(context).cardColor),
+            Padding(
+                padding: const EdgeInsets.only(left: 15, top: 15),
+                child: Text(
+                  '相关链接',
+                  style: Styles.tsBody_16m(context),
+                )),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Column(
@@ -174,7 +240,16 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
                 ],
               ),
             ),
-            Text('市值排行榜'),
+            const Gap(10),
+            Divider(
+                height: 8, thickness: 8, color: Theme.of(context).cardColor),
+            Padding(
+              padding: const EdgeInsets.only(left: 15, top: 15),
+              child: Text(
+                '市值排行榜',
+                style: Styles.tsBody_16m(context),
+              ),
+            ),
             DataGridView(logic: logic)
           ],
         );
@@ -265,7 +340,24 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
                   style: Styles.tsSub_14(context),
                 ),
                 if (hintText != null)
-                  Icon(CupertinoIcons.question_circle, size: 14),
+                  GestureDetector(
+                    onTap: () {
+                      showCupertinoDialog(
+                        context: context,
+                        barrierDismissible: true,
+                        builder: (context) {
+                          return TipDialog(
+                            title: title,
+                            content: hintText,
+                          );
+                        },
+                      );
+                    },
+                    child: const Padding(
+                      padding: EdgeInsets.only(left: 2),
+                      child: Icon(CupertinoIcons.question_circle, size: 14),
+                    ),
+                  ),
               ],
             ),
           ),

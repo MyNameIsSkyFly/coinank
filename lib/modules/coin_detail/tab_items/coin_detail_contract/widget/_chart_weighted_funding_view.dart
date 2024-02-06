@@ -11,26 +11,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 
-import '../coin_detail_spot_logic.dart';
+import '../coin_detail_contract_logic.dart';
 
-class Vol24hView extends StatefulWidget {
-  const Vol24hView({
+class ChartWeightedFundingView extends StatefulWidget {
+  const ChartWeightedFundingView({
     super.key,
     required this.logic,
   });
 
-  final CoinDetailSpotLogic logic;
+  final CoinDetailContractLogic logic;
 
   @override
-  State<Vol24hView> createState() => _Vol24hViewState();
+  State<ChartWeightedFundingView> createState() =>
+      _ChartWeightedFundingViewState();
 }
 
-class _Vol24hViewState extends State<Vol24hView> {
+class _ChartWeightedFundingViewState extends State<ChartWeightedFundingView> {
   final menuParamEntity = OIChartMenuParamEntity(
     baseCoin: 'BTC',
     exchange: 'ALL',
     interval: '1d',
   ).obs;
+  final type = 'fr-oi'.obs;
   String? jsonData;
   ({bool dataReady, bool webReady, String evJS}) readyStatus =
       (dataReady: false, webReady: false, evJS: '');
@@ -39,25 +41,25 @@ class _Vol24hViewState extends State<Vol24hView> {
   @override
   void initState() {
     menuParamEntity.value.baseCoin = widget.logic.baseCoin;
-    loadData();
+    loadOIData();
     super.initState();
   }
 
   void updateChart() {
     final options = {
-      'exchangeName': menuParamEntity.value.exchange,
       'interval': menuParamEntity.value.interval,
       'baseCoin': menuParamEntity.value.baseCoin,
       'locale': AppUtil.shortLanguageName,
-      'price': S.current.s_price,
-      //Bar/Line
-      'viewType': chartIndex.value == 0 ? 'Line' : 'Bar'
+      'theme':
+          Theme.of(context).brightness == Brightness.dark ? 'dark' : 'light',
+      'frType': 'fr-oi', //fr-oi 持仓加权, fr-vol 成交量加权
     };
     var platformString = Platform.isAndroid ? 'android' : 'ios';
     var jsSource = '''
-setChartData($jsonData, "$platformString", "volChart", ${jsonEncode(options)});    
+setChartData($jsonData, "$platformString", "weightFundingRate", ${jsonEncode(options)});    
     ''';
     updateReadyStatus(dataReady: true, evJS: jsSource);
+    // webCtrl?.evaluateJavascript(source: jsSource);
   }
 
   RxBool get showInterceptor => Get.find<CoinDetailLogic>().s1howInterceptor;
@@ -88,24 +90,26 @@ setChartData($jsonData, "$platformString", "volChart", ${jsonEncode(options)});
     }
   }
 
-  Future<void> loadData() async {
-    final result = await Apis().getVol24hSpotChartJson(
-      baseCoin: menuParamEntity.value.baseCoin,
-      exchangeName: menuParamEntity.value.exchange,
+  Future<void> loadOIData() async {
+    final result = await Apis().getWeightFundingRate(
+      menuParamEntity.value.baseCoin ?? '',
       interval: menuParamEntity.value.interval,
+      size: 180,
+      endTime: DateTime.now().millisecondsSinceEpoch,
     );
-    final json = {'code': '1', 'success': true, 'data': result};
+    final json = {'code': '1', 'success': 'true', 'data': result};
     jsonData = jsonEncode(json);
     updateChart();
   }
 
-  final exchangeItems = const [
-    'ALL', 'Binance', 'Okex', 'Bybit', 'CME', 'Bitget', 'Bitmex', //end
-    'Bitfinex', 'Gate', 'Deribit', 'Huobi', 'Kraken' //end
-  ];
   final intervalItems = const ['15m', '30m', '1h', '2h', '4h', '12h', '1d'];
-  final chartTypes = ['面积图', '柱状图'];
-  final chartIndex = 0.obs;
+
+  //todo intl
+  final typeItems = ['fr-oi', 'fr-vol'];
+  final typeMap = {
+    'fr-oi': '持仓加权',
+    'fr-vol': '成交量加权',
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -117,31 +121,18 @@ setChartData($jsonData, "$platformString", "volChart", ${jsonEncode(options)});
         maxWidth: MediaQuery.of(context).size.width,
         alignment: Alignment.topCenter,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Gap(15),
-            Padding(
-              padding: const EdgeInsets.only(left: 15),
-              child: Text(
-                '24h成交额',
-                style: Styles.tsBody_14m(context),
-              ),
-            ),
-            const Gap(10),
             Obx(() {
               return Row(
                 children: [
                   const Gap(15),
-                  _filterChip(context, onTap: () async {
-                    final result = await openSelector(exchangeItems);
-                    if (result != null &&
-                        result.toLowerCase() !=
-                            menuParamEntity.value.exchange?.toLowerCase()) {
-                      menuParamEntity.value.exchange = result;
-                      loadData();
-                      menuParamEntity.refresh();
-                    }
-                  }, text: menuParamEntity.value.exchange),
+                  Expanded(
+                    child: Text(
+                      '${S.of(context).s_exchange_oi}(${menuParamEntity.value.baseCoin})',
+                      style: Styles.tsBody_14m(context),
+                    ),
+                  ),
                   const Gap(10),
                   _filterChip(context, onTap: () async {
                     final result = await openSelector(intervalItems);
@@ -149,19 +140,19 @@ setChartData($jsonData, "$platformString", "volChart", ${jsonEncode(options)});
                         result.toLowerCase() !=
                             menuParamEntity.value.interval?.toLowerCase()) {
                       menuParamEntity.value.interval = result;
-                      loadData();
+                      loadOIData();
                       menuParamEntity.refresh();
                     }
                   }, text: menuParamEntity.value.interval),
                   const Gap(10),
                   _filterChip(context, onTap: () async {
-                    final result = await openSelector(chartTypes);
+                    final result = await openSelector(typeItems);
                     if (result != null &&
-                        result != chartTypes[chartIndex.value]) {
-                      chartIndex.value = chartTypes.indexOf(result);
-                      updateChart();
+                        result.toLowerCase() != type.toLowerCase()) {
+                      type.value = result;
+                      loadOIData();
                     }
-                  }, text: chartTypes[chartIndex.value]),
+                  }, text: type.value),
                   const Gap(15),
                 ],
               );

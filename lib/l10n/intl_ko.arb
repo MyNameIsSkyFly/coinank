@@ -135,7 +135,7 @@
   "customize_resources": "cus resources",
   "s_tickers": "거래소",
   "s_price": "Price",
-  "s_price_chg": "Price Change",
+  "s_price_chg": "Price Chg",
   "s_oi_chg": "OI Change",
   "s_exchange_longshort_ratio": "Exchange Longs/Shorts",
   "s_sortby": "정렬 기준",

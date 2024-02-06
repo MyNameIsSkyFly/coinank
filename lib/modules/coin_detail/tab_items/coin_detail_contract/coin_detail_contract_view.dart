@@ -1,10 +1,14 @@
 import 'package:ank_app/modules/coin_detail/tab_items/coin_detail_contract/coin_detail_contract_logic.dart';
+import 'package:ank_app/modules/coin_detail/tab_items/coin_detail_contract/widget/_chart_kline_view.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/animated_color_text.dart';
+import 'package:ank_app/widget/rate_with_sign.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 
+import 'widget/_chart_liq_view.dart';
+import 'widget/_chart_weighted_funding_view.dart';
 import 'widget/_data_grid_view.dart';
 import 'widget/_exchange_oi_view.dart';
 import 'widget/_heat_map_view.dart';
@@ -32,6 +36,7 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
     super.initState();
   }
 
+  final dataExpanded = false.obs;
   @override
   Widget build(BuildContext context) {
     return NestedScrollView(
@@ -42,7 +47,8 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
                 .where((p0) => p0.baseCoin == logic.baseCoin)
                 .first;
             return SliverToBoxAdapter(
-              child: SizedBox(
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
                 height: 100,
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -55,15 +61,18 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
                           AnimatedColorText(
                             text: '\$${coinInfo.price}',
                             value: coinInfo.price ?? 0,
+                            style: TextStyle(
+                                fontWeight: Styles.fontMedium, fontSize: 18),
                           ),
-                          Text('\$${coinInfo.priceChangeH24}'),
+                          RateWithSign(rate: coinInfo.priceChangeH24),
                         ],
                       ),
                     ),
                     FilledButton(
                         style: FilledButton.styleFrom(
-                            maximumSize: Size(100, 40),
-                            minimumSize: Size(100, 40),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 4),
+                            minimumSize: Size.zero,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(4),
                             )),
@@ -74,15 +83,25 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
                               logic.baseCoin ?? '',
                               'SWAP');
                         },
-                        child: Text(S.of(context).s_order_flow))
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              S.of(context).s_order_flow,
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 14),
+                            ),
+                            Icon(Icons.keyboard_arrow_right_rounded, size: 17)
+                          ],
+                        ))
                   ],
                 ),
               ),
             );
           }),
-          Obx(() {
-            return SliverToBoxAdapter(
-              child: Column(
+          SliverToBoxAdapter(
+            child: Obx(() {
+              return Column(
                 children: [
                   _rowGroup([
                     (
@@ -95,24 +114,31 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
                     ),
                     (
                       '24H波幅',
-                      '${logic.coin24hInfo.value?.priceChange24h?.toStringAsFixed(2)}%'
+                      '${logic.coin24hInfo.value?.priceChange24h?.toStringAsFixed(2) ?? 0}%'
                     ),
                   ], [
-                    ('24H量', '${logic.coin24hInfo.value?.vol24h}'),
-                    ('24H额', '${logic.coin24hInfo.value?.turnover24h}'),
-                    ('24H换手', '${logic.coin24hInfo.value?.vol24h}'),
+                    (
+                      '24H量',
+                      '${logic.coin24hInfo.value?.volCcy24h ?? 0} ${logic.baseCoin}'
+                    ),
+                    (
+                      '24H额',
+                      '\$${AppUtil.getLargeFormatString('${logic.coin24hInfo.value?.turnover24h}', precision: 2)}'
+                    ),
+                    ('24H换手', '${logic.coin24hInfo.value?.changeRate ?? 0}%'),
                   ]),
-                  _rowGroup([
-                    (
-                      '4H多单',
-                      '${((logic.info.value?.longRatio4h ?? 0) * 100).toStringAsFixed(2)}%'
-                    ),
-                    (
-                      '4H空单',
-                      '${((logic.info.value?.shortRatio4h ?? 0) * 100).toStringAsFixed(2)}%'
-                    ),
-                    ('4H多空比', '${logic.info.value?.longShortRatio4h}'),
-                  ], [
+                  if (dataExpanded.value) ...[
+                    _rowGroup([
+                      (
+                        '4H多单',
+                        '${((logic.info.value?.longRatio4h ?? 0) * 100).toStringAsFixed(2)}%'
+                      ),
+                      (
+                        '4H空单',
+                        '${((logic.info.value?.shortRatio4h ?? 0) * 100).toStringAsFixed(2)}%'
+                      ),
+                      ('4H多空比', '${logic.info.value?.longShortRatio4h}'),
+                    ], [
                     (
                       '永续持仓',
                       AppUtil.getLargeFormatString(
@@ -153,11 +179,41 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
                       AppUtil.getLargeFormatString(
                           '${logic.info.value?.longLiq24h}')
                     ),
-                  ]),
+                    ]),
+                  ],
+                  Transform.scale(
+                    scaleY: 0.6,
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () => dataExpanded.toggle(),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            dataExpanded.value
+                                ? Icons.keyboard_arrow_up
+                                : Icons.keyboard_arrow_down,
+                            color: Styles.cSub(context),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Divider(
+                    height: 8,
+                    thickness: 8,
+                    color: Theme.of(context).cardColor,
+                  ),
                 ],
-              ),
-            );
-          }),
+              );
+            }),
+          ),
+          SliverToBoxAdapter(
+              child: ChartKlineView(
+            baseCoin: logic.detailLogic.coin.baseCoin ?? '',
+            symbol: logic.detailLogic.coin.symbol ?? '',
+            exchangeName: logic.detailLogic.coin.exchangeName ?? '',
+          )),
         ];
       },
       body: Column(
@@ -184,8 +240,8 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
                 HeatMapView(logic: logic),
                 ExchangeOiView(logic: logic),
                 Vol24hView(logic: logic),
-                Container(),
-                Container(),
+                ChartLiqView(logic: logic),
+                ChartWeightedFundingView(logic: logic),
               ],
             ),
           ),

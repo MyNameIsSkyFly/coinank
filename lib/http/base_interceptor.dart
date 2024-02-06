@@ -18,25 +18,43 @@ class BaseInterceptor extends Interceptor {
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    final code = response.data?['code'];
-    if ('$code' != '1') {
-      if (!_handleCode('$code')) {
-        AppUtil.showToast((response.data?['msg'] ?? '').toString());
+    if (response.requestOptions.path.startsWith('/api')) {
+      final code = response.data?['code'];
+      if ('$code' != '1') {
+        if (!_handleCode('$code')) {
+          AppUtil.showToast((response.data?['msg'] ?? '').toString());
+        }
+        handler.reject(
+          DioException(
+              requestOptions: response.requestOptions,
+              message: response.data?['msg'].toString()),
+        );
+        return;
       }
-      handler.reject(
-        DioException(
-            requestOptions: response.requestOptions,
-            message: response.data?['msg'].toString()),
-      );
-      return;
+      if (response.requestOptions.path
+          case '/api/longshort/longShortRatio' ||
+              '/api/liquidation/statistic') {
+        handler.next(response);
+        return;
+      }
+      final data = response.data?['data'];
+      response.data = data;
+    } else if (response.requestOptions.path.startsWith('/indicatorapi')) {
+      final code = response.data?['code'];
+      if ('$code' != '200') {
+        if (!_handleCode('$code')) {
+          AppUtil.showToast((response.data?['msg'] ?? '').toString());
+        }
+        handler.reject(
+          DioException(
+              requestOptions: response.requestOptions,
+              message: response.data?['msg'].toString()),
+        );
+        return;
+      }
+      final data = response.data?['data'];
+      response.data = data;
     }
-    if (response.requestOptions.path
-        .contains('/api/longshort/longShortRatio')) {
-      handler.next(response);
-      return;
-    }
-    final data = response.data?['data'];
-    response.data = data;
     handler.next(response);
   }
 

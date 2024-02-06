@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:ank_app/modules/coin_detail/tab_items/coin_detail_contract/coin_detail_contract_view.dart';
 import 'package:ank_app/modules/coin_detail/tab_items/coin_detail_spot/coin_detail_spot_view.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 import 'coin_detail_logic.dart';
+import 'tab_items/coin_detail_hold/coin_detail_hold_view.dart';
 import 'tab_items/coin_detail_overview/coin_detail_overview_view.dart';
 
 class CoinDetailPage extends StatefulWidget {
@@ -28,52 +32,60 @@ class _CoinDetailPageState extends State<CoinDetailPage>
         length: 4,
         vsync: this,
         animationDuration: Duration.zero,
-        initialIndex: 2);
+        initialIndex: 0);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        titleSpacing: 0,
-        title: Row(
-          children: [
-            ImageUtil.networkImage(
-              AppConst.imageHost(logic.coin.baseCoin ?? ''),
-              width: 24,
-              height: 24,
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: AppBar(
+            centerTitle: false,
+            titleSpacing: 0,
+            title: Row(
+              children: [
+                ImageUtil.networkImage(
+                  AppConst.imageHost(logic.coin.baseCoin ?? ''),
+                  width: 24,
+                  height: 24,
+                ),
+                const Gap(5),
+                Text(logic.coin.baseCoin ?? ''),
+              ],
             ),
-            const Gap(5),
-            Text(logic.coin.baseCoin ?? ''),
-          ],
-        ),
-      ),
-      body: Column(children: [
-        TabBar(
-            tabAlignment: TabAlignment.start,
-            isScrollable: true,
-            controller: _tabController,
-            tabs: [
-              //todo intl
-              Tab(text: '合约'),
-              Tab(text: '现货'),
-              Tab(text: '总览'),
-              Tab(text: '持币'),
-            ]),
-        Expanded(
-            child: TabBarView(
-                physics: NeverScrollableScrollPhysics(),
+          ),
+          body: Column(children: [
+            TabBar(
+                tabAlignment: TabAlignment.start,
+                isScrollable: true,
                 controller: _tabController,
-                children: [
-              const AliveWidget(child: CoinDetailContractView()),
-              const AliveWidget(child: CoinDetailSpotView()),
-              const AliveWidget(child: CoinDetailOverviewView()),
-              Container(
-                color: Colors.green,
-              ),
-            ]))
-      ]),
+                tabs: [
+                  //todo intl
+                  Tab(text: '合约'),
+                  Tab(text: '现货'),
+                  Tab(text: '总览'),
+                  Tab(text: '持币'),
+                ]),
+            Expanded(
+                child: TabBarView(
+                    physics: NeverScrollableScrollPhysics(),
+                    controller: _tabController,
+                    children: const [
+                  AliveWidget(child: CoinDetailContractView()),
+                  AliveWidget(child: CoinDetailSpotView()),
+                  AliveWidget(child: CoinDetailOverviewView()),
+                  AliveWidget(child: CoinDetailHoldView()),
+                ]))
+          ]),
+        ),
+        if (Platform.isIOS)
+          Positioned.fill(child: Obx(() {
+            return Visibility(
+                visible: logic.s1howInterceptor.value,
+                child: PointerInterceptor(child: const SizedBox()));
+          }))
+      ],
     );
   }
 }

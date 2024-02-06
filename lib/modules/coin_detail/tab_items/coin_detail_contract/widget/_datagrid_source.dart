@@ -61,7 +61,7 @@ class GridDataSource extends DataGridSource {
     return DataGridRowAdapter(cells: [
       Container(
         alignment: Alignment.centerLeft,
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8).copyWith(left: 15),
         child: Row(
           children: [
             ImageUtil.exchangeImage(row.getCells()[0].value.toString(),

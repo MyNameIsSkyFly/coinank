@@ -19,17 +19,6 @@ class ContactUsPage extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          _LinkItem(
-              asset: Assets.settingIcPerson,
-              title: S.of(context).businessTelegram,
-              linkUrl: 'https://t.me/Luukk11',
-              linkText: '@Luukk11'),
-          _CopyItem(
-            asset: Assets.settingIcMail,
-            title: S.of(context).businessEmail,
-            text: 'business@coinank.com',
-          ),
-          const Divider(height: 20),
           const _LinkItem(
               asset: Assets.settingIcTelegram,
               title: 'Telegram',
@@ -81,6 +70,17 @@ class ContactUsPage extends StatelessWidget {
               launchUrl(Uri.parse('https://www.youtube.com/@CoinankOfficial'),
                   mode: LaunchMode.externalApplication);
             },
+          ),
+          const Divider(height: 20),
+          _LinkItem(
+              asset: Assets.settingIcPerson,
+              title: S.of(context).businessTelegram,
+              linkUrl: 'https://t.me/Luukk11',
+              linkText: '@Luukk11'),
+          _CopyItem(
+            asset: Assets.settingIcMail,
+            title: S.of(context).businessEmail,
+            text: 'business@coinank.com',
           ),
           const Divider(height: 20),
           _CopyItem(
