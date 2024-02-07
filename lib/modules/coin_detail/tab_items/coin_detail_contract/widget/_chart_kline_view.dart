@@ -31,21 +31,6 @@ class ChartKlineView extends StatefulWidget {
 
 class _ChartKlineViewState extends State<ChartKlineView> {
   InAppWebViewController? webCtrl;
-  Timer? _timer;
-
-  @override
-  void initState() {
-    _timer = Timer.periodic(const Duration(seconds: 10), (timer) {
-      _evaluate();
-    });
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
 
   Widget _timeItem(String text, String? value) {
     return Expanded(
