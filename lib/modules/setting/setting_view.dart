@@ -9,6 +9,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../constants/urls.dart';
@@ -172,7 +173,8 @@ class _SettingPageState extends State<SettingPage> {
                     title: S.of(context).s_language,
                     value: S.of(context).languageName),
                 _SettingLine(
-                  onTap: () => AppNav.toContactUs(),
+                  onTap: () =>
+                      Share.shareUri(Uri.parse('https://coinank.com/download')),
                   title: S.of(context).shareApp,
                 ),
                 _SettingLine(

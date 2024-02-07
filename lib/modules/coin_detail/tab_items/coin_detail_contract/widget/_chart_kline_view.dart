@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:ank_app/generated/l10n.dart';
+import 'package:ank_app/modules/coin_detail/_selector_view.dart';
 import 'package:ank_app/res/styles.dart';
 import 'package:ank_app/widget/common_webview.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
@@ -33,6 +35,7 @@ class _ChartKlineViewState extends State<ChartKlineView> {
     return Expanded(
         child: Center(
             child: GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: value == null
           ? null
           : () {
@@ -51,6 +54,20 @@ class _ChartKlineViewState extends State<ChartKlineView> {
     )));
   }
 
+  final timeItems = ['1m', '3m', '5m', '30m', '2h', '6h', '12h'];
+
+  Future<String?> openSelector(List<String> items) async {
+    final result = await showCupertinoModalPopup(
+      context: context,
+      builder: (context) =>
+          SelectorSheetWithInterceptor(title: '', dataList: items),
+      barrierDismissible: true,
+      barrierColor: Colors.black26,
+    );
+
+    return result as String?;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -61,12 +78,47 @@ class _ChartKlineViewState extends State<ChartKlineView> {
           child: Obx(() {
             return Row(
               children: [
-                _timeItem(S.of(context).timeDivider, null),
                 _timeItem('15m', '15m'),
                 _timeItem('1h', '1h'),
+                _timeItem('4h', '4h'),
                 _timeItem('1d', '1d'),
                 _timeItem('7d', '1w'),
                 _timeItem('30d', '1M'),
+                Expanded(
+                    child: Center(
+                        child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () async {
+                    final result = await openSelector(timeItems);
+                    if (result == null) return;
+                    interval.value = result;
+                    _evaluate();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: FittedBox(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Obx(() {
+                            var contains = timeItems.contains(interval.value);
+                            return Text(
+                              contains ? interval.value : S.of(context).more,
+                              style: contains
+                                  ? Styles.tsMain_12
+                                  : Styles.tsSub_12(context),
+                            );
+                          }),
+                          Icon(
+                            Icons.keyboard_arrow_down,
+                            color: Styles.cSub(context),
+                            size: 10,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ))),
               ],
             );
           }),
