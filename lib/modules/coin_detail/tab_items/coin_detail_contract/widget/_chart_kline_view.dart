@@ -147,7 +147,6 @@ class _ChartKlineViewState extends State<ChartKlineView> {
       'symbol': widget.symbol,
       'interval': interval.value,
       'exchangeType': widget.isSpot ? 'SPOT' : 'SWAP',
-      'locale': AppUtil.shortLanguageName,
       // 'baseCoin': widget.logic.baseCoin,
       //币
       // 'productType': 'CONTRACT',
@@ -167,7 +166,7 @@ class _ChartKlineViewState extends State<ChartKlineView> {
     //     })
     var platformString = Platform.isAndroid ? 'android' : 'ios';
     var dataParamsString = jsonEncode(dataParams);
-    var localeString = jsonEncode({'locale': 'zh'});
+    var localeString = jsonEncode({'locale': AppUtil.shortLanguageName});
     var jsSource = '''
         setChartData($dataParamsString, "$platformString", "kline", $localeString);    
                 ''';
