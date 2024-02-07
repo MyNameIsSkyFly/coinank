@@ -98,21 +98,30 @@ class _CoinDetailSpotViewState extends State<CoinDetailSpotView>
                 children: [
                   _rowGroup([
                     (
-                      '24H高',
+                      S.of(context).high24h,
                       '\$${logic.coin24hInfo.value?.high24h?.toInt() ?? 0}'
                     ),
                     (
-                      '24H低',
+                      S.of(context).low24h,
                       '\$${logic.coin24hInfo.value?.low24h?.toInt() ?? 0}'
                     ),
                     (
-                      '24H波幅',
+                      S.of(context).priceChange24h,
                       '${logic.coin24hInfo.value?.priceChange24h?.toStringAsFixed(2)}%'
                     ),
                   ], [
-                    ('24H量', '${logic.coin24hInfo.value?.vol24h}'),
-                    ('24H额', '${logic.coin24hInfo.value?.turnover24h}'),
-                    ('24H换手', '${logic.coin24hInfo.value?.vol24h}'),
+                    (
+                      S.of(context).volCcy24h,
+                      '${logic.coin24hInfo.value?.volCcy24h ?? 0} ${logic.baseCoin}'
+                    ),
+                    (
+                      S.of(context).s_24h_turnover,
+                      '\$${AppUtil.getLargeFormatString('${logic.coin24hInfo.value?.turnover24h}', precision: 2)}'
+                    ),
+                    (
+                      S.of(context).changeRate24h,
+                      '${logic.coin24hInfo.value?.changeRate ?? 0}%'
+                    ),
                   ]),
                 ],
               ),
@@ -135,7 +144,7 @@ class _CoinDetailSpotViewState extends State<CoinDetailSpotView>
             controller: tabCtrl,
             tabs: [
               Tab(text: S.of(context).s_tickers),
-              Tab(text: S.of(context).heatMap),
+              Tab(text: S.of(context).heat_map),
               Tab(text: S.of(context).s_24h_turnover),
             ],
           ),

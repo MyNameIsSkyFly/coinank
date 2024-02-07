@@ -32,7 +32,7 @@ class _ChartWeightedFundingViewState extends State<ChartWeightedFundingView> {
     exchange: 'ALL',
     interval: '1d',
   ).obs;
-  final type = 'fr-oi'.obs;
+  final type = RxString(S.current.oiWeightedFundingRate);
   String? jsonData;
   ({bool dataReady, bool webReady, String evJS}) readyStatus =
       (dataReady: false, webReady: false, evJS: '');
@@ -41,7 +41,7 @@ class _ChartWeightedFundingViewState extends State<ChartWeightedFundingView> {
   @override
   void initState() {
     menuParamEntity.value.baseCoin = widget.logic.baseCoin;
-    loadOIData();
+    loadData();
     super.initState();
   }
 
@@ -52,7 +52,7 @@ class _ChartWeightedFundingViewState extends State<ChartWeightedFundingView> {
       'locale': AppUtil.shortLanguageName,
       'theme':
           Theme.of(context).brightness == Brightness.dark ? 'dark' : 'light',
-      'frType': 'fr-oi', //fr-oi 持仓加权, fr-vol 成交量加权
+      'frType': typeMap[type.value], //fr-oi 持仓加权, fr-vol 成交量加权
     };
     var platformString = Platform.isAndroid ? 'android' : 'ios';
     var jsSource = '''
@@ -90,7 +90,7 @@ setChartData($jsonData, "$platformString", "weightFundingRate", ${jsonEncode(opt
     }
   }
 
-  Future<void> loadOIData() async {
+  Future<void> loadData() async {
     final result = await Apis().getWeightFundingRate(
       menuParamEntity.value.baseCoin ?? '',
       interval: menuParamEntity.value.interval,
@@ -104,11 +104,14 @@ setChartData($jsonData, "$platformString", "weightFundingRate", ${jsonEncode(opt
 
   final intervalItems = const ['15m', '30m', '1h', '2h', '4h', '12h', '1d'];
 
-  //todo intl
-  final typeItems = ['fr-oi', 'fr-vol'];
+  final typeItems = [
+    S.current.oiWeightedFundingRate,
+    S.current.volWeightedFundingRate
+  ];
+  final typeText = RxString('initial');
   final typeMap = {
-    'fr-oi': '持仓加权',
-    'fr-vol': '成交量加权',
+    S.current.oiWeightedFundingRate: 'fr-oi',
+    S.current.volWeightedFundingRate: 'fr-vol',
   };
 
   @override
@@ -129,7 +132,7 @@ setChartData($jsonData, "$platformString", "weightFundingRate", ${jsonEncode(opt
                   const Gap(15),
                   Expanded(
                     child: Text(
-                      '${S.of(context).s_exchange_oi}(${menuParamEntity.value.baseCoin})',
+                      '${S.of(context).weightedFundingRate} (${menuParamEntity.value.baseCoin})',
                       style: Styles.tsBody_14m(context),
                     ),
                   ),
@@ -140,7 +143,7 @@ setChartData($jsonData, "$platformString", "weightFundingRate", ${jsonEncode(opt
                         result.toLowerCase() !=
                             menuParamEntity.value.interval?.toLowerCase()) {
                       menuParamEntity.value.interval = result;
-                      loadOIData();
+                      loadData();
                       menuParamEntity.refresh();
                     }
                   }, text: menuParamEntity.value.interval),
@@ -150,7 +153,7 @@ setChartData($jsonData, "$platformString", "weightFundingRate", ${jsonEncode(opt
                     if (result != null &&
                         result.toLowerCase() != type.toLowerCase()) {
                       type.value = result;
-                      loadOIData();
+                      loadData();
                     }
                   }, text: type.value),
                   const Gap(15),
@@ -163,6 +166,7 @@ setChartData($jsonData, "$platformString", "weightFundingRate", ${jsonEncode(opt
               margin: const EdgeInsets.all(15),
               child: CommonWebView(
                 url: Urls.chart20Url,
+                enableZoom: true,
                 onLoadStop: (controller) => updateReadyStatus(webReady: true),
                 onWebViewCreated: (controller) {
                   webCtrl = controller;

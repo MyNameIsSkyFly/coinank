@@ -65,11 +65,10 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
               thickness: 8,
             ),
             const Gap(10),
-            //todo intl
             Padding(
               padding: const EdgeInsets.only(left: 15, top: 4),
               child: Text(
-                '基本信息',
+                S.of(context).basicInfo,
                 style: Styles.tsBody_16m(context),
               ),
             ),
@@ -78,54 +77,47 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
               child: Column(
                 children: [
                   _row(
-                      title: '历史最高',
+                      title: S.of(context).allTimeHigh,
                       value: detail.value?.marketData?.ath?.usd,
                       showDollar: true),
                   _row(
-                      title: '历史最低',
+                      title: S.of(context).allTimeLow,
                       value: detail.value?.marketData?.atl?.usd,
                       showDollar: true),
                   _row(
-                    title: '流通市值',
+                    title: S.of(context).marketCap,
                     value: detail.value?.marketData?.marketCap?.usd,
                     showDollar: true,
-                    hintText:
-                        '市值 = 当前价格 x 流通供应量\n\n代币了加密货币流通供应的总市值。它类似于股票市场对每股价格乘以市场上现有股票所进行的计算（非内部人员、政府持有及锁定）',
+                    hintText: S.of(context).marketCapIntro,
                   ),
                   _row(
-                    title: '流通供应量',
+                    title: S.of(context).circulatingSupply,
                     value: detail.value?.marketData?.circulatingSupply,
-                    hintText:
-                        '在市场中流通且可供公众交易的代币数量。其类似于如何看待市场中的股票（非内部人员、政府持有及锁定）。',
+                    hintText: S.of(context).circulatingSupplyIntro,
                   ),
                   _row(
-                    title: '24H 交易量',
+                    title: '24H ${S.of(context).totalVolume}',
                     value: detail.value?.marketData?.totalVolume?.usd,
                     showDollar: true,
-                    hintText:
-                        '衡量过去 24 小时内所有跟踪平台的加密货币成交量。这是在 24 小时滚动的基础上进行跟踪的，没有开市和收市时间。',
+                    hintText: S.of(context).totalVolume24hIntro,
                   ),
                   _row(
-                    title: '总供应量',
+                    title: S.of(context).totalSupply,
                     value: detail.value?.marketData?.totalSupply,
                     showDollar: true,
-                    hintText:
-                        '已经创建的代币总量，减去任何已经消耗的代币（退出流通）。这与股票市场中的流通股类似。\n\n总供应量 = 链内供应 - 已消耗代币',
+                    hintText: S.of(context).totalSupplyIntro,
                   ),
                   _row(
-                    title: '完全摊薄市值',
+                    title: S.of(context).fullyDilutedValuation,
                     value: detail.value?.marketData?.fullyDilutedValuation?.usd,
                     showDollar: true,
-                    hintText:
-                        '衡量过去 24 小时内所有跟踪平台的加密货币成交量。这是在 24 小时滚动的基础上进行跟踪的，没有开市和收市时间。',
+                    hintText: S.of(context).fullyDilutedValuationIntro,
                   ),
-                  //                            priceChangeTodayDesc: '<strong>{coinName}</strong>({symbol}) 今天的价格是 <strong>{priceCurrent}</strong>, 24小时交易量为 <strong>{tradeVol24}</strong>。\n 价格在过去24小时内 {upOrDown} <strong>{priceChange}</strong>。货币流通量为 <strong>{circulatingSupply}</strong>, 最大供应量为 <strong>{maxSupply}</strong>。<a href="https://accounts.binance.com/zh-CN/register?ref=MLMH46UO" target="_blank">Binance</a> 是当前交易最活跃的市场。',
                   _row(
-                    title: '最大供应量',
+                    title: S.of(context).maxSupply,
                     value: detail.value?.marketData?.maxSupply,
                     showDollar: true,
-                    hintText:
-                        '加密货币终身可能存在的编码代币最大数量。这与股票市场中的最大发行股票类似。\n\n最大供应量 = 编码的理论最大值',
+                    hintText: S.of(context).maxSupplyIntro,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 15),
@@ -138,7 +130,7 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                '简介',
+                                S.of(context).intro,
                                 style: Styles.tsSub_14(context),
                               ),
                             ],
@@ -158,8 +150,8 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
                               return ExpandableText(
                                 description.isEmpty ? en : description,
                                 collapseOnTextTap: true,
-                                expandText: '展开',
-                                collapseText: '收起',
+                                expandText: S.of(context).more,
+                                collapseText: S.of(context).less,
                                 maxLines: 6,
                                 linkStyle: Styles.tsMain_12,
                               );
@@ -176,7 +168,7 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
             Padding(
                 padding: const EdgeInsets.only(left: 15, top: 15),
                 child: Text(
-                  '相关链接',
+                  S.of(context).relatedLinks,
                   style: Styles.tsBody_16m(context),
                 )),
             Padding(
@@ -185,12 +177,12 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
                 children: [
                   if (detail.value?.links?.homepage?.isNotEmpty == true)
                     _siteGroup(
-                      title: '官网',
+                      title: S.of(context).officialWebsite,
                       sites: detail.value?.links?.homepage,
                     ),
                   if (detail.value?.links?.blockchainSite?.isNotEmpty == true)
                     _siteGroup(
-                      title: '浏览器',
+                      title: S.of(context).explorers,
                       sites: detail.value?.links?.blockchainSite,
                     ),
                   if (detail.value?.links?.subredditUrl?.isNotEmpty == true ||
@@ -206,7 +198,7 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
                       detail.value?.links?.telegramChannelIdentifier
                               ?.isNotEmpty ==
                           true)
-                    _siteGroup(title: '社区', sites: [
+                    _siteGroup(title: S.of(context).community, sites: [
                       detail.value?.links?.subredditUrl ?? '',
                       if (detail.value?.links?.twitterScreenName?.isNotEmpty ==
                           true)
@@ -226,7 +218,7 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
                           true ||
                       detail.value?.links?.reposUrl?.bitbucket?.isNotEmpty ==
                           true)
-                    _siteGroup(title: '源码', sites: [
+                    _siteGroup(title: S.of(context).sourceCode, sites: [
                       detail.value?.links?.reposUrl?.github?.firstOrNull ?? '',
                       detail.value?.links?.reposUrl?.bitbucket?.firstOrNull ??
                           '',
@@ -234,7 +226,7 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
                   const Divider(height: 20),
                   if (detail.value?.categories?.isNotEmpty == true)
                     _siteGroup(
-                        title: '分类',
+                        title: S.of(context).tags,
                         sites: detail.value?.categories,
                         isTag: true),
                 ],
@@ -246,7 +238,7 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
             Padding(
               padding: const EdgeInsets.only(left: 15, top: 15),
               child: Text(
-                '市值排行榜',
+                S.of(context).topCoinByMarketCap,
                 style: Styles.tsBody_16m(context),
               ),
             ),

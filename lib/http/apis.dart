@@ -162,7 +162,7 @@ abstract class Apis {
     @Query('baseCoin') String? baseCoin,
     @Query('interval') String? interval,
     @Query('type') String? type,
-    @Query('size') int size = 100,
+    @Query('size') int? size = 100,
   });
 
   @GET('/api/volume24h/chart')

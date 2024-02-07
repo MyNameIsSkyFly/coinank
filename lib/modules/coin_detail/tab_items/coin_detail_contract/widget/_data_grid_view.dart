@@ -23,7 +23,6 @@ class _DataGridViewState extends State<DataGridView> {
   List<GridColumn> getColumns(BuildContext context) {
     List<GridColumn> columns;
     columns = <GridColumn>[
-      //todo intl
       GridColumn(
           columnName: '1',
           width: 120,
@@ -31,7 +30,7 @@ class _DataGridViewState extends State<DataGridView> {
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.all(8.0).copyWith(left: 15),
             child: Text(
-              '交易所',
+              S.of(context).s_exchange_name,
               overflow: TextOverflow.ellipsis,
               style: Styles.tsSub_12(context),
             ),
@@ -44,7 +43,7 @@ class _DataGridViewState extends State<DataGridView> {
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              '货币',
+              S.of(context).symbol,
               overflow: TextOverflow.ellipsis,
               style: Styles.tsSub_12(context),
             ),
@@ -56,7 +55,7 @@ class _DataGridViewState extends State<DataGridView> {
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              '价格\$',
+              '${S.of(context).s_price}(\$)',
               overflow: TextOverflow.ellipsis,
               style: Styles.tsSub_12(context),
             ),
@@ -68,7 +67,7 @@ class _DataGridViewState extends State<DataGridView> {
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              '24H变化(%)',
+              '${S.of(context).s_24h_chg}(%)',
               style: Styles.tsSub_12(context),
             ),
           )),
@@ -81,7 +80,7 @@ class _DataGridViewState extends State<DataGridView> {
             child: FittedBox(
               fit: BoxFit.scaleDown,
               child: Text(
-                '24H成交额',
+                S.of(context).s_24h_turnover,
                 style: Styles.tsSub_12(context),
               ),
             ),
@@ -93,7 +92,7 @@ class _DataGridViewState extends State<DataGridView> {
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              '持仓(\$)',
+              '${S.of(context).s_oi}(\$)',
               style: Styles.tsSub_12(context),
             ),
           )),
@@ -115,7 +114,7 @@ class _DataGridViewState extends State<DataGridView> {
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              '资金费率',
+              S.of(context).s_funding_rate,
               style: Styles.tsSub_12(context),
             ),
           )),
@@ -134,7 +133,7 @@ class _DataGridViewState extends State<DataGridView> {
       child: Padding(
           padding: const EdgeInsets.only(left: 15),
           child: Text(
-            text,
+            text.toUpperCase(),
             style: index == typeIndex.value
                 ? Styles.tsMain_14m
                 : Styles.tsSub_14m(context),
@@ -159,9 +158,9 @@ class _DataGridViewState extends State<DataGridView> {
             Obx(() {
               return Row(
                 children: [
-                  _text('所有', 0),
-                  _text('永续', 1),
-                  _text('交割', 2),
+                  _text(S.of(context).s_all, 0),
+                  _text(S.of(context).s_swap, 1),
+                  _text(S.of(context).s_futures, 2),
                 ],
               );
             }),

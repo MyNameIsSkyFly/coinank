@@ -141,6 +141,7 @@ setChartData($jsonData, "$platformString", "liqStatistic", ${jsonEncode(options)
               margin: const EdgeInsets.all(15),
               child: CommonWebView(
                 url: Urls.chart20Url,
+                enableZoom: true,
                 onLoadStop: (controller) => updateReadyStatus(webReady: true),
                 onWebViewCreated: (controller) {
                   webCtrl = controller;

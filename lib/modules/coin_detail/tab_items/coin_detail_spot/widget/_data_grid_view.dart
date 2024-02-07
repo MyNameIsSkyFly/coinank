@@ -18,7 +18,6 @@ class DataGridView extends StatelessWidget {
   List<GridColumn> getColumns(BuildContext context) {
     List<GridColumn> columns;
     columns = <GridColumn>[
-      //todo intl
       GridColumn(
           columnName: '1',
           width: 110,
@@ -26,7 +25,7 @@ class DataGridView extends StatelessWidget {
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              '交易所',
+              S.of(context).s_exchange_name,
               overflow: TextOverflow.ellipsis,
               style: Styles.tsSub_12(context),
             ),
@@ -39,7 +38,7 @@ class DataGridView extends StatelessWidget {
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              '货币',
+              S.of(context).symbol,
               overflow: TextOverflow.ellipsis,
               style: Styles.tsSub_12(context),
             ),
@@ -51,7 +50,7 @@ class DataGridView extends StatelessWidget {
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              '价格\$',
+              '${S.of(context).s_price}(\$)',
               overflow: TextOverflow.ellipsis,
               style: Styles.tsSub_12(context),
             ),
@@ -63,7 +62,7 @@ class DataGridView extends StatelessWidget {
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              '24H变化(%)',
+              '${S.of(context).s_24h_chg}(%)',
               overflow: TextOverflow.ellipsis,
               style: Styles.tsSub_12(context),
             ),
@@ -75,7 +74,7 @@ class DataGridView extends StatelessWidget {
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              '24H成交额',
+              S.of(context).s_24h_turnover,
               overflow: TextOverflow.ellipsis,
               style: Styles.tsSub_12(context),
             ),

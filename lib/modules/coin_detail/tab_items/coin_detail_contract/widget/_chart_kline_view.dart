@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:ank_app/generated/l10n.dart';
 import 'package:ank_app/res/styles.dart';
 import 'package:ank_app/widget/common_webview.dart';
 import 'package:flutter/material.dart';
@@ -57,16 +58,15 @@ class _ChartKlineViewState extends State<ChartKlineView> {
       children: [
         DefaultTextStyle(
           style: Styles.tsSub_12(context),
-          //todo intl
           child: Obx(() {
             return Row(
               children: [
-                _timeItem('分时', null),
-                _timeItem('15分', '15m'),
-                _timeItem('1小时', '1h'),
-                _timeItem('1天', '1d'),
-                _timeItem('1周', '1w'),
-                _timeItem('1月', '1M'),
+                _timeItem(S.of(context).timeDivider, null),
+                _timeItem('15m', '15m'),
+                _timeItem('1h', '1h'),
+                _timeItem('1d', '1d'),
+                _timeItem('7d', '1w'),
+                _timeItem('30d', '1M'),
               ],
             );
           }),
@@ -78,6 +78,7 @@ class _ChartKlineViewState extends State<ChartKlineView> {
             onWebViewCreated: (controller) => webCtrl = controller,
             onLoadStop: (controller) async => _evaluate(),
             url: 'assets/files/kline.html',
+            enableZoom: true,
           ),
         ),
       ],

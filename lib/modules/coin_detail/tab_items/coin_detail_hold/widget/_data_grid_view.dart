@@ -20,7 +20,6 @@ class DataGridView extends StatelessWidget {
   List<GridColumn> getColumns(BuildContext context) {
     List<GridColumn> columns;
     columns = <GridColumn>[
-      //todo intl
       GridColumn(
           columnName: '1',
           width: 40,
@@ -41,7 +40,7 @@ class DataGridView extends StatelessWidget {
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              '持币数量',
+              S.of(context).heldCoinNumber,
               overflow: TextOverflow.ellipsis,
               style: Styles.tsSub_12(context),
             ),
@@ -54,7 +53,7 @@ class DataGridView extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: FittedBox(
               child: Text(
-                '比例',
+                S.of(context).ratio,
                 overflow: TextOverflow.ellipsis,
                 style: Styles.tsSub_12(context),
               ),
@@ -68,7 +67,7 @@ class DataGridView extends StatelessWidget {
               alignment: Alignment.centerLeft,
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                '变化(7D)',
+                '${S.of(context).s_home_chg} (7D)',
                 overflow: TextOverflow.ellipsis,
                 style: Styles.tsSub_12(context),
               ),
@@ -80,7 +79,7 @@ class DataGridView extends StatelessWidget {
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              '地址',
+              S.of(context).address,
               overflow: TextOverflow.ellipsis,
               style: Styles.tsSub_12(context),
             ),

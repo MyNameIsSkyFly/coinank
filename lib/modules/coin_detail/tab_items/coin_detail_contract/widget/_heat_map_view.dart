@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:ank_app/res/styles.dart';
+import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/common_webview.dart';
-import 'package:ank_app/widget/keep_alive_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
@@ -38,12 +37,12 @@ class _HeatMapViewState extends State<HeatMapView> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            //todo intl
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               child: Row(
                 children: [
-                  Text('热力图', style: Styles.tsBody_14m(context)),
+                  Text(S.of(context).heat_map,
+                      style: Styles.tsBody_14m(context)),
                   const Spacer(),
                   Container(
                     padding: const EdgeInsets.all(2),
@@ -69,7 +68,7 @@ class _HeatMapViewState extends State<HeatMapView> {
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Text(
-                                '24H成交额',
+                                S.of(context).s_24h_turnover,
                                 style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: Styles.fontMedium,
@@ -93,7 +92,7 @@ class _HeatMapViewState extends State<HeatMapView> {
                                     : Colors.transparent,
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              child: Text('持仓',
+                              child: Text(S.of(context).s_oi,
                                   style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: Styles.fontMedium,
@@ -114,6 +113,7 @@ class _HeatMapViewState extends State<HeatMapView> {
               width: double.infinity,
               child: CommonWebView(
                 onWebViewCreated: (controller) => webCtrl = controller,
+                enableZoom: true,
                 onLoadStop: (controller) async => _evaluate(),
                 url: 'assets/files/heatmap.html',
               ),

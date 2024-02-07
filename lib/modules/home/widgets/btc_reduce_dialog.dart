@@ -109,18 +109,18 @@ class BtcReduceDialog extends StatelessWidget {
                       child: Column(
                         children: [
                           _row(context,
-                              title: '当前区块高度',
+                              title: S.of(context).currentBlockHeight,
                               value: '${logic.btcReduceData.value?.height}'),
                           _row(context,
-                              title: '剩余区块',
+                              title: S.of(context).leftBlockHeight,
                               value:
                                   '${logic.btcReduceData.value?.reduceHeight}'),
                           _row(context,
-                              title: '减半区块',
+                              title: S.of(context).halvingBlockHeight,
                               value:
                                   '${logic.btcReduceData.value?.halvingBlockHeight}'),
                           _row(context,
-                              title: '减半预估时间',
+                              title: S.of(context).halvingTime,
                               value:
                                   '${logic.btcReduceData.value?.halvingTime}',
                               bottomPadding: false),

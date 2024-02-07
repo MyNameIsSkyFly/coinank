@@ -61,11 +61,10 @@ class _CoinDetailPageState extends State<CoinDetailPage>
                 isScrollable: true,
                 controller: _tabController,
                 tabs: [
-                  //todo intl
-                  Tab(text: '合约'),
-                  Tab(text: '现货'),
-                  Tab(text: '总览'),
-                  Tab(text: '持币'),
+                  Tab(text: S.of(context).derivatives),
+                  Tab(text: S.of(context).spot),
+                  Tab(text: S.of(context).overview),
+                  Tab(text: S.of(context).holding),
                 ]),
             Expanded(
                 child: TabBarView(

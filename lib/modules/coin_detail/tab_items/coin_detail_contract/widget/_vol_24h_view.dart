@@ -39,7 +39,7 @@ class _Vol24hViewState extends State<Vol24hView> {
   @override
   void initState() {
     menuParamEntity.value.baseCoin = widget.logic.baseCoin;
-    loadOIData();
+    loadData();
     super.initState();
   }
 
@@ -89,7 +89,7 @@ setChartData($jsonData, "$platformString", "volChart", ${jsonEncode(options)});
     }
   }
 
-  Future<void> loadOIData() async {
+  Future<void> loadData() async {
     final result = await Apis().getVol24hChartJson(
       baseCoin: menuParamEntity.value.baseCoin,
       exchangeName: menuParamEntity.value.exchange,
@@ -105,7 +105,7 @@ setChartData($jsonData, "$platformString", "volChart", ${jsonEncode(options)});
     'Bitfinex', 'Gate', 'Deribit', 'Huobi', 'Kraken' //end
   ];
   final intervalItems = const ['15m', '30m', '1h', '2h', '4h', '12h', '1d'];
-  final chartTypes = ['面积图', '柱状图'];
+  final chartTypes = [S.current.areaChart, S.current.barChart];
   final chartIndex = 0.obs;
 
   @override
@@ -124,7 +124,7 @@ setChartData($jsonData, "$platformString", "volChart", ${jsonEncode(options)});
             Padding(
               padding: const EdgeInsets.only(left: 15),
               child: Text(
-                '24h成交额',
+                '${widget.logic.baseCoin} ${S.of(context).s_24h_turnover}',
                 style: Styles.tsBody_14m(context),
               ),
             ),
@@ -139,7 +139,7 @@ setChartData($jsonData, "$platformString", "volChart", ${jsonEncode(options)});
                         result.toLowerCase() !=
                             menuParamEntity.value.exchange?.toLowerCase()) {
                       menuParamEntity.value.exchange = result;
-                      loadOIData();
+                      loadData();
                       menuParamEntity.refresh();
                     }
                   }, text: menuParamEntity.value.exchange),
@@ -150,7 +150,7 @@ setChartData($jsonData, "$platformString", "volChart", ${jsonEncode(options)});
                         result.toLowerCase() !=
                             menuParamEntity.value.interval?.toLowerCase()) {
                       menuParamEntity.value.interval = result;
-                      loadOIData();
+                      loadData();
                       menuParamEntity.refresh();
                     }
                   }, text: menuParamEntity.value.interval),
@@ -173,6 +173,7 @@ setChartData($jsonData, "$platformString", "volChart", ${jsonEncode(options)});
               margin: const EdgeInsets.all(15),
               child: CommonWebView(
                 url: Urls.chart20Url,
+                enableZoom: true,
                 onLoadStop: (controller) => updateReadyStatus(webReady: true),
                 onWebViewCreated: (controller) {
                   webCtrl = controller;

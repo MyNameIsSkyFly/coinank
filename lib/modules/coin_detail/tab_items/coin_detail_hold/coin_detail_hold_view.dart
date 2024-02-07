@@ -28,7 +28,7 @@ class _CoinDetailHoldViewState extends State<CoinDetailHoldView> {
           Padding(
             padding: const EdgeInsets.only(top: 15, left: 15),
             child: Text(
-              '大户持币占比趋势',
+              S.of(context).householdsTrending,
               style: Styles.tsBody_16m(context),
             ),
           ),
@@ -40,7 +40,7 @@ class _CoinDetailHoldViewState extends State<CoinDetailHoldView> {
             child: Row(
               children: [
                 Text(
-                  '十大流动地址',
+                  S.of(context).top10FlowingAddress,
                   style: Styles.tsBody_16m(context),
                 ),
                 GestureDetector(
@@ -49,8 +49,8 @@ class _CoinDetailHoldViewState extends State<CoinDetailHoldView> {
                     showCupertinoDialog(
                       context: context,
                       builder: (context) => TipDialog(
-                          title: '十大流动地址',
-                          content: '指该币种在7天内波动 （转入或者转出）数量最大的前10持币地址'),
+                          title: S.of(context).top10FlowingAddress,
+                          content: S.of(context).top10FlowingAddressIntro),
                     );
                   },
                   child: Padding(
@@ -73,7 +73,7 @@ class _CoinDetailHoldViewState extends State<CoinDetailHoldView> {
           Padding(
             padding: const EdgeInsets.only(left: 15, top: 15),
             child: Text(
-              '前100持币地址明细',
+              S.of(context).top100AddressDetail,
               style: Styles.tsBody_16m(context),
             ),
           ),

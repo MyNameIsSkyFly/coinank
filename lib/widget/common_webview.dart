@@ -7,6 +7,8 @@ import 'package:ank_app/entity/event/web_js_event.dart';
 import 'package:ank_app/modules/home/exchange_oi/exchange_oi_logic.dart';
 import 'package:ank_app/modules/setting/setting_logic.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -30,6 +32,8 @@ class CommonWebView extends StatefulWidget {
     this.onLoadStop,
     this.dynamicTitle = false,
     this.enableShare = false,
+    this.gestureRecognizers,
+    this.enableZoom = false,
   });
 
   final String? title;
@@ -41,6 +45,8 @@ class CommonWebView extends StatefulWidget {
   final bool safeArea;
   final bool dynamicTitle;
   final bool enableShare;
+  final bool enableZoom;
+  final Set<Factory<OneSequenceGestureRecognizer>>? gestureRecognizers;
 
   static Future<void> setCookieValue() async {
     final cookieList = <(String, String)>[];
@@ -226,6 +232,23 @@ class _CommonWebViewState extends State<CommonWebView>
                 },
                 onWebContentProcessDidTerminate: (controller) =>
                     controller.reload(),
+                gestureRecognizers: widget.gestureRecognizers ??
+                    (widget.enableZoom
+                        ? {
+                            Factory<HorizontalDragGestureRecognizer>(
+                              () => HorizontalDragGestureRecognizer(),
+                            ),
+                            Factory<PanGestureRecognizer>(
+                              () => PanGestureRecognizer(),
+                            ),
+                            Factory<ForcePressGestureRecognizer>(
+                              () => ForcePressGestureRecognizer(),
+                            ),
+                            Factory<LongPressGestureRecognizer>(
+                              () => LongPressGestureRecognizer(),
+                            ),
+                          }
+                        : null),
               ),
             ),
             if (widget.showLoading && _progress != 100) const LottieIndicator(),

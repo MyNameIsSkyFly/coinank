@@ -105,78 +105,90 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
                 children: [
                   _rowGroup([
                     (
-                      '24H高',
+                      S.of(context).high24h,
                       '\$${logic.coin24hInfo.value?.high24h?.toInt() ?? 0}'
                     ),
                     (
-                      '24H低',
+                      S.of(context).low24h,
                       '\$${logic.coin24hInfo.value?.low24h?.toInt() ?? 0}'
                     ),
                     (
-                      '24H波幅',
+                      S.of(context).priceChange24h,
                       '${logic.coin24hInfo.value?.priceChange24h?.toStringAsFixed(2) ?? 0}%'
                     ),
                   ], [
                     (
-                      '24H量',
+                      S.of(context).volCcy24h,
                       '${logic.coin24hInfo.value?.volCcy24h ?? 0} ${logic.baseCoin}'
                     ),
                     (
-                      '24H额',
+                      S.of(context).s_24h_turnover,
                       '\$${AppUtil.getLargeFormatString('${logic.coin24hInfo.value?.turnover24h}', precision: 2)}'
                     ),
-                    ('24H换手', '${logic.coin24hInfo.value?.changeRate ?? 0}%'),
+                    (
+                      S.of(context).changeRate24h,
+                      '${logic.coin24hInfo.value?.changeRate ?? 0}%'
+                    ),
                   ]),
                   if (dataExpanded.value) ...[
                     _rowGroup([
                       (
-                        '4H多单',
+                        S.of(context).longRatio4h,
                         '${((logic.info.value?.longRatio4h ?? 0) * 100).toStringAsFixed(2)}%'
                       ),
                       (
-                        '4H空单',
+                        S.of(context).shortRatio4h,
                         '${((logic.info.value?.shortRatio4h ?? 0) * 100).toStringAsFixed(2)}%'
                       ),
-                      ('4H多空比', '${logic.info.value?.longShortRatio4h}'),
+                      (
+                        S.of(context).longShortRatio4h,
+                        '${logic.info.value?.longShortRatio4h}'
+                      ),
                     ], [
                     (
-                      '永续持仓',
-                      AppUtil.getLargeFormatString(
+                        S.of(context).swapOi,
+                        AppUtil.getLargeFormatString(
                           '${logic.info.value?.swapOiUSD24h}')
                     ),
                     (
-                      '永续成交额(24H)',
-                      AppUtil.getLargeFormatString(
+                        '${S.of(context).swapTurnover}(24H)',
+                        AppUtil.getLargeFormatString(
                           '${logic.info.value?.swapTurnover24h}')
                     ),
-                    ('永续成交笔数(24H)', '${logic.info.value?.swapTradeTimes24h}'),
-                  ]),
+                      (
+                        '${S.of(context).swapTradeTimes}(24H)',
+                        '${logic.info.value?.swapTradeTimes24h}'
+                      ),
+                    ]),
                   _rowGroup([
                     (
-                      '交割持仓',
-                      AppUtil.getLargeFormatString(
+                        S.of(context).futureOi,
+                        AppUtil.getLargeFormatString(
                           '${logic.info.value?.futureOiUSD24h}')
                     ),
                     (
-                      '交割成交额(24H)',
-                      AppUtil.getLargeFormatString(
+                        '${S.of(context).futureTurnover}(24H)',
+                        AppUtil.getLargeFormatString(
                           '${logic.info.value?.futureTurnover24h}')
                     ),
-                    ('交割成交笔数(24H)', '${logic.info.value?.futureTradeTimes24h}'),
-                  ], [
+                      (
+                        '${S.of(context).futureTradeTimes}(24H)',
+                        '${logic.info.value?.futureTradeTimes24h}'
+                      ),
+                    ], [
                     (
-                      '爆仓(24H)',
-                      AppUtil.getLargeFormatString(
+                        '${S.of(context).s_rekt}(24H)',
+                        AppUtil.getLargeFormatString(
                           '${logic.info.value?.liq24h}')
                     ),
                     (
-                      '空单爆仓',
-                      AppUtil.getLargeFormatString(
+                        S.of(context).shortLiq,
+                        AppUtil.getLargeFormatString(
                           '${logic.info.value?.shortLiq24h}')
                     ),
                     (
-                      '多单爆仓',
-                      AppUtil.getLargeFormatString(
+                        S.of(context).longLiq,
+                        AppUtil.getLargeFormatString(
                           '${logic.info.value?.longLiq24h}')
                     ),
                     ]),
@@ -224,7 +236,7 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
             controller: tabCtrl,
             tabs: [
               Tab(text: S.of(context).s_tickers),
-              Tab(text: S.of(context).heatMap),
+              Tab(text: S.of(context).heat_map),
               Tab(text: S.of(context).tradingPosition),
               Tab(text: S.of(context).s_24h_turnover),
               Tab(text: S.of(context).s_liquidation_data),

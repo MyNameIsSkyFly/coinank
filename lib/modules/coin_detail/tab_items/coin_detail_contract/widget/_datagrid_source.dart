@@ -25,7 +25,6 @@ class GridDataSource extends DataGridSource {
   void buildDataGridRows() {
     dataGridRows = items.map<DataGridRow>((ContractMarketEntity entity) {
       return DataGridRow(cells: <DataGridCell<dynamic>>[
-        //todo intl
         DataGridCell<String>(columnName: '1', value: entity.exchangeName),
         DataGridCell<(String?, String?, String?)>(
             columnName: '2',
