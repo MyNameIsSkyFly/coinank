@@ -87,11 +87,12 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              S.of(context).s_order_flow,
+                              S.of(context).candleChartPro,
                               style: const TextStyle(
                                   color: Colors.white, fontSize: 14),
                             ),
-                            Icon(Icons.keyboard_arrow_right_rounded, size: 17)
+                            const Icon(Icons.keyboard_arrow_right_rounded,
+                                size: 17)
                           ],
                         ))
                   ],

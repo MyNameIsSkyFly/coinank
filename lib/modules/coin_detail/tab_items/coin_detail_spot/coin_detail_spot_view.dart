@@ -80,7 +80,7 @@ class _CoinDetailSpotViewState extends State<CoinDetailSpotView>
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              S.of(context).s_order_flow,
+                              S.of(context).candleChartPro,
                               style: const TextStyle(
                                   color: Colors.white, fontSize: 14),
                             ),

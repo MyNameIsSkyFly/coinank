@@ -2,9 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:ank_app/generated/l10n.dart';
 import 'package:ank_app/modules/coin_detail/_selector_view.dart';
-import 'package:ank_app/res/styles.dart';
+import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/common_webview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -146,7 +145,8 @@ class _ChartKlineViewState extends State<ChartKlineView> {
       'exchange': widget.exchangeName,
       'symbol': widget.symbol,
       'interval': interval.value,
-      'exchangeType': widget.isSpot ? 'SPOT' : 'SWAP'
+      'exchangeType': widget.isSpot ? 'SPOT' : 'SWAP',
+      'locale': AppUtil.shortLanguageName,
       // 'baseCoin': widget.logic.baseCoin,
       //币
       // 'productType': 'CONTRACT',
