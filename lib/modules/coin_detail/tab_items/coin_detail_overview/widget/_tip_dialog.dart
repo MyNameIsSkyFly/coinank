@@ -29,6 +29,7 @@ class TipDialog extends StatelessWidget {
             Text(
               content ?? '',
               style: Styles.tsBody_14(context),
+              textAlign: TextAlign.center,
             ),
             const Gap(20),
             Center(

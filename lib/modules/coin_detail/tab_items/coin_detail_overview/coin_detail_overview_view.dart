@@ -319,15 +319,19 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
     return Padding(
       padding: const EdgeInsets.only(top: 15),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             flex: 10,
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  title,
-                  style: Styles.tsSub_14(context),
+                Expanded(
+                  child: Text(
+                    title,
+                    style: Styles.tsSub_14(context),
+                  ),
                 ),
                 if (hintText != null)
                   GestureDetector(
@@ -344,13 +348,14 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
                       );
                     },
                     child: const Padding(
-                      padding: EdgeInsets.only(left: 2),
+                      padding: EdgeInsets.only(left: 2, top: 4),
                       child: Icon(CupertinoIcons.question_circle, size: 14),
                     ),
                   ),
               ],
             ),
           ),
+          const Gap(3),
           Expanded(
               flex: 15,
               child: Text(
