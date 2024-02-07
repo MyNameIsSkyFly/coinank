@@ -12,6 +12,7 @@ import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/activity_dialog.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -20,6 +21,7 @@ import 'main_state.dart';
 class MainLogic extends GetxController {
   final MainState state = MainState();
   StreamSubscription? _connectivitySubscription;
+  StreamSubscription? appVisibleSubscription;
 
   @override
   void onReady() {
@@ -30,7 +32,14 @@ class MainLogic extends GetxController {
     checkIfNeedOpenOrderFlow();
     getActivity();
     initPackageInfo();
+    listenAppVisibility();
     super.onReady();
+  }
+
+  void listenAppVisibility() {
+    appVisibleSubscription = FGBGEvents.stream.listen((event) {
+      state.appVisible = event == FGBGType.foreground;
+    });
   }
 
   Future<void> handleNetwork() async {
@@ -87,6 +96,7 @@ class MainLogic extends GetxController {
   @override
   void onClose() {
     _connectivitySubscription?.cancel();
+    appVisibleSubscription?.cancel();
     super.onClose();
   }
 
