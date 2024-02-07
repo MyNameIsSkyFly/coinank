@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:ank_app/constants/urls.dart';
 import 'package:ank_app/modules/coin_detail/_selector_view.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/common_webview.dart';
@@ -129,7 +130,7 @@ class _ChartKlineViewState extends State<ChartKlineView> {
           child: CommonWebView(
             onWebViewCreated: (controller) => webCtrl = controller,
             onLoadStop: (controller) async => _evaluate(),
-            url: 'assets/files/kline.html',
+            url: Urls.klineUrl,
             enableZoom: true,
           ),
         ),

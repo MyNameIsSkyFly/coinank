@@ -6,7 +6,10 @@ class Urls {
   static String get apiPrefix => StoreLogic.to.apiPrefix;
   static String get chartUrl => StoreLogic.to.chartUrl;
 
-  static String get chart20Url => StoreLogic.to.chart20Url;
+  static String get heatMapUrl => StoreLogic.to.heatMapUrl;
+
+  static String get klineUrl => StoreLogic.to.klineUrl;
+
   static String get depthOrderDomain => StoreLogic.to.depthOrderDomain;
   static String get uniappDomain => StoreLogic.to.uniappDomain;
   static String get websocketUrl => StoreLogic.to.websocketUrl;

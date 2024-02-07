@@ -367,6 +367,37 @@
                         }
                     }
                 ],
+                dataZoom: [
+                {
+                    type: 'slider',
+                    showDetail: false,
+                    start: 0,
+                    end: 20,
+                    zoomOnMouseWheel: true,
+                    moveOnMouseMove: true,
+                    moveOnMouseWheel: false,
+                },
+                {
+                    type: "inside",
+                    zoomOnMouseWheel: true,
+                    moveOnMouseMove: true,
+                    moveOnMouseWheel: false,
+                    start: 0,
+                    end: 20,
+
+                },
+                {
+                    start: 0,
+                    end: 20,
+                    labelFormatter: (value) => {
+                    if ("1d" == interval) {
+                        return moment(parseInt(xAxisData[value])).format("MM-DD")
+                    } else {
+                        return moment(parseInt(xAxisData[value])).format("MM-DD HH:mm")
+                    }
+                    }
+                }
+                ],
                 tooltip: {
                     backgroundColor: "rgba(255,255,255,0.8)",
                     trigger: 'axis',
@@ -2497,7 +2528,7 @@
         // https://coinank.com/api/volume24h/spotChart?baseCoin=BTC&exchangeName=ALL&interval=1d
         // https://coinank.com/api/volume24h/chart?baseCoin=BTC&exchangeName=ALL&interval=1d
         // setChartData(sourceData, "android", "volChart", {
-        //     theme: "light",
+        //     theme: "dark",
         //     locale:'zh',
         //     baseCoin:"BTC",
         //     interval:"1d",

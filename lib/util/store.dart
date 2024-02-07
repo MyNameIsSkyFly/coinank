@@ -164,12 +164,27 @@ class StoreLogic extends GetxController {
 
   String get chartUrl {
     return _SpUtil()
-        ._getString(_SpKeys.chartUrl, defaultValue: 'assets/files/t18.html');
+        ._getString(_SpKeys.chartUrl, defaultValue: 'assets/files/t20.html');
   }
 
-  String get chart20Url {
+  //klineUrl
+  Future<bool> saveKlineUrl(String klineUrl) {
+    return _SpUtil()._saveString(_SpKeys.klineUrl, klineUrl);
+  }
+
+  String get klineUrl {
     return _SpUtil()
-        ._getString(_SpKeys.chart20Url, defaultValue: 'assets/files/t20.html');
+        ._getString(_SpKeys.klineUrl, defaultValue: 'assets/files/kline.html');
+  }
+
+  //heatMapUrl
+  Future<bool> saveHeatMapUrl(String heatMapUrl) {
+    return _SpUtil()._saveString(_SpKeys.heatMapUrl, heatMapUrl);
+  }
+
+  String get heatMapUrl {
+    return _SpUtil()._getString(_SpKeys.heatMapUrl,
+        defaultValue: 'assets/files/heatmap.html');
   }
 
   Future<bool> saveUniappDomain(String uniappDomain) {
@@ -341,7 +356,8 @@ class _SpKeys {
 
   static const deviceId = 'deviceId';
   static const chartUrl = 'ank_charturl';
-  static const chart20Url = 'ank_chart20url';
+  static const klineUrl = 'ank_kline_url';
+  static const heatMapUrl = 'ank_heatmap_url';
   static const uniappDomain = 'ank_uniappDomain';
   static const domain = 'ank_domain';
   static const websocketUrl = 'ank_websocketUrl';

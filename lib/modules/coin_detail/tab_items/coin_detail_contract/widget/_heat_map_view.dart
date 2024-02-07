@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:ank_app/constants/urls.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/common_webview.dart';
 import 'package:flutter/material.dart';
@@ -115,7 +116,7 @@ class _HeatMapViewState extends State<HeatMapView> {
                 onWebViewCreated: (controller) => webCtrl = controller,
                 enableZoom: true,
                 onLoadStop: (controller) async => _evaluate(),
-                url: 'assets/files/heatmap.html',
+                url: Urls.heatMapUrl,
               ),
             ),
           ],

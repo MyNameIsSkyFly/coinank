@@ -98,7 +98,7 @@ setChartData($jsonData, "$platformString", "holderAddress", ${jsonEncode(options
           width: double.infinity,
           margin: const EdgeInsets.all(15),
           child: CommonWebView(
-            url: Urls.chart20Url,
+            url: Urls.chartUrl,
             enableZoom: true,
             onLoadStop: (controller) => updateReadyStatus(webReady: true),
             onWebViewCreated: (controller) {

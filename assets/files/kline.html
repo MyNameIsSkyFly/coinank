@@ -195,8 +195,8 @@
                 let kline = [];
                 kline.push(Number(item[2]));    // o
                 kline.push(Number(item[3]));    // c
-                kline.push(Number(item[4]));    // l
-                kline.push(Number(item[5]));    // h
+                kline.push(Number(item[5]));    // l
+                kline.push(Number(item[4]));    // h
                 // kline.push(Number(item[6]));    // v
 
                 times.push(item[0]);
@@ -285,7 +285,7 @@
                 let rawData2 = barParam.value;
                 let ts = candlestickParam.axisValue;
 
-                
+                console.log(params)
 
                 let h =  moment(parseInt(ts)).format("YYYY-MM-DD HH:mm");
                 h = ""
@@ -299,15 +299,34 @@
                     color = downColor
                 }
                 let names = ["", lang.open, lang.close , lang.low, lang.high]
-                for (let i = 1; i < rawData.length; i++) {
 
-                    detalDiv += "<div style='display: flex; margin-left:2px'><div style='margin-right:2px'>"
-                        + names[i] + ":</div><div style='text-align: right; color:"+color+"'><div>"
-                        + formatPriceV2(rawData[i]) + "</div></div>" +
-                        "</div>";
-                        detalDiv +="&nbsp;"
+                detalDiv += "<div style='display: flex; margin-left:2px'><div style='margin-right:2px'>"
+                    + names[1] + ":</div><div style='text-align: right; color:"+color+"'><div>"
+                    + formatPriceV2(rawData[1]) + "</div></div>" +
+                    "</div>";
+                    detalDiv +="&nbsp;"
+                
+                
 
-                }
+                detalDiv += "<div style='display: flex; margin-left:2px'><div style='margin-right:2px'>"
+                    + names[4] + ":</div><div style='text-align: right; color:"+color+"'><div>"
+                    + formatPriceV2(rawData[4]) + "</div></div>" +
+                    "</div>";
+                    detalDiv +="&nbsp;"
+
+                detalDiv += "<div style='display: flex; margin-left:2px'><div style='margin-right:2px'>"
+                    + names[3] + ":</div><div style='text-align: right; color:"+color+"'><div>"
+                    + formatPriceV2(rawData[3]) + "</div></div>" +
+                    "</div>";
+                    detalDiv +="&nbsp;"
+                
+
+                detalDiv += "<div style='display: flex; margin-left:2px'><div style='margin-right:2px'>"
+                    + names[2] + ":</div><div style='text-align: right; color:"+color+"'><div>"
+                    + formatPriceV2(rawData[2]) + "</div></div>" +
+                    "</div>";
+                    detalDiv +="&nbsp;"
+
 
                 detalDiv += "<div style='display: flex;'><div>"
                         + barParam.seriesName + ":</div><div style='text-align: right;color:"+color+"'><div>"
