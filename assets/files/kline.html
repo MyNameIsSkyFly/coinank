@@ -269,11 +269,23 @@
             formatter:(params, ticket, callback) =>{
 
                 console.log("params", params);
+                
+                let candlestickParam;
+                let barParam;
+                
+                params.forEach(param => {
+                    if(param.componentSubType === 'candlestick'){
+                        candlestickParam = param;
+                    }else{
+                        barParam = param;
+                    }
+                })
 
-                let rawData = params[0].value;
-                let ts = params[0].axisValue;
+                let rawData = candlestickParam.value;
+                let rawData2 = barParam.value;
+                let ts = candlestickParam.axisValue;
 
-                let rawData2 = params[1].value;
+                
 
                 let h =  moment(parseInt(ts)).format("YYYY-MM-DD HH:mm");
 
@@ -284,7 +296,7 @@
                 for (let i = 1; i < rawData.length; i++) {
 
                     detalDiv += "<div style='display: flex; justify-content: space-between'><div>"
-                        + params[0].marker + names[i] + "</div><div style='text-align: right'><div>"
+                        + candlestickParam.marker + names[i] + "</div><div style='text-align: right'><div>"
                         + formatPriceV2(rawData[i]) + "</div></div>" +
                         "</div>";
 
@@ -292,7 +304,7 @@
 
                 detalDiv += "<br/>"
                 detalDiv += "<div style='display: flex; justify-content: space-between'><div>"
-                        + params[1].marker + params[1].seriesName + "</div><div style='text-align: right'><div>"
+                        + barParam.marker + barParam.seriesName + "</div><div style='text-align: right'><div>"
                         + formatPriceV2(rawData2[1]) + "</div></div>" +
                         "</div>";
 
@@ -368,13 +380,12 @@
       yAxis: [
         {
           scale: true,
-          position:"right",
-          splitArea: {
-            show: true
-          }
+          splitLine: false,
+          position:"right"
         },
         {
           scale: true,
+          splitLine: false,
           position:"right",
           gridIndex: 1,
           splitNumber: 2,

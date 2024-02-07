@@ -105,13 +105,24 @@ class GridDataSource extends DataGridSource {
           padding: const EdgeInsets.all(10),
           child: FittedBox(
             child: Text(
-              row.getCells()[4].value.toString(),
+              shortenString(row.getCells()[4].value.toString()),
               style: Styles.tsBody_14m(Get.context!),
             ),
           ),
         ),
       ),
     ]);
+  }
+
+  String shortenString(String input,
+      {int prefixLength = 10, int suffixLength = 6}) {
+    if (input.length <= prefixLength + suffixLength) {
+      return input;
+    } else {
+      String prefix = input.substring(0, prefixLength);
+      String suffix = input.substring(input.length - suffixLength);
+      return '$prefix...$suffix';
+    }
   }
 
   /// Update DataSource

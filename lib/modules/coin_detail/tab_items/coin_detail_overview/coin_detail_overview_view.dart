@@ -148,7 +148,8 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
                                       ?.toString() ??
                                   '';
                               return ExpandableText(
-                                description.isEmpty ? en : description,
+                                (description.isEmpty ? en : description)
+                                    .replaceAll(RegExp(r'<[^>]*>'), ''),
                                 collapseOnTextTap: true,
                                 expandText: S.of(context).more,
                                 collapseText: S.of(context).less,
@@ -269,17 +270,14 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-            width: 58,
-            child: FittedBox(
-                fit: BoxFit.scaleDown,
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: Text(
-                    title,
-                    style: Styles.tsSub_14(context),
-                  ),
-                ))),
+            width: 70,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Text(
+                title,
+                style: Styles.tsSub_14(context),
+              ),
+            )),
         Expanded(
             child: Wrap(
           children: uris

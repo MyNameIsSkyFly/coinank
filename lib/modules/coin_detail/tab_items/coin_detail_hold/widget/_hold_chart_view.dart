@@ -3,15 +3,15 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:ank_app/constants/urls.dart';
-import 'package:ank_app/modules/coin_detail/coin_detail_logic.dart';
 import 'package:ank_app/modules/coin_detail/tab_items/coin_detail_hold/coin_detail_hold_logic.dart';
 import 'package:ank_app/modules/coin_detail/tab_items/coin_detail_hold/widget/_event.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/common_webview.dart';
-import 'package:ank_app/widget/custom_bottom_sheet/custom_bottom_sheet_view.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:get/get.dart';
+
+import '../../../_selector_view.dart';
 
 class HoldChartView extends StatefulWidget {
   const HoldChartView({
@@ -56,6 +56,7 @@ class _HoldChartViewState extends State<HoldChartView> {
     final options = {
       'baseCoin': widget.logic.baseCoin,
       'locale': AppUtil.shortLanguageName,
+      'theme': StoreLogic.to.isDarkMode ? 'night' : 'light'
     };
     var platformString = Platform.isAndroid ? 'android' : 'ios';
     var jsSource = '''
@@ -65,20 +66,15 @@ setChartData($jsonData, "$platformString", "holderAddress", ${jsonEncode(options
     // webCtrl?.evaluateJavascript(source: jsSource);
   }
 
-  RxBool get showInterceptor => Get.find<CoinDetailLogic>().s1howInterceptor;
-
   Future<String?> openSelector(List<String> items) async {
-    showInterceptor.value = true;
-    final result = await Get.bottomSheet(
-      const CustomBottomSheetPage(),
-      isScrollControlled: true,
-      isDismissible: true,
+    final result = await showCupertinoModalPopup(
+      context: context,
+      builder: (context) =>
+          SelectorSheetWithInterceptor(title: '', dataList: items),
+      barrierDismissible: true,
       barrierColor: Colors.black26,
-      settings: RouteSettings(
-        arguments: {'title': '', 'list': items, 'current': ''},
-      ),
     );
-    showInterceptor.value = false;
+
     return result as String?;
   }
 

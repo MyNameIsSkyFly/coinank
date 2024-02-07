@@ -6,7 +6,6 @@ import '../../entity/futures_big_data_entity.dart';
 class CoinDetailLogic extends GetxController {
   late MarkerTickerEntity coin;
   final contractLogic = Get.find<ContractLogic>();
-  final s1howInterceptor = false.obs;
   @override
   void onInit() {
     coin = Get.arguments['coin'];

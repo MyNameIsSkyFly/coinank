@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/entity/search_v2_entity.dart';
 import 'package:ank_app/modules/market/contract/contract_logic.dart';
 import 'package:ank_app/res/export.dart';
@@ -124,12 +125,17 @@ class HomeSearchLogic extends GetxController {
             showLoading: true,
             title: item.baseCoin);
       case SearchEntityType.BASECOIN:
-        AppNav.openWebUrl(
-            url:
-                'https://coinank.com/${AppUtil.webLanguage}instruments/${Uri.encodeComponent(item.baseCoin ?? '')}',
-            dynamicTitle: true,
-            showLoading: true,
-            title: item.baseCoin);
+        AppNav.toCoinDetail(MarkerTickerEntity(
+          baseCoin: item.baseCoin,
+          exchangeName: item.exchangeName,
+          symbol: item.symbol,
+        ));
+      // AppNav.openWebUrl(
+      //     url:
+      //         'https://coinank.com/${AppUtil.webLanguage}instruments/${Uri.encodeComponent(item.baseCoin ?? '')}',
+      //     dynamicTitle: true,
+      //     showLoading: true,
+      //     title: item.baseCoin);
       case null:
         break;
     }

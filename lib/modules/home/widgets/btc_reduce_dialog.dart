@@ -1,6 +1,7 @@
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../home_logic.dart';
 
@@ -121,8 +122,10 @@ class BtcReduceDialog extends StatelessWidget {
                                   '${logic.btcReduceData.value?.halvingBlockHeight}'),
                           _row(context,
                               title: S.of(context).halvingTime,
-                              value:
-                                  '${logic.btcReduceData.value?.halvingTime}',
+                              value: DateFormat('yyyy-MM-dd HH:mm:ss').format(
+                                  DateTime.fromMillisecondsSinceEpoch(
+                                      logic.btcReduceData.value?.halvingTime ??
+                                          0)),
                               bottomPadding: false),
                         ],
                       ),

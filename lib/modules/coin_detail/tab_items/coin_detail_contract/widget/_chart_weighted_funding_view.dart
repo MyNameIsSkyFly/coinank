@@ -3,14 +3,14 @@ import 'dart:io';
 
 import 'package:ank_app/constants/urls.dart';
 import 'package:ank_app/entity/oi_chart_menu_param_entity.dart';
-import 'package:ank_app/modules/coin_detail/coin_detail_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/common_webview.dart';
-import 'package:ank_app/widget/custom_bottom_sheet/custom_bottom_sheet_view.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 
+import '../../../_selector_view.dart';
 import '../coin_detail_contract_logic.dart';
 
 class ChartWeightedFundingView extends StatefulWidget {
@@ -50,8 +50,7 @@ class _ChartWeightedFundingViewState extends State<ChartWeightedFundingView> {
       'interval': menuParamEntity.value.interval,
       'baseCoin': menuParamEntity.value.baseCoin,
       'locale': AppUtil.shortLanguageName,
-      'theme':
-          Theme.of(context).brightness == Brightness.dark ? 'dark' : 'light',
+      'theme': StoreLogic.to.isDarkMode ? 'night' : 'light',
       'frType': typeMap[type.value], //fr-oi 持仓加权, fr-vol 成交量加权
     };
     var platformString = Platform.isAndroid ? 'android' : 'ios';
@@ -62,20 +61,15 @@ setChartData($jsonData, "$platformString", "weightFundingRate", ${jsonEncode(opt
     // webCtrl?.evaluateJavascript(source: jsSource);
   }
 
-  RxBool get showInterceptor => Get.find<CoinDetailLogic>().s1howInterceptor;
-
   Future<String?> openSelector(List<String> items) async {
-    showInterceptor.value = true;
-    final result = await Get.bottomSheet(
-      const CustomBottomSheetPage(),
-      isScrollControlled: true,
-      isDismissible: true,
+    final result = await showCupertinoModalPopup(
+      context: context,
+      builder: (context) =>
+          SelectorSheetWithInterceptor(title: '', dataList: items),
+      barrierDismissible: true,
       barrierColor: Colors.black26,
-      settings: RouteSettings(
-        arguments: {'title': '', 'list': items, 'current': ''},
-      ),
     );
-    showInterceptor.value = false;
+
     return result as String?;
   }
 

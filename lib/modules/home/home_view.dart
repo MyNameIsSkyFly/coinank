@@ -5,6 +5,7 @@ import 'package:ank_app/modules/home/price_change/price_change_view.dart';
 import 'package:ank_app/modules/home/widgets/btc_reduce_dialog.dart';
 import 'package:ank_app/modules/home/widgets/dash_board_painter.dart';
 import 'package:ank_app/modules/home/widgets/trapezium_painter.dart';
+import 'package:ank_app/modules/main/main_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/rate_with_sign.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,6 +17,7 @@ import '../../widget/rate_with_arrow.dart';
 import '../chart/chart_logic.dart';
 import 'home_logic.dart';
 import 'long_short_ratio/long_short_person_ratio/long_short_person_ratio_view.dart';
+import 'long_short_ratio/long_short_ratio_view.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -445,87 +447,92 @@ class _OiDistribution extends StatelessWidget {
           children: [
             Text(S.of(context).s_longshort_ratio,
                 style: Styles.tsBody_16m(context)),
-            Container(
-              margin: const EdgeInsets.only(top: 10),
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                border: Border.all(
-                    color:
-                        Theme.of(context).dividerTheme.color ?? Colors.white),
-                borderRadius: BorderRadius.circular(8),
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  stops: const [0, 0.5],
-                  colors: ratio < 1
-                      ? const [
-                          Color(0x1af17077),
-                          Color(0x00000000),
-                        ]
-                      : const [
-                          Color(0x1a1DCA88),
-                          Color(0x00000000),
-                        ],
-                ),
-              ),
-              child: IntrinsicHeight(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(S.of(context).s_buysel_longshort_ratio,
-                                style: Styles.tsSub_14m(context)),
-                            const Gap(5),
-                            Icon(CupertinoIcons.chevron_right,
-                                color: Styles.cSub(context), size: 10)
+            GestureDetector(
+              onTap: () => Get.toNamed(LongShortRatioPage.routeName),
+              child: Container(
+                margin: const EdgeInsets.only(top: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                      color:
+                          Theme.of(context).dividerTheme.color ?? Colors.white),
+                  borderRadius: BorderRadius.circular(8),
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: const [0, 0.5],
+                    colors: ratio < 1
+                        ? const [
+                            Color(0x1af17077),
+                            Color(0x00000000),
+                          ]
+                        : const [
+                            Color(0x1a1DCA88),
+                            Color(0x00000000),
                           ],
-                        ),
-                        const Gap(5),
-                        Text(
-                          logic.buySellLongShortRatio,
-                          style: Styles.tsBody_18m(context).copyWith(
-                              color: ratio >= 1
-                                  ? Styles.cUp(context)
-                                  : Styles.cDown(context)),
-                        ),
-                      ],
-                    ),
-                    Expanded(
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.end,
+                  ),
+                ),
+                child: IntrinsicHeight(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          //todo intl
-                          Text(
-                            '看空',
-                            style: TextStyle(
-                                    color: Styles.cDown(context), fontSize: 12)
-                                .medium,
+                          Row(
+                            children: [
+                              Text(S.of(context).s_buysel_longshort_ratio,
+                                  style: Styles.tsSub_14m(context)),
+                              const Gap(5),
+                              Icon(CupertinoIcons.chevron_right,
+                                  color: Styles.cSub(context), size: 10)
+                            ],
                           ),
-                          CustomPaint(
-                            size: const Size(130, 60),
-                            painter: DashBoardPainter(
-                                Styles.cUp(context), Styles.cDown(context),
-                                radians: (ratio - 1) / 2,
-                                isDarkMode: Theme.of(context).brightness ==
-                                    Brightness.dark),
-                          ),
-                          //todo intl
+                          const Gap(5),
                           Text(
-                            '看多',
-                            style: TextStyle(
-                                    color: Styles.cUp(context), fontSize: 12)
-                                .medium,
+                            logic.buySellLongShortRatio,
+                            style: Styles.tsBody_18m(context).copyWith(
+                                color: ratio >= 1
+                                    ? Styles.cUp(context)
+                                    : Styles.cDown(context)),
                           ),
                         ],
                       ),
-                    )
-                  ],
+                      Expanded(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            //todo intl
+                            Text(
+                              '看空',
+                              style: TextStyle(
+                                      color: Styles.cDown(context),
+                                      fontSize: 12)
+                                  .medium,
+                            ),
+                            CustomPaint(
+                              size: const Size(130, 60),
+                              painter: DashBoardPainter(
+                                  Styles.cUp(context), Styles.cDown(context),
+                                  radians: (ratio - 1) / 2,
+                                  isDarkMode: Theme.of(context).brightness ==
+                                      Brightness.dark),
+                            ),
+                            //todo intl
+                            Text(
+                              '看多',
+                              style: TextStyle(
+                                      color: Styles.cUp(context), fontSize: 12)
+                                  .medium,
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -840,109 +847,112 @@ class _LongShortRatio extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _FilledContainer(
-      onTap: onTap,
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  title,
-                  style: Styles.tsSub_14m(context),
+    return GestureDetector(
+      child: _FilledContainer(
+        onTap: onTap,
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    title,
+                    style: Styles.tsSub_14m(context),
+                  ),
                 ),
-              ),
-              Text((actualLong / short).toStringAsFixed(2),
-                  style: Styles.tsBody_14m(context)),
-              const Gap(5),
-              RateWithArrow(rate: rate * 100)
-            ],
-          ),
-          const Gap(17),
-          Stack(
-            children: [
-              SizedBox(
-                height: 6,
-                child: Row(children: [
-                  Expanded(
-                      flex: (actualLong * 1000).toInt(),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Styles.cUp(context),
-                        ),
-                      )),
-                  Expanded(
-                      flex: (short * 1000).toInt(),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Styles.cDown(context),
-                        ),
-                      )),
-                ]),
-              ),
-              Align(
-                alignment: Alignment(
-                    ((actualLong * 1000).toInt() - (short * 1000).toInt()) /
-                        ((actualLong * 1000).toInt() + (short * 1000).toInt()),
-                    0),
-                child: CustomPaint(
-                    size: const Size(0, 6),
-                    painter: TrapeziumPainter(
-                        width: 4, color: Theme.of(context).cardColor)),
-              )
-            ],
-          ),
-          const Gap(5),
-          Row(
-            children: [
-              Expanded(
-                  child: Row(
-                crossAxisAlignment: CrossAxisAlignment.baseline,
-                textBaseline: TextBaseline.alphabetic,
-                children: [
-                  Text(
-                    S.of(context).s_longs,
-                    style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: Styles.fontMedium,
-                        color: Styles.cUp(context)),
-                  ),
-                  const Gap(5),
-                  Text(
-                    '${(actualLong * 100).toStringAsFixed(2)}%',
-                    style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: Styles.fontMedium,
-                        color: Styles.cUp(context)),
-                  )
-                ],
-              )),
-              Expanded(
-                  child: Row(
-                crossAxisAlignment: CrossAxisAlignment.baseline,
-                textBaseline: TextBaseline.alphabetic,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    S.of(context).s_shorts,
-                    style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: Styles.fontMedium,
-                        color: Styles.cDown(context)),
-                  ),
-                  const Gap(5),
-                  Text(
-                    '${(short * 100).toStringAsFixed(2)}%',
-                    style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: Styles.fontMedium,
-                        color: Styles.cDown(context)),
-                  )
-                ],
-              ))
-            ],
-          ),
-        ],
+                Text((actualLong / short).toStringAsFixed(2),
+                    style: Styles.tsBody_14m(context)),
+                const Gap(5),
+                RateWithArrow(rate: rate * 100)
+              ],
+            ),
+            const Gap(17),
+            Stack(
+              children: [
+                SizedBox(
+                  height: 6,
+                  child: Row(children: [
+                    Expanded(
+                        flex: (actualLong * 1000).toInt(),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Styles.cUp(context),
+                          ),
+                        )),
+                    Expanded(
+                        flex: (short * 1000).toInt(),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Styles.cDown(context),
+                          ),
+                        )),
+                  ]),
+                ),
+                Align(
+                  alignment: Alignment(
+                      ((actualLong * 1000).toInt() - (short * 1000).toInt()) /
+                          ((actualLong * 1000).toInt() +
+                              (short * 1000).toInt()),
+                      0),
+                  child: CustomPaint(
+                      size: const Size(0, 6),
+                      painter: TrapeziumPainter(
+                          width: 4, color: Theme.of(context).cardColor)),
+                )
+              ],
+            ),
+            const Gap(5),
+            Row(
+              children: [
+                Expanded(
+                    child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.baseline,
+                  textBaseline: TextBaseline.alphabetic,
+                  children: [
+                    Text(
+                      S.of(context).s_longs,
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: Styles.fontMedium,
+                          color: Styles.cUp(context)),
+                    ),
+                    const Gap(5),
+                    Text(
+                      '${(actualLong * 100).toStringAsFixed(2)}%',
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: Styles.fontMedium,
+                          color: Styles.cUp(context)),
+                    )
+                  ],
+                )),
+                Expanded(
+                    child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.baseline,
+                  textBaseline: TextBaseline.alphabetic,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      S.of(context).s_shorts,
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: Styles.fontMedium,
+                          color: Styles.cDown(context)),
+                    ),
+                    const Gap(5),
+                    Text(
+                      '${(short * 100).toStringAsFixed(2)}%',
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: Styles.fontMedium,
+                          color: Styles.cDown(context)),
+                    )
+                  ],
+                ))
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -1164,6 +1174,10 @@ class _ChartItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: GestureDetector(
         onTap: () {
+          if (item.key == 'more') {
+            Get.find<MainLogic>().selectTab(3);
+            return;
+          }
           ['liqMapChart', 'liqHeatMapChart'].contains(item.key)
               ? Get.toNamed(LiqMainPage.routeName,
                   arguments: item.key == 'liqMapChart' ? 0 : 1)

@@ -29,6 +29,10 @@ class SearchV2Entity {
 class SearchV2ItemEntity extends Equatable {
   final String? baseCoin;
   @JsonKey(includeToJson: false)
+  final String? exchangeName;
+  @JsonKey(includeToJson: false)
+  final String? symbol;
+  @JsonKey(includeToJson: false)
   final double? oi;
   @JsonKey(includeToJson: false)
   final double? oiChg;
@@ -40,6 +44,8 @@ class SearchV2ItemEntity extends Equatable {
 
   const SearchV2ItemEntity({
     this.baseCoin,
+    this.exchangeName,
+    this.symbol,
     this.oi,
     this.oiChg,
     this.price,

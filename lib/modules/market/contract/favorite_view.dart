@@ -185,9 +185,12 @@ class _FavoritePageState extends State<FavoritePage> {
                         margin: EdgeInsets.only(top: 200))),
                 _EmptyView(state: state, logic: logic),
                 EasyRefresh(
+                  // scrollBehaviorBuilder: (physics) =>
+                  //     const ERScrollBehavior(ClampingScrollPhysics()),
                   onRefresh: logic.onRefresh,
                   child: SlidableAutoCloseBehavior(
                     child: ListView.builder(
+                      physics: const ClampingScrollPhysics(),
                       controller: state.scrollControllerF,
                       padding: const EdgeInsets.only(bottom: 10),
                       itemBuilder: (cnt, idx) {
