@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -30,6 +31,21 @@ class ChartKlineView extends StatefulWidget {
 
 class _ChartKlineViewState extends State<ChartKlineView> {
   InAppWebViewController? webCtrl;
+  Timer? _timer;
+
+  @override
+  void initState() {
+    _timer = Timer.periodic(const Duration(seconds: 10), (timer) {
+      _evaluate();
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
 
   Widget _timeItem(String text, String? value) {
     return Expanded(
@@ -169,7 +185,6 @@ class _ChartKlineViewState extends State<ChartKlineView> {
     var jsSource = '''
         setChartData($dataParamsString, "$platformString", "kline", $localeString);    
                 ''';
-    print(jsSource);
     webCtrl?.evaluateJavascript(source: jsSource);
   }
 }

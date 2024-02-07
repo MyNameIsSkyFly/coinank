@@ -22,93 +22,77 @@ class CoinDetailPage extends StatefulWidget {
 class _CoinDetailPageState extends State<CoinDetailPage>
     with SingleTickerProviderStateMixin {
   final logic = Get.put(CoinDetailLogic());
-  late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController =
+    logic.tabController =
         TabController(length: 4, vsync: this, animationDuration: Duration.zero);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Scaffold(
-          appBar: AppBar(
-            centerTitle: false,
-            titleSpacing: 0,
-            title: Row(
-              children: [
-                ImageUtil.networkImage(
-                  AppConst.imageHost(logic.coin.baseCoin ?? ''),
-                  width: 24,
-                  height: 24,
-                ),
-                const Gap(5),
-                Text(logic.coin.baseCoin ?? ''),
-              ],
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: false,
+        titleSpacing: 0,
+        title: Row(
+          children: [
+            ImageUtil.networkImage(
+              AppConst.imageHost(logic.coin.baseCoin ?? ''),
+              width: 24,
+              height: 24,
             ),
-            actions: [
-              IconButton(
-                style:
-                    IconButton.styleFrom(visualDensity: VisualDensity.compact),
-                icon:
-                    const ImageIcon(AssetImage(Assets.commonIcShare), size: 20),
-                onPressed: () => AppUtil.shareImage(),
-              ),
-              ObxValue((RxBool marked) {
-                return IconButton(
-                  style: IconButton.styleFrom(
-                      visualDensity: VisualDensity.compact),
-                  icon: Icon(
-                      marked.value
-                          ? CupertinoIcons.star_fill
-                          : CupertinoIcons.star,
-                      size: 20,
-                      color: marked.value ? Styles.cYellow : null),
-                  onPressed: () async {
-                    await Get.find<ContractLogic>()
-                        .tapFavoriteCollect('${logic.coin.baseCoin}');
-                    marked.value = !marked.value;
-                  },
-                );
-              },
-                  RxBool(StoreLogic.to.favoriteContract
-                      .contains(logic.coin.baseCoin)))
-            ],
-          ),
-          body: Column(children: [
-            TabBar(
-                tabAlignment: TabAlignment.start,
-                isScrollable: true,
-                controller: _tabController,
-                tabs: [
-                  Tab(text: S.of(context).derivatives),
-                  Tab(text: S.of(context).spot),
-                  Tab(text: S.of(context).overview),
-                  Tab(text: S.of(context).holding),
-                ]),
-            Expanded(
-                child: TabBarView(
-                    physics: NeverScrollableScrollPhysics(),
-                    controller: _tabController,
-                    children: const [
-                  AliveWidget(child: CoinDetailContractView()),
-                  AliveWidget(child: CoinDetailSpotView()),
-                  AliveWidget(child: CoinDetailOverviewView()),
-                  AliveWidget(child: CoinDetailHoldView()),
-                ]))
-          ]),
+            const Gap(5),
+            Text(logic.coin.baseCoin ?? ''),
+          ],
         ),
-        // if (Platform.isIOS)
-        //   Positioned.fill(child: Obx(() {
-        //     return Visibility(
-        //         visible: logic.s1howInterceptor.value,
-        //         child: PointerInterceptor(child: const SizedBox()));
-        //   }))
-      ],
+        actions: [
+          IconButton(
+            style: IconButton.styleFrom(visualDensity: VisualDensity.compact),
+            icon: const ImageIcon(AssetImage(Assets.commonIcShare), size: 20),
+            onPressed: () => AppUtil.shareImage(),
+          ),
+          ObxValue((RxBool marked) {
+            return IconButton(
+              style: IconButton.styleFrom(visualDensity: VisualDensity.compact),
+              icon: Icon(
+                  marked.value ? CupertinoIcons.star_fill : CupertinoIcons.star,
+                  size: 20,
+                  color: marked.value ? Styles.cYellow : null),
+              onPressed: () async {
+                await Get.find<ContractLogic>()
+                    .tapFavoriteCollect('${logic.coin.baseCoin}');
+                marked.value = !marked.value;
+              },
+            );
+          },
+              RxBool(
+                  StoreLogic.to.favoriteContract.contains(logic.coin.baseCoin)))
+        ],
+      ),
+      body: Column(children: [
+        TabBar(
+            tabAlignment: TabAlignment.start,
+            isScrollable: true,
+            controller: logic.tabController,
+            tabs: [
+              Tab(text: S.of(context).derivatives),
+              Tab(text: S.of(context).spot),
+              Tab(text: S.of(context).overview),
+              Tab(text: S.of(context).holding),
+            ]),
+        Expanded(
+            child: TabBarView(
+                physics: const NeverScrollableScrollPhysics(),
+                controller: logic.tabController,
+                children: const [
+              AliveWidget(child: CoinDetailContractView()),
+              AliveWidget(child: CoinDetailSpotView()),
+              AliveWidget(child: CoinDetailOverviewView()),
+              AliveWidget(child: CoinDetailHoldView()),
+            ]))
+      ]),
     );
   }
 }

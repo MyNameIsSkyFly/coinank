@@ -1,6 +1,7 @@
 // ignore: depend_on_referenced_packages
 import 'package:ank_app/entity/contract_market_entity.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:ank_app/widget/animated_color_text.dart';
 import 'package:ank_app/widget/rate_with_sign.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -34,6 +35,7 @@ class GridDataSource extends DataGridSource {
         DataGridCell<double>(columnName: '5', value: entity.turnover24h),
       ]);
     }).toList();
+    updateDataSource();
   }
 
   final clickableExchangeNames = [
@@ -100,12 +102,11 @@ class GridDataSource extends DataGridSource {
       Container(
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.all(8),
-        child: Text(
-          row.getCells()[2].value.toString(),
-          overflow: TextOverflow.ellipsis,
-          style: Styles.tsBody_14m(Get.context!),
-        ),
-      ),
+          child: AnimatedColorText(
+            text: row.getCells()[2].value.toString(),
+            value: row.getCells()[2].value,
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+          )),
       Container(
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.all(8),

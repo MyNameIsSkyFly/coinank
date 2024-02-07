@@ -166,7 +166,7 @@ class _CopyItem extends StatelessWidget {
                 children: [
                   Text(text, style: Styles.tsSub_14(context)),
                   const Gap(5),
-                  Image.asset(Assets.commonIcCopy, height: 15, width: 15)
+                  const ImageIcon(AssetImage(Assets.commonIcCopy), size: 15)
                 ],
               )),
         ],

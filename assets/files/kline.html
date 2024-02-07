@@ -52,27 +52,27 @@
         }
 
         const langZh = {
-            open:"开盘",
-            close:"收盘",
-            high:"最高",
-            low:"最低",
+            open:"开",
+            close:"收",
+            high:"高",
+            low:"低",
             volume:"成交量"
         }
 
         const langZhTw = {
-            open:"開盤",
-            close:"收盤",
-            high:"最高",
-            low:"最低",
+            open:"開",
+            close:"收",
+            high:"高",
+            low:"低",
             volume:"成交量"
         }
 
         const langEn = {
-            open:"Open",
-            close:"Close",
-            high:"Highest",
-            low:"Lowest",
-            volume:"Volume"
+            open:"O",
+            close:"C",
+            high:"H",
+            low:"L",
+            volume:"V"
         }
 
         const langConfig = {
@@ -253,7 +253,9 @@
       },
       tooltip: {
             trigger: 'axis',
+            position: [0, 0],
             confine: true,
+            extraCssText: 'box-shadow: none;padding: 2px; background: transparent;border:none',
             axisPointer: {            // 坐标轴指示器，坐标轴触发有效
               type: 'cross',        // 默认为直线，可选为：'line' | 'shadow'
               label:{
@@ -268,8 +270,6 @@
             },
             formatter:(params, ticket, callback) =>{
 
-                console.log("params", params);
-                
                 let candlestickParam;
                 let barParam;
                 
@@ -288,29 +288,35 @@
                 
 
                 let h =  moment(parseInt(ts)).format("YYYY-MM-DD HH:mm");
+                h = ""
 
                 let detalDiv = "";
 
-
+                let color;
+                if(rawData[2] > rawData[1]){
+                    color = upColor
+                }else {
+                    color = downColor
+                }
                 let names = ["", lang.open, lang.close , lang.low, lang.high]
                 for (let i = 1; i < rawData.length; i++) {
 
-                    detalDiv += "<div style='display: flex; justify-content: space-between'><div>"
-                        + candlestickParam.marker + names[i] + "</div><div style='text-align: right'><div>"
+                    detalDiv += "<div style='display: flex; margin-left:2px'><div style='margin-right:2px'>"
+                        + names[i] + ":</div><div style='text-align: right; color:"+color+"'><div>"
                         + formatPriceV2(rawData[i]) + "</div></div>" +
                         "</div>";
+                        detalDiv +="&nbsp;"
 
                 }
 
-                detalDiv += "<br/>"
-                detalDiv += "<div style='display: flex; justify-content: space-between'><div>"
-                        + barParam.marker + barParam.seriesName + "</div><div style='text-align: right'><div>"
-                        + formatPriceV2(rawData2[1]) + "</div></div>" +
+                detalDiv += "<div style='display: flex;'><div>"
+                        + barParam.seriesName + ":</div><div style='text-align: right;color:"+color+"'><div>"
+                        + formatPriceV2(rawData2[1]) + "</div>&nbsp;</div>" +
                         "</div>";
 
                 h += detalDiv
 
-                return "<div style='min-width:200px'>"+h+"</div>";
+                return "<div style='min-width:200px; display:flex; font-size:12px'>"+h+"</div>";
             }
         },
       visualMap: {
