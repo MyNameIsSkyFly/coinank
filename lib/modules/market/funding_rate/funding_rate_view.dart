@@ -5,8 +5,12 @@ import 'package:ank_app/modules/market/funding_rate/funding_rate_state.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import 'funding_rate_logic.dart';
+
+part '_data_grid_view.dart';
 
 class FundingRatePage extends StatelessWidget {
   const FundingRatePage({super.key});
@@ -105,71 +109,71 @@ class FundingRatePage extends StatelessWidget {
             ),
           );
         }),
-        Row(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(left: 15),
-              alignment: Alignment.centerLeft,
-              decoration: BoxDecoration(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? Colors.white12
-                          : Colors.black12,
-                      blurRadius: 2,
-                      offset: const Offset(2, 1.5),
-                    ),
-                    BoxShadow(
-                        offset: const Offset(-2, 2),
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        spreadRadius: 2)
-                  ]),
-              height: 48,
-              width: 100,
-              child: Text(
-                'Coin',
-                style: Styles.tsSub_14(context),
-              ),
-            ),
-            Expanded(
-              child: SizedBox(
-                height: 48,
-                child: Obx(() {
-                  return ListView.builder(
-                      controller: state.titleController,
-                      scrollDirection: Axis.horizontal,
-                      padding: const EdgeInsets.only(left: 8),
-                      shrinkWrap: true,
-                      physics: const ClampingScrollPhysics(),
-                      itemCount: state.topList.length,
-                      itemBuilder: (cnt, idx) {
-                        return SizedBox(
-                          width: 100,
-                          child: Obx(() {
-                            return SortWithArrow(
-                              icon: Padding(
-                                padding: const EdgeInsets.only(right: 5),
-                                child: ClipOval(
-                                  child: Image.asset(
-                                    'assets/images/platform/${state.topList[idx].toLowerCase()}.png',
-                                    width: 15,
-                                  ),
-                                ),
-                              ),
-                              title: state.topList.toList()[idx],
-                              style: Styles.tsBody_12m(context),
-                              status: state.topStatusList.toList()[idx],
-                              onTap: () => logic.tapSort(idx),
-                            );
-                          }),
-                        );
-                      });
-                }),
-              ),
-            ),
-          ],
-        ),
+        // Row(
+        //   children: [
+        //     Container(
+        //       margin: const EdgeInsets.only(left: 15),
+        //       alignment: Alignment.centerLeft,
+        //       decoration: BoxDecoration(
+        //           color: Theme.of(context).scaffoldBackgroundColor,
+        //           boxShadow: [
+        //             BoxShadow(
+        //               color: Theme.of(context).brightness == Brightness.dark
+        //                   ? Colors.white12
+        //                   : Colors.black12,
+        //               blurRadius: 2,
+        //               offset: const Offset(2, 1.5),
+        //             ),
+        //             BoxShadow(
+        //                 offset: const Offset(-2, 2),
+        //                 color: Theme.of(context).scaffoldBackgroundColor,
+        //                 spreadRadius: 2)
+        //           ]),
+        //       height: 48,
+        //       width: 100,
+        //       child: Text(
+        //         'Coin',
+        //         style: Styles.tsSub_14(context),
+        //       ),
+        //     ),
+        //     Expanded(
+        //       child: SizedBox(
+        //         height: 48,
+        //         child: Obx(() {
+        //           return ListView.builder(
+        //               controller: state.titleController,
+        //               scrollDirection: Axis.horizontal,
+        //               padding: const EdgeInsets.only(left: 8),
+        //               shrinkWrap: true,
+        //               physics: const ClampingScrollPhysics(),
+        //               itemCount: state.topList.length,
+        //               itemBuilder: (cnt, idx) {
+        //                 return SizedBox(
+        //                   width: 100,
+        //                   child: Obx(() {
+        //                     return SortWithArrow(
+        //                       icon: Padding(
+        //                         padding: const EdgeInsets.only(right: 5),
+        //                         child: ClipOval(
+        //                           child: Image.asset(
+        //                             'assets/images/platform/${state.topList[idx].toLowerCase()}.png',
+        //                             width: 15,
+        //                           ),
+        //                         ),
+        //                       ),
+        //                       title: state.topList.toList()[idx],
+        //                       style: Styles.tsBody_12m(context),
+        //                       status: state.topStatusList.toList()[idx],
+        //                       onTap: () => logic.tapSort(idx),
+        //                     );
+        //                   }),
+        //                 );
+        //               });
+        //         }),
+        //       ),
+        //     ),
+        //   ],
+        // ),
         Obx(() {
           return state.isLoading.value
               ? const LottieIndicator(
@@ -178,10 +182,7 @@ class FundingRatePage extends StatelessWidget {
               : Expanded(
                   child: EasyRefresh(
                     onRefresh: () => logic.onRefresh(),
-                    child: SingleChildScrollView(
-                      controller: state.scrollController,
-                      child: _TableView(state: state),
-                    ),
+                    child: _DataGridView(logic: logic),
                   ),
                 );
         }),

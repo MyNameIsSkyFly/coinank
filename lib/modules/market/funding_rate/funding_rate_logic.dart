@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:ank_app/entity/marker_funding_rate_entity.dart';
 import 'package:ank_app/modules/main/main_logic.dart';
 import 'package:ank_app/modules/market/funding_rate_search/funding_rate_search_view.dart';
 import 'package:ank_app/modules/market/market_logic.dart';
@@ -9,11 +8,12 @@ import 'package:ank_app/widget/custom_bottom_sheet/custom_bottom_sheet_view.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '_datagrid_source.dart';
 import 'funding_rate_state.dart';
 
 class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin {
   final FundingRateState state = FundingRateState();
-
+  late final gridSource = GridDataSource([]);
   void tapHide(bool v) {
     if (state.isHide.value != !v) {
       state.isHide.value = !v;
@@ -28,6 +28,7 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin {
           : ['Binance', 'Okex', 'Bybit', 'Bitget', 'Gate', 'Bitmex', 'Huobi'];
       state.topStatusList.value =
           List.generate(state.topList.length, (index) => SortStatus.normal);
+      gridSource.buildDataGridRows();
     }
   }
 
@@ -60,68 +61,68 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin {
     }
   }
 
-  void tapSort(int idx) {
-    state.sortIndex = idx;
-    SortStatus sortStatus = state.topStatusList.toList()[idx];
-    switch (sortStatus) {
-      case SortStatus.normal:
-        sortStatus = SortStatus.up;
-      case SortStatus.up:
-        sortStatus = SortStatus.down;
-      case SortStatus.down:
-        sortStatus = SortStatus.normal;
-    }
-    List<SortStatus> list =
-        List.generate(state.topList.length, (index) => SortStatus.normal);
-    list[idx] = sortStatus;
-    state.topStatusList.value = list;
-    sort(state.topList.toList()[idx], sortStatus);
-  }
+  // void _tapSort(int idx) {
+  //   state.sortIndex = idx;
+  //   SortStatus sortStatus = state.topStatusList.toList()[idx];
+  //   switch (sortStatus) {
+  //     case SortStatus.normal:
+  //       sortStatus = SortStatus.up;
+  //     case SortStatus.up:
+  //       sortStatus = SortStatus.down;
+  //     case SortStatus.down:
+  //       sortStatus = SortStatus.normal;
+  //   }
+  //   List<SortStatus> list =
+  //       List.generate(state.topList.length, (index) => SortStatus.normal);
+  //   list[idx] = sortStatus;
+  //   state.topStatusList.value = list;
+  //   sort(state.topList.toList()[idx], sortStatus);
+  // }
 
-  void sort(String exchangeName, SortStatus sortBy) {
-    List<MarkerFundingRateEntity> list =
-        List.from(state.contentOriginalDataList ?? []);
-    list = list
-        .where((element) =>
-            state.searchList.contains(element.symbol) ||
-            state.searchList.isEmpty)
-        .toList();
-    if (sortBy == SortStatus.normal) {
-      state.contentDataList.value = list;
-      return;
-    }
-    list.sort((a, b) {
-      double? first;
-      double? second;
-      if (state.isCmap.value) {
-        first = a.cmap?[exchangeName]?.fundingRate;
-        second = b.cmap?[exchangeName]?.fundingRate;
-      } else {
-        first = a.umap?[exchangeName]?.fundingRate;
-        second = b.umap?[exchangeName]?.fundingRate;
-      }
-      if (first == null && second == null) {
-        return 0;
-      } else if (first == null) {
-        return 1;
-      } else if (second == null) {
-        return -1;
-      }
-      if (first == 0 && second == 0) {
-        return 0;
-      } else if (first == 0) {
-        return 1;
-      } else if (second == 0) {
-        return -1;
-      }
-      if (sortBy == SortStatus.up) {
-        return first.compareTo(second);
-      } else {
-        return second.compareTo(first);
-      }
-    });
-    state.contentDataList.value = list;
-  }
+  // void _sort(String exchangeName, SortStatus sortBy) {
+  //   List<MarkerFundingRateEntity> list =
+  //       List.from(state.contentOriginalDataList ?? []);
+  //   list = list
+  //       .where((element) =>
+  //           state.searchList.contains(element.symbol) ||
+  //           state.searchList.isEmpty)
+  //       .toList();
+  //   if (sortBy == SortStatus.normal) {
+  //     state.contentDataList.value = list;
+  //     return;
+  //   }
+  //   list.sort((a, b) {
+  //     double? first;
+  //     double? second;
+  //     if (state.isCmap.value) {
+  //       first = a.cmap?[exchangeName]?.fundingRate;
+  //       second = b.cmap?[exchangeName]?.fundingRate;
+  //     } else {
+  //       first = a.umap?[exchangeName]?.fundingRate;
+  //       second = b.umap?[exchangeName]?.fundingRate;
+  //     }
+  //     if (first == null && second == null) {
+  //       return 0;
+  //     } else if (first == null) {
+  //       return 1;
+  //     } else if (second == null) {
+  //       return -1;
+  //     }
+  //     if (first == 0 && second == 0) {
+  //       return 0;
+  //     } else if (first == 0) {
+  //       return 1;
+  //     } else if (second == 0) {
+  //       return -1;
+  //     }
+  //     if (sortBy == SortStatus.up) {
+  //       return first.compareTo(second);
+  //     } else {
+  //       return second.compareTo(first);
+  //     }
+  //   });
+  //   state.contentDataList.value = list;
+  // }
 
   tapSearch() async {
     final result = await showModalBottomSheet(
@@ -139,8 +140,9 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin {
     );
     if (result != null) {
       state.searchList = result as List<String>;
-      sort(state.topList.toList()[state.sortIndex],
-          state.topStatusList.toList()[state.sortIndex]);
+      // sort(state.topList.toList()[state.sortIndex],
+      //     state.topStatusList.toList()[state.sortIndex]);
+      gridSource.buildDataGridRows();
     }
   }
 
@@ -168,9 +170,11 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin {
     }
     state.isRefresh = false;
     if (data != null) {
+      gridSource.items.assignAll(data);
+      gridSource.buildDataGridRows();
       state.contentOriginalDataList = data;
-      sort(state.topList.toList()[state.sortIndex],
-          state.topStatusList.toList()[state.sortIndex]);
+      // sort(state.topList.toList()[state.sortIndex],
+      //     state.topStatusList.toList()[state.sortIndex]);
     }
   }
 
