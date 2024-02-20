@@ -1,15 +1,15 @@
-import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:ank_app/constants/urls.dart';
-import 'package:ank_app/modules/coin_detail/_selector_view.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/common_webview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
+
+import 'coin_detail_selector_view.dart';
 
 class ChartKlineView extends StatefulWidget {
   const ChartKlineView({

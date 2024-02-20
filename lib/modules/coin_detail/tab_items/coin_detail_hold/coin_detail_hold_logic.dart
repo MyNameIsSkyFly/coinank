@@ -1,6 +1,6 @@
 import 'package:ank_app/entity/hold_address_entity.dart';
 import 'package:ank_app/modules/coin_detail/coin_detail_logic.dart';
-import 'package:ank_app/modules/coin_detail/tab_items/coin_detail_hold/widget/_event.dart';
+import 'package:ank_app/modules/coin_detail/tab_items/coin_detail_hold/_event.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:get/get.dart';
 

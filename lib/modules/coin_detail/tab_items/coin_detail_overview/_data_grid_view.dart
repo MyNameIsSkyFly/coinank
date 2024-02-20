@@ -1,14 +1,7 @@
-import 'package:ank_app/modules/coin_detail/tab_items/coin_detail_overview/coin_detail_overview_logic.dart';
-import 'package:ank_app/res/export.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:syncfusion_flutter_core/theme.dart';
-import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+part of 'coin_detail_overview_view.dart';
 
-import '_datagrid_source.dart';
-
-class DataGridView extends StatelessWidget {
-  const DataGridView({
+class _DataGridView extends StatelessWidget {
+  const _DataGridView({
     super.key,
     required this.logic,
   });

@@ -4,7 +4,7 @@ import 'package:ank_app/entity/coin_detail_contract_info_entity.dart';
 import 'package:ank_app/entity/contract_market_entity.dart';
 import 'package:ank_app/http/apis.dart';
 import 'package:ank_app/modules/coin_detail/coin_detail_logic.dart';
-import 'package:ank_app/modules/coin_detail/tab_items/coin_detail_contract/widget/_datagrid_source.dart';
+import 'package:ank_app/modules/coin_detail/tab_items/coin_detail_contract/_datagrid_source.dart';
 import 'package:ank_app/modules/main/main_logic.dart';
 import 'package:get/get.dart';
 

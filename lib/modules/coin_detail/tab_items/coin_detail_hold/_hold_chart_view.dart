@@ -3,15 +3,15 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:ank_app/constants/urls.dart';
+import 'package:ank_app/modules/coin_detail/tab_items/coin_detail_hold/_event.dart';
 import 'package:ank_app/modules/coin_detail/tab_items/coin_detail_hold/coin_detail_hold_logic.dart';
-import 'package:ank_app/modules/coin_detail/tab_items/coin_detail_hold/widget/_event.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/common_webview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
-import '../../../_selector_view.dart';
+import '../../widgets/coin_detail_selector_view.dart';
 
 class HoldChartView extends StatefulWidget {
   const HoldChartView({

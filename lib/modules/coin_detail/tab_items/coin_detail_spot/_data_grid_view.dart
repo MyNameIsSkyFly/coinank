@@ -1,12 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_core/theme.dart';
-import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+part of 'coin_detail_spot_view.dart';
 
-import '../../../../../res/export.dart';
-import '../coin_detail_spot_logic.dart';
-
-class DataGridView extends StatelessWidget {
-  const DataGridView({
+class _DataGridView extends StatelessWidget {
+  const _DataGridView({
     super.key,
     required this.logic,
   });

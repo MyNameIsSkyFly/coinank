@@ -1,13 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:syncfusion_flutter_core/theme.dart';
-import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+part of 'coin_detail_contract_view.dart';
 
-import '../../../../../res/export.dart';
-import '../coin_detail_contract_logic.dart';
-
-class DataGridView extends StatefulWidget {
-  const DataGridView({
+class _DataGridView extends StatefulWidget {
+  const _DataGridView({
     super.key,
     required this.logic,
   });
@@ -15,10 +9,10 @@ class DataGridView extends StatefulWidget {
   final CoinDetailContractLogic logic;
 
   @override
-  State<DataGridView> createState() => _DataGridViewState();
+  State<_DataGridView> createState() => _DataGridViewState();
 }
 
-class _DataGridViewState extends State<DataGridView> {
+class _DataGridViewState extends State<_DataGridView> {
   List<GridColumn> getColumns(BuildContext context) {
     List<GridColumn> columns;
     columns = <GridColumn>[

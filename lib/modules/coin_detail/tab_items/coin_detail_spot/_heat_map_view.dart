@@ -1,16 +1,7 @@
-import 'dart:convert';
-import 'dart:io';
+part of 'coin_detail_spot_view.dart';
 
-import 'package:ank_app/constants/urls.dart';
-import 'package:ank_app/res/export.dart';
-import 'package:ank_app/widget/common_webview.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-
-import '../coin_detail_spot_logic.dart';
-
-class HeatMapView extends StatefulWidget {
-  const HeatMapView({
+class _HeatMapView extends StatefulWidget {
+  const _HeatMapView({
     super.key,
     required this.logic,
   });
@@ -18,10 +9,10 @@ class HeatMapView extends StatefulWidget {
   final CoinDetailSpotLogic logic;
 
   @override
-  State<HeatMapView> createState() => _HeatMapViewState();
+  State<_HeatMapView> createState() => _HeatMapViewState();
 }
 
-class _HeatMapViewState extends State<HeatMapView> {
+class _HeatMapViewState extends State<_HeatMapView> {
   InAppWebViewController? webCtrl;
 
   @override

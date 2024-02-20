@@ -1,14 +1,26 @@
-import 'package:ank_app/modules/coin_detail/tab_items/coin_detail_spot/widget/_heat_map_view.dart';
-import 'package:ank_app/widget/animated_color_text.dart';
-import 'package:ank_app/widget/rate_with_sign.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'dart:convert';
+import 'dart:io';
 
-import '../../../../res/export.dart';
-import '../coin_detail_contract/widget/_chart_kline_view.dart';
+import 'package:ank_app/constants/urls.dart';
+import 'package:ank_app/entity/oi_chart_menu_param_entity.dart';
+import 'package:ank_app/modules/coin_detail/widgets/coin_detail_chart_kline_view.dart';
+import 'package:ank_app/res/export.dart';
+import 'package:ank_app/widget/animated_color_text.dart';
+import 'package:ank_app/widget/common_webview.dart';
+import 'package:ank_app/widget/rate_with_sign.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:get/get.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+
+import '../../widgets/coin_detail_selector_view.dart';
 import 'coin_detail_spot_logic.dart';
-import 'widget/_data_grid_view.dart';
-import 'widget/_vol_24h_view.dart';
+
+part '_data_grid_view.dart';
+part '_heat_map_view.dart';
+part '_vol_24h_view.dart';
 
 class CoinDetailSpotView extends StatefulWidget {
   const CoinDetailSpotView({super.key});
@@ -42,7 +54,7 @@ class _CoinDetailSpotViewState extends State<CoinDetailSpotView>
             return SliverToBoxAdapter(
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
-                height: 100,
+                height: 69,
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -128,12 +140,26 @@ class _CoinDetailSpotViewState extends State<CoinDetailSpotView>
             );
           }),
           SliverToBoxAdapter(
+            child: Divider(
+              height: 8,
+              thickness: 8,
+              color: Theme.of(context).cardColor,
+            ),
+          ),
+          SliverToBoxAdapter(
               child: ChartKlineView(
             baseCoin: logic.detailLogic.coin.baseCoin ?? '',
             symbol: logic.detailLogic.coin.symbol ?? '',
             exchangeName: logic.detailLogic.coin.exchangeName ?? '',
             isSpot: true,
           )),
+          SliverToBoxAdapter(
+            child: Divider(
+              height: 8,
+              thickness: 8,
+              color: Theme.of(context).cardColor,
+            ),
+          )
         ];
       },
       body: Column(
@@ -142,6 +168,12 @@ class _CoinDetailSpotViewState extends State<CoinDetailSpotView>
             tabAlignment: TabAlignment.start,
             isScrollable: true,
             controller: tabCtrl,
+            indicator: const BoxDecoration(
+                border:
+                    Border(bottom: BorderSide(color: Styles.cMain, width: 2))),
+            indicatorSize: TabBarIndicatorSize.label,
+            labelStyle: Styles.tsBody_14m(context),
+            unselectedLabelStyle: Styles.tsSub_14m(context),
             tabs: [
               Tab(text: S.of(context).s_tickers),
               Tab(text: S.of(context).heat_map),
@@ -153,9 +185,9 @@ class _CoinDetailSpotViewState extends State<CoinDetailSpotView>
               physics: const NeverScrollableScrollPhysics(),
               controller: tabCtrl,
               children: [
-                DataGridView(logic: logic),
-                HeatMapView(logic: logic),
-                Vol24hView(logic: logic),
+                _DataGridView(logic: logic),
+                _HeatMapView(logic: logic),
+                _Vol24hView(logic: logic),
               ],
             ),
           ),

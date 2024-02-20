@@ -1,12 +1,12 @@
-import 'package:ank_app/modules/coin_detail/tab_items/coin_detail_overview/widget/_tip_dialog.dart';
+import 'package:ank_app/modules/coin_detail/widgets/coin_detail_tip_dialog.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '_data_grid_view.dart';
+import '_hold_chart_view.dart';
 import 'coin_detail_hold_logic.dart';
-import 'widget/_data_grid_view.dart';
-import 'widget/_hold_chart_view.dart';
 
 class CoinDetailHoldView extends StatefulWidget {
   const CoinDetailHoldView({super.key});

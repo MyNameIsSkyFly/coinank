@@ -2,7 +2,6 @@ import 'package:ank_app/modules/coin_detail/tab_items/coin_detail_contract/coin_
 import 'package:ank_app/modules/coin_detail/tab_items/coin_detail_spot/coin_detail_spot_view.dart';
 import 'package:ank_app/modules/market/contract/contract_logic.dart';
 import 'package:ank_app/res/export.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -47,19 +46,29 @@ class _CoinDetailPageState extends State<CoinDetailPage>
             Text(logic.coin.baseCoin ?? ''),
           ],
         ),
+        titleTextStyle:
+            Styles.tsBody_18(context).copyWith(fontWeight: FontWeight.w700),
         actions: [
           IconButton(
             style: IconButton.styleFrom(visualDensity: VisualDensity.compact),
-            icon: const ImageIcon(AssetImage(Assets.commonIcShare), size: 20),
+            icon: ImageIcon(const AssetImage(Assets.commonIcShare),
+                size: 20, color: Styles.cBody(context)),
             onPressed: () => AppUtil.shareImage(),
           ),
           ObxValue((RxBool marked) {
             return IconButton(
               style: IconButton.styleFrom(visualDensity: VisualDensity.compact),
-              icon: Icon(
-                  marked.value ? CupertinoIcons.star_fill : CupertinoIcons.star,
-                  size: 20,
-                  color: marked.value ? Styles.cYellow : null),
+              icon: ImageIcon(
+                  AssetImage(marked.value
+                      ? Assets.commonIconStarFill
+                      : Assets.commonIconStar),
+                  color: marked.value ? Styles.cYellow : Styles.cBody(context),
+                  size: 20),
+
+              // Icon(
+              //     marked.value ? CupertinoIcons.star_fill : CupertinoIcons.star,
+              //     size: 20,
+              //     color: marked.value ? Styles.cYellow : null),
               onPressed: () async {
                 await Get.find<ContractLogic>()
                     .tapFavoriteCollect('${logic.coin.baseCoin}');
@@ -76,6 +85,12 @@ class _CoinDetailPageState extends State<CoinDetailPage>
             tabAlignment: TabAlignment.start,
             isScrollable: true,
             controller: logic.tabController,
+            indicator: const BoxDecoration(
+                border:
+                    Border(bottom: BorderSide(color: Styles.cMain, width: 2))),
+            indicatorSize: TabBarIndicatorSize.label,
+            labelStyle: Styles.tsBody_14m(context),
+            unselectedLabelStyle: Styles.tsSub_14m(context),
             tabs: [
               Tab(text: S.of(context).derivatives),
               Tab(text: S.of(context).spot),

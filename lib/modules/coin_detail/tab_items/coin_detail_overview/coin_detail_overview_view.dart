@@ -1,4 +1,6 @@
-import 'package:ank_app/modules/coin_detail/tab_items/coin_detail_overview/widget/_tip_dialog.dart';
+import 'package:ank_app/modules/coin_detail/tab_items/coin_detail_overview/coin_detail_overview_logic.dart';
+import 'package:ank_app/modules/coin_detail/widgets/coin_detail_tip_dialog.dart';
+import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/animated_color_text.dart';
 import 'package:ank_app/widget/rate_with_sign.dart';
 import 'package:collection/collection.dart';
@@ -7,11 +9,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../../res/export.dart';
-import 'coin_detail_overview_logic.dart';
-import 'widget/_data_grid_view.dart';
+import '_datagrid_source.dart';
+
+part '_data_grid_view.dart';
 
 class CoinDetailOverviewView extends StatefulWidget {
   const CoinDetailOverviewView({super.key});
@@ -243,7 +247,7 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
                 style: Styles.tsBody_16m(context),
               ),
             ),
-            DataGridView(logic: logic)
+            _DataGridView(logic: logic)
           ],
         );
       }),

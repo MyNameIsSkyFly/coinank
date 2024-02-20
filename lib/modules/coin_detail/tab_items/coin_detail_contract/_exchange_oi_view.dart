@@ -1,20 +1,7 @@
-import 'dart:convert';
-import 'dart:io';
+part of 'coin_detail_contract_view.dart';
 
-import 'package:ank_app/constants/urls.dart';
-import 'package:ank_app/entity/oi_chart_menu_param_entity.dart';
-import 'package:ank_app/res/export.dart';
-import 'package:ank_app/widget/common_webview.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:get/get.dart';
-
-import '../../../_selector_view.dart';
-import '../coin_detail_contract_logic.dart';
-
-class ExchangeOiView extends StatefulWidget {
-  const ExchangeOiView({
+class _ExchangeOiView extends StatefulWidget {
+  const _ExchangeOiView({
     super.key,
     required this.logic,
   });
@@ -22,10 +9,10 @@ class ExchangeOiView extends StatefulWidget {
   final CoinDetailContractLogic logic;
 
   @override
-  State<ExchangeOiView> createState() => _ExchangeOiViewState();
+  State<_ExchangeOiView> createState() => _ExchangeOiViewState();
 }
 
-class _ExchangeOiViewState extends State<ExchangeOiView> {
+class _ExchangeOiViewState extends State<_ExchangeOiView> {
   final menuParamEntity = OIChartMenuParamEntity(
     baseCoin: 'BTC',
     exchange: 'ALL',

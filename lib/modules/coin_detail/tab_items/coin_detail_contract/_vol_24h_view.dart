@@ -1,20 +1,7 @@
-import 'dart:convert';
-import 'dart:io';
+part of 'coin_detail_contract_view.dart';
 
-import 'package:ank_app/constants/urls.dart';
-import 'package:ank_app/entity/oi_chart_menu_param_entity.dart';
-import 'package:ank_app/res/export.dart';
-import 'package:ank_app/widget/common_webview.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:get/get.dart';
-
-import '../../../_selector_view.dart';
-import '../coin_detail_contract_logic.dart';
-
-class Vol24hView extends StatefulWidget {
-  const Vol24hView({
+class _Vol24hView extends StatefulWidget {
+  const _Vol24hView({
     super.key,
     required this.logic,
   });
@@ -22,10 +9,10 @@ class Vol24hView extends StatefulWidget {
   final CoinDetailContractLogic logic;
 
   @override
-  State<Vol24hView> createState() => _Vol24hViewState();
+  State<_Vol24hView> createState() => _Vol24hViewState();
 }
 
-class _Vol24hViewState extends State<Vol24hView> {
+class _Vol24hViewState extends State<_Vol24hView> {
   final menuParamEntity = OIChartMenuParamEntity(
     baseCoin: 'BTC',
     exchange: 'ALL',

@@ -6,7 +6,7 @@ import 'package:ank_app/res/export.dart';
 import 'package:get/get.dart';
 
 import '../../coin_detail_logic.dart';
-import 'widget/_datagrid_source.dart';
+import '_datagrid_source.dart';
 
 class CoinDetailSpotLogic extends GetxController {
   final detailLogic = Get.find<CoinDetailLogic>();
