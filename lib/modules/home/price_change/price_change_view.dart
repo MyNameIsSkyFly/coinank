@@ -257,7 +257,12 @@ class _DataItem extends StatelessWidget {
                     )
                   : Text(
                       textList[index],
-                      style: Styles.tsBody_14m(context),
+                      style: Styles.tsBody_14m(context).copyWith(
+                          color: textList[index].startsWith('+')
+                              ? Styles.cUp(context)
+                              : textList[index].startsWith('-')
+                                  ? Styles.cDown(context)
+                                  : null),
                     ),
             ),
           );

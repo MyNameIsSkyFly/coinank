@@ -34,6 +34,7 @@ class CommonWebView extends StatefulWidget {
     this.enableShare = false,
     this.gestureRecognizers,
     this.enableZoom = false,
+    this.canPop = true,
   });
 
   final String? title;
@@ -46,6 +47,7 @@ class CommonWebView extends StatefulWidget {
   final bool dynamicTitle;
   final bool enableShare;
   final bool enableZoom;
+  final bool canPop;
   final Set<Factory<OneSequenceGestureRecognizer>>? gestureRecognizers;
 
   static Future<void> setCookieValue() async {
@@ -95,7 +97,7 @@ class _CommonWebViewState extends State<CommonWebView>
   StreamSubscription? _loginStatusSubscription;
   StreamSubscription? _evJsSubscription;
 
-  DateTime? lastLeftTime;
+  // DateTime? lastLeftTime;
   StreamSubscription<FGBGType>? _fgbgSubscription;
   int _progress = 0;
   String _evJs = '';
@@ -127,7 +129,7 @@ class _CommonWebViewState extends State<CommonWebView>
         }
       }
     });
-    // startWebRefreshCounter();
+    startWebRefreshCounter();
     super.initState();
   }
 
@@ -142,13 +144,18 @@ class _CommonWebViewState extends State<CommonWebView>
         widget.urlGetter?.call().contains('proChart') == true)) return;
     _fgbgSubscription = FGBGEvents.stream.listen((event) {
       if (event == FGBGType.foreground) {
-        if (lastLeftTime != null &&
-            DateTime.now().difference(lastLeftTime!) >
-                const Duration(seconds: 15)) {
-          reload();
-        }
+        // if (lastLeftTime != null &&
+        //     DateTime.now().difference(lastLeftTime!) >
+        //         const Duration(seconds: 15)) {
+        //   reload();
+        // }
+        webCtrl?.getTitle().then((value) {
+          if (value?.isEmpty != false) {
+            reload();
+          }
+        });
       } else if (event == FGBGType.background) {
-        lastLeftTime = DateTime.now();
+        // lastLeftTime = DateTime.now();
       }
     });
   }
@@ -174,22 +181,12 @@ class _CommonWebViewState extends State<CommonWebView>
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        final canGoBack = await webCtrl?.canGoBack();
-        if (canGoBack == true) {
-          webCtrl?.goBack();
-          return false;
-        } else {
-          return true;
-        }
-      },
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: title == null || !widget.enableShare
-            ? null
-            : AppTitleBar(
-                title: title ?? '',
+    var scaffold = Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: title == null || !widget.enableShare
+          ? null
+          : AppTitleBar(
+              title: title ?? '',
                 onBack: () => navigator?.maybePop(),
                 actionWidget: _actionWidget),
         body: Stack(
@@ -230,9 +227,10 @@ class _CommonWebViewState extends State<CommonWebView>
                     setState(() {});
                   }
                 },
-                onWebContentProcessDidTerminate: (controller) =>
-                    controller.reload(),
-                gestureRecognizers: widget.gestureRecognizers ??
+              // onWebContentProcessDidTerminate: (controller) => reload(),
+              onWebContentProcessDidTerminate: (controller) =>
+                  controller.reload(),
+              gestureRecognizers: widget.gestureRecognizers ??
                     (widget.enableZoom
                         ? {
                             Factory<HorizontalDragGestureRecognizer>(
@@ -254,7 +252,19 @@ class _CommonWebViewState extends State<CommonWebView>
             if (widget.showLoading && _progress != 100) const LottieIndicator(),
           ],
         ),
-      ),
+    );
+    if (widget.canPop) return scaffold;
+    return WillPopScope(
+      onWillPop: () async {
+        final canGoBack = await webCtrl?.canGoBack();
+        if (canGoBack == true) {
+          webCtrl?.goBack();
+          return false;
+        } else {
+          return true;
+        }
+      },
+      child: scaffold,
     );
   }
 

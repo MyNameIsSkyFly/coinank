@@ -10,6 +10,7 @@ import 'package:ank_app/entity/coin_detail_entity.dart';
 import 'package:ank_app/entity/contract_market_entity.dart';
 import 'package:ank_app/entity/marker_funding_rate_entity.dart';
 import 'package:ank_app/entity/oi_entity.dart';
+import 'package:ank_app/entity/order_flow_symbol.dart';
 import 'package:ank_app/entity/search_v2_entity.dart';
 import 'package:ank_app/entity/short_rate_entity.dart';
 import 'package:ank_app/entity/test_entity.dart';
@@ -36,7 +37,11 @@ abstract class Apis {
   static final Dio dio = Dio()
     ..interceptors.addAll([
       // TalkerDioLogger(
-      //     settings: const TalkerDioLoggerSettings(printRequestHeaders: true)),
+      //   settings: const TalkerDioLoggerSettings(
+      //     printRequestHeaders: true,
+      //     printResponseHeaders: true,
+      //   ),
+      // ),
       BaseInterceptor(),
     ])
     ..options.headers.addAll({'client': Platform.isAndroid ? 'android' : 'ios'})
@@ -268,10 +273,12 @@ abstract class Apis {
   Future<CoinDetailContractInfoEntity?> getCoinDetailContractInfo(
       @Query('baseCoin') String baseCoin);
 
+  @Extra({'showToast': false})
   @GET('/api/instruments/getTicker24h')
   Future<ContractMarketEntity?> getCoinInfo24h(
-      @Query('baseCoin') String baseCoin,
-      {@Query('productType') String productType = 'SWAP'});
+    @Query('baseCoin') String baseCoin, {
+    @Query('productType') String productType = 'SWAP',
+  });
 
   @GET('/api/tickers/getSpotTickers')
   Future<List<ContractMarketEntity>?> getSpotTickers(
@@ -296,4 +303,10 @@ abstract class Apis {
       {@Query('interval') String? interval,
       @Query('endTime') int? endTime,
       @Query('size') int? size});
+
+  @GET('/api/baseCoin/symbols')
+  Future<List<OrderFlowSymbolEntity>?> getOrderFlowSymbols({
+    @Query('productType') String? productType,
+    @Query('follow') bool follow = false,
+  });
 }

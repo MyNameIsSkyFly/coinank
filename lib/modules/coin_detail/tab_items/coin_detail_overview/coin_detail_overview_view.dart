@@ -42,20 +42,18 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
                 children: [
                   Expanded(
                     child: Obx(() {
-                      var coinInfo = logic.detailLogic.contractLogic.state.data
-                          .where((p0) => p0.baseCoin == logic.baseCoin)
-                          .first;
+                      var coinInfo = logic.detailLogic.coin24hInfo.value;
                       return Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           AnimatedColorText(
-                            text: '\$${coinInfo.price}',
-                            value: coinInfo.price ?? 0,
+                            text: '\$${coinInfo?.lastPrice ?? 0}',
+                            value: coinInfo?.lastPrice ?? 0,
                             style: TextStyle(
                                 fontWeight: Styles.fontMedium, fontSize: 18),
                           ),
-                          RateWithSign(rate: coinInfo.priceChangeH24),
+                          RateWithSign(rate: coinInfo?.priceChange24h),
                         ],
                       );
                     }),

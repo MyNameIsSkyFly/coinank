@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/entity/search_v2_entity.dart';
+import 'package:ank_app/modules/home/home_search/home_search_view.dart';
 import 'package:ank_app/modules/market/contract/contract_logic.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:dart_scope_functions/dart_scope_functions.dart';
 import 'package:get/get.dart';
 
 class HomeSearchLogic extends GetxController {
@@ -32,15 +34,14 @@ class HomeSearchLogic extends GetxController {
   void pollingHot() {
     _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
       if (keyword.isNotEmpty) return;
-      initHot();
+      if (Get.currentRoute == HomeSearchPage.routeName) {
+        initHot();
+      }
     });
   }
 
   Future<void> initHot() async {
-    final time1 = DateTime.now();
     final result = await Apis().searchV2(keyword: '');
-    final now1 = DateTime.now();
-    print(now1.difference(time1));
     if (result == null) return;
 
     final list = <SearchV2ItemEntity>[];
@@ -65,7 +66,19 @@ class HomeSearchLogic extends GetxController {
   }
 
   //init history
-  void initHistory() {
+  Future<void> initHistory() async {
+    var tapped = StoreLogic.to.tappedSearchResult;
+    await Future.wait(tapped.map((item) async {
+      if (item.tag == SearchEntityType.BASECOIN &&
+          (item.exchangeName == null || item.symbol == null)) {
+        final value = await Apis().searchV2(keyword: item.baseCoin ?? '');
+        final baseCoinList = value?.baseCoin;
+        final tmp = baseCoinList
+            ?.firstWhereOrNull((element) => element.baseCoin == item.baseCoin);
+        await tmp
+            ?.let((it) async => await StoreLogic.to.saveTappedSearchResult(it));
+      }
+    }));
     history.assignAll(StoreLogic.to.tappedSearchResult);
   }
 

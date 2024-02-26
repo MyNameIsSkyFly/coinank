@@ -32,7 +32,11 @@ class GridDataSource extends DataGridSource {
                 : element.contractType?.toUpperCase() == 'FUTURES')
         .map<DataGridRow>((ContractMarketEntity entity) {
       return DataGridRow(cells: <DataGridCell<dynamic>>[
-        DataGridCell<String>(columnName: '1', value: entity.exchangeName),
+        DataGridCell<String>(
+            columnName: '1',
+            value: entity.exchangeName?.toUpperCase() == 'OKEX'
+                ? 'Okx'
+                : entity.exchangeName),
         DataGridCell<(String?, String?, String?)>(
             columnName: '2',
             value: (entity.symbol, entity.exchangeName, entity.contractType)),
@@ -59,6 +63,7 @@ class GridDataSource extends DataGridSource {
     'BINANCE',
     'HUOBI',
     'OKX',
+    'OKEX',
     'BYBIT',
     'GATE',
     'BITGET'

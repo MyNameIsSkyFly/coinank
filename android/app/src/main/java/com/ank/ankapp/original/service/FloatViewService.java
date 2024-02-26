@@ -492,9 +492,9 @@ public class FloatViewService extends Service implements View.OnClickListener {
                 try {
                     pi.send();//后台服务可立即启动目标activity,部分手机还是会延时5秒
                     if (App.getApplication().messageFlutterApi == null) return;
-                    App.getApplication().messageFlutterApi.toKLine(symbolVo.getExchangeName(), symbolVo.getSymbol(), symbolVo.getBaseCoin(), symbolVo.getProductType(), new Messages.Result<Void>() {
+                    App.getApplication().messageFlutterApi.toKLine(symbolVo.getExchangeName(), symbolVo.getSymbol(), symbolVo.getBaseCoin(), symbolVo.getProductType(), new Messages.VoidResult() {
                         @Override
-                        public void success(@NonNull Void result) {
+                        public void success() {
 
                         }
 

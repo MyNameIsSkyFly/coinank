@@ -65,8 +65,10 @@ class PriceChangeLogic extends FullLifeCycleController with FullLifeCycleMixin {
   }
 
   void tapItem(MarkerTickerEntity item) {
-    AppUtil.toKLine(item.exchangeName ?? '', item.symbol ?? '',
-        item.baseCoin ?? '', 'SWAP');
+    AppNav.toCoinDetail(MarkerTickerEntity(
+        baseCoin: item.baseCoin,
+        exchangeName: item.exchangeName,
+        symbol: item.symbol));
   }
 
   Future<void> onRefresh(bool showLoading) async {

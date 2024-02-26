@@ -19,7 +19,7 @@ class CoinDetailPage extends StatefulWidget {
 }
 
 class _CoinDetailPageState extends State<CoinDetailPage>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   final logic = Get.put(CoinDetailLogic());
 
   @override
@@ -27,6 +27,11 @@ class _CoinDetailPageState extends State<CoinDetailPage>
     super.initState();
     logic.tabController =
         TabController(length: 4, vsync: this, animationDuration: Duration.zero);
+    logic.isSpot.listen((value) {
+      logic.tabController.dispose();
+      logic.tabController = TabController(
+          length: value ? 3 : 4, vsync: this, animationDuration: Duration.zero);
+    });
   }
 
   @override
@@ -80,34 +85,39 @@ class _CoinDetailPageState extends State<CoinDetailPage>
                   StoreLogic.to.favoriteContract.contains(logic.coin.baseCoin)))
         ],
       ),
-      body: Column(children: [
-        TabBar(
-            tabAlignment: TabAlignment.start,
-            isScrollable: true,
-            controller: logic.tabController,
-            indicator: const BoxDecoration(
-                border:
-                    Border(bottom: BorderSide(color: Styles.cMain, width: 2))),
-            indicatorSize: TabBarIndicatorSize.label,
-            labelStyle: Styles.tsBody_14m(context),
-            unselectedLabelStyle: Styles.tsSub_14m(context),
-            tabs: [
-              Tab(text: S.of(context).derivatives),
-              Tab(text: S.of(context).spot),
-              Tab(text: S.of(context).overview),
-              Tab(text: S.of(context).holding),
-            ]),
-        Expanded(
+      body: Obx(() {
+        return Column(children: [
+          TabBar(
+              tabAlignment: TabAlignment.start,
+              isScrollable: true,
+              controller: logic.tabController,
+              indicator: const BoxDecoration(
+                  border: Border(
+                      bottom: BorderSide(color: Styles.cMain, width: 2))),
+              indicatorSize: TabBarIndicatorSize.label,
+              labelStyle: Styles.tsBody_14m(context),
+              unselectedLabelStyle: Styles.tsSub_14m(context),
+              tabs: [
+                if (!logic.isSpot.value) Tab(text: S.of(context).derivatives),
+                Tab(text: S.of(context).spot),
+                Tab(text: S.of(context).overview),
+                Tab(text: S.of(context).holding),
+              ]),
+          Expanded(
             child: TabBarView(
-                physics: const NeverScrollableScrollPhysics(),
-                controller: logic.tabController,
-                children: const [
-              AliveWidget(child: CoinDetailContractView()),
-              AliveWidget(child: CoinDetailSpotView()),
-              AliveWidget(child: CoinDetailOverviewView()),
-              AliveWidget(child: CoinDetailHoldView()),
-            ]))
-      ]),
+              physics: const NeverScrollableScrollPhysics(),
+              controller: logic.tabController,
+              children: [
+                if (!logic.isSpot.value)
+                  const AliveWidget(child: CoinDetailContractView()),
+                const AliveWidget(child: CoinDetailSpotView()),
+                const AliveWidget(child: CoinDetailOverviewView()),
+                const AliveWidget(child: CoinDetailHoldView()),
+              ],
+            ),
+          )
+        ]);
+      }),
     );
   }
 }

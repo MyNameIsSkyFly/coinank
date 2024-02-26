@@ -54,9 +54,6 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return [
           Obx(() {
-            var coinInfo = logic.detailLogic.contractLogic.state.data
-                .where((p0) => p0.baseCoin == logic.baseCoin)
-                .first;
             return SliverToBoxAdapter(
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -70,12 +67,17 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           AnimatedColorText(
-                            text: '\$${coinInfo.price}',
-                            value: coinInfo.price ?? 0,
+                            text:
+                                '\$${logic.detailLogic.coin24hInfo.value?.lastPrice ?? 0}',
+                            value: logic
+                                    .detailLogic.coin24hInfo.value?.lastPrice ??
+                                0,
                             style: TextStyle(
                                 fontWeight: Styles.fontMedium, fontSize: 18),
                           ),
-                          RateWithSign(rate: coinInfo.priceChangeH24),
+                          RateWithSign(
+                              rate: logic.detailLogic.coin24hInfo.value
+                                  ?.priceChange24h),
                         ],
                       ),
                     ),
@@ -89,8 +91,8 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
                             )),
                         onPressed: () {
                           AppUtil.toKLine(
-                              coinInfo.exchangeName ?? '',
-                              coinInfo.symbol ?? '',
+                              logic.detailLogic.coin.exchangeName ?? '',
+                              logic.detailLogic.coin.symbol ?? '',
                               logic.baseCoin ?? '',
                               'SWAP');
                         },
@@ -118,28 +120,28 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
                   _rowGroup([
                     (
                       S.of(context).high24h,
-                      '\$${logic.coin24hInfo.value?.high24h?.toInt() ?? 0}'
+                      '\$${logic.detailLogic.coin24hInfo.value?.high24h?.toInt() ?? 0}'
                     ),
                     (
                       S.of(context).low24h,
-                      '\$${logic.coin24hInfo.value?.low24h?.toInt() ?? 0}'
+                      '\$${logic.detailLogic.coin24hInfo.value?.low24h?.toInt() ?? 0}'
                     ),
                     (
                       S.of(context).priceChange24h,
-                      '${logic.coin24hInfo.value?.priceChange24h?.toStringAsFixed(2) ?? 0}%'
+                      '${logic.detailLogic.coin24hInfo.value?.priceChange24h?.toStringAsFixed(2) ?? 0}%'
                     ),
                   ], [
                     (
                       S.of(context).volCcy24h,
-                      '${logic.coin24hInfo.value?.volCcy24h ?? 0} ${logic.baseCoin}'
+                      '${logic.detailLogic.coin24hInfo.value?.volCcy24h ?? 0} ${logic.baseCoin}'
                     ),
                     (
                       S.of(context).s_24h_turnover,
-                      '\$${AppUtil.getLargeFormatString('${logic.coin24hInfo.value?.turnover24h}', precision: 2)}'
+                      '\$${AppUtil.getLargeFormatString('${logic.detailLogic.coin24hInfo.value?.turnover24h}', precision: 2)}'
                     ),
                     (
                       S.of(context).changeRate24h,
-                      '${logic.coin24hInfo.value?.changeRate ?? 0}%'
+                      '${logic.detailLogic.coin24hInfo.value?.changeRate ?? 0}%'
                     ),
                   ]),
                   if (dataExpanded.value) ...[

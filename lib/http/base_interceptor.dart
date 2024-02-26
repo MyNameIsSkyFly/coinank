@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:ank_app/route/app_nav.dart';
@@ -10,6 +11,7 @@ import '../util/app_util.dart';
 class BaseInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    log(options.uri.toString(), name: 'http request=======');
     if (StoreLogic.isLogin) {
       options.headers['token'] = StoreLogic.to.loginUserInfo?.token;
     }
@@ -22,7 +24,10 @@ class BaseInterceptor extends Interceptor {
       final code = response.data?['code'];
       if ('$code' != '1') {
         if (!_handleCode('$code')) {
-          AppUtil.showToast((response.data?['msg'] ?? '').toString());
+          final showToast = response.requestOptions.extra['showToast'] ?? true;
+          if (showToast) {
+            AppUtil.showToast('${response.data?['msg'] ?? ''}');
+          }
         }
         handler.reject(
           DioException(
@@ -104,7 +109,8 @@ class BaseInterceptor extends Interceptor {
         errorMessage = '${err.response?.data?['msg']}';
       }
     }
-    AppUtil.showToast(errorMessage);
+    final showToast = err.requestOptions.extra['showToast'] ?? true;
+    if (showToast) AppUtil.showToast(errorMessage);
     handler.next(err);
   }
 

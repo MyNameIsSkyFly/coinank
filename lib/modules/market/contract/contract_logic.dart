@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:ank_app/entity/event/logged_event.dart';
 import 'package:ank_app/entity/futures_big_data_entity.dart';
-import 'package:ank_app/modules/coin_detail/coin_detail_view.dart';
 import 'package:ank_app/modules/main/main_logic.dart';
 import 'package:ank_app/modules/market/market_logic.dart';
 import 'package:ank_app/res/export.dart';
@@ -198,8 +197,7 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
       size: 500,
       sortBy: state.sortBy,
       sortType: state.sortType,
-        )
-        .catchError((e) => null);
+    );
     state.fetching.value = false;
     Loading.dismiss();
     if (state.isLoading.value) {
@@ -226,8 +224,7 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
           !state.isRefresh &&
           (index2 == 0 || index2 == 1) &&
           state.appVisible &&
-          (Get.currentRoute == '/' ||
-              Get.currentRoute == CoinDetailPage.routeName)) {
+          Get.currentRoute == '/') {
         await onRefresh();
       }
     });
@@ -240,6 +237,13 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
   }
 
   _scrollFListener() {
+    final maxScrollExtent = state.scrollControllerF.position.maxScrollExtent;
+    final isOverScrolled = state.scrollControllerF.offset > maxScrollExtent;
+    if (isOverScrolled) {
+      state.isScrollDownF.value = false;
+      return;
+    }
+
     double offset = state.scrollControllerF.offset;
     state.isScrollDownF.value = offset <= 0 || state.offset - offset > 0;
     state.offset = offset;

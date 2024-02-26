@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             padding: const EdgeInsets.only(left: 15),
             child: Text(
               'CoinAnk',
-              style: Styles.tsBody_20(context)
+              style: Styles.tsBody_18(context)
                   .copyWith(fontWeight: FontWeight.w700),
             ),
           ),
@@ -142,17 +142,21 @@ class _BtcReduceView extends StatelessWidget {
   final HomeLogic logic;
 
   Widget _box(BuildContext context, {required String text}) {
-    return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4),
-          color: Theme.of(context).scaffoldBackgroundColor),
-      margin: const EdgeInsets.only(left: 8, right: 4),
-      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 6),
-      child: Text(
-        text,
-        style: Styles.tsBody_14m(context),
-      ),
-    );
+    return logic.hideBtcReduce
+        ? const SizedBox()
+        : Container(
+            height: 30,
+            width: 30,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(4),
+                color: Theme.of(context).scaffoldBackgroundColor),
+            margin: const EdgeInsets.only(left: 8, right: 4),
+            child: Text(
+              text,
+              style: Styles.tsBody_14m(context),
+            ),
+          );
   }
 
   @override
@@ -164,7 +168,7 @@ class _BtcReduceView extends StatelessWidget {
           builder: (context) => BtcReduceDialog(logic: logic)),
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 15),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           gradient: const LinearGradient(
@@ -478,58 +482,58 @@ class _OiDistribution extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text(S.of(context).s_buysel_longshort_ratio,
-                                  style: Styles.tsSub_14m(context)),
-                              const Gap(5),
-                              Icon(CupertinoIcons.chevron_right,
-                                  color: Styles.cSub(context), size: 10)
-                            ],
-                          ),
-                          const Gap(5),
-                          Text(
-                            logic.buySellLongShortRatio,
-                            style: Styles.tsBody_18m(context).copyWith(
-                                color: ratio >= 1
-                                    ? Styles.cUp(context)
-                                    : Styles.cDown(context)),
-                          ),
-                        ],
-                      ),
                       Expanded(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisAlignment: MainAxisAlignment.end,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            //todo intl
-                            Text(
-                              '看空',
-                              style: TextStyle(
-                                      color: Styles.cDown(context),
-                                      fontSize: 12)
-                                  .medium,
+                            Row(
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                      S.of(context).s_buysel_longshort_ratio,
+                                      style: Styles.tsSub_14m(context)),
+                                ),
+                                const Gap(5),
+                                Icon(CupertinoIcons.chevron_right,
+                                    color: Styles.cSub(context), size: 10)
+                              ],
                             ),
-                            CustomPaint(
-                              size: const Size(130, 60),
-                              painter: DashBoardPainter(
-                                  Styles.cUp(context), Styles.cDown(context),
-                                  radians: (ratio - 1) / 2,
-                                  isDarkMode: Theme.of(context).brightness ==
-                                      Brightness.dark),
-                            ),
-                            //todo intl
+                            const Gap(5),
                             Text(
-                              '看多',
-                              style: TextStyle(
-                                      color: Styles.cUp(context), fontSize: 12)
-                                  .medium,
+                              logic.buySellLongShortRatio,
+                              style: Styles.tsBody_18m(context).copyWith(
+                                  color: ratio >= 1
+                                      ? Styles.cUp(context)
+                                      : Styles.cDown(context)),
                             ),
                           ],
                         ),
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            S.of(context).s_shorts,
+                            style: TextStyle(
+                                    color: Styles.cDown(context), fontSize: 12)
+                                .medium,
+                          ),
+                          CustomPaint(
+                            size: const Size(130, 60),
+                            painter: DashBoardPainter(
+                                Styles.cUp(context), Styles.cDown(context),
+                                radians: (ratio - 1) / 2,
+                                isDarkMode: Theme.of(context).brightness ==
+                                    Brightness.dark),
+                          ),
+                          Text(
+                            S.of(context).s_longs,
+                            style: TextStyle(
+                                    color: Styles.cUp(context), fontSize: 12)
+                                .medium,
+                          ),
+                        ],
                       )
                     ],
                   ),
@@ -595,14 +599,22 @@ class _HotMarket extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              Text(
-                                S.of(context).s_oi_chg,
-                                style: Styles.tsBody_12m(context),
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      S.of(context).s_oi_chg,
+                                      style: Styles.tsSub_14m(context),
+                                    ),
+                                    Text(
+                                      ' (24H)',
+                                      style: Styles.tsSub_14m(context),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              Text(
-                                ' (24H)',
-                                style: Styles.tsBody_12m(context),
-                              ),
+                              Icon(Icons.keyboard_arrow_right_rounded,
+                                  size: 18, color: Styles.cSub(context)),
                             ],
                           ),
                           ...List.generate(
@@ -629,14 +641,22 @@ class _HotMarket extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              Text(
-                                S.of(context).s_price_chg,
-                                style: Styles.tsBody_12m(context),
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      S.of(context).s_price_chg,
+                                      style: Styles.tsSub_14m(context),
+                                    ),
+                                    Text(
+                                      ' (24H)',
+                                      style: Styles.tsSub_14m(context),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              Text(
-                                ' (24H)',
-                                style: Styles.tsBody_12m(context),
-                              ),
+                              Icon(Icons.keyboard_arrow_right_rounded,
+                                  size: 18, color: Styles.cSub(context)),
                             ],
                           ),
                           ...List.generate(
@@ -666,14 +686,22 @@ class _HotMarket extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            Text(
-                              S.of(context).s_liquidation_data,
-                              style: Styles.tsBody_12m(context),
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Text(
+                                    S.of(context).s_liquidation_data,
+                                    style: Styles.tsSub_14m(context),
+                                  ),
+                                  Text(
+                                    ' (24H)',
+                                    style: Styles.tsSub_14m(context),
+                                  ),
+                                ],
+                              ),
                             ),
-                            Text(
-                              ' (24H)',
-                              style: Styles.tsBody_12m(context),
-                            ),
+                            Icon(Icons.keyboard_arrow_right_rounded,
+                                size: 18, color: Styles.cSub(context)),
                           ],
                         ),
                         _DataWithQuantity(
@@ -708,14 +736,22 @@ class _HotMarket extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            Text(
-                              S.of(context).s_funding_rate,
-                              style: Styles.tsBody_12m(context),
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Text(
+                                    S.of(context).s_funding_rate,
+                                    style: Styles.tsSub_14m(context),
+                                  ),
+                                  Text(
+                                    ' (24H)',
+                                    style: Styles.tsSub_14m(context),
+                                  ),
+                                ],
+                              ),
                             ),
-                            Text(
-                              ' (24H)',
-                              style: Styles.tsBody_12m(context),
-                            ),
+                            Icon(Icons.keyboard_arrow_right_rounded,
+                                size: 18, color: Styles.cSub(context)),
                           ],
                         ),
                         ...List.generate(

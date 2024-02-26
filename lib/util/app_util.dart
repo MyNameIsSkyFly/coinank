@@ -299,8 +299,8 @@ class AppUtil {
     MessageHostApi().changeUpColor(StoreLogic.to.isUpGreen);
   }
 
-  static Future<void> shareImage() async {
-    Uint8List? image = await FfNativeScreenshot().takeScreenshot();
+  static Future<void> shareImage({Uint8List? image}) async {
+    image ??= await FfNativeScreenshot().takeScreenshot();
     if (image == null) return;
     Get.dialog(ShareDialog(image: image), useSafeArea: false);
   }

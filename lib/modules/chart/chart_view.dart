@@ -28,7 +28,7 @@ class ChartPage extends StatelessWidget {
             padding: const EdgeInsets.only(left: 15),
             child: Text(
               S.of(context).s_chart,
-              style: Styles.tsBody_20(context)
+              style: Styles.tsBody_18(context)
                   .copyWith(fontWeight: FontWeight.w700),
             ),
           ),

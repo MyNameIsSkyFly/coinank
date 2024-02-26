@@ -28,9 +28,9 @@ class SearchV2Entity {
 @JsonSerializable(createToJson: true)
 class SearchV2ItemEntity extends Equatable {
   final String? baseCoin;
-  @JsonKey(includeToJson: false)
+  @JsonKey(includeToJson: true)
   final String? exchangeName;
-  @JsonKey(includeToJson: false)
+  @JsonKey(includeToJson: true)
   final String? symbol;
   @JsonKey(includeToJson: false)
   final double? oi;
@@ -59,7 +59,7 @@ class SearchV2ItemEntity extends Equatable {
   Map<String, dynamic> toJson() => _$SearchV2ItemEntityToJson(this);
 
   @override
-  List<Object?> get props => [baseCoin, tag];
+  List<Object?> get props => [baseCoin, tag, exchangeName, symbol];
 }
 
 enum SearchEntityType {

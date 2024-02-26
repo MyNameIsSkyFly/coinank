@@ -35,7 +35,7 @@ class HomeLogic extends GetxController {
       ((double.tryParse(homeInfoData.value?.longRatio ?? '') ?? 0) /
               (double.tryParse(homeInfoData.value?.shortRatio ?? '1') ?? 1))
           .toStringAsFixed(2);
-
+  bool hideBtcReduce = DateTime.now().isAfter(DateTime(2024, 4, 21));
   @override
   void onReady() {
     onRefresh();
@@ -97,6 +97,7 @@ class HomeLogic extends GetxController {
   }
 
   Future<void> loadBtcReduce() async {
+    if (hideBtcReduce) return;
     final data = await Apis().getBtcReduce();
     btcReduceData.value = data;
     btcReduceTimer ??= Timer.periodic(const Duration(minutes: 1), (timer) {

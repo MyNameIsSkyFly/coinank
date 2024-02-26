@@ -25,6 +25,7 @@ class AppNav {
         enableShare: true,
         showLoading: showLoading,
         dynamicTitle: dynamicTitle,
+        canPop: false,
       ),
     );
   }
