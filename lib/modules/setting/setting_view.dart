@@ -240,7 +240,6 @@ class _SettingPageState extends State<SettingPage> {
                       onPressed: AppNav.toLogin,
                       child: Text(S.of(context).s_login)),
             ),
-          const Gap(44),
         ],
       ),
     );

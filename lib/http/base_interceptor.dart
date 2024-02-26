@@ -11,10 +11,11 @@ import '../util/app_util.dart';
 class BaseInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    log(options.uri.toString(), name: 'http request=======');
     if (StoreLogic.isLogin) {
       options.headers['token'] = StoreLogic.to.loginUserInfo?.token;
     }
+    final startTime = DateTime.now();
+    options.extra['startTime'] = startTime;
     super.onRequest(options, handler);
   }
 
@@ -60,6 +61,11 @@ class BaseInterceptor extends Interceptor {
       final data = response.data?['data'];
       response.data = data;
     }
+    final startTime = response.requestOptions.extra['startTime'] as DateTime;
+    final endTime = DateTime.now();
+    final duration = endTime.difference(startTime).inMilliseconds;
+    log('Request URL: ${response.requestOptions.uri} ($duration ms)',
+        name: 'http request');
     handler.next(response);
   }
 
