@@ -66,6 +66,7 @@ dependencies:
       ref: d49ac805
   photo_manager: ^3.0.0-dev.5
   awesome_dio_interceptor: ^1.1.0
+  sentry_flutter: ^7.16.1
 
 dev_dependencies:
   flutter_native_splash: ^2.3.10

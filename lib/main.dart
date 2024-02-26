@@ -13,6 +13,7 @@ import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 Future<void> main() async {
   /// 确保初始化完成
@@ -26,7 +27,13 @@ Future<void> main() async {
   await Application.instance.init();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge,
       overlays: [SystemUiOverlay.top]);
-  runApp(const MyApp());
+  await Sentry.init(
+    (options) {
+      options.dsn =
+          'https://a377a4731f7e4eb6b78d49fb018e1bd7@o4506811978874880.ingest.sentry.io/4506811983331328';
+    },
+    appRunner: () => runApp(const MyApp()), // Init your App.
+  );
 }
 
 class MyApp extends StatefulWidget {
