@@ -22,7 +22,8 @@ class HomeLogic extends GetxController {
   final fundRateList = RxList<HomeFundRateEntity>();
   final btcReduceData = Rxn<BtcReduceEntity>();
   final hostApi = MessageHostApi();
-  bool appVisible = true;
+
+  bool get appVisible => Get.find<MainLogic>().state.appVisible;
   Timer? pollingTimer;
   Timer? btcReduceTimer;
   bool isRefreshing = false;

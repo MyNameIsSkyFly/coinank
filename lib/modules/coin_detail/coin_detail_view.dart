@@ -81,8 +81,8 @@ class _CoinDetailPageState extends State<CoinDetailPage>
               },
             );
           },
-              RxBool(
-                  StoreLogic.to.favoriteContract.contains(logic.coin.baseCoin)))
+              RxBool(Get.find<ContractLogic>()
+                  .isFavorite('${logic.coin.baseCoin}'))),
         ],
       ),
       body: Obx(() {

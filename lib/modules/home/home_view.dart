@@ -26,24 +26,8 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
+class _HomePageState extends State<HomePage> {
   final logic = Get.put(HomeLogic());
-
-  @override
-  void initState() {
-    WidgetsBinding.instance.addObserver(this);
-    super.initState();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.resumed) {
-      logic.appVisible = true;
-    } else if (state == AppLifecycleState.paused) {
-      logic.appVisible = false;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

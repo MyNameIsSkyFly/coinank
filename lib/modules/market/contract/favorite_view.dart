@@ -1,6 +1,5 @@
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/modules/home/home_search/home_search_view.dart';
-import 'package:ank_app/modules/market/contract/contract_state.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +8,7 @@ import 'package:get/get.dart';
 
 import '../../../widget/animated_color_text.dart';
 import 'contract_logic.dart';
+import 'contract_state.dart';
 
 class FavoritePage extends StatefulWidget {
   const FavoritePage({super.key});
@@ -187,7 +187,7 @@ class _FavoritePageState extends State<FavoritePage> {
                 EasyRefresh(
                   // scrollBehaviorBuilder: (physics) =>
                   //     const ERScrollBehavior(ClampingScrollPhysics()),
-                  onRefresh: logic.onRefresh,
+                  onRefresh: logic.onRefreshF,
                   child: SlidableAutoCloseBehavior(
                     child: ListView.builder(
                       // physics: const ClampingScrollPhysics(),
@@ -254,33 +254,35 @@ class _EmptyView extends StatelessWidget {
                       color: Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                state.fixedCoin[index],
-                                style: Styles.tsBody_16(context).medium,
-                              ),
-                              Text(
-                                S.of(context).s_swap,
-                                style: Styles.tsSub_12(context),
-                              ),
-                            ],
+                    child: Obx(() {
+                      return Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  state.fixedCoin[index],
+                                  style: Styles.tsBody_16(context).medium,
+                                ),
+                                Text(
+                                  S.of(context).s_swap,
+                                  style: Styles.tsSub_12(context),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        if (state.selectedFixedCoin
-                            .contains(state.fixedCoin[index]))
-                          const Icon(CupertinoIcons.checkmark_alt_circle,
-                              color: Styles.cMain)
-                        else
-                          Icon(CupertinoIcons.circle,
-                              color: Styles.cSub(context).withOpacity(0.5))
-                      ],
-                    )),
+                          if (state.selectedFixedCoin
+                              .contains(state.fixedCoin[index]))
+                            const Icon(CupertinoIcons.checkmark_alt_circle,
+                                color: Styles.cMain)
+                          else
+                            Icon(CupertinoIcons.circle,
+                                color: Styles.cSub(context).withOpacity(0.5))
+                        ],
+                      );
+                    })),
               );
             });
           },
@@ -341,24 +343,15 @@ class _DataItem extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  item.follow == true
-                      ? Image.asset(
-                          Assets.commonIconStarFill,
-                          width: 15,
-                          height: 15,
-                          color: Colors.white,
-                        )
-                      : Image.asset(
-                          Assets.commonIconStar,
-                          width: 15,
-                          height: 15,
-                          color: Colors.white,
-                        ),
+                  Image.asset(
+                    Assets.commonIconStarFill,
+                    width: 15,
+                    height: 15,
+                    color: Colors.white,
+                  ),
                   const Gap(4),
                   Text(
-                    item.follow == true
-                        ? S.current.s_del_star
-                        : S.current.s_add_star,
+                    S.current.s_del_star,
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 12,

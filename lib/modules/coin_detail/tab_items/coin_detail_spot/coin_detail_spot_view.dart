@@ -75,32 +75,17 @@ class _CoinDetailSpotViewState extends State<CoinDetailSpotView>
                         ],
                       ),
                     ),
-                    FilledButton(
-                        style: FilledButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 4),
-                            minimumSize: Size.zero,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(4),
-                            )),
-                        onPressed: () {
+                    InkWell(
+                        onTap: () {
                           AppUtil.toKLine(
                               logic.detailLogic.coin.exchangeName ?? '',
                               logic.detailLogic.coin.symbol ?? '',
                               logic.baseCoin ?? '',
                               'SWAP');
                         },
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              S.of(context).candleChartPro,
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 14),
-                            ),
-                            Icon(Icons.keyboard_arrow_right_rounded, size: 17)
-                          ],
-                        ))
+                        child: const ImageIcon(
+                            AssetImage(Assets.commonIcCandleLine),
+                            size: 20))
                   ],
                 ),
               ),
@@ -113,11 +98,11 @@ class _CoinDetailSpotViewState extends State<CoinDetailSpotView>
                   _rowGroup([
                     (
                       S.of(context).high24h,
-                      '\$${logic.detailLogic.coin24hInfo.value?.high24h?.toInt() ?? 0}'
+                      '\$${logic.detailLogic.coin24hInfo.value?.high24h?.toStringAsFixed(2) ?? '0'}'
                     ),
                     (
                       S.of(context).low24h,
-                      '\$${logic.detailLogic.coin24hInfo.value?.low24h?.toInt() ?? 0}'
+                      '\$${logic.detailLogic.coin24hInfo.value?.low24h?.toStringAsFixed(2) ?? '0'}'
                     ),
                     (
                       S.of(context).priceChange24h,

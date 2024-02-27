@@ -32,16 +32,19 @@ class _SettingPageState extends State<SettingPage> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
+        toolbarHeight: 44,
         leadingWidth: 200,
         leading: Padding(
           padding: const EdgeInsets.only(left: 15),
           child: Align(
               alignment: Alignment.centerLeft,
               child: Text(S.of(context).s_setting,
-                  style: Styles.tsBody_18m(context))),
+                  style: Styles.tsBody_18(context)
+                      .copyWith(fontWeight: FontWeight.w700))),
         ),
         actions: [
           IconButton(
+              visualDensity: VisualDensity.compact,
               onPressed: () => StoreLogic.isLogin
                   ? AppNav.openWebUrl(
                       title: S.current.s_add_alert,
@@ -49,7 +52,9 @@ class _SettingPageState extends State<SettingPage> {
                       showLoading: true,
                     )
                   : AppNav.toLogin(),
-              icon: const ImageIcon(AssetImage(Assets.settingIcBell), size: 20))
+              icon:
+                  const ImageIcon(AssetImage(Assets.settingIcBell), size: 20)),
+          const Gap(10),
         ],
       ),
       backgroundColor: Colors.transparent,
@@ -194,7 +199,7 @@ class _SettingPageState extends State<SettingPage> {
           ),
           if (!StoreLogic.isLogin)
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 44),
               child: StoreLogic.isLogin
                   ? FilledButton(
                       style: FilledButton.styleFrom(

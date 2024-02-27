@@ -74,6 +74,8 @@ abstract class Apis {
     @Query('sortBy') String? sortBy,
     @Query('sortType') required String sortType,
     @Query('sort') String? sort,
+    @Query('isFollow') bool? isFollow,
+    @Query('baseCoins') String? baseCoins,
   });
 
   @GET('/api/fundingRate/top?type=LAST&size=3')

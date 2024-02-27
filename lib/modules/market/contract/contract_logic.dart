@@ -5,24 +5,18 @@ import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/modules/main/main_logic.dart';
 import 'package:ank_app/modules/market/market_logic.dart';
 import 'package:ank_app/res/export.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'contract_state.dart';
 
-class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
+class ContractLogic extends FullLifeCycleController {
   final ContractState state = ContractState();
   StreamSubscription? loginSubscription;
 
   void sortFavorite({SortType? type}) {
     if (type != null) state.favoriteSortBy = type.name;
-    final list = <MarkerTickerEntity>[];
-    for (var element in state.data) {
-      if (element.follow == true) {
-        list.add(element);
-      }
-    }
-    list.sort(
+
+    state.favoriteData.sort(
       (a, b) {
         if (state.favoriteSortBy == 'openInterestCh24') {
           if (state.favoriteOiChangeSort.value == SortStatus.normal) {
@@ -55,7 +49,6 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
         return state.favoriteOiSort.value != SortStatus.down ? -result : result;
       },
     );
-    state.favoriteData.assignAll(list);
   }
 
   Future<void> tapSort(SortType type) async {
@@ -154,33 +147,52 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
       }
     }
     update(['data']);
-    sortFavorite();
+    if (item.follow == false) {
+      state.favoriteData
+          .removeWhere((element) => element.baseCoin == item.baseCoin);
+    } else {
+      onRefreshF();
+    }
+  }
+
+  Future<void> tapCollectF(MarkerTickerEntity item) async {
+    if (!StoreLogic.isLogin) {
+      await StoreLogic.to.removeFavoriteContract(item.baseCoin!);
+      item.follow = false;
+    } else {
+      await Apis().getDelFollow(baseCoin: item.baseCoin!);
+      item.follow = false;
+    }
+    state.favoriteData
+        .removeWhere((element) => element.baseCoin == item.baseCoin);
+    state.data
+        .firstWhereOrNull((element) => element.baseCoin == item.baseCoin)
+        ?.follow = false;
+    update(['data']);
   }
 
   Future<void> tapFavoriteCollect(String? baseCoin) async {
-    final item =
-        state.data.firstWhereOrNull((element) => element.baseCoin == baseCoin);
-    if (item == null) return;
+    final item = state.favoriteData
+        .firstWhereOrNull((element) => element.baseCoin == baseCoin);
     if (!StoreLogic.isLogin) {
-      if (item.follow == true) {
-        await StoreLogic.to.removeFavoriteContract(item.baseCoin!);
-        item.follow = false;
+      if (item?.follow == true) {
+        await StoreLogic.to.removeFavoriteContract(baseCoin ?? '');
+        item?.follow = false;
       } else {
-        await StoreLogic.to.saveFavoriteContract(item.baseCoin!);
-        item.follow = true;
+        await StoreLogic.to.saveFavoriteContract(baseCoin ?? '');
+        item?.follow = true;
       }
     } else {
-      if (item.follow == true) {
-        await Apis().getDelFollow(baseCoin: item.baseCoin!);
-        item.follow = false;
+      if (item?.follow == true) {
+        await Apis().getDelFollow(baseCoin: item?.baseCoin ?? '');
+        item?.follow = false;
       } else {
-        await Apis().getAddFollow(baseCoin: item.baseCoin!);
-        item.follow = true;
+        await Apis().getAddFollow(baseCoin: baseCoin ?? '');
+        item?.follow = true;
       }
     }
-    state.data.refresh();
+    onRefreshF();
     update(['data']);
-    sortFavorite();
   }
 
   Future<void> onRefresh({bool showLoading = false}) async {
@@ -211,21 +223,75 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
     }
     state.data.assignAll(data?.list ?? []);
     update(['data']);
-    sortFavorite();
     state.isRefresh = false;
     StoreLogic.to.setContractData(data?.list ?? []);
+  }
+
+  bool isFavorite(String baseCoin) {
+    if (!StoreLogic.isLogin) {
+      return StoreLogic.to.favoriteContract.contains(baseCoin);
+    } else {
+      return state.favoriteData
+          .map((element) => element.baseCoin)
+          .contains(baseCoin);
+    }
+  }
+
+  Future<void> onRefreshF({bool showLoading = false}) async {
+    if (AppConst.networkConnected == false) return;
+    if (showLoading) {
+      Loading.show();
+    }
+    state.isRefresh = true;
+    TickersDataEntity? data;
+    if (StoreLogic.isLogin) {
+      data = await Apis().getFuturesBigData(
+        page: 1,
+        size: 500,
+        sortBy: state.favoriteSortBy,
+        sortType: state.favoriteSortType,
+        isFollow: true,
+      );
+    } else {
+      if (StoreLogic.to.favoriteContract.isEmpty) {
+        data = TickersDataEntity(list: []);
+      } else {
+        data = await Apis().getFuturesBigData(
+          page: 1,
+          size: 500,
+          sortBy: state.favoriteSortBy,
+          sortType: state.favoriteSortType,
+          baseCoins: StoreLogic.to.favoriteContract.join(','),
+        );
+      }
+    }
+    Loading.dismiss();
+    if (state.isLoading.value) {
+      state.isLoading.value = false;
+    }
+    if (!StoreLogic.isLogin) {
+      state.favoriteData.assignAll(data?.list?.where((element) =>
+              StoreLogic.to.favoriteContract.contains(element.baseCoin)) ??
+          []);
+    } else {
+      state.favoriteData.assignAll(data?.list ?? []);
+    }
+    // sortFavorite();
+    state.isRefresh = false;
   }
 
   _startTimer() async {
     state.pollingTimer =
         Timer.periodic(const Duration(seconds: 7), (timer) async {
-      var index2 = Get.find<MarketLogic>().state.tabController?.index;
+      var index = Get.find<MarketLogic>().state.tabController?.index;
       if (Get.find<MainLogic>().state.selectedIndex.value == 1 &&
           !state.isRefresh &&
-          (index2 == 0 || index2 == 1) &&
-          state.appVisible &&
           Get.currentRoute == '/') {
-        await onRefresh();
+        if (index == 0) {
+          await onRefreshF();
+        } else if (index == 1) {
+          await onRefresh();
+        }
       }
     });
   }
@@ -266,7 +332,7 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
         element.follow = true;
       }
     }
-    sortFavorite();
+    onRefreshF();
     update(['data']);
     state.selectedFixedCoin.clear();
   }
@@ -274,13 +340,13 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
   @override
   void onReady() {
     super.onReady();
-    if (!StoreLogic.isLogin) onRefresh();
+    onRefresh();
+    onRefreshF();
   }
 
   @override
   void onInit() {
     super.onInit();
-    WidgetsBinding.instance.addObserver(this);
     _startTimer();
     state.scrollController.addListener(_scrollListener);
     state.scrollControllerF.addListener(_scrollFListener);
@@ -293,34 +359,12 @@ class ContractLogic extends FullLifeCycleController with FullLifeCycleMixin {
 
   @override
   void onClose() {
-    WidgetsBinding.instance.removeObserver(this);
     state.scrollController.removeListener(_scrollListener);
     state.scrollControllerF.removeListener(_scrollFListener);
     state.pollingTimer?.cancel();
     state.pollingTimer = null;
     loginSubscription?.cancel();
     super.onClose();
-  }
-
-  @override
-  void onDetached() {}
-
-  @override
-  void onHidden() {}
-
-  @override
-  void onInactive() {}
-
-  @override
-  void onPaused() {
-    //应用程序不可见，后台
-    state.appVisible = false;
-  }
-
-  @override
-  void onResumed() {
-    //应用程序可见，前台
-    state.appVisible = true;
   }
 }
 

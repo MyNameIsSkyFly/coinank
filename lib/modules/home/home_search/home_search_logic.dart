@@ -88,11 +88,8 @@ class HomeSearchLogic extends GetxController {
       marked.assignAll(StoreLogic.to.favoriteContract.map((e) =>
           SearchV2ItemEntity(baseCoin: e, tag: SearchEntityType.BASECOIN)));
     } else {
-      final list = Get.find<ContractLogic>()
-          .state
-          .data
-          .where((p0) => p0.follow == true)
-          .map((e) => SearchV2ItemEntity(
+      final list = Get.find<ContractLogic>().state.favoriteData.map((e) =>
+          SearchV2ItemEntity(
               baseCoin: e.baseCoin, tag: SearchEntityType.BASECOIN));
       marked.assignAll(list);
     }

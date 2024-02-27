@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:ank_app/entity/contract_market_entity.dart';
 import 'package:ank_app/http/apis.dart';
-import 'package:ank_app/modules/market/contract/contract_logic.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -10,7 +9,6 @@ import '../../entity/futures_big_data_entity.dart';
 
 class CoinDetailLogic extends GetxController {
   late MarkerTickerEntity coin;
-  final contractLogic = Get.find<ContractLogic>();
   final coin24hInfo = Rxn<ContractMarketEntity>();
   late TabController tabController;
   Timer? timer;
