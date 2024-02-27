@@ -190,7 +190,7 @@ class _FavoritePageState extends State<FavoritePage> {
                   onRefresh: logic.onRefresh,
                   child: SlidableAutoCloseBehavior(
                     child: ListView.builder(
-                      physics: const ClampingScrollPhysics(),
+                      // physics: const ClampingScrollPhysics(),
                       controller: state.scrollControllerF,
                       padding: const EdgeInsets.only(bottom: 10),
                       itemBuilder: (cnt, idx) {

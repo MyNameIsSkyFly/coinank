@@ -120,11 +120,11 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
                   _rowGroup([
                     (
                       S.of(context).high24h,
-                      '\$${logic.detailLogic.coin24hInfo.value?.high24h?.toInt() ?? 0}'
+                      '\$${logic.detailLogic.coin24hInfo.value?.high24h?.toStringAsFixed(2) ?? '0'}'
                     ),
                     (
                       S.of(context).low24h,
-                      '\$${logic.detailLogic.coin24hInfo.value?.low24h?.toInt() ?? 0}'
+                      '\$${logic.detailLogic.coin24hInfo.value?.low24h?.toStringAsFixed(2) ?? '0'}'
                     ),
                     (
                       S.of(context).priceChange24h,

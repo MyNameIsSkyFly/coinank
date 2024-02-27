@@ -1,9 +1,11 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:ank_app/modules/main/main_logic.dart';
 import 'package:ank_app/route/app_nav.dart';
 import 'package:ank_app/util/store.dart';
 import 'package:dio/dio.dart';
+import 'package:get/get.dart' hide Response;
 
 import '../generated/l10n.dart';
 import '../util/app_util.dart';
@@ -11,6 +13,8 @@ import '../util/app_util.dart';
 class BaseInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    if (Get.isRegistered<MainLogic>() &&
+        !Get.find<MainLogic>().state.appVisible) return;
     if (StoreLogic.isLogin) {
       options.headers['token'] = StoreLogic.to.loginUserInfo?.token;
     }
