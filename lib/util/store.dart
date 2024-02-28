@@ -6,6 +6,7 @@ import 'dart:math';
 import 'package:ank_app/constants/app_const.dart';
 import 'package:ank_app/entity/event/logged_event.dart';
 import 'package:ank_app/entity/futures_big_data_entity.dart';
+import 'package:ank_app/entity/order_flow_symbol.dart';
 import 'package:ank_app/entity/user_info_entity.dart';
 import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/widget/common_webview.dart';
@@ -337,6 +338,20 @@ class StoreLogic extends GetxController {
         .map((e) => SearchV2ItemEntity.fromJson(jsonDecode(e)))
         .toList();
   }
+
+  //orderFlowSymbolsJson
+  Future<bool> saveOrderFlowSymbolsJson(
+      List<OrderFlowSymbolEntity> orderFlowSymbolsJson) {
+    return _SpUtil()._saveStringList(_SpKeys.orderFlowSymbolsJson,
+        orderFlowSymbolsJson.map((e) => jsonEncode(e.toJson())).toList());
+  }
+
+  List<OrderFlowSymbolEntity> get orderFlowSymbolsJson {
+    final result = _SpUtil()._getStringList(_SpKeys.orderFlowSymbolsJson);
+    return result
+        .map((e) => OrderFlowSymbolEntity.fromJson(jsonDecode(e)))
+        .toList();
+  }
 }
 
 class _SpKeys {
@@ -369,6 +384,7 @@ class _SpKeys {
   static const favoriteContract = 'favoriteContract';
   static const markedSearchResult = 'markedSearchResult';
   static const tappedSearchResult = 'tappedSearchResult';
+  static const orderFlowSymbolsJson = 'orderFlowSymbolsJson';
 }
 
 class _SpUtil {

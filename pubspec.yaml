@@ -83,6 +83,7 @@ flutter:
     - assets/images/common/
     - assets/images/
     - assets/images/platform/
+    - assets/images/orderflow/
     - assets/images/chart_left/
     - assets/images/setting/
     - assets/files/

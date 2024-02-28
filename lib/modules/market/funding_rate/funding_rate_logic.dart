@@ -163,8 +163,10 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin {
       Loading.show();
     }
     state.isRefresh = true;
-    final data = await Apis().getMarketFundingRateData(type: state.timeType);
-    Loading.dismiss();
+    final data = await Apis()
+        .getMarketFundingRateData(type: state.timeType)
+        .whenComplete(() => Loading.dismiss());
+
     if (state.isLoading.value) {
       state.isLoading.value = false;
     }

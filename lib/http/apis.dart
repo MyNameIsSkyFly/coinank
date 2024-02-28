@@ -144,11 +144,25 @@ abstract class Apis {
     @Query('type') String type = '1',
   });
 
+  @POST('/api/userFollow/addOrUpdateFollow')
+  @MultiPart()
+  Future postAddFollow({
+    @Part(name: 'baseCoin') required String baseCoin,
+    @Part(name: 'type') int type = 1,
+  });
+
   //行情删除关注
   @GET('/api/userFollow/delFollow')
   Future getDelFollow({
     @Query('baseCoin') required String baseCoin,
     @Query('type') String type = '1',
+  });
+
+  @POST('/api/userFollow/delFollow')
+  @MultiPart()
+  Future postDelFollow({
+    @Part(name: 'baseCoin') required String baseCoin,
+    @Part(name: 'type') int type = 1,
   });
 
   //保存信息(极光注册的设备id,当前应用语言等等)
