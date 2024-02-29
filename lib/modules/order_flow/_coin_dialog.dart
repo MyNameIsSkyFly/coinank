@@ -15,6 +15,8 @@ class _CoinDialogWithInterceptorState extends State<_CoinDialogWithInterceptor>
   final originalList = <OrderFlowSymbolEntity>[];
   final list = RxList<OrderFlowSymbolEntity>();
   final exchanges = RxSet<String>({S.current.s_all});
+  final priceAsc = RxnBool();
+  final priceChgAsc = RxnBool();
 
   @override
   void initState() {
@@ -33,7 +35,22 @@ class _CoinDialogWithInterceptorState extends State<_CoinDialogWithInterceptor>
   var isFavorite = false;
 
   Iterable<OrderFlowSymbolEntity> get filteredList {
-    return originalList.where((element) =>
+    List<OrderFlowSymbolEntity> tmpList = originalList.toList();
+    if (priceChgAsc.value != null) {
+      tmpList.sort((a, b) =>
+          (priceChgAsc.value == true
+              ? a.priceChangeH24?.compareTo(b.priceChangeH24 ?? 0)
+              : b.priceChangeH24?.compareTo(a.priceChangeH24 ?? 0)) ??
+          0);
+    }
+    if (priceAsc.value != null) {
+      tmpList.sort((a, b) =>
+          (priceAsc.value == true
+              ? a.price?.compareTo(b.price ?? 0)
+              : b.price?.compareTo(a.price ?? 0)) ??
+          0);
+    }
+    return tmpList.where((element) =>
         (currentProductType == null ||
             element.productType == currentProductType) &&
         (isFavorite ? element.follow == true : true) &&
@@ -67,7 +84,6 @@ class _CoinDialogWithInterceptorState extends State<_CoinDialogWithInterceptor>
     originalList.assignAll(tmp);
     list.assignAll(tmp);
     StoreLogic.to.saveOrderFlowSymbolsJson(tmp.toList());
-    if (mounted) setState(() {});
   }
 
   @override
@@ -157,6 +173,46 @@ class _CoinDialogWithInterceptorState extends State<_CoinDialogWithInterceptor>
                             children: [
                               _productTypesView(context),
                               _exchangeSelectorView(context),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(48, 15, 15, 5),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                  child: Text(S.of(context).symbol,
+                                      style: Styles.tsSub_12(context))),
+                              Obx(() {
+                                return TripleStateSortButton(
+                                  isAsc: priceAsc.value,
+                                  title: S.of(context).s_price,
+                                  onChanged: (isAsc) {
+                                    priceAsc.value = isAsc;
+                                    priceChgAsc.value = null;
+                                    list.assignAll(filteredList);
+                                  },
+                                );
+                              }),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 3),
+                                child: Text(
+                                  '/',
+                                  style: Styles.tsSub_12(context),
+                                ),
+                              ),
+                              Obx(() {
+                                return TripleStateSortButton(
+                                  isAsc: priceChgAsc.value,
+                                  title: S.of(context).priceChange24h,
+                                  onChanged: (isAsc) {
+                                    priceChgAsc.value = isAsc;
+                                    priceAsc.value = null;
+                                    list.assignAll(filteredList);
+                                  },
+                                );
+                              }),
                             ],
                           ),
                         ),
