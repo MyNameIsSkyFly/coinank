@@ -38,64 +38,25 @@ class _OrderFlowPageState extends State<OrderFlowPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Gap(60),
-        FilledButton(
-            onPressed: () {
-              // Get.to(()=>_CoinDialogWithInterceptor());
-              showCupertinoModalPopup(
-                context: context,
-                builder: (context) {
-                  return const _CoinDialogWithInterceptor();
-                },
-              );
-            },
-            child: Text('111')),
-        Expanded(
-          child: CommonWebView(
-            showLoading: true,
-            // safeArea: true,
-            url: Urls.urlProChart,
-            urlGetter: () => Urls.urlProChart,
-            onWebViewCreated: (controller) {
-              mainLogic.state.webViewController = controller;
-              controller.addJavaScriptHandler(
-                handlerName: 'handlerName',
-                callback: (arguments) {
-                  showCupertinoModalPopup(
-                    context: context,
-                    builder: (context) {
-                      return _CoinDialogWithInterceptor();
-                    },
-                  );
-                },
-              );
-            },
-            onLoadStop: (controller) {
-              //         controller.evaluateJavascript(source: '''
-              //
-              // const outerArray = [];
-              //
-              // function myFunction() {
-              //   var a = new Array(1024*1024*10).join('0').split('');
-              //   outerArray.push(a);
-              //   console.log("每 1500ms 执行一次");
-              // }
-              //
-              // setTimeout(() => {
-              //   const intervalId = setInterval(myFunction, 1500);
-              //
-              //   setTimeout(() => {
-              //     clearInterval(intervalId);
-              //   }, 50 * 10000);
-              // }, 1000 * 60 * 10);
-              //
-              // ''');
-            },
-          ),
-        ),
-      ],
+    return CommonWebView(
+      showLoading: true,
+      // safeArea: true,
+      url: Urls.urlProChart,
+      urlGetter: () => Urls.urlProChart,
+      onWebViewCreated: (controller) {
+        mainLogic.state.webViewController = controller;
+        controller.addJavaScriptHandler(
+          handlerName: 'openSymbolDialog',
+          callback: (arguments) {
+            showCupertinoModalPopup(
+              context: context,
+              builder: (context) {
+                return const _CoinDialogWithInterceptor();
+              },
+            );
+          },
+        );
+      },
     );
   }
 }
