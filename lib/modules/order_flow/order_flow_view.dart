@@ -40,7 +40,7 @@ class _OrderFlowPageState extends State<OrderFlowPage> {
   Widget build(BuildContext context) {
     return CommonWebView(
       showLoading: true,
-      // safeArea: true,
+      safeArea: true,
       url: Urls.urlProChart,
       urlGetter: () => Urls.urlProChart,
       onWebViewCreated: (controller) {
