@@ -6,15 +6,15 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 
 import '../../home/home_search/home_search_view.dart';
-import 'contract_logic.dart';
+import 'contract_coin_logic.dart';
 
-class ContractPage extends StatelessWidget {
-  const ContractPage({super.key});
+class ContractCoinPage extends StatelessWidget {
+  const ContractCoinPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final logic = Get.put(ContractLogic());
-    final state = Get.find<ContractLogic>().state;
+    final logic = Get.put(ContractCoinLogic());
+    final state = Get.find<ContractCoinLogic>().state;
     return Padding(
       padding: const EdgeInsets.only(top: 15),
       child: Column(
@@ -52,7 +52,7 @@ class ContractPage extends StatelessWidget {
               ),
             );
           }),
-          GetBuilder<ContractLogic>(
+          GetBuilder<ContractCoinLogic>(
               id: 'sort',
               builder: (_) {
                 return Padding(
@@ -104,7 +104,7 @@ class ContractPage extends StatelessWidget {
                 : Expanded(
                     child: EasyRefresh(
                       onRefresh: logic.onRefresh,
-                      child: GetBuilder<ContractLogic>(
+                      child: GetBuilder<ContractCoinLogic>(
                           id: 'data',
                           builder: (_) {
                             return SlidableAutoCloseBehavior(
@@ -140,7 +140,7 @@ class _DataItem extends StatelessWidget {
   });
 
   final MarkerTickerEntity item;
-  final ContractLogic logic;
+  final ContractCoinLogic logic;
 
   @override
   Widget build(BuildContext context) {

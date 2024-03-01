@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/entity/search_v2_entity.dart';
 import 'package:ank_app/modules/home/home_search/home_search_view.dart';
-import 'package:ank_app/modules/market/contract/contract_logic.dart';
+import 'package:ank_app/modules/market/contract_coin/contract_coin_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:dart_scope_functions/dart_scope_functions.dart';
 import 'package:get/get.dart';
@@ -88,7 +88,7 @@ class HomeSearchLogic extends GetxController {
       marked.assignAll(StoreLogic.to.favoriteContract.map((e) =>
           SearchV2ItemEntity(baseCoin: e, tag: SearchEntityType.BASECOIN)));
     } else {
-      final list = Get.find<ContractLogic>().state.favoriteData.map((e) =>
+      final list = Get.find<ContractCoinLogic>().state.favoriteData.map((e) =>
           SearchV2ItemEntity(
               baseCoin: e.baseCoin, tag: SearchEntityType.BASECOIN));
       marked.assignAll(list);
@@ -154,12 +154,12 @@ class HomeSearchLogic extends GetxController {
   }
 
   Future<void> mark(SearchV2ItemEntity item) async {
-    await Get.find<ContractLogic>().tapFavoriteCollect(item.baseCoin);
+    await Get.find<ContractCoinLogic>().tapFavoriteCollect(item.baseCoin);
     initMarked();
   }
 
   Future<void> unMark(SearchV2ItemEntity item) async {
-    await Get.find<ContractLogic>().tapFavoriteCollect(item.baseCoin);
+    await Get.find<ContractCoinLogic>().tapFavoriteCollect(item.baseCoin);
     initMarked();
   }
 

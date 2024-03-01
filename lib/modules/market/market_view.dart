@@ -32,7 +32,7 @@ class MarketPage extends StatelessWidget {
             Tab(text: S.of(context).s_favorite),
             Tab(text: S.of(context).s_crypto_coin),
             Tab(text: S.of(context).s_open_interest),
-            Tab(text: S.of(context).s_futures_market),
+            // Tab(text: S.of(context).s_futures_market),
             Tab(text: S.of(context).s_liquidation_data),
             Tab(text: S.of(context).s_funding_rate),
           ],

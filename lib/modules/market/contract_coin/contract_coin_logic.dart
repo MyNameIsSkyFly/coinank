@@ -7,10 +7,10 @@ import 'package:ank_app/modules/market/market_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:get/get.dart';
 
-import 'contract_state.dart';
+import 'contract_coin_state.dart';
 
-class ContractLogic extends FullLifeCycleController {
-  final ContractState state = ContractState();
+class ContractCoinLogic extends FullLifeCycleController {
+  final ContractCoinState state = ContractCoinState();
   StreamSubscription? loginSubscription;
 
   void sortFavorite({SortType? type}) {

@@ -10,7 +10,7 @@ class MarketLogic extends GetxController
   @override
   void onInit() {
     super.onInit();
-    state.tabController = TabController(length: 6, vsync: this);
+    state.tabController = TabController(length: 5, vsync: this);
   }
 
   void selectIndex(int index) {

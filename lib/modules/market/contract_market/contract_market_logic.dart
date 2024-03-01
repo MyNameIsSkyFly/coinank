@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:ank_app/modules/main/main_logic.dart';
-import 'package:ank_app/modules/market/contract/contract_logic.dart';
+import 'package:ank_app/modules/market/contract_coin/contract_coin_logic.dart';
 import 'package:ank_app/modules/market/market_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';

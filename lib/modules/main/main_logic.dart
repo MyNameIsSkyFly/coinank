@@ -5,7 +5,7 @@ import 'package:ank_app/entity/event/logged_event.dart';
 import 'package:ank_app/entity/event/theme_event.dart';
 import 'package:ank_app/modules/chart/chart_logic.dart';
 import 'package:ank_app/modules/home/home_logic.dart';
-import 'package:ank_app/modules/market/contract/contract_logic.dart';
+import 'package:ank_app/modules/market/contract_coin/contract_coin_logic.dart';
 import 'package:ank_app/modules/setting/setting_logic.dart';
 import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/export.dart';
@@ -59,7 +59,7 @@ class MainLogic extends GetxController {
       if (result != ConnectivityResult.none) {
         getActivity();
         Get.find<HomeLogic>().onRefresh();
-        Get.find<ContractLogic>().onRefresh();
+        Get.find<ContractCoinLogic>().onRefresh();
         AppConst.eventBus.fire(ThemeChangeEvent(type: ThemeChangeType.locale));
         tryLogin();
         Get.find<ChartLogic>().onRefresh();

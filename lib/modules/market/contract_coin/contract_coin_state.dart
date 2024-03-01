@@ -5,7 +5,7 @@ import 'package:ank_app/widget/sort_with_arrow.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ContractState {
+class ContractCoinState {
   SortStatus oiSort = SortStatus.down;
   SortStatus oiChangeSort = SortStatus.normal;
   SortStatus priceSort = SortStatus.normal;
@@ -51,5 +51,6 @@ class ContractState {
       ['BTC', 'ETH', 'SOL', 'XRP', 'BNB', 'ORDI', 'DOGE', 'ARB']);
 
   final fetching = RxBool(false);
-  ContractState();
+
+  ContractCoinState();
 }

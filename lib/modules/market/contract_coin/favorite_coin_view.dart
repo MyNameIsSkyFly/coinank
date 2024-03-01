@@ -7,19 +7,19 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 
 import '../../../widget/animated_color_text.dart';
-import 'contract_logic.dart';
-import 'contract_state.dart';
+import 'contract_coin_logic.dart';
+import 'contract_coin_state.dart';
 
-class FavoritePage extends StatefulWidget {
-  const FavoritePage({super.key});
+class FavoriteCoinPage extends StatefulWidget {
+  const FavoriteCoinPage({super.key});
 
   @override
-  State<FavoritePage> createState() => _FavoritePageState();
+  State<FavoriteCoinPage> createState() => _FavoriteCoinPageState();
 }
 
-class _FavoritePageState extends State<FavoritePage> {
-  final logic = Get.put(ContractLogic());
-  final state = Get.find<ContractLogic>().state;
+class _FavoriteCoinPageState extends State<FavoriteCoinPage> {
+  final logic = Get.put(ContractCoinLogic());
+  final state = Get.find<ContractCoinLogic>().state;
 
   @override
   Widget build(BuildContext context) {
@@ -220,8 +220,8 @@ class _EmptyView extends StatelessWidget {
     required this.logic,
   });
 
-  final ContractState state;
-  final ContractLogic logic;
+  final ContractCoinState state;
+  final ContractCoinLogic logic;
 
   @override
   Widget build(BuildContext context) {
@@ -317,7 +317,7 @@ class _DataItem extends StatelessWidget {
   });
 
   final MarkerTickerEntity item;
-  final ContractLogic logic;
+  final ContractCoinLogic logic;
 
   @override
   Widget build(BuildContext context) {
