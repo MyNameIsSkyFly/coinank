@@ -396,5 +396,7 @@
   "totalSupplyIntro": "已经创建的代币总量，减去任何已经消耗的代币（退出流通）。这与股票市场中的流通股类似。\n\n总供应量 = 链内供应 - 已消耗代币",
   "fullyDilutedValuationIntro": "衡量过去 24 小时内所有跟踪平台的加密货币成交量。这是在 24 小时滚动的基础上进行跟踪的，没有开市和收市时间。",
   "maxSupplyIntro": "加密货币终身可能存在的编码代币最大数量。这与股票市场中的最大发行股票类似。\n\n最大供应量 = 编码的理论最大值",
-  "candleChartPro": "专业K线"
+  "candleChartPro": "专业K线",
+  "customizeList": "自定义列表",
+  "edit": "编辑"
 }

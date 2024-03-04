@@ -6,7 +6,7 @@ import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/entity/head_statistics_entity.dart';
 import 'package:ank_app/entity/home_fund_rate_entity.dart';
 import 'package:ank_app/http/apis.dart';
-import 'package:ank_app/modules/market/market_logic.dart';
+import 'package:ank_app/modules/market/contract/contract_logic.dart';
 import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:get/get.dart';
 
@@ -116,8 +116,8 @@ class HomeLogic extends GetxController {
 
   void toMarketModule(int index) {
     Get.find<MainLogic>().selectTab(1);
-    if (Get.isRegistered<MarketLogic>()) {
-      Get.find<MarketLogic>().selectIndex(index);
+    if (Get.isRegistered<ContractLogic>()) {
+      Get.find<ContractLogic>().selectIndex(index);
     }
   }
 }

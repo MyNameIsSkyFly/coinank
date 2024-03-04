@@ -1,12 +1,17 @@
 import 'package:ank_app/entity/futures_big_data_entity.dart';
+import 'package:ank_app/modules/market/contract/contract_coin/customize/reorder_view.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/animated_color_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../../home/home_search/home_search_view.dart';
+import '../../../home/home_search/home_search_view.dart';
 import 'contract_coin_logic.dart';
+
+part '_data_grid_view.dart';
 
 class ContractCoinPage extends StatelessWidget {
   const ContractCoinPage({super.key});
@@ -52,6 +57,11 @@ class ContractCoinPage extends StatelessWidget {
               ),
             );
           }),
+          IconButton(
+              onPressed: () {
+                Get.toNamed(ReorderPage.routeName);
+              },
+              icon: Icon(Icons.add)),
           GetBuilder<ContractCoinLogic>(
               id: 'sort',
               builder: (_) {
@@ -104,25 +114,7 @@ class ContractCoinPage extends StatelessWidget {
                 : Expanded(
                     child: EasyRefresh(
                       onRefresh: logic.onRefresh,
-                      child: GetBuilder<ContractCoinLogic>(
-                          id: 'data',
-                          builder: (_) {
-                            return SlidableAutoCloseBehavior(
-                              child: ListView.builder(
-                                controller: state.scrollController,
-                                padding: const EdgeInsets.only(bottom: 10),
-                                itemBuilder: (cnt, idx) {
-                                  MarkerTickerEntity item = state.data[idx];
-                                  return _DataItem(
-                                    key: ValueKey(idx),
-                                    item: item,
-                                    logic: logic,
-                                  );
-                                },
-                                itemCount: state.data.length,
-                              ),
-                            );
-                          }),
+                      child: _DataGridView(logic: logic),
                     ),
                   );
           }),

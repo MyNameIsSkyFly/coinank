@@ -9,6 +9,7 @@ import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/entity/order_flow_symbol.dart';
 import 'package:ank_app/entity/user_info_entity.dart';
 import 'package:ank_app/pigeon/host_api.g.dart';
+import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/common_webview.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -352,6 +353,20 @@ class StoreLogic extends GetxController {
         .map((e) => OrderFlowSymbolEntity.fromJson(jsonDecode(e)))
         .toList();
   }
+
+  //contractCoinSortOrder
+  Future<bool> saveContractCoinSortOrder(Map<String, bool> sortOrder) {
+    return _SpUtil()
+        ._saveString(_SpKeys.contractCoinSortOrder, jsonEncode(sortOrder));
+  }
+
+  Map get contractCoinSortOrder {
+    final result = _SpUtil()._getString(_SpKeys.contractCoinSortOrder,
+        defaultValue:
+            '{"priceChangeH1":true,"priceChangeH4":false,"priceChangeH6":false,"priceChangeH12":false,"priceChangeH24":true,"openInterestChM5":false,"openInterestChM15":false,"openInterestChM30":false,"openInterestCh1":true,"openInterestCh4":true,"openInterestCh24":false,"openInterestCh2D":false,"openInterestCh3D":false,"openInterestCh7D":false,"liquidationH1":true,"liquidationH4":false,"liquidationH12":false,"liquidationH24":true,"longShortRatio":false,"longShortPerson":false,"lsPersonChg5m":false,"lsPersonChg15m":false,"lsPersonChg30m":false,"lsPersonChg1h":false,"lsPersonChg4h":false,"longShortPosition":false,"longShortAccount":false,"marketCap":true,"marketCapChange24H":false,"circulatingSupply":false,"totalSupply":false,"maxSupply":false}');
+    var jsonDecode2 = jsonDecode(result);
+    return jsonDecode2;
+  }
 }
 
 class _SpKeys {
@@ -385,6 +400,7 @@ class _SpKeys {
   static const markedSearchResult = 'markedSearchResult';
   static const tappedSearchResult = 'tappedSearchResult';
   static const orderFlowSymbolsJson = 'orderFlowSymbolsJson';
+  static const contractCoinSortOrder = 'contractCoinSortOrder';
 }
 
 class _SpUtil {

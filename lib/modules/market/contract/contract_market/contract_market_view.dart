@@ -1,11 +1,11 @@
 import 'package:ank_app/entity/contract_market_entity.dart';
-import 'package:ank_app/modules/market/contract_coin/contract_coin_logic.dart';
+import 'package:ank_app/modules/market/contract/contract_coin/contract_coin_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-import '../../../widget/animated_color_text.dart';
+import '../../../../widget/animated_color_text.dart';
 import 'contract_market_logic.dart';
 
 class ContractMarketPage extends StatelessWidget {

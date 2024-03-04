@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:ank_app/entity/marker_funding_rate_entity.dart';
-import 'package:ank_app/modules/market/funding_rate/funding_rate_state.dart';
+import 'package:ank_app/modules/market/contract/funding_rate/funding_rate_state.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

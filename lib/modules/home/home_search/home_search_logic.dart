@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/entity/search_v2_entity.dart';
 import 'package:ank_app/modules/home/home_search/home_search_view.dart';
-import 'package:ank_app/modules/market/contract_coin/contract_coin_logic.dart';
+import 'package:ank_app/modules/market/contract/contract_coin/contract_coin_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:dart_scope_functions/dart_scope_functions.dart';
 import 'package:get/get.dart';

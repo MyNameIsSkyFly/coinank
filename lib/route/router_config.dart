@@ -10,10 +10,11 @@ import 'package:ank_app/modules/login/login_view.dart';
 import 'package:ank_app/modules/login/register_view.dart';
 import 'package:ank_app/modules/main/main_binding.dart';
 import 'package:ank_app/modules/main/main_view.dart';
-import 'package:ank_app/modules/market/contract_market_search/contract_market_search_binding.dart';
-import 'package:ank_app/modules/market/contract_market_search/contract_market_search_view.dart';
-import 'package:ank_app/modules/market/contract_search/contract_search_binding.dart';
-import 'package:ank_app/modules/market/contract_search/contract_search_view.dart';
+import 'package:ank_app/modules/market/contract/contract_coin/customize/reorder_view.dart';
+import 'package:ank_app/modules/market/contract/contract_market_search/contract_market_search_binding.dart';
+import 'package:ank_app/modules/market/contract/contract_market_search/contract_market_search_view.dart';
+import 'package:ank_app/modules/market/contract/contract_search/contract_search_binding.dart';
+import 'package:ank_app/modules/market/contract/contract_search/contract_search_view.dart';
 import 'package:ank_app/modules/setting/about/about_view.dart';
 import 'package:ank_app/modules/setting/contact_us/contact_us_view.dart';
 import 'package:get/get.dart';
@@ -74,6 +75,10 @@ class RouteConfig {
     GetPage(
       name: CoinDetailPage.routeName,
       page: () => const CoinDetailPage(),
+    ),
+    GetPage(
+      name: ReorderPage.routeName,
+      page: () => ReorderPage(),
     ),
   ];
 }

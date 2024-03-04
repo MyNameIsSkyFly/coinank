@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:ank_app/entity/oi_chart_menu_param_entity.dart';
 import 'package:ank_app/entity/oi_entity.dart';
-import 'package:ank_app/modules/market/market_logic.dart';
+import 'package:ank_app/modules/market/contract/contract_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_fgbg/flutter_fgbg.dart';
@@ -56,7 +56,7 @@ class ExchangeOiLogic extends GetxController {
     _pollingTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
       if (!isAppVisible ||
           Get.find<MainLogic>().state.selectedIndex.value != 1 ||
-          Get.find<MarketLogic>().state.tabController?.index != 2) return;
+          Get.find<ContractLogic>().state.tabController?.index != 2) return;
       onRefresh(isPolling: true);
     });
   }

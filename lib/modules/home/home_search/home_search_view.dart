@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:ank_app/entity/search_v2_entity.dart';
-import 'package:ank_app/modules/market/contract_coin/contract_coin_logic.dart';
+import 'package:ank_app/modules/market/contract/contract_coin/contract_coin_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/rate_with_sign.dart';
 import 'package:flutter/material.dart';

@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:ank_app/modules/main/main_logic.dart';
-import 'package:ank_app/modules/market/funding_rate_search/funding_rate_search_view.dart';
+import 'package:ank_app/modules/market/contract/contract_logic.dart';
+import 'package:ank_app/modules/market/contract/funding_rate_search/funding_rate_search_view.dart';
 import 'package:ank_app/modules/market/market_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/custom_bottom_sheet/custom_bottom_sheet_view.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -182,9 +184,11 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin {
 
   _startTimer() async {
     state.pollingTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
+      if (kDebugMode) return;
+      if (Get.find<MarketLogic>().tabCtrl.index != 0) return;
       if (Get.find<MainLogic>().state.selectedIndex.value == 1 &&
           !state.isRefresh &&
-          Get.find<MarketLogic>().state.tabController?.index == 5 &&
+          Get.find<ContractLogic>().state.tabController?.index == 5 &&
           state.appVisible) {
         onRefresh();
       }

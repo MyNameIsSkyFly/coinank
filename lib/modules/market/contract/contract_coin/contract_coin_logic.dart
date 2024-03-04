@@ -3,15 +3,19 @@ import 'dart:async';
 import 'package:ank_app/entity/event/logged_event.dart';
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/modules/main/main_logic.dart';
-import 'package:ank_app/modules/market/market_logic.dart';
+import 'package:ank_app/modules/market/contract/contract_logic.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
+import '../../market_logic.dart';
+import '_datagrid_source.dart';
 import 'contract_coin_state.dart';
 
 class ContractCoinLogic extends FullLifeCycleController {
   final ContractCoinState state = ContractCoinState();
   StreamSubscription? loginSubscription;
+  late final gridSource = GridDataSource([]);
 
   void sortFavorite({SortType? type}) {
     if (type != null) state.favoriteSortBy = type.name;
@@ -283,7 +287,9 @@ class ContractCoinLogic extends FullLifeCycleController {
   _startTimer() async {
     state.pollingTimer =
         Timer.periodic(const Duration(seconds: 7), (timer) async {
-      var index = Get.find<MarketLogic>().state.tabController?.index;
+      if (kDebugMode) return;
+      if (Get.find<MarketLogic>().tabCtrl.index != 0) return;
+      var index = Get.find<ContractLogic>().state.tabController?.index;
       if (Get.find<MainLogic>().state.selectedIndex.value == 1 &&
           !state.isRefresh &&
           Get.currentRoute == '/') {

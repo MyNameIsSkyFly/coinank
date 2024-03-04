@@ -4,7 +4,7 @@ import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../market/contract_coin/contract_coin_logic.dart';
+import '../market/contract/contract_coin/contract_coin_logic.dart';
 import 'coin_detail_logic.dart';
 import 'tab_items/coin_detail_hold/coin_detail_hold_view.dart';
 import 'tab_items/coin_detail_overview/coin_detail_overview_view.dart';

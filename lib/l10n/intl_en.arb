@@ -399,5 +399,7 @@
   "totalSupplyIntro": "The amount of coins that have already been created, minus any coins that have been burned (removed from circulation). It is comparable to outstanding shares in the stock market.\n\nTotal Supply = Onchain supply - burned tokens",
   "fullyDilutedValuationIntro": "FDV = Current Price x Max Supply (or total supply if max supply is invalid)\n\nThe market capitalization (valuation) if the max supply of a coin is in circulation. Note that it can take 3, 5, 10 or more years before the FDV can be reached, depending on how the emission schedule is designed.",
   "maxSupplyIntro": "The maximum number of coins coded to exist in the lifetime of the cryptocurrency. It is comparable to the maximum number of issuable shares in the stock market.\n\nMax Supply = Theoretical maximum as coded",
-  "candleChartPro": "Candle Pro"
+  "candleChartPro": "Candle Pro",
+  "customizeList": "自定义列表",
+  "edit": "编辑"
 }

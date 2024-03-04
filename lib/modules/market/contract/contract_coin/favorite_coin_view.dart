@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 
-import '../../../widget/animated_color_text.dart';
+import '../../../../widget/animated_color_text.dart';
 import 'contract_coin_logic.dart';
 import 'contract_coin_state.dart';
 

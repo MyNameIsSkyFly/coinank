@@ -18,7 +18,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../constants/urls.dart';
 import '../entity/event/logged_event.dart';
 import '../modules/main/main_logic.dart';
-import '../modules/market/market_logic.dart';
+import '../modules/market/contract/contract_logic.dart';
 
 class CommonWebView extends StatefulWidget {
   const CommonWebView({
@@ -379,7 +379,7 @@ class _CommonWebViewState extends State<CommonWebView>
         switch (pageType.toUpperCase()) {
           case 'FUNDINGRATE':
             Get.find<MainLogic>().selectTab(1);
-            Get.find<MarketLogic>().selectIndex(5);
+            Get.find<ContractLogic>().selectIndex(5);
           case 'LIQDATA':
             Get.find<MainLogic>().selectTab(1);
             Future.delayed(const Duration(milliseconds: 100)).then((value) {
@@ -387,10 +387,10 @@ class _CommonWebViewState extends State<CommonWebView>
                   evJS: uri.queryParameters['jsSource'] ?? '',
                   url: Urls.urlLiquidation));
             });
-            Get.find<MarketLogic>().selectIndex(4);
+            Get.find<ContractLogic>().selectIndex(4);
           case 'EXCHANGEOI':
             Get.find<MainLogic>().selectTab(1);
-            var marketLogic = Get.find<MarketLogic>();
+            var marketLogic = Get.find<ContractLogic>();
             if (Get.isRegistered<ExchangeOiLogic>()) {
               var exchangeOiLogic = Get.find<ExchangeOiLogic>();
               exchangeOiLogic.menuParamEntity.value.baseCoin =
@@ -418,7 +418,7 @@ class _CommonWebViewState extends State<CommonWebView>
         if (tabIndex == 1) {
           var subTabIndex =
               int.tryParse(uri.queryParameters['subTabIndex'] ?? '') ?? 0;
-          Get.find<MarketLogic>().selectIndex(subTabIndex);
+          Get.find<ContractLogic>().selectIndex(subTabIndex);
         }
       }
     } else {
