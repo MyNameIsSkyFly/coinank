@@ -7,11 +7,11 @@ import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+
 // ignore: depend_on_referenced_packages
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import 'contract_coin_logic.dart';
-import 'contract_coin_state.dart';
+import 'spot_logic.dart';
 
 /// Set product's data collection to data grid source.
 class GridDataSource extends DataGridSource {
@@ -20,8 +20,7 @@ class GridDataSource extends DataGridSource {
     buildDataGridRows();
   }
 
-  final logic = Get.find<ContractCoinLogic>();
-  late final ContractCoinState state = logic.state;
+  final logic = Get.find<SpotLogic>();
 
   /// Instance of products.
   final List<MarkerTickerEntity> items;
@@ -35,7 +34,7 @@ class GridDataSource extends DataGridSource {
     dataGridRows = items.mapIndexed<DataGridRow>((index, entity) {
       return DataGridRow(cells: <DataGridCell<dynamic>>[
         DataGridCell(columnName: '0', value: entity.baseCoin),
-        ...StoreLogic.to.contractCoinSortOrder.entries
+        ...StoreLogic.to.spotSortOrder.entries
             .where((element) => element.value == true)
             .mapIndexed((index, e) {
           return DataGridCell(
@@ -81,7 +80,7 @@ class GridDataSource extends DataGridSource {
           ],
         ),
       ),
-      ...StoreLogic.to.contractCoinSortOrder.entries
+      ...StoreLogic.to.spotSortOrder.entries
           .where((element) => element.value == true)
           .mapIndexed(
             (index, e) => Container(
@@ -188,82 +187,45 @@ class _KeyValue {
         tmp == '0.0000%');
   }
 
+//{"priceChangeM5":false,"priceChangeM15":false,"priceChangeM30":false,"priceChangeH1":true,"priceChangeH4":true,"priceChangeH8":true,"priceChangeH12":false,"priceChangeH24":true,"marketCap":true,"marketCapChange24H":false,"circulatingSupply":false,"totalSupply":true,"maxSupply":false}
   double get rate {
     return switch (key) {
-      'priceChangeH1' ||
-      'priceChangeH4' ||
-      'priceChangeH6' ||
+      'priceChangeH24' ||
       'priceChangeH12' ||
-      'priceChangeH24' =>
-        (value ?? 0) / 100,
-      'openInterestChM5' ||
-      'openInterestChM15' ||
-      'openInterestChM30' ||
-      'openInterestCh1' ||
-      'openInterestCh4' ||
-      'openInterestCh24' ||
-      'openInterestCh2D' ||
-      'openInterestCh3D' ||
-      'openInterestCh7D' =>
-        value ?? 0,
-      'lsPersonChg5m' ||
-      'lsPersonChg15m' ||
-      'lsPersonChg30m' ||
-      'lsPersonChg1h' ||
-      'lsPersonChg4h' ||
-      'marketCapChange24H' =>
-        (value ?? 0) * 100,
-      'fundingRate' => (value ?? 0) * 100,
+      'priceChangeH8' ||
+      'priceChangeH4' ||
+      'priceChangeH1' ||
+      'priceChangeM5' ||
+      'priceChangeM15' ||
+      'priceChangeM30' =>
+        (value ?? 0) / 10,
+      'turnoverChg24h' => (value ?? 0),
       _ => 0.0,
     };
   }
 
   String handleValue(String key, double? value) {
-    if (value == null && key == 'marketCapChange24H') return '0.00%';
     final tmp = value ?? 0;
     return switch (key) {
-      'price' ||
-      'longShortRatio' ||
-      'longShortPerson' ||
-      'longShortPosition' ||
-      'longShortAccount' =>
-        Decimal.tryParse('$tmp').toString(),
-      'fundingRate' =>
-        '${tmp > 0 ? '+' : ''}${(tmp * 100).toStringAsFixed(4)}%',
+      'price' => Decimal.tryParse('$tmp').toString(),
       'turnover24h' ||
-      'openInterest' ||
-      'marketCap' ||
-      'liquidationH1' ||
-      'liquidationH4' ||
-      'liquidationH12' ||
-      'liquidationH24' =>
+      'marketCap' =>
         '\$${AppUtil.getLargeFormatString('$tmp', precision: 2)}',
-      'priceChangeH1' ||
-      'priceChangeH4' ||
-      'priceChangeH6' ||
+      'priceChangeH24' ||
       'priceChangeH12' ||
-      'priceChangeH24' =>
+      'priceChangeH8' ||
+      'priceChangeH4' ||
+      'priceChangeH1' ||
+      'priceChangeM5' ||
+      'priceChangeM15' ||
+      'priceChangeM30' =>
         '${tmp > 0 ? '+' : ''}${tmp.toStringAsFixed(2)}%',
-      'openInterestChM5' ||
-      'openInterestChM15' ||
-      'openInterestChM30' ||
-      'openInterestCh1' ||
-      'openInterestCh4' ||
-      'openInterestCh24' ||
-      'openInterestCh2D' ||
-      'openInterestCh3D' ||
-      'openInterestCh7D' ||
-      'lsPersonChg5m' ||
-      'lsPersonChg15m' ||
-      'lsPersonChg30m' ||
-      'lsPersonChg1h' ||
-      'lsPersonChg4h' ||
-      'marketCapChange24H' =>
-        '${tmp > 0 ? '+' : ''}${(tmp * 100).toStringAsFixed(2)}%',
       'circulatingSupply' ||
       'totalSupply' ||
       'maxSupply' =>
         numberFormat?.format(tmp) ?? '',
+      'turnoverChg24h' =>
+        '${(value ?? 0) > 0 ? '+' : ''}${((value ?? 0) * 100).toStringAsFixed(2)}%',
       _ => '0',
     };
   }

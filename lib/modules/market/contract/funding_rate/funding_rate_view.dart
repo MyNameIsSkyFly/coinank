@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:ank_app/entity/marker_funding_rate_entity.dart';
 import 'package:ank_app/modules/market/contract/funding_rate/funding_rate_state.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -26,6 +27,31 @@ class FundingRatePage extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
           child: Row(
             children: [
+              GestureDetector(
+                onTap: () {
+                  logic.isFavorite.toggle();
+                  logic.onRefresh(showLoading: true);
+                },
+                child: Container(
+                    height: 32,
+                    width: 32,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).inputDecorationTheme.fillColor,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Center(
+                      child: Obx(() {
+                        return ImageIcon(
+                            AssetImage(logic.isFavorite.value
+                                ? Assets.commonIconStarFill
+                                : Assets.commonIconStar),
+                            size: 17,
+                            color:
+                                logic.isFavorite.value ? Styles.cYellow : null);
+                      }),
+                    )),
+              ),
+              const Gap(10),
               Obx(() {
                 return _Segment(
                   titles: [S.current.s_show_pre_fr, S.current.s_hide],

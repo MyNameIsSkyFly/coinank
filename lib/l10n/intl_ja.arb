@@ -104,6 +104,7 @@
   "s_greed_index": "Fear and Greed",
   "s_longshort_ratio": "ロング-ショート比率",
   "s_funding_rate": "資金調達率",
+  "s_funding_rate_short": "資金調達率",
   "s_exchange_name": "取引所",
   "s_rate": "比率",
   "s_longs": "ロング",
@@ -399,5 +400,12 @@
   "maxSupplyIntro": "仮想通貨の存続期間中に存在する、コード化された通貨の最大数。株式市場における発行可能株式数の最大値に相当します。\n\n最大供給量＝コード化された理論上の最大値",
   "candleChartPro": "Candle Pro",
   "customizeList": "自定义列表",
-  "edit": "编辑"
+  "edit": "编辑",
+  "lsRatioOfAccountX": "L/S Ratio Of Account ({value})",
+  "customList": "自定义列表",
+  "liq_abbr": "Liq",
+  "longShortPersonRatio": "多空人数比({value})",
+  "marketCapChange": "MarketCap Change",
+  "addedToFavorites": "收藏成功",
+  "removedFromFavorites": "已取消收藏"
 }

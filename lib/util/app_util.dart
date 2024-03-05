@@ -116,7 +116,8 @@ class AppUtil {
     }
     final mFormat = NumberFormat('#,##0.${'0' * precision}', 'en_US');
     if (amount < 1000) {
-      return amount.toString();
+      if (amount == 0) return '0.${'0' * precision}';
+      return amount.toStringAsFixed(precision);
     } else if (amount < 1000000) {
       return '${mFormat.format(amount / 1000)}K';
     } else if (amount < 1000000000) {

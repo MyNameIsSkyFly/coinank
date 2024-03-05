@@ -39,7 +39,7 @@ class ExchangeOiPage extends StatelessWidget {
                         height: 24,
                         alignment: Alignment.centerLeft,
                         child: Image.asset(
-                          Assets.commonIconSearch,
+                          Assets.commonIcLinesSearch,
                           width: 16,
                           height: 16,
                           color: Theme.of(context).iconTheme.color,

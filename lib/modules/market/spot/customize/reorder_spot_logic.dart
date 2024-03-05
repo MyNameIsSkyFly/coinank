@@ -1,7 +1,7 @@
 import 'package:ank_app/res/export.dart';
 import 'package:get/get.dart';
 
-class ReorderLogic extends GetxController {
+class ReorderSpotLogic extends GetxController {
   final list = <MapEntry<String, dynamic>>[].obs;
 
   @override
@@ -11,7 +11,7 @@ class ReorderLogic extends GetxController {
   }
 
   void initData() {
-    final order = StoreLogic.to.contractCoinSortOrder;
+    final order = StoreLogic.to.spotSortOrder;
     list.assignAll(order.entries.where((element) => element.value == true));
   }
 }

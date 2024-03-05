@@ -103,7 +103,7 @@
   "s_open_interest": "OI",
   "s_greed_index": "공포 / 탐욕 지수",
   "s_longshort_ratio": "롱/숏 비율",
-  "s_funding_rate": "유형",
+  "s_funding_rate_short": "유형",
   "s_exchange_name": "거래소",
   "s_rate": "비율",
   "s_longs": "롱",
@@ -398,5 +398,12 @@
   "maxSupplyIntro": "암호화폐의 수명 동안 존재하도록 코딩된 코인의 최대 개수입니다. 주식시장에서의 발행가능주식수와 유사합니다.\n\n최대 공급량 = 코딩된 이론상 최대 수량",
   "candleChartPro": "Candle Pro",
   "customizeList": "自定义列表",
-  "edit": "编辑"
+  "edit": "编辑",
+  "lsRatioOfAccountX": "L/S Ratio Of Account ({value})",
+  "customList": "自定义列表",
+  "liq_abbr": "Liq",
+  "longShortPersonRatio": "多空人数比({value})",
+  "marketCapChange": "MarketCap Change",
+  "addedToFavorites": "收藏成功",
+  "removedFromFavorites": "已取消收藏"
 }

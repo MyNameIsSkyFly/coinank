@@ -5,10 +5,16 @@ import 'package:get/get.dart';
 
 import 'contract_logic.dart';
 
-class ContractPage extends StatelessWidget {
-  ContractPage({super.key});
+class ContractPage extends StatefulWidget {
+  const ContractPage({super.key});
 
+  @override
+  State<ContractPage> createState() => _ContractPageState();
+}
+
+class _ContractPageState extends State<ContractPage> {
   final logic = Get.put(ContractLogic());
+
   final state = Get.find<ContractLogic>().state;
 
   @override
@@ -30,11 +36,11 @@ class ContractPage extends StatelessWidget {
           dividerColor: Theme.of(context).dividerTheme.color,
           tabs: [
             Tab(text: S.of(context).s_favorite),
-            Tab(text: S.of(context).s_crypto_coin),
-            Tab(text: S.of(context).s_open_interest),
+            Tab(text: S.of(context).coinType),
+            Tab(text: S.of(context).s_oi),
             // Tab(text: S.of(context).s_futures_market),
-            Tab(text: S.of(context).s_liquidation_data),
-            Tab(text: S.of(context).s_funding_rate),
+            Tab(text: S.of(context).s_rekt),
+            Tab(text: S.of(context).s_funding_rate_short),
           ],
         ),
       ),

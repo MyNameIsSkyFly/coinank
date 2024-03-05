@@ -1,11 +1,11 @@
-part of 'contract_coin_view.dart';
+part of 'spot_view.dart';
 
 class _DataGridView extends StatefulWidget {
   const _DataGridView({
     required this.logic,
   });
 
-  final ContractCoinLogic logic;
+  final SpotLogic logic;
 
   @override
   State<_DataGridView> createState() => _DataGridViewState();
@@ -61,29 +61,10 @@ class _DataGridViewState extends State<_DataGridView> {
                 .effectiveRows[details.rowColumnIndex.rowIndex - 1]
                 .getCells()[0]
                 .value;
-            final item = widget.logic.state.data
+            final item = widget.logic.data
                 .firstWhereOrNull((element) => element.baseCoin == baseCoin);
             if (item == null) return;
             AppNav.toCoinDetail(item);
-          },
-          onCellLongPress: (details) {
-            if (details.rowColumnIndex.rowIndex == 0) return;
-            var baseCoin = widget.logic.gridSource
-                .effectiveRows[details.rowColumnIndex.rowIndex - 1]
-                .getCells()[0]
-                .value;
-            final item = widget.logic.state.data
-                .firstWhereOrNull((element) => element.baseCoin == baseCoin);
-            if (item == null) return;
-            late bool marked;
-            if (StoreLogic.isLogin) {
-              marked = item.follow == true;
-            } else {
-              marked = StoreLogic.to.favoriteContract.contains(item.baseCoin);
-            }
-            showOverlayAt(details.globalPosition, marked, onTap: () {
-              Get.find<ContractCoinLogic>().tapCollect(item);
-            });
           },
         ),
       );

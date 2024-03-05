@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:ank_app/entity/event/logged_event.dart';
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/modules/main/main_logic.dart';
+import 'package:ank_app/modules/market/contract/contract_coin/_f_datagrid_source.dart';
 import 'package:ank_app/modules/market/contract/contract_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/foundation.dart';
@@ -10,12 +11,16 @@ import 'package:get/get.dart';
 
 import '../../market_logic.dart';
 import '_datagrid_source.dart';
+import 'contract_coin_logic_mixin.dart';
 import 'contract_coin_state.dart';
 
-class ContractCoinLogic extends FullLifeCycleController {
+class ContractCoinLogic extends FullLifeCycleController
+    with ContractCoinLogicMixin {
   final ContractCoinState state = ContractCoinState();
   StreamSubscription? loginSubscription;
+
   late final gridSource = GridDataSource([]);
+  late final fGridSource = FGridDataSource([]);
 
   void sortFavorite({SortType? type}) {
     if (type != null) state.favoriteSortBy = type.name;
@@ -136,27 +141,31 @@ class ContractCoinLogic extends FullLifeCycleController {
     if (!StoreLogic.isLogin) {
       if (item.follow == true) {
         await StoreLogic.to.removeFavoriteContract(item.baseCoin!);
+        AppUtil.showToast(S.current.removedFromFavorites);
         item.follow = false;
       } else {
         await StoreLogic.to.saveFavoriteContract(item.baseCoin!);
+        AppUtil.showToast(S.current.addedToFavorites);
         item.follow = true;
       }
     } else {
       if (item.follow == true) {
         await Apis().getDelFollow(baseCoin: item.baseCoin!);
+        AppUtil.showToast(S.current.removedFromFavorites);
         item.follow = false;
       } else {
         await Apis().getAddFollow(baseCoin: item.baseCoin!);
+        AppUtil.showToast(S.current.addedToFavorites);
         item.follow = true;
       }
     }
     update(['data']);
-    if (item.follow == false) {
-      state.favoriteData
-          .removeWhere((element) => element.baseCoin == item.baseCoin);
-    } else {
-      onRefreshF();
-    }
+    // if (item.follow == false) {
+    //   state.favoriteData
+    //       .removeWhere((element) => element.baseCoin == item.baseCoin);
+    // } else {
+    onRefreshF();
+    // }
   }
 
   Future<void> tapCollectF(MarkerTickerEntity item) async {
@@ -179,24 +188,31 @@ class ContractCoinLogic extends FullLifeCycleController {
     final item = state.favoriteData
         .firstWhereOrNull((element) => element.baseCoin == baseCoin);
     if (!StoreLogic.isLogin) {
-      if (item?.follow == true) {
+      if (StoreLogic.to.favoriteContract.contains(item?.baseCoin)) {
         await StoreLogic.to.removeFavoriteContract(baseCoin ?? '');
+        AppUtil.showToast(S.current.removedFromFavorites);
         item?.follow = false;
       } else {
         await StoreLogic.to.saveFavoriteContract(baseCoin ?? '');
+        AppUtil.showToast(S.current.addedToFavorites);
         item?.follow = true;
       }
     } else {
       if (item?.follow == true) {
         await Apis().getDelFollow(baseCoin: item?.baseCoin ?? '');
+        AppUtil.showToast(S.current.removedFromFavorites);
         item?.follow = false;
       } else {
         await Apis().getAddFollow(baseCoin: baseCoin ?? '');
+        AppUtil.showToast(S.current.addedToFavorites);
         item?.follow = true;
       }
     }
-    onRefreshF();
-    update(['data']);
+    state.data
+        .where((p0) => p0.baseCoin == item?.baseCoin)
+        .firstOrNull
+        ?.follow = item?.follow;
+    await onRefreshF();
   }
 
   Future<void> onRefresh({bool showLoading = false}) async {
@@ -229,6 +245,9 @@ class ContractCoinLogic extends FullLifeCycleController {
     update(['data']);
     state.isRefresh = false;
     StoreLogic.to.setContractData(data?.list ?? []);
+    gridSource.items.assignAll(data?.list ?? []);
+    gridSource.buildDataGridRows();
+    gridSource.updateDataSource();
   }
 
   bool isFavorite(String baseCoin) {
@@ -282,6 +301,9 @@ class ContractCoinLogic extends FullLifeCycleController {
     }
     // sortFavorite();
     state.isRefresh = false;
+    fGridSource.items.assignAll(data?.list ?? []);
+    fGridSource.buildDataGridRows();
+    fGridSource.updateDataSource();
   }
 
   _startTimer() async {
@@ -300,25 +322,6 @@ class ContractCoinLogic extends FullLifeCycleController {
         }
       }
     });
-  }
-
-  _scrollListener() {
-    double offset = state.scrollController.offset;
-    state.isScrollDown.value = offset <= 0 || state.offset - offset > 0;
-    state.offset = offset;
-  }
-
-  _scrollFListener() {
-    final maxScrollExtent = state.scrollControllerF.position.maxScrollExtent;
-    final isOverScrolled = state.scrollControllerF.offset > maxScrollExtent;
-    if (isOverScrolled) {
-      state.isScrollDownF.value = false;
-      return;
-    }
-
-    double offset = state.scrollControllerF.offset;
-    state.isScrollDownF.value = offset <= 0 || state.offset - offset > 0;
-    state.offset = offset;
   }
 
   Future<void> saveFixedCoin() async {
@@ -354,19 +357,16 @@ class ContractCoinLogic extends FullLifeCycleController {
   void onInit() {
     super.onInit();
     _startTimer();
-    state.scrollController.addListener(_scrollListener);
-    state.scrollControllerF.addListener(_scrollFListener);
     if (StoreLogic.isLogin) {
       loginSubscription = AppConst.eventBus.on<LoginStatusChangeEvent>().listen(
             (event) => onRefresh(),
           );
     }
+    getColumns(Get.context!);
   }
 
   @override
   void onClose() {
-    state.scrollController.removeListener(_scrollListener);
-    state.scrollControllerF.removeListener(_scrollFListener);
     state.pollingTimer?.cancel();
     state.pollingTimer = null;
     loginSubscription?.cancel();

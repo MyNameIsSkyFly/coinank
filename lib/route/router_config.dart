@@ -10,11 +10,14 @@ import 'package:ank_app/modules/login/login_view.dart';
 import 'package:ank_app/modules/login/register_view.dart';
 import 'package:ank_app/modules/main/main_binding.dart';
 import 'package:ank_app/modules/main/main_view.dart';
+import 'package:ank_app/modules/market/contract/contract_coin/customize/edit_customize_view.dart';
 import 'package:ank_app/modules/market/contract/contract_coin/customize/reorder_view.dart';
 import 'package:ank_app/modules/market/contract/contract_market_search/contract_market_search_binding.dart';
 import 'package:ank_app/modules/market/contract/contract_market_search/contract_market_search_view.dart';
 import 'package:ank_app/modules/market/contract/contract_search/contract_search_binding.dart';
 import 'package:ank_app/modules/market/contract/contract_search/contract_search_view.dart';
+import 'package:ank_app/modules/market/spot/customize/edit_customize_spot_view.dart';
+import 'package:ank_app/modules/market/spot/customize/reorder_spot_view.dart';
 import 'package:ank_app/modules/setting/about/about_view.dart';
 import 'package:ank_app/modules/setting/contact_us/contact_us_view.dart';
 import 'package:get/get.dart';
@@ -79,6 +82,18 @@ class RouteConfig {
     GetPage(
       name: ReorderPage.routeName,
       page: () => ReorderPage(),
+    ),
+    GetPage(
+      name: EditCustomizePage.routeName,
+      page: () => const EditCustomizePage(),
+    ),
+    GetPage(
+      name: ReorderSpotPage.routeName,
+      page: () => ReorderSpotPage(),
+    ),
+    GetPage(
+      name: EditCustomizeSpotPage.routeName,
+      page: () => const EditCustomizeSpotPage(),
     ),
   ];
 }

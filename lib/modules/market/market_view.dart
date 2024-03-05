@@ -62,9 +62,9 @@ class _MarketPageState extends State<MarketPage>
                 child: TabBarView(
               physics: const NeverScrollableScrollPhysics(),
               controller: logic.tabCtrl,
-              children: [
-                ContractPage(),
-                SpotPage(),
+              children: const [
+                AliveWidget(child: ContractPage()),
+                AliveWidget(child: SpotPage()),
               ],
             ))
           ],

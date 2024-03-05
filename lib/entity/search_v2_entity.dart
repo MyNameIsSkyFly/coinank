@@ -28,9 +28,7 @@ class SearchV2Entity {
 @JsonSerializable(createToJson: true)
 class SearchV2ItemEntity extends Equatable {
   final String? baseCoin;
-  @JsonKey(includeToJson: true)
   final String? exchangeName;
-  @JsonKey(includeToJson: true)
   final String? symbol;
   @JsonKey(includeToJson: false)
   final double? oi;
@@ -40,6 +38,8 @@ class SearchV2ItemEntity extends Equatable {
   final double? price;
   @JsonKey(includeToJson: false)
   final double? priceChg;
+  final bool? supportSpot;
+  final bool? supportContract;
   final SearchEntityType? tag;
 
   const SearchV2ItemEntity({
@@ -51,6 +51,8 @@ class SearchV2ItemEntity extends Equatable {
     this.price,
     this.priceChg,
     this.tag,
+    this.supportSpot,
+    this.supportContract,
   });
 
   factory SearchV2ItemEntity.fromJson(Map<String, dynamic> json) =>

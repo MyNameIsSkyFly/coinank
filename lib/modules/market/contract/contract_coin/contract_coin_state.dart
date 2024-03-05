@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/widget/sort_with_arrow.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ContractCoinState {
@@ -32,8 +31,9 @@ class ContractCoinState {
   Timer? pollingTimer;
   bool isRefresh = false;
   bool appVisible = true;
-  ScrollController scrollController = ScrollController();
-  ScrollController scrollControllerF = ScrollController();
+
+  // ScrollController scrollController = ScrollController();
+  // ScrollController scrollControllerF = ScrollController();
   double offset = 0;
   RxBool isScrollDown = true.obs;
   RxBool isScrollDownF = true.obs;

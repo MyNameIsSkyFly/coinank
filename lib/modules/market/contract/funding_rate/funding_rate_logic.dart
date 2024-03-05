@@ -16,6 +16,8 @@ import 'funding_rate_state.dart';
 class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin {
   final FundingRateState state = FundingRateState();
   late final gridSource = GridDataSource([]);
+  final isFavorite = false.obs;
+
   void tapHide(bool v) {
     if (state.isHide.value != !v) {
       state.isHide.value = !v;
@@ -63,69 +65,6 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin {
     }
   }
 
-  // void _tapSort(int idx) {
-  //   state.sortIndex = idx;
-  //   SortStatus sortStatus = state.topStatusList.toList()[idx];
-  //   switch (sortStatus) {
-  //     case SortStatus.normal:
-  //       sortStatus = SortStatus.up;
-  //     case SortStatus.up:
-  //       sortStatus = SortStatus.down;
-  //     case SortStatus.down:
-  //       sortStatus = SortStatus.normal;
-  //   }
-  //   List<SortStatus> list =
-  //       List.generate(state.topList.length, (index) => SortStatus.normal);
-  //   list[idx] = sortStatus;
-  //   state.topStatusList.value = list;
-  //   sort(state.topList.toList()[idx], sortStatus);
-  // }
-
-  // void _sort(String exchangeName, SortStatus sortBy) {
-  //   List<MarkerFundingRateEntity> list =
-  //       List.from(state.contentOriginalDataList ?? []);
-  //   list = list
-  //       .where((element) =>
-  //           state.searchList.contains(element.symbol) ||
-  //           state.searchList.isEmpty)
-  //       .toList();
-  //   if (sortBy == SortStatus.normal) {
-  //     state.contentDataList.value = list;
-  //     return;
-  //   }
-  //   list.sort((a, b) {
-  //     double? first;
-  //     double? second;
-  //     if (state.isCmap.value) {
-  //       first = a.cmap?[exchangeName]?.fundingRate;
-  //       second = b.cmap?[exchangeName]?.fundingRate;
-  //     } else {
-  //       first = a.umap?[exchangeName]?.fundingRate;
-  //       second = b.umap?[exchangeName]?.fundingRate;
-  //     }
-  //     if (first == null && second == null) {
-  //       return 0;
-  //     } else if (first == null) {
-  //       return 1;
-  //     } else if (second == null) {
-  //       return -1;
-  //     }
-  //     if (first == 0 && second == 0) {
-  //       return 0;
-  //     } else if (first == 0) {
-  //       return 1;
-  //     } else if (second == 0) {
-  //       return -1;
-  //     }
-  //     if (sortBy == SortStatus.up) {
-  //       return first.compareTo(second);
-  //     } else {
-  //       return second.compareTo(first);
-  //     }
-  //   });
-  //   state.contentDataList.value = list;
-  // }
-
   tapSearch() async {
     final result = await showModalBottomSheet(
       isScrollControlled: true,
@@ -166,7 +105,8 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin {
     }
     state.isRefresh = true;
     final data = await Apis()
-        .getMarketFundingRateData(type: state.timeType)
+        .getMarketFundingRateData(
+            type: state.timeType, isFollow: isFavorite.value)
         .whenComplete(() => Loading.dismiss());
 
     if (state.isLoading.value) {

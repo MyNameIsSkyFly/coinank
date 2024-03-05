@@ -673,9 +673,17 @@ class _HotMarket extends StatelessWidget {
                             Expanded(
                               child: Row(
                                 children: [
-                                  Text(
-                                    S.of(context).s_liquidation_data,
-                                    style: Styles.tsSub_14m(context),
+                                  Expanded(
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: FittedBox(
+                                        child: Text(
+                                          S.of(context).s_liquidation_data,
+                                          maxLines: 1,
+                                          style: Styles.tsSub_14m(context),
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                   Text(
                                     ' (24H)',

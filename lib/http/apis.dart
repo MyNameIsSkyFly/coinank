@@ -92,7 +92,7 @@ abstract class Apis {
 
   @GET('/api/fundingRate/current')
   Future<List<MarkerFundingRateEntity>?> getMarketFundingRateData(
-      {@Query('type') required String type});
+      {@Query('type') required String type, @Query('isFollow') bool? isFollow});
 
   @GET('/api/app/indicationMain')
   Future<List<ChartEntity>?> getChartData(
@@ -324,5 +324,16 @@ abstract class Apis {
   Future<List<OrderFlowSymbolEntity>?> getOrderFlowSymbols({
     @Query('productType') String? productType,
     @Query('follow') bool follow = false,
+  });
+
+  @GET('/api/instruments/spotAgg')
+  Future<TickersDataEntity?> getSpotAgg({
+    @Query('page') required int page,
+    @Query('size') required int size,
+    @Query('sortBy') String? sortBy,
+    @Query('sortType') String sortType = 'descend',
+    @Query('sort') String? sort,
+    @Query('isFollow') bool? isFollow,
+    @Query('baseCoins') String? baseCoins,
   });
 }

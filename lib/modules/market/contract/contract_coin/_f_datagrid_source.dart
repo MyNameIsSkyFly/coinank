@@ -14,9 +14,9 @@ import 'contract_coin_logic.dart';
 import 'contract_coin_state.dart';
 
 /// Set product's data collection to data grid source.
-class GridDataSource extends DataGridSource {
+class FGridDataSource extends DataGridSource {
   /// Creates the product data source class with required details.
-  GridDataSource(this.items) {
+  FGridDataSource(this.items) {
     buildDataGridRows();
   }
 

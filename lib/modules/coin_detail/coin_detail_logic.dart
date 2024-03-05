@@ -12,11 +12,14 @@ class CoinDetailLogic extends GetxController {
   final coin24hInfo = Rxn<ContractMarketEntity>();
   late TabController tabController;
   Timer? timer;
-  final isSpot = true.obs;
+  bool supportContract = false;
+  bool supportSpot = false;
 
   @override
   void onInit() {
     coin = Get.arguments['coin'];
+    supportSpot = coin.supportSpot ?? false;
+    supportContract = coin.supportContract ?? false;
     super.onInit();
   }
 
@@ -29,16 +32,7 @@ class CoinDetailLogic extends GetxController {
   }
 
   Future<void> getCoinInfo24h() async {
-    final result = await Apis().getCoinInfo24h(coin.baseCoin ?? '').then(
-      (value) {
-        isSpot.value = false;
-        return value;
-      },
-    ).catchError((e) async {
-      isSpot.value = true;
-      return await Apis()
-          .getCoinInfo24h(coin.baseCoin ?? '', productType: 'SPOT');
-    });
+    final result = await Apis().getCoinInfo24h(coin.baseCoin ?? '');
     coin24hInfo.value = result;
   }
 

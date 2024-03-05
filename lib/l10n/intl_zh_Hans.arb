@@ -96,7 +96,7 @@
   "s_open_interest": "合约持仓",
   "s_greed_index": "贪婪恐惧指数",
   "s_longshort_ratio": "多空比",
-  "s_funding_rate": "资金费率",
+  "s_funding_rate_short": "费率",
   "s_exchange_name": "交易所",
   "s_rate": "占比",
   "s_longs": "多",
@@ -398,5 +398,12 @@
   "maxSupplyIntro": "加密货币终身可能存在的编码代币最大数量。这与股票市场中的最大发行股票类似。\n\n最大供应量 = 编码的理论最大值",
   "candleChartPro": "专业K线",
   "customizeList": "自定义列表",
-  "edit": "编辑"
+  "edit": "编辑",
+  "lsRatioOfAccountX": "L/S Ratio Of Account ({value})",
+  "customList": "自定义列表",
+  "liq_abbr": "Liq",
+  "longShortPersonRatio": "多空人数比({value})",
+  "marketCapChange": "MarketCap Change",
+  "addedToFavorites": "收藏成功",
+  "removedFromFavorites": "已取消收藏"
 }

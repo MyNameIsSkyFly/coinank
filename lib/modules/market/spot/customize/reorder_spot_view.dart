@@ -1,17 +1,17 @@
-import 'package:ank_app/modules/market/contract/contract_coin/contract_coin_logic.dart';
-import 'package:ank_app/modules/market/contract/contract_coin/customize/edit_customize_view.dart';
+import 'package:ank_app/modules/market/spot/customize/edit_customize_spot_view.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'reorder_logic.dart';
+import '../spot_logic.dart';
+import 'reorder_spot_logic.dart';
 
-class ReorderPage extends StatelessWidget {
-  ReorderPage({super.key});
+class ReorderSpotPage extends StatelessWidget {
+  ReorderSpotPage({super.key});
 
-  static const routeName = '/contractCoinReorder';
-  final logic = Get.put(ReorderLogic());
-  final pLogic = Get.find<ContractCoinLogic>();
+  static const routeName = '/spotCoinReorder';
+  final logic = Get.put(ReorderSpotLogic());
+  final pLogic = Get.find<SpotLogic>();
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class ReorderPage extends StatelessWidget {
         title: Text(S.of(context).customizeList),
         actions: [
           IconButton(
-              onPressed: () => Get.toNamed(EditCustomizePage.routeName),
+              onPressed: () => Get.toNamed(EditCustomizeSpotPage.routeName),
               icon: const ImageIcon(AssetImage(Assets.commonIcEdit), size: 20))
         ],
       ),
@@ -32,7 +32,7 @@ class ReorderPage extends StatelessWidget {
             final item = logic.list[index];
             return ListTile(
               key: ValueKey(item.key),
-              title: Text(pLogic.textMap(item.key) ?? ''),
+              title: Text(pLogic.textMap(item.key)),
               contentPadding: const EdgeInsets.symmetric(horizontal: 15),
               trailing: ReorderableDragStartListener(
                 index: index,
@@ -44,13 +44,11 @@ class ReorderPage extends StatelessWidget {
             if (oldIndex < newIndex) newIndex -= 1;
             final item = logic.list.removeAt(oldIndex);
             logic.list.insert(newIndex, item);
-            await StoreLogic.to.saveContractCoinSortOrder(
+            await StoreLogic.to.saveSpotSortOrder(
                 {for (var item in logic.list) item.key: item.value});
-            Get.find<ContractCoinLogic>().getColumns(Get.context!);
-            Get.find<ContractCoinLogic>().gridSource.buildDataGridRows();
-            Get.find<ContractCoinLogic>().gridSource.updateDataSource();
-            Get.find<ContractCoinLogic>().fGridSource.buildDataGridRows();
-            Get.find<ContractCoinLogic>().fGridSource.updateDataSource();
+            Get.find<SpotLogic>().getColumns(Get.context!);
+            Get.find<SpotLogic>().gridSource.buildDataGridRows();
+            Get.find<SpotLogic>().gridSource.updateDataSource();
           },
         );
       }),

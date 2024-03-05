@@ -27,11 +27,11 @@ class _CoinDetailPageState extends State<CoinDetailPage>
     super.initState();
     logic.tabController =
         TabController(length: 4, vsync: this, animationDuration: Duration.zero);
-    logic.isSpot.listen((value) {
-      logic.tabController.dispose();
       logic.tabController = TabController(
-          length: value ? 3 : 4, vsync: this, animationDuration: Duration.zero);
-    });
+        length:
+            2 + (logic.supportContract ? 1 : 0) + (logic.supportSpot ? 1 : 0),
+        vsync: this,
+        animationDuration: Duration.zero);
   }
 
   @override
@@ -69,11 +69,6 @@ class _CoinDetailPageState extends State<CoinDetailPage>
                       : Assets.commonIconStar),
                   color: marked.value ? Styles.cYellow : Styles.cBody(context),
                   size: 20),
-
-              // Icon(
-              //     marked.value ? CupertinoIcons.star_fill : CupertinoIcons.star,
-              //     size: 20,
-              //     color: marked.value ? Styles.cYellow : null),
               onPressed: () async {
                 await Get.find<ContractCoinLogic>()
                     .tapFavoriteCollect('${logic.coin.baseCoin}');
@@ -85,39 +80,38 @@ class _CoinDetailPageState extends State<CoinDetailPage>
                   .isFavorite('${logic.coin.baseCoin}'))),
         ],
       ),
-      body: Obx(() {
-        return Column(children: [
-          TabBar(
-              tabAlignment: TabAlignment.start,
-              isScrollable: true,
-              controller: logic.tabController,
-              indicator: const BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(color: Styles.cMain, width: 2))),
-              indicatorSize: TabBarIndicatorSize.label,
-              labelStyle: Styles.tsBody_14m(context),
-              unselectedLabelStyle: Styles.tsSub_14m(context),
-              tabs: [
-                if (!logic.isSpot.value) Tab(text: S.of(context).derivatives),
-                Tab(text: S.of(context).spot),
-                Tab(text: S.of(context).overview),
-                Tab(text: S.of(context).holding),
-              ]),
-          Expanded(
-            child: TabBarView(
-              physics: const NeverScrollableScrollPhysics(),
-              controller: logic.tabController,
-              children: [
-                if (!logic.isSpot.value)
-                  const AliveWidget(child: CoinDetailContractView()),
+      body: Column(children: [
+        TabBar(
+            tabAlignment: TabAlignment.start,
+            isScrollable: true,
+            controller: logic.tabController,
+            indicator: const BoxDecoration(
+                border:
+                    Border(bottom: BorderSide(color: Styles.cMain, width: 2))),
+            indicatorSize: TabBarIndicatorSize.label,
+            labelStyle: Styles.tsBody_14m(context),
+            unselectedLabelStyle: Styles.tsSub_14m(context),
+            tabs: [
+              if (logic.supportContract) Tab(text: S.of(context).derivatives),
+              if (logic.supportSpot) Tab(text: S.of(context).spot),
+              Tab(text: S.of(context).overview),
+              Tab(text: S.of(context).holding),
+            ]),
+        Expanded(
+          child: TabBarView(
+            physics: const NeverScrollableScrollPhysics(),
+            controller: logic.tabController,
+            children: [
+              if (logic.supportContract)
+                const AliveWidget(child: CoinDetailContractView()),
+              if (logic.supportSpot)
                 const AliveWidget(child: CoinDetailSpotView()),
-                const AliveWidget(child: CoinDetailOverviewView()),
-                const AliveWidget(child: CoinDetailHoldView()),
-              ],
-            ),
-          )
-        ]);
-      }),
+              const AliveWidget(child: CoinDetailOverviewView()),
+              const AliveWidget(child: CoinDetailHoldView()),
+            ],
+          ),
+        )
+      ]),
     );
   }
 }

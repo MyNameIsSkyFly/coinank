@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:ank_app/constants/app_global.dart';
 import 'package:ank_app/entity/event/logged_event.dart';
 import 'package:ank_app/entity/event/theme_event.dart';
 import 'package:ank_app/modules/chart/chart_logic.dart';
@@ -15,7 +16,6 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:photo_manager/photo_manager.dart';
 import 'package:screenshot_callback/screenshot_callback.dart';
 
 import 'main_state.dart';
@@ -124,25 +124,10 @@ class MainLogic extends GetxController {
   var lastImageId = '';
 
   void listenScreenshot() {
-    screenshotCallback.addListener(() async {
-      final PermissionState ps = await PhotoManager
-          .requestPermissionExtend(); // the method can use optional param `permission`.
-      if (ps.isAuth || ps == PermissionState.limited) {
-        await Future.delayed(const Duration(seconds: 1));
-        PhotoManager.getAssetListRange(
-                start: 0,
-                end: 1,
-                type: RequestType.image,
-                filterOption: AdvancedCustomFilter(
-                    orderBy: [OrderByItem.desc(CustomColumns.base.createDate)]))
-            .then((value) async {
-          if (value.isEmpty) return;
-          final item = value[0];
-          if (item.id == lastImageId) return;
-          lastImageId = item.id;
-          AppUtil.shareImage(image: (await item.file)?.readAsBytesSync());
-        });
-      }
+    screenshotCallback.addListener(() {
+      if (Get.find<MainLogic>().state.appVisible == false) return;
+      if (Platform.isAndroid && AppGlobal.justSavedImage) return;
+      AppUtil.shareImage();
     });
   }
 }

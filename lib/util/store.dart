@@ -360,12 +360,22 @@ class StoreLogic extends GetxController {
         ._saveString(_SpKeys.contractCoinSortOrder, jsonEncode(sortOrder));
   }
 
-  Map get contractCoinSortOrder {
+  Map<String, bool> get contractCoinSortOrder {
     final result = _SpUtil()._getString(_SpKeys.contractCoinSortOrder,
         defaultValue:
-            '{"priceChangeH1":true,"priceChangeH4":false,"priceChangeH6":false,"priceChangeH12":false,"priceChangeH24":true,"openInterestChM5":false,"openInterestChM15":false,"openInterestChM30":false,"openInterestCh1":true,"openInterestCh4":true,"openInterestCh24":false,"openInterestCh2D":false,"openInterestCh3D":false,"openInterestCh7D":false,"liquidationH1":true,"liquidationH4":false,"liquidationH12":false,"liquidationH24":true,"longShortRatio":false,"longShortPerson":false,"lsPersonChg5m":false,"lsPersonChg15m":false,"lsPersonChg30m":false,"lsPersonChg1h":false,"lsPersonChg4h":false,"longShortPosition":false,"longShortAccount":false,"marketCap":true,"marketCapChange24H":false,"circulatingSupply":false,"totalSupply":false,"maxSupply":false}');
-    var jsonDecode2 = jsonDecode(result);
-    return jsonDecode2;
+            '{"price":true,"fundingRate":true,"turnover24h":true,"openInterest":true,"priceChangeH1":true,"priceChangeH4":false,"priceChangeH6":false,"priceChangeH12":false,"priceChangeH24":true,"openInterestChM5":false,"openInterestChM15":false,"openInterestChM30":false,"openInterestCh1":true,"openInterestCh4":true,"openInterestCh24":false,"openInterestCh2D":false,"openInterestCh3D":false,"openInterestCh7D":false,"liquidationH1":true,"liquidationH4":false,"liquidationH12":false,"liquidationH24":true,"longShortRatio":false,"longShortPerson":false,"lsPersonChg5m":false,"lsPersonChg15m":false,"lsPersonChg30m":false,"lsPersonChg1h":false,"lsPersonChg4h":false,"longShortPosition":false,"longShortAccount":false,"marketCap":true,"marketCapChange24H":false,"circulatingSupply":false,"totalSupply":false,"maxSupply":false}');
+    return jsonDecode(result).cast<String, bool>();
+  } //contractCoinSortOrder
+
+  Future<bool> saveSpotSortOrder(Map<String, bool> sortOrder) {
+    return _SpUtil()._saveString(_SpKeys.spotSortOrder, jsonEncode(sortOrder));
+  }
+
+  Map<String, bool> get spotSortOrder {
+    final result = _SpUtil()._getString(_SpKeys.spotSortOrder,
+        defaultValue:
+            '{"price":true,"turnover24h":true,"turnoverChg24h":true,"priceChangeM5":false,"priceChangeM15":false,"priceChangeM30":false,"priceChangeH1":true,"priceChangeH4":true,"priceChangeH8":true,"priceChangeH12":false,"priceChangeH24":true,"marketCap":true,"marketCapChange24H":false,"circulatingSupply":false,"totalSupply":true,"maxSupply":false}');
+    return jsonDecode(result).cast<String, bool>();
   }
 }
 
@@ -401,6 +411,7 @@ class _SpKeys {
   static const tappedSearchResult = 'tappedSearchResult';
   static const orderFlowSymbolsJson = 'orderFlowSymbolsJson';
   static const contractCoinSortOrder = 'contractCoinSortOrder';
+  static const spotSortOrder = 'spotCoinSortOrder';
 }
 
 class _SpUtil {

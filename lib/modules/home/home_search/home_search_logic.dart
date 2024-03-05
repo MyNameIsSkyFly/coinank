@@ -70,7 +70,10 @@ class HomeSearchLogic extends GetxController {
     var tapped = StoreLogic.to.tappedSearchResult;
     await Future.wait(tapped.map((item) async {
       if (item.tag == SearchEntityType.BASECOIN &&
-          (item.exchangeName == null || item.symbol == null)) {
+          (item.exchangeName == null ||
+              item.symbol == null ||
+              item.supportContract == null ||
+              item.supportSpot == null)) {
         final value = await Apis().searchV2(keyword: item.baseCoin ?? '');
         final baseCoinList = value?.baseCoin;
         final tmp = baseCoinList
@@ -90,7 +93,10 @@ class HomeSearchLogic extends GetxController {
     } else {
       final list = Get.find<ContractCoinLogic>().state.favoriteData.map((e) =>
           SearchV2ItemEntity(
-              baseCoin: e.baseCoin, tag: SearchEntityType.BASECOIN));
+              baseCoin: e.baseCoin,
+              exchangeName: e.exchangeName,
+              symbol: e.symbol,
+              tag: SearchEntityType.BASECOIN));
       marked.assignAll(list);
     }
   }
@@ -139,6 +145,8 @@ class HomeSearchLogic extends GetxController {
           baseCoin: item.baseCoin,
           exchangeName: item.exchangeName,
           symbol: item.symbol,
+          supportContract: item.supportContract,
+          supportSpot: item.supportSpot,
         ));
       // AppNav.openWebUrl(
       //     url:

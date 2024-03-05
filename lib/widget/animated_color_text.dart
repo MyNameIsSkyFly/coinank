@@ -12,12 +12,14 @@ class AnimatedColorText extends StatefulWidget {
     this.style,
     this.textAlign,
     required this.value,
+    this.recyclable = false,
   });
 
   final String text;
   final TextStyle? style;
   final TextAlign? textAlign;
   final double value;
+  final bool recyclable;
 
   @override
   State<AnimatedColorText> createState() => _AnimatedColorTextState();
@@ -31,7 +33,7 @@ class _AnimatedColorTextState extends State<AnimatedColorText> {
   Widget build(BuildContext context) {
     return AnimatedDefaultTextStyle(
       style: (widget.style ?? const TextStyle(fontSize: 14))
-          .copyWith(color: _color),
+          .copyWith(color: _color ?? Styles.cBody(context)),
       duration: _duration,
       child: AutoSizeText(
         widget.text,
@@ -43,16 +45,12 @@ class _AnimatedColorTextState extends State<AnimatedColorText> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    if (mounted) {
-      updateColor();
-    }
-  }
-
-  @override
   void didUpdateWidget(covariant AnimatedColorText oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (widget.recyclable &&
+        ((widget.value - oldWidget.value) / oldWidget.value).abs() > 0.5) {
+      return;
+    }
     if (widget.value > oldWidget.value) {
       _color = Styles.cUp(context);
     } else if (widget.value < oldWidget.value) {
@@ -63,11 +61,9 @@ class _AnimatedColorTextState extends State<AnimatedColorText> {
     updateColor();
   }
 
-  updateColor() {
+  void updateColor() {
     if (mounted) {
-      setState(() {
-        _duration = Duration.zero;
-      });
+      setState(() => _duration = Duration.zero);
     }
     Timer(const Duration(milliseconds: 1000), () {
       if (mounted) {

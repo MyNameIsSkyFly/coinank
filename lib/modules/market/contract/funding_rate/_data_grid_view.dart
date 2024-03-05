@@ -45,34 +45,23 @@ class _DataGridViewState extends State<_DataGridView> {
   GridColumn _gridColumn(int index) {
     return GridColumn(
         columnName: '${index + 2}',
-        width: 100,
-        label: Container(
-          alignment: Alignment.centerLeft,
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 5),
-                child: ClipOval(
-                  child: Image.asset(
-                    'assets/images/platform/${list[index].toLowerCase()}.png',
-                    width: 15,
-                  ),
+        label: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 5),
+              child: ClipOval(
+                child: Image.asset(
+                  'assets/images/platform/${list[index].toLowerCase()}.png',
+                  width: 15,
                 ),
               ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: FittedBox(
-                    child: Text(
-                      list[index],
-                      style: Styles.tsBody_12m(context),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+            Text(
+              list[index],
+              style: Styles.tsBody_12m(context),
+            ),
+          ],
         ));
   }
 
@@ -82,7 +71,7 @@ class _DataGridViewState extends State<_DataGridView> {
       return SfTheme(
         data: SfThemeData(
             dataGridThemeData: SfDataGridThemeData(
-                frozenPaneLineColor: Styles.cSub(context).withOpacity(0.2),
+                frozenPaneLineColor: Colors.transparent,
                 sortIcon: Builder(
                   builder: (context) {
                     Widget? icon;
@@ -113,17 +102,114 @@ class _DataGridViewState extends State<_DataGridView> {
                   },
                 ))),
         child: SfDataGrid(
-            verticalScrollController: widget.logic.state.scrollController,
-            gridLinesVisibility: GridLinesVisibility.none,
-            headerGridLinesVisibility: GridLinesVisibility.none,
-            allowSorting: true,
-            allowTriStateSorting: true,
-            rowHeight: widget.logic.state.isHide.value ? 55 : 65,
-            frozenColumnsCount: 1,
-            horizontalScrollPhysics: const ClampingScrollPhysics(),
-            source: widget.logic.gridSource,
-            columns: getColumns()),
+          verticalScrollController: widget.logic.state.scrollController,
+          gridLinesVisibility: GridLinesVisibility.none,
+          headerGridLinesVisibility: GridLinesVisibility.none,
+          allowSorting: true,
+          allowTriStateSorting: true,
+          columnWidthMode: ColumnWidthMode.auto,
+          rowHeight: widget.logic.state.isHide.value ? 55 : 65,
+          frozenColumnsCount: 1,
+          horizontalScrollPhysics: const ClampingScrollPhysics(),
+          source: widget.logic.gridSource,
+          columns: getColumns(),
+          onCellTap: (details) {
+            if (details.rowColumnIndex.rowIndex == 0) return;
+            var baseCoin = widget.logic.gridSource
+                .effectiveRows[details.rowColumnIndex.rowIndex - 1]
+                .getCells()[0]
+                .value;
+            final item = (widget.logic.state.contentOriginalDataList ?? [])
+                .firstWhereOrNull((element) => element.symbol == baseCoin);
+            if (item == null) return;
+            AppNav.openWebUrl(
+              url:
+                  '${StoreLogic.to.h5Prefix}/fundingRate/hist?coin=${item.symbol}',
+              dynamicTitle: true,
+              title: item.symbol,
+            );
+          },
+          onCellLongPress: (details) {
+            if (details.rowColumnIndex.rowIndex == 0) return;
+            var baseCoin = widget.logic.gridSource
+                .effectiveRows[details.rowColumnIndex.rowIndex - 1]
+                .getCells()[0]
+                .value;
+            final item = (widget.logic.state.contentOriginalDataList ?? [])
+                .firstWhereOrNull((element) => element.symbol == baseCoin);
+            if (item == null) return;
+
+            late bool marked;
+            if (StoreLogic.isLogin) {
+              marked = item.follow == true;
+            } else {
+              marked = false;
+            }
+            showOverlayAt(details.globalPosition, marked, onTap: () async {
+              if (StoreLogic.isLogin) {
+                if (item.follow == true) {
+                  await Apis()
+                      .postDelFollow(baseCoin: item.symbol ?? '', type: 2);
+                  item.follow = false;
+                } else {
+                  await Apis()
+                      .postAddFollow(baseCoin: item.symbol ?? '', type: 2);
+                  item.follow = true;
+                }
+              } else {
+                AppNav.toLogin();
+              }
+            });
+          },
+        ),
       );
     });
+  }
+
+  void showOverlayAt(Offset tapPosition, bool marked, {AsyncCallback? onTap}) {
+    OverlayState overlayState = Overlay.of(context);
+    OverlayEntry? overlayEntry;
+    overlayEntry = OverlayEntry(
+      builder: (context) => SizedBox(
+        width: double.infinity,
+        height: double.infinity,
+        child: Stack(
+          children: [
+            ModalBarrier(onDismiss: () => overlayEntry?.remove()),
+            Positioned(
+              left: tapPosition.dx - 24,
+              top: tapPosition.dy - 48,
+              child: GestureDetector(
+                onTap: () async {
+                  await onTap?.call();
+                  overlayEntry?.remove();
+                },
+                child: SizedBox(
+                  width: 48,
+                  height: 43,
+                  child: Stack(
+                    children: [
+                      Image.asset(Assets.commonIcBlueBubble),
+                      Align(
+                        alignment: const Alignment(0, -0.3),
+                        child: ImageIcon(
+                            AssetImage(marked
+                                ? Assets.commonIconStarFill
+                                : Assets.commonIconStar),
+                            color: marked ? Styles.cYellow : Colors.white,
+                            size: 20),
+                      )
+                    ],
+                  ),
+                ),
+              ), // Replace with your widget
+            ),
+          ],
+        ),
+      ),
+    );
+    overlayState.insert(
+      overlayEntry,
+    );
   }
 }

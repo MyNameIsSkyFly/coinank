@@ -9,9 +9,9 @@ class MarkerFundingRateEntity {
   final String? symbol;
   final Map<String, Exchange>? cmap;
   final Map<String, Exchange>? umap;
-  final bool? follow;
+  bool? follow;
 
-  const MarkerFundingRateEntity({
+  MarkerFundingRateEntity({
     this.symbol,
     this.cmap,
     this.umap,

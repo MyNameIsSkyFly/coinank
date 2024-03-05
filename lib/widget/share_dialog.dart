@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
+import 'package:ank_app/constants/app_global.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
@@ -27,6 +28,13 @@ class _ShareDialogState extends State<ShareDialog> {
   Future<void> _saveImage() async {
     final image = await _screenshotController.capture();
     if (image == null) return;
+    if (Platform.isAndroid) {
+      AppGlobal.justSavedImage = true;
+      Future.delayed(
+        const Duration(seconds: 5),
+        () => AppGlobal.justSavedImage = false,
+      );
+    }
     await ImageGallerySaver.saveImage(image);
     AppUtil.showToast(S.current.saved);
     Get.back();

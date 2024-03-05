@@ -104,6 +104,7 @@
   "s_greed_index": "Fear and Greed",
   "s_longshort_ratio": "Longs VS Shorts",
   "s_funding_rate": "Funding Rate",
+  "s_funding_rate_short": "Funding Rate",
   "s_exchange_name": "Exchange",
   "s_rate": "Rate",
   "s_longs": "Longs",
@@ -401,5 +402,12 @@
   "maxSupplyIntro": "The maximum number of coins coded to exist in the lifetime of the cryptocurrency. It is comparable to the maximum number of issuable shares in the stock market.\n\nMax Supply = Theoretical maximum as coded",
   "candleChartPro": "Candle Pro",
   "customizeList": "自定义列表",
-  "edit": "编辑"
+  "edit": "编辑",
+  "lsRatioOfAccountX": "L/S Ratio Of Account ({value})",
+  "customList": "自定义列表",
+  "liq_abbr": "Liq",
+  "longShortPersonRatio": "多空人数比({value})",
+  "marketCapChange": "MarketCap Change",
+  "addedToFavorites": "收藏成功",
+  "removedFromFavorites": "已取消收藏"
 }

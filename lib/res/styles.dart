@@ -22,6 +22,10 @@ class Styles {
 
   static Color cSub(BuildContext context) =>
       Theme.of(context).textTheme.bodySmall!.color!;
+
+  static Color cLine(BuildContext context) =>
+      Theme.of(context).dividerTheme.color!;
+
   static final fontMedium =
       Platform.isAndroid ? FontWeight.w600 : FontWeight.w500;
 

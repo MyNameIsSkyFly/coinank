@@ -1,17 +1,17 @@
-part of 'contract_coin_view.dart';
+part of 'favorite_coin_view.dart';
 
-class _DataGridView extends StatefulWidget {
-  const _DataGridView({
+class _FDataGridView extends StatefulWidget {
+  const _FDataGridView({
     required this.logic,
   });
 
   final ContractCoinLogic logic;
 
   @override
-  State<_DataGridView> createState() => _DataGridViewState();
+  State<_FDataGridView> createState() => _FDataGridViewState();
 }
 
-class _DataGridViewState extends State<_DataGridView> {
+class _FDataGridViewState extends State<_FDataGridView> {
   late List<GridColumn> columns;
 
   StreamSubscription? _localeChangeSubscription;
@@ -22,8 +22,8 @@ class _DataGridViewState extends State<_DataGridView> {
     _localeChangeSubscription =
         AppConst.eventBus.on<ThemeChangeEvent>().listen((event) {
       widget.logic.getColumns(context);
-      widget.logic.gridSource.buildDataGridRows();
-      widget.logic.gridSource.updateDataSource();
+      widget.logic.fGridSource.buildDataGridRows();
+      widget.logic.fGridSource.updateDataSource();
     });
     super.initState();
   }
@@ -36,7 +36,7 @@ class _DataGridViewState extends State<_DataGridView> {
 
   @override
   Widget build(BuildContext context) {
-    widget.logic.gridSource.context = context;
+    widget.logic.fGridSource.context = context;
     return Obx(() {
       return SfTheme(
         data: SfThemeData(
@@ -53,36 +53,38 @@ class _DataGridViewState extends State<_DataGridView> {
           columnWidthMode: ColumnWidthMode.auto,
           frozenColumnsCount: 1,
           horizontalScrollPhysics: const ClampingScrollPhysics(),
-          source: widget.logic.gridSource,
-          columns: widget.logic.columns.value,
+          source: widget.logic.fGridSource,
+          columns: widget.logic.fColumns.value,
           onCellTap: (details) {
             if (details.rowColumnIndex.rowIndex == 0) return;
-            var baseCoin = widget.logic.gridSource
+            var baseCoin = widget.logic.fGridSource
                 .effectiveRows[details.rowColumnIndex.rowIndex - 1]
                 .getCells()[0]
                 .value;
-            final item = widget.logic.state.data
+            final item = widget.logic.state.favoriteData
                 .firstWhereOrNull((element) => element.baseCoin == baseCoin);
             if (item == null) return;
             AppNav.toCoinDetail(item);
           },
           onCellLongPress: (details) {
             if (details.rowColumnIndex.rowIndex == 0) return;
-            var baseCoin = widget.logic.gridSource
+            var baseCoin = widget.logic.fGridSource
                 .effectiveRows[details.rowColumnIndex.rowIndex - 1]
                 .getCells()[0]
                 .value;
-            final item = widget.logic.state.data
+            final item = widget.logic.state.favoriteData
                 .firstWhereOrNull((element) => element.baseCoin == baseCoin);
             if (item == null) return;
+
             late bool marked;
             if (StoreLogic.isLogin) {
               marked = item.follow == true;
             } else {
               marked = StoreLogic.to.favoriteContract.contains(item.baseCoin);
             }
-            showOverlayAt(details.globalPosition, marked, onTap: () {
-              Get.find<ContractCoinLogic>().tapCollect(item);
+            showOverlayAt(details.globalPosition, marked, onTap: () async {
+              await Get.find<ContractCoinLogic>()
+                  .tapFavoriteCollect(item.baseCoin);
             });
           },
         ),
@@ -90,7 +92,7 @@ class _DataGridViewState extends State<_DataGridView> {
     });
   }
 
-  void showOverlayAt(Offset tapPosition, bool marked, {VoidCallback? onTap}) {
+  void showOverlayAt(Offset tapPosition, bool marked, {AsyncCallback? onTap}) {
     OverlayState overlayState = Overlay.of(context);
     OverlayEntry? overlayEntry;
     overlayEntry = OverlayEntry(
@@ -104,8 +106,8 @@ class _DataGridViewState extends State<_DataGridView> {
               left: tapPosition.dx - 24,
               top: tapPosition.dy - 48,
               child: GestureDetector(
-                onTap: () {
-                  onTap?.call();
+                onTap: () async {
+                  await onTap?.call();
                   overlayEntry?.remove();
                 },
                 child: SizedBox(
@@ -143,7 +145,7 @@ class _SortIcon extends StatelessWidget {
     required this.widget,
   });
 
-  final _DataGridView widget;
+  final _FDataGridView widget;
 
   @override
   Widget build(BuildContext context) {
@@ -155,7 +157,7 @@ class _SortIcon extends StatelessWidget {
       }
       return true;
     });
-    var column = widget.logic.gridSource.sortedColumns
+    var column = widget.logic.fGridSource.sortedColumns
         .where((element) => element.name == columnName)
         .firstOrNull;
     if (column != null) {

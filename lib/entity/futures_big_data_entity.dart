@@ -46,37 +46,37 @@ class MarkerTickerEntity {
     this.longShortRatio,
     this.buyTradeTurnover,
     this.sellTradeTurnover,
-    this.buy24H,
-    this.sell24H,
-    this.buy12H,
-    this.sell12H,
-    this.buy8H,
-    this.sell8H,
-    this.buy6H,
-    this.sell6H,
-    this.buy4H,
-    this.sell4H,
-    this.buy2H,
-    this.sell2H,
-    this.buy1H,
-    this.sell1H,
-    this.buy30M,
-    this.sell30M,
-    this.buy15M,
-    this.sell15M,
-    this.buy5M,
-    this.sell5M,
+    this.buy24h,
+    this.sell24h,
+    this.buy12h,
+    this.sell12h,
+    this.buy8h,
+    this.sell8h,
+    this.buy6h,
+    this.sell6h,
+    this.buy4h,
+    this.sell4h,
+    this.buy2h,
+    this.sell2h,
+    this.buy1h,
+    this.sell1h,
+    this.buy30m,
+    this.sell30m,
+    this.buy15m,
+    this.sell15m,
+    this.buy5m,
+    this.sell5m,
     this.fundingRate,
     this.longShortPerson,
-    this.lsPersonChg5M,
-    this.lsPersonChg15M,
-    this.lsPersonChg30M,
-    this.lsPersonChg1H,
-    this.lsPersonChg4H,
+    this.lsPersonChg5m,
+    this.lsPersonChg15m,
+    this.lsPersonChg30m,
+    this.lsPersonChg1h,
+    this.lsPersonChg4h,
     this.longShortPosition,
     this.longShortAccount,
-    this.turnover24H,
-    this.turnoverChg24H,
+    this.turnover24h,
+    this.turnoverChg24h,
     this.marketCap,
     this.marketCapChange24H,
     this.marketCapChangeValue24H,
@@ -132,37 +132,37 @@ class MarkerTickerEntity {
   final double? longShortRatio;
   final double? buyTradeTurnover;
   final double? sellTradeTurnover;
-  final double? buy24H;
-  final double? sell24H;
-  final double? buy12H;
-  final double? sell12H;
-  final double? buy8H;
-  final double? sell8H;
-  final double? buy6H;
-  final double? sell6H;
-  final double? buy4H;
-  final double? sell4H;
-  final double? buy2H;
-  final double? sell2H;
-  final double? buy1H;
-  final double? sell1H;
-  final double? buy30M;
-  final double? sell30M;
-  final double? buy15M;
-  final double? sell15M;
-  final double? buy5M;
-  final double? sell5M;
+  final double? buy24h;
+  final double? sell24h;
+  final double? buy12h;
+  final double? sell12h;
+  final double? buy8h;
+  final double? sell8h;
+  final double? buy6h;
+  final double? sell6h;
+  final double? buy4h;
+  final double? sell4h;
+  final double? buy2h;
+  final double? sell2h;
+  final double? buy1h;
+  final double? sell1h;
+  final double? buy30m;
+  final double? sell30m;
+  final double? buy15m;
+  final double? sell15m;
+  final double? buy5m;
+  final double? sell5m;
   final double? fundingRate;
   final double? longShortPerson;
-  final double? lsPersonChg5M;
-  final double? lsPersonChg15M;
-  final double? lsPersonChg30M;
-  final double? lsPersonChg1H;
-  final double? lsPersonChg4H;
+  final double? lsPersonChg5m;
+  final double? lsPersonChg15m;
+  final double? lsPersonChg30m;
+  final double? lsPersonChg1h;
+  final double? lsPersonChg4h;
   final double? longShortPosition;
   final double? longShortAccount;
-  final double? turnover24H;
-  final double? turnoverChg24H;
+  final double? turnover24h;
+  final double? turnoverChg24h;
   final double? marketCap;
   final double? marketCapChange24H;
   final double? marketCapChangeValue24H;
