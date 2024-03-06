@@ -176,7 +176,7 @@ setChartData($jsonData, "$platformString", "openInterest", ${jsonEncode(options)
   }
 
   final exchangeItems = const [
-    'ALL', 'Binance', 'Okex', 'Bybit', 'CME', 'Bitget', 'Bitmex', //end
+    'ALL', 'Binance', 'Okx', 'Bybit', 'CME', 'Bitget', 'Bitmex', //end
     'Bitfinex', 'Gate', 'Deribit', 'Huobi', 'Kraken' //end
   ];
   final intervalItems = const ['15m', '30m', '1h', '2h', '4h', '12h', '1d'];

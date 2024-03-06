@@ -10,6 +10,7 @@ import 'package:ank_app/modules/setting/setting_logic.dart';
 import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/util/format_util.dart';
+import 'package:decimal/decimal.dart';
 import 'package:dio/dio.dart';
 import 'package:ff_native_screenshot/ff_native_screenshot.dart';
 import 'package:flutter/foundation.dart';
@@ -304,5 +305,34 @@ class AppUtil {
     image ??= await FfNativeScreenshot().takeScreenshot();
     if (image == null) return;
     Get.dialog(ShareDialog(image: image), useSafeArea: false);
+  }
+
+  static String compressNumberWithLotsOfZeros(double numberString) {
+    int countLeadingZeros(String str) {
+      int count = 0;
+      for (int i = 0; i < str.length; i++) {
+        if (str[i] != '0') {
+          break;
+        }
+        count++;
+      }
+      return count;
+    }
+
+    final number = Decimal.parse('$numberString');
+    var split = number.toString().split('.');
+    final integerPart = split[0];
+    final decimalPart = split.elementAtOrNull(1);
+    if (decimalPart == null) return number.toString();
+    if (integerPart != '0') {
+      return number.toString();
+    } else {
+      var count = countLeadingZeros(decimalPart);
+      if (count >= 4) {
+        return '$integerPart.{$count}${decimalPart.substring(count)}';
+      } else {
+        return number.toString();
+      }
+    }
   }
 }

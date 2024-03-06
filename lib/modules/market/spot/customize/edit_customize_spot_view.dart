@@ -120,7 +120,6 @@ class _EditCustomizeSpotPageState extends State<EditCustomizeSpotPage> {
                         logic.initData();
                         Get.find<SpotLogic>().getColumns(Get.context!);
                         Get.find<SpotLogic>().gridSource.buildDataGridRows();
-                        Get.find<SpotLogic>().gridSource.updateDataSource();
                         Get.back();
                       },
                       child: Text(sof.s_ok,

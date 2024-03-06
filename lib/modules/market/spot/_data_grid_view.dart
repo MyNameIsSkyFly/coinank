@@ -19,11 +19,11 @@ class _DataGridViewState extends State<_DataGridView> {
 
   @override
   void initState() {
+    widget.logic.getMarketData(showLoading: true);
     _localeChangeSubscription =
         AppConst.eventBus.on<ThemeChangeEvent>().listen((event) {
       widget.logic.getColumns(context);
       widget.logic.gridSource.buildDataGridRows();
-      widget.logic.gridSource.updateDataSource();
     });
     super.initState();
   }
@@ -37,38 +37,59 @@ class _DataGridViewState extends State<_DataGridView> {
   @override
   Widget build(BuildContext context) {
     widget.logic.gridSource.context = context;
-    return Obx(() {
-      return SfTheme(
-        data: SfThemeData(
-            dataGridThemeData: SfDataGridThemeData(
-                frozenPaneLineColor: Colors.transparent,
-                sortIcon: _SortIcon(widget: widget))),
-        child: SfDataGrid(
-          controller: dataGridCtrl,
-          gridLinesVisibility: GridLinesVisibility.none,
-          headerGridLinesVisibility: GridLinesVisibility.none,
-          columnSizer: CustomGridColumnSizer(),
-          allowSorting: true,
-          allowTriStateSorting: true,
-          columnWidthMode: ColumnWidthMode.auto,
-          frozenColumnsCount: 1,
-          horizontalScrollPhysics: const ClampingScrollPhysics(),
-          source: widget.logic.gridSource,
-          columns: widget.logic.columns.value,
-          onCellTap: (details) {
-            if (details.rowColumnIndex.rowIndex == 0) return;
-            var baseCoin = widget.logic.gridSource
-                .effectiveRows[details.rowColumnIndex.rowIndex - 1]
-                .getCells()[0]
-                .value;
-            final item = widget.logic.data
-                .firstWhereOrNull((element) => element.baseCoin == baseCoin);
-            if (item == null) return;
-            AppNav.toCoinDetail(item);
-          },
-        ),
-      );
-    });
+    return EasyRefresh(
+      onRefresh: () async => widget.logic.getMarketData(),
+      child: Obx(() {
+        return SfTheme(
+          data: SfThemeData(
+              dataGridThemeData: SfDataGridThemeData(
+                  frozenPaneLineColor: Colors.transparent,
+                  sortIcon: const _SortIcon())),
+          child: SfDataGrid(
+              controller: dataGridCtrl,
+              gridLinesVisibility: GridLinesVisibility.none,
+              headerGridLinesVisibility: GridLinesVisibility.none,
+              columnSizer: CustomGridColumnSizer(),
+              allowSorting: true,
+              allowTriStateSorting: true,
+              columnWidthMode: ColumnWidthMode.auto,
+              frozenColumnsCount: 1,
+              horizontalScrollPhysics: const ClampingScrollPhysics(),
+              source: widget.logic.gridSource,
+              columns: widget.logic.columns.value,
+              onCellTap: (details) {
+                if (details.rowColumnIndex.rowIndex == 0) return;
+                var baseCoin = widget.logic.gridSource
+                    .effectiveRows[details.rowColumnIndex.rowIndex - 1]
+                    .getCells()[0]
+                    .value;
+                final item = widget.logic.data.firstWhereOrNull(
+                    (element) => element.baseCoin == baseCoin);
+                if (item == null) return;
+                AppNav.toCoinDetail(item);
+              },
+              onCellLongPress: (details) {
+                if (details.rowColumnIndex.rowIndex == 0) return;
+                var baseCoin = widget.logic.gridSource
+                    .effectiveRows[details.rowColumnIndex.rowIndex - 1]
+                    .getCells()[0]
+                    .value;
+                final item = widget.logic.data.firstWhereOrNull(
+                    (element) => element.baseCoin == baseCoin);
+                if (item == null) return;
+                late bool marked;
+                if (StoreLogic.isLogin) {
+                  marked = item.follow == true;
+                } else {
+                  marked = StoreLogic.to.favoriteSpot.contains(item.baseCoin);
+                }
+                showOverlayAt(details.globalPosition, marked, onTap: () {
+                  Get.find<SpotLogic>().tapCollect(item);
+                });
+              }),
+        );
+      }),
+    );
   }
 
   void showOverlayAt(Offset tapPosition, bool marked, {VoidCallback? onTap}) {
@@ -120,14 +141,11 @@ class _DataGridViewState extends State<_DataGridView> {
 }
 
 class _SortIcon extends StatelessWidget {
-  const _SortIcon({
-    required this.widget,
-  });
-
-  final _DataGridView widget;
+  const _SortIcon();
 
   @override
   Widget build(BuildContext context) {
+    final logic = Get.find<SpotLogic>();
     Widget? icon;
     String columnName = '';
     context.visitAncestorElements((element) {
@@ -136,7 +154,7 @@ class _SortIcon extends StatelessWidget {
       }
       return true;
     });
-    var column = widget.logic.gridSource.sortedColumns
+    var column = logic.gridSource.sortedColumns
         .where((element) => element.name == columnName)
         .firstOrNull;
     if (column != null) {

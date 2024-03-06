@@ -23,7 +23,6 @@ class _DataGridViewState extends State<_DataGridView> {
         AppConst.eventBus.on<ThemeChangeEvent>().listen((event) {
       widget.logic.getColumns(context);
       widget.logic.gridSource.buildDataGridRows();
-      widget.logic.gridSource.updateDataSource();
     });
     super.initState();
   }

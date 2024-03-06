@@ -22,8 +22,7 @@ class _FDataGridViewState extends State<_FDataGridView> {
     _localeChangeSubscription =
         AppConst.eventBus.on<ThemeChangeEvent>().listen((event) {
       widget.logic.getColumns(context);
-      widget.logic.fGridSource.buildDataGridRows();
-      widget.logic.fGridSource.updateDataSource();
+      widget.logic.gridSourceF.buildDataGridRows();
     });
     super.initState();
   }
@@ -36,7 +35,7 @@ class _FDataGridViewState extends State<_FDataGridView> {
 
   @override
   Widget build(BuildContext context) {
-    widget.logic.fGridSource.context = context;
+    widget.logic.gridSourceF.context = context;
     return Obx(() {
       return SfTheme(
         data: SfThemeData(
@@ -53,11 +52,11 @@ class _FDataGridViewState extends State<_FDataGridView> {
           columnWidthMode: ColumnWidthMode.auto,
           frozenColumnsCount: 1,
           horizontalScrollPhysics: const ClampingScrollPhysics(),
-          source: widget.logic.fGridSource,
+          source: widget.logic.gridSourceF,
           columns: widget.logic.fColumns.value,
           onCellTap: (details) {
             if (details.rowColumnIndex.rowIndex == 0) return;
-            var baseCoin = widget.logic.fGridSource
+            var baseCoin = widget.logic.gridSourceF
                 .effectiveRows[details.rowColumnIndex.rowIndex - 1]
                 .getCells()[0]
                 .value;
@@ -68,7 +67,7 @@ class _FDataGridViewState extends State<_FDataGridView> {
           },
           onCellLongPress: (details) {
             if (details.rowColumnIndex.rowIndex == 0) return;
-            var baseCoin = widget.logic.fGridSource
+            var baseCoin = widget.logic.gridSourceF
                 .effectiveRows[details.rowColumnIndex.rowIndex - 1]
                 .getCells()[0]
                 .value;
@@ -83,8 +82,7 @@ class _FDataGridViewState extends State<_FDataGridView> {
               marked = StoreLogic.to.favoriteContract.contains(item.baseCoin);
             }
             showOverlayAt(details.globalPosition, marked, onTap: () async {
-              await Get.find<ContractCoinLogic>()
-                  .tapFavoriteCollect(item.baseCoin);
+              await Get.find<ContractCoinLogic>().tapCollectF(item.baseCoin);
             });
           },
         ),
@@ -157,7 +155,7 @@ class _SortIcon extends StatelessWidget {
       }
       return true;
     });
-    var column = widget.logic.fGridSource.sortedColumns
+    var column = widget.logic.gridSourceF.sortedColumns
         .where((element) => element.name == columnName)
         .firstOrNull;
     if (column != null) {

@@ -33,10 +33,12 @@ class BaseInterceptor extends Interceptor {
           if (showToast) {
             AppUtil.showToast('${response.data?['msg'] ?? ''}');
           }
+          log(response.requestOptions.sourceStackTrace.toString());
         }
         handler.reject(
           DioException(
               requestOptions: response.requestOptions,
+              stackTrace: response.requestOptions.sourceStackTrace,
               message: response.data?['msg'].toString()),
         );
         return;

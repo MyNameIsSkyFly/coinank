@@ -3,11 +3,9 @@ import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/animated_color_text.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:collection/collection.dart';
-import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
 // ignore: depend_on_referenced_packages
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -44,7 +42,7 @@ class GridDataSource extends DataGridSource {
         })
       ]);
     }).toList();
-    // updateDataSource();
+    updateDataSource();
   }
 
   final _numberFormat = NumberFormat('#,###');
@@ -110,17 +108,15 @@ class GridDataSource extends DataGridSource {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
           color: data.value == null || data.value == 0
-              ? Styles.cUp(context).withOpacity(0.05)
+              ? Styles.cUp(context)
               : data.value! > 0
                   ? Styles.cUp(context)
-                      .withOpacity(data.rate.abs().clamp(0.05, 1))
-                  : Styles.cDown(context)
-                      .withOpacity(data.rate.abs().clamp(0.05, 1)),
+                  : Styles.cDown(context),
         ),
         alignment: Alignment.center,
         child: Text(
           data.convertedValue,
-          style: Styles.tsBody_12(context),
+          style: const TextStyle(color: Colors.white, fontSize: 12),
         ),
       );
     }
@@ -187,27 +183,10 @@ class _KeyValue {
         tmp == '0.0000%');
   }
 
-//{"priceChangeM5":false,"priceChangeM15":false,"priceChangeM30":false,"priceChangeH1":true,"priceChangeH4":true,"priceChangeH8":true,"priceChangeH12":false,"priceChangeH24":true,"marketCap":true,"marketCapChange24H":false,"circulatingSupply":false,"totalSupply":true,"maxSupply":false}
-  double get rate {
-    return switch (key) {
-      'priceChangeH24' ||
-      'priceChangeH12' ||
-      'priceChangeH8' ||
-      'priceChangeH4' ||
-      'priceChangeH1' ||
-      'priceChangeM5' ||
-      'priceChangeM15' ||
-      'priceChangeM30' =>
-        (value ?? 0) / 10,
-      'turnoverChg24h' => (value ?? 0),
-      _ => 0.0,
-    };
-  }
-
   String handleValue(String key, double? value) {
     final tmp = value ?? 0;
     return switch (key) {
-      'price' => Decimal.tryParse('$tmp').toString(),
+      'price' => AppUtil.compressNumberWithLotsOfZeros(value ?? 0),
       'turnover24h' ||
       'marketCap' =>
         '\$${AppUtil.getLargeFormatString('$tmp', precision: 2)}',

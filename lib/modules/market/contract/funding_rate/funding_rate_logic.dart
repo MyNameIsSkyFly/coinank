@@ -28,8 +28,8 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin {
     if (state.isCmap.value != !v) {
       state.isCmap.value = !v;
       state.topList.value = !state.isCmap.value
-          ? ['Binance', 'Okex', 'Bybit', 'Bitget', 'Gate', 'dYdX', 'Huobi']
-          : ['Binance', 'Okex', 'Bybit', 'Bitget', 'Gate', 'Bitmex', 'Huobi'];
+          ? ['Binance', 'Okx', 'Bybit', 'Bitget', 'Gate', 'dYdX', 'Huobi']
+          : ['Binance', 'Okx', 'Bybit', 'Bitget', 'Gate', 'Bitmex', 'Huobi'];
       state.topStatusList.value =
           List.generate(state.topList.length, (index) => SortStatus.normal);
       gridSource.buildDataGridRows();

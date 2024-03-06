@@ -48,7 +48,6 @@ class ReorderSpotPage extends StatelessWidget {
                 {for (var item in logic.list) item.key: item.value});
             Get.find<SpotLogic>().getColumns(Get.context!);
             Get.find<SpotLogic>().gridSource.buildDataGridRows();
-            Get.find<SpotLogic>().gridSource.updateDataSource();
           },
         );
       }),

@@ -11,7 +11,7 @@ class FundingRateState {
   String timeType = 'current';
   RxString time = ''.obs;
   RxList<String> topList =
-      ['Binance', 'Okex', 'Bybit', 'Bitget', 'Gate', 'dYdX', 'Huobi'].obs;
+      ['Binance', 'Okx', 'Bybit', 'Bitget', 'Gate', 'dYdX', 'Huobi'].obs;
   RxList<SortStatus> topStatusList = [
     SortStatus.normal,
     SortStatus.normal,

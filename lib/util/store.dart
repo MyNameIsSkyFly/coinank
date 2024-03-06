@@ -3,7 +3,6 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:ank_app/constants/app_const.dart';
 import 'package:ank_app/entity/event/logged_event.dart';
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/entity/order_flow_symbol.dart';
@@ -309,6 +308,29 @@ class StoreLogic extends GetxController {
     return _SpUtil()._getStringList(_SpKeys.favoriteContract, defaultValue: []);
   }
 
+  Future<bool> saveFavoriteSpot(String baseCoin) {
+    final original = favoriteSpot.toList();
+    if (original.contains(baseCoin)) {
+      return Future.value(true);
+    } else {
+      original.add(baseCoin);
+    }
+    return _SpUtil()._saveStringList(_SpKeys.favoriteSpot, original);
+  }
+
+  Future<bool> removeFavoriteSpot(String baseCoin) {
+    final original = favoriteSpot;
+    if (!original.contains(baseCoin)) {
+      return Future.value(true);
+    } else {
+      original.remove(baseCoin);
+    }
+    return _SpUtil()._saveStringList(_SpKeys.favoriteSpot, original);
+  }
+
+  List<String> get favoriteSpot {
+    return _SpUtil()._getStringList(_SpKeys.favoriteSpot, defaultValue: []);
+  }
 
   //===========================tappedSearchResult===================================================================
   Future<bool> saveTappedSearchResult(SearchV2ItemEntity entity) {
@@ -407,6 +429,7 @@ class _SpKeys {
   static const isFirst = 'isFirst';
   static const recentChart = 'recentChart';
   static const favoriteContract = 'favoriteContract';
+  static const favoriteSpot = 'favoriteSpot';
   static const markedSearchResult = 'markedSearchResult';
   static const tappedSearchResult = 'tappedSearchResult';
   static const orderFlowSymbolsJson = 'orderFlowSymbolsJson';

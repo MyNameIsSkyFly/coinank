@@ -45,7 +45,7 @@ class GridDataSource extends DataGridSource {
         })
       ]);
     }).toList();
-    // updateDataSource();
+    updateDataSource();
   }
 
   final _numberFormat = NumberFormat('#,###');
@@ -111,17 +111,15 @@ class GridDataSource extends DataGridSource {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
           color: data.value == null || data.value == 0
-              ? Styles.cUp(context).withOpacity(0.05)
+              ? Styles.cUp(context)
               : data.value! > 0
                   ? Styles.cUp(context)
-                      .withOpacity(data.rate.abs().clamp(0.05, 1))
-                  : Styles.cDown(context)
-                      .withOpacity(data.rate.abs().clamp(0.05, 1)),
+                  : Styles.cDown(context),
         ),
         alignment: Alignment.center,
         child: Text(
           data.convertedValue,
-          style: Styles.tsBody_12(context),
+          style: const TextStyle(color: Colors.white, fontSize: 12),
         ),
       );
     }
@@ -188,41 +186,11 @@ class _KeyValue {
         tmp == '0.0000%');
   }
 
-  double get rate {
-    return switch (key) {
-      'priceChangeH1' ||
-      'priceChangeH4' ||
-      'priceChangeH6' ||
-      'priceChangeH12' ||
-      'priceChangeH24' =>
-        (value ?? 0) / 100,
-      'openInterestChM5' ||
-      'openInterestChM15' ||
-      'openInterestChM30' ||
-      'openInterestCh1' ||
-      'openInterestCh4' ||
-      'openInterestCh24' ||
-      'openInterestCh2D' ||
-      'openInterestCh3D' ||
-      'openInterestCh7D' =>
-        value ?? 0,
-      'lsPersonChg5m' ||
-      'lsPersonChg15m' ||
-      'lsPersonChg30m' ||
-      'lsPersonChg1h' ||
-      'lsPersonChg4h' ||
-      'marketCapChange24H' =>
-        (value ?? 0) * 100,
-      'fundingRate' => (value ?? 0) * 100,
-      _ => 0.0,
-    };
-  }
-
   String handleValue(String key, double? value) {
     if (value == null && key == 'marketCapChange24H') return '0.00%';
     final tmp = value ?? 0;
     return switch (key) {
-      'price' ||
+      'price' => AppUtil.compressNumberWithLotsOfZeros(value ?? 0),
       'longShortRatio' ||
       'longShortPerson' ||
       'longShortPosition' ||

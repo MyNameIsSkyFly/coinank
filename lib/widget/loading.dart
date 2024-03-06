@@ -1,6 +1,7 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class Loading {
+  Loading._();
   static void show() {
     if (!EasyLoading.isShow) {
       EasyLoading.show(

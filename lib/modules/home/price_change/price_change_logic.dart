@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ank_app/entity/body/futures_big_data_body.dart';
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
@@ -65,10 +66,7 @@ class PriceChangeLogic extends FullLifeCycleController with FullLifeCycleMixin {
   }
 
   void tapItem(MarkerTickerEntity item) {
-    AppNav.toCoinDetail(MarkerTickerEntity(
-        baseCoin: item.baseCoin,
-        exchangeName: item.exchangeName,
-        symbol: item.symbol));
+    AppNav.toCoinDetail(item);
   }
 
   Future<void> onRefresh(bool showLoading) async {
@@ -88,15 +86,12 @@ class PriceChangeLogic extends FullLifeCycleController with FullLifeCycleMixin {
   }
 
   Future<void> getOiData() async {
-    final data = await Apis().getFuturesBigData2(
+    final data = await Apis().postFuturesBigData(
+      const FuturesBigDataBody(openInterest: '3000000~'),
       page: 1,
       size: 100,
       sortBy: state.sortBy,
       sortType: state.sortType,
-      sort: 'openInterestCh24',
-      openInterest: '3000000~',
-      isFollow: 0,
-      type: 'oi',
     );
     state.originalData = data?.list;
     state.contentDataList.value = List.from(state.originalData ?? []);

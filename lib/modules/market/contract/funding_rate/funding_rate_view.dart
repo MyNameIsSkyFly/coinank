@@ -23,9 +23,11 @@ class FundingRatePage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
-          child: Row(
+        SizedBox(
+          height: 47,
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+            scrollDirection: Axis.horizontal,
             children: [
               GestureDetector(
                 onTap: () {
@@ -68,35 +70,32 @@ class FundingRatePage extends StatelessWidget {
                 );
               }),
               const Gap(10),
-              Expanded(
-                child: InkWell(
-                  onTap: () => logic.tapTime(),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    height: 32,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).inputDecorationTheme.fillColor,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      children: [
-                        Obx(() {
-                          return Text(
-                            state.time.isEmpty
-                                ? S.current.s_current
-                                : state.time.value,
-                            style: Styles.tsBody_14m(context),
-                          );
-                        }),
-                        const Gap(5),
-                        const Spacer(),
-                        Icon(
-                          Icons.keyboard_arrow_down,
-                          size: 15,
-                          color: Theme.of(context).iconTheme.color,
-                        ),
-                      ],
-                    ),
+              InkWell(
+                onTap: () => logic.tapTime(),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  height: 32,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).inputDecorationTheme.fillColor,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    children: [
+                      Obx(() {
+                        return Text(
+                          state.time.isEmpty
+                              ? S.current.s_current
+                              : state.time.value,
+                          style: Styles.tsBody_14m(context),
+                        );
+                      }),
+                      const Gap(5),
+                      Icon(
+                        Icons.keyboard_arrow_down,
+                        size: 15,
+                        color: Theme.of(context).iconTheme.color,
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -135,71 +134,6 @@ class FundingRatePage extends StatelessWidget {
             ),
           );
         }),
-        // Row(
-        //   children: [
-        //     Container(
-        //       margin: const EdgeInsets.only(left: 15),
-        //       alignment: Alignment.centerLeft,
-        //       decoration: BoxDecoration(
-        //           color: Theme.of(context).scaffoldBackgroundColor,
-        //           boxShadow: [
-        //             BoxShadow(
-        //               color: Theme.of(context).brightness == Brightness.dark
-        //                   ? Colors.white12
-        //                   : Colors.black12,
-        //               blurRadius: 2,
-        //               offset: const Offset(2, 1.5),
-        //             ),
-        //             BoxShadow(
-        //                 offset: const Offset(-2, 2),
-        //                 color: Theme.of(context).scaffoldBackgroundColor,
-        //                 spreadRadius: 2)
-        //           ]),
-        //       height: 48,
-        //       width: 100,
-        //       child: Text(
-        //         'Coin',
-        //         style: Styles.tsSub_14(context),
-        //       ),
-        //     ),
-        //     Expanded(
-        //       child: SizedBox(
-        //         height: 48,
-        //         child: Obx(() {
-        //           return ListView.builder(
-        //               controller: state.titleController,
-        //               scrollDirection: Axis.horizontal,
-        //               padding: const EdgeInsets.only(left: 8),
-        //               shrinkWrap: true,
-        //               physics: const ClampingScrollPhysics(),
-        //               itemCount: state.topList.length,
-        //               itemBuilder: (cnt, idx) {
-        //                 return SizedBox(
-        //                   width: 100,
-        //                   child: Obx(() {
-        //                     return SortWithArrow(
-        //                       icon: Padding(
-        //                         padding: const EdgeInsets.only(right: 5),
-        //                         child: ClipOval(
-        //                           child: Image.asset(
-        //                             'assets/images/platform/${state.topList[idx].toLowerCase()}.png',
-        //                             width: 15,
-        //                           ),
-        //                         ),
-        //                       ),
-        //                       title: state.topList.toList()[idx],
-        //                       style: Styles.tsBody_12m(context),
-        //                       status: state.topStatusList.toList()[idx],
-        //                       onTap: () => logic.tapSort(idx),
-        //                     );
-        //                   }),
-        //                 );
-        //               });
-        //         }),
-        //       ),
-        //     ),
-        //   ],
-        // ),
         Obx(() {
           return state.isLoading.value
               ? const LottieIndicator(

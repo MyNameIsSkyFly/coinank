@@ -379,7 +379,7 @@ class _CommonWebViewState extends State<CommonWebView>
         switch (pageType.toUpperCase()) {
           case 'FUNDINGRATE':
             Get.find<MainLogic>().selectTab(1);
-            Get.find<ContractLogic>().selectIndex(5);
+            Get.find<ContractLogic>().selectIndex(4);
           case 'LIQDATA':
             Get.find<MainLogic>().selectTab(1);
             Future.delayed(const Duration(milliseconds: 100)).then((value) {
@@ -387,7 +387,7 @@ class _CommonWebViewState extends State<CommonWebView>
                   evJS: uri.queryParameters['jsSource'] ?? '',
                   url: Urls.urlLiquidation));
             });
-            Get.find<ContractLogic>().selectIndex(4);
+            Get.find<ContractLogic>().selectIndex(3);
           case 'EXCHANGEOI':
             Get.find<MainLogic>().selectTab(1);
             var marketLogic = Get.find<ContractLogic>();

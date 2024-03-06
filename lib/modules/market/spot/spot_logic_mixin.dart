@@ -9,12 +9,13 @@ import 'customize/reorder_spot_view.dart';
 mixin SpotLogicMixin {
   var sortOrderMap = <MapEntry<String, bool>>[];
   final columns = RxList<GridColumn>();
+  final columnsF = RxList<GridColumn>();
 
   void getColumns(BuildContext context) {
     sortOrderMap = StoreLogic.to.spotSortOrder.entries
         .where((element) => element.value == true)
         .toList();
-    columns.value = <GridColumn>[
+    var grids = [
       GridColumn(
         columnName: '0',
         width: 100,
@@ -46,12 +47,15 @@ mixin SpotLogicMixin {
       ...sortOrderMap.mapIndexed(
           (index, e) => _gridColumn(context, index, textMap(e.key))),
     ];
+    columns.assignAll(grids);
+    columnsF.assignAll(grids);
   }
 
   GridColumn _gridColumn(BuildContext context, int index, String text) {
     return GridColumn(
         columnName: text,
-        maximumWidth: text == S.current.s_price ? 170 : double.nan,
+        maximumWidth: text == S.current.s_price ? 270 : double.nan,
+        minimumWidth: text == S.current.s_price ? 80 : double.nan,
         // maximumWidth: 120,
         autoFitPadding: const EdgeInsets.only(right: 10),
         filterIconPadding: EdgeInsets.zero,

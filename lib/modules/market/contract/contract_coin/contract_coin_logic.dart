@@ -20,7 +20,7 @@ class ContractCoinLogic extends FullLifeCycleController
   StreamSubscription? loginSubscription;
 
   late final gridSource = GridDataSource([]);
-  late final fGridSource = FGridDataSource([]);
+  late final gridSourceF = FGridDataSource([]);
 
   void sortFavorite({SortType? type}) {
     if (type != null) state.favoriteSortBy = type.name;
@@ -168,23 +168,7 @@ class ContractCoinLogic extends FullLifeCycleController
     // }
   }
 
-  Future<void> tapCollectF(MarkerTickerEntity item) async {
-    if (!StoreLogic.isLogin) {
-      await StoreLogic.to.removeFavoriteContract(item.baseCoin!);
-      item.follow = false;
-    } else {
-      await Apis().getDelFollow(baseCoin: item.baseCoin!);
-      item.follow = false;
-    }
-    state.favoriteData
-        .removeWhere((element) => element.baseCoin == item.baseCoin);
-    state.data
-        .firstWhereOrNull((element) => element.baseCoin == item.baseCoin)
-        ?.follow = false;
-    update(['data']);
-  }
-
-  Future<void> tapFavoriteCollect(String? baseCoin) async {
+  Future<void> tapCollectF(String? baseCoin) async {
     final item = state.favoriteData
         .firstWhereOrNull((element) => element.baseCoin == baseCoin);
     if (!StoreLogic.isLogin) {
@@ -247,7 +231,6 @@ class ContractCoinLogic extends FullLifeCycleController
     StoreLogic.to.setContractData(data?.list ?? []);
     gridSource.items.assignAll(data?.list ?? []);
     gridSource.buildDataGridRows();
-    gridSource.updateDataSource();
   }
 
   bool isFavorite(String baseCoin) {
@@ -274,7 +257,10 @@ class ContractCoinLogic extends FullLifeCycleController
         sortBy: state.favoriteSortBy,
         sortType: state.favoriteSortType,
         isFollow: true,
-      );
+      )
+          .catchError((e) {
+        return null;
+      });
     } else {
       if (StoreLogic.to.favoriteContract.isEmpty) {
         data = TickersDataEntity(list: []);
@@ -301,9 +287,8 @@ class ContractCoinLogic extends FullLifeCycleController
     }
     // sortFavorite();
     state.isRefresh = false;
-    fGridSource.items.assignAll(data?.list ?? []);
-    fGridSource.buildDataGridRows();
-    fGridSource.updateDataSource();
+    gridSourceF.items.assignAll(data?.list ?? []);
+    gridSourceF.buildDataGridRows();
   }
 
   _startTimer() async {

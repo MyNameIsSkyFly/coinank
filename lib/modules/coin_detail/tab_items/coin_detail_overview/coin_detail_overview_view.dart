@@ -9,13 +9,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:syncfusion_flutter_core/theme.dart';
-import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '_datagrid_source.dart';
-
-part '_data_grid_view.dart';
 
 class CoinDetailOverviewView extends StatefulWidget {
   const CoinDetailOverviewView({super.key});
@@ -42,7 +37,7 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
                 children: [
                   Expanded(
                     child: Obx(() {
-                      var coinInfo = logic.detailLogic.coin24hInfo.value;
+                      var coinInfo = logic.coin24hInfo.value;
                       return Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -235,17 +230,7 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
                 ],
               ),
             ),
-            const Gap(10),
-            Divider(
-                height: 8, thickness: 8, color: Theme.of(context).cardColor),
-            Padding(
-              padding: const EdgeInsets.only(left: 15, top: 15),
-              child: Text(
-                S.of(context).topCoinByMarketCap,
-                style: Styles.tsBody_16m(context),
-              ),
-            ),
-            _DataGridView(logic: logic)
+            const Gap(200),
           ],
         );
       }),

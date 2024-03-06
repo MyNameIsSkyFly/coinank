@@ -213,9 +213,6 @@ class _EditCustomizePageState extends State<EditCustomizePage> {
                         Get.find<ContractCoinLogic>()
                             .gridSource
                             .buildDataGridRows();
-                        Get.find<ContractCoinLogic>()
-                            .gridSource
-                            .updateDataSource();
                         Get.back();
                       },
                       child: Text(sof.s_ok,

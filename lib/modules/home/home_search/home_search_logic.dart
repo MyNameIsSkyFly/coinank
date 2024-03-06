@@ -162,12 +162,12 @@ class HomeSearchLogic extends GetxController {
   }
 
   Future<void> mark(SearchV2ItemEntity item) async {
-    await Get.find<ContractCoinLogic>().tapFavoriteCollect(item.baseCoin);
+    await Get.find<ContractCoinLogic>().tapCollectF(item.baseCoin);
     initMarked();
   }
 
   Future<void> unMark(SearchV2ItemEntity item) async {
-    await Get.find<ContractCoinLogic>().tapFavoriteCollect(item.baseCoin);
+    await Get.find<ContractCoinLogic>().tapCollectF(item.baseCoin);
     initMarked();
   }
 

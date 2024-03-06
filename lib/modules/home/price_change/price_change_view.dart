@@ -89,7 +89,7 @@ class PriceChangePage extends StatelessWidget {
                                       itemCount: state.contentDataList.length,
                                       itemBuilder: (cnt, idx) {
                                         MarkerTickerEntity item =
-                                            state.contentDataList.toList()[idx];
+                                            state.contentDataList[idx];
                                         return InkWell(
                                           onTap: () => logic.tapItem(item),
                                           child: Row(

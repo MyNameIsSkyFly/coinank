@@ -11,6 +11,8 @@ import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/animated_color_text.dart';
 import 'package:ank_app/widget/common_webview.dart';
 import 'package:ank_app/widget/rate_with_sign.dart';
+import 'package:dart_scope_functions/dart_scope_functions.dart';
+import 'package:decimal/decimal.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -68,16 +70,13 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
                         children: [
                           AnimatedColorText(
                             text:
-                                '\$${logic.detailLogic.coin24hInfo.value?.lastPrice ?? 0}',
-                            value: logic
-                                    .detailLogic.coin24hInfo.value?.lastPrice ??
-                                0,
+                                '\$${Decimal.parse('${logic.coin24hInfo.value?.lastPrice ?? 0}')}',
+                            value: logic.coin24hInfo.value?.lastPrice ?? 0,
                             style: TextStyle(
                                 fontWeight: Styles.fontMedium, fontSize: 18),
                           ),
                           RateWithSign(
-                              rate: logic.detailLogic.coin24hInfo.value
-                                  ?.priceChange24h),
+                              rate: logic.coin24hInfo.value?.priceChange24h),
                         ],
                       ),
                     ),
@@ -86,12 +85,26 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
                           AppUtil.toKLine(
                               logic.detailLogic.coin.exchangeName ?? '',
                               logic.detailLogic.coin.symbol ?? '',
-                              logic.baseCoin ?? '',
+                              logic.baseCoin,
                               'SWAP');
                         },
                         child: const ImageIcon(
                             AssetImage(Assets.commonIcCandleLine),
-                            size: 20))
+                            size: 20)),
+                    const Gap(20),
+                    Obx(() {
+                      return GestureDetector(
+                        onTap: () => logic.toggleMarked(),
+                        child: ImageIcon(
+                            AssetImage(logic.marked.value
+                                ? Assets.commonIconStarFill
+                                : Assets.commonIconStar),
+                            color: logic.marked.value
+                                ? Styles.cYellow
+                                : Styles.cBody(context),
+                            size: 20),
+                      );
+                    })
                   ],
                 ),
               ),
@@ -104,28 +117,28 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
                   _rowGroup([
                     (
                       S.of(context).high24h,
-                      '\$${logic.detailLogic.coin24hInfo.value?.high24h?.toStringAsFixed(2) ?? '0'}'
+                      '\$${Decimal.parse('${logic.coin24hInfo.value?.high24h ?? 0}')}'
                     ),
                     (
                       S.of(context).low24h,
-                      '\$${logic.detailLogic.coin24hInfo.value?.low24h?.toStringAsFixed(2) ?? '0'}'
+                      '\$${Decimal.parse('${logic.coin24hInfo.value?.low24h ?? 0}')}'
                     ),
                     (
                       S.of(context).priceChange24h,
-                      '${logic.detailLogic.coin24hInfo.value?.priceChange24h?.toStringAsFixed(2) ?? 0}%'
+                      '${logic.coin24hInfo.value?.priceChange24h?.toStringAsFixed(2) ?? 0}%'
                     ),
                   ], [
                     (
                       S.of(context).volCcy24h,
-                      '${logic.detailLogic.coin24hInfo.value?.volCcy24h ?? 0} ${logic.baseCoin}'
+                      '${(logic.coin24hInfo.value?.volCcy24h ?? 0).let((it) => it < 10000000000000 ? it : AppUtil.getLargeFormatString('$it'))} ${logic.baseCoin}'
                     ),
                     (
                       S.of(context).s_24h_turnover,
-                      '\$${AppUtil.getLargeFormatString('${logic.detailLogic.coin24hInfo.value?.turnover24h}', precision: 2)}'
+                      '\$${AppUtil.getLargeFormatString('${logic.coin24hInfo.value?.turnover24h}', precision: 2)}'
                     ),
                     (
                       S.of(context).changeRate24h,
-                      '${logic.detailLogic.coin24hInfo.value?.changeRate ?? 0}%'
+                      '${logic.coin24hInfo.value?.changeRate ?? 0}%'
                     ),
                   ]),
                   if (dataExpanded.value) ...[

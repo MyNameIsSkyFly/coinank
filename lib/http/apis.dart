@@ -64,9 +64,10 @@ abstract class Apis {
   Future<TickersDataEntity?> postFuturesBigData(@Body() FuturesBigDataBody body,
       {@Query('page') required int page,
       @Query('size') required int size,
-      @Query('sortBy') required String sortBy,
+      @Query('sortBy') String? sortBy,
       @Query('sortType') required String sortType});
 
+  @Extra({'showToast': false})
   @GET('/api/instruments/agg')
   Future<TickersDataEntity?> getFuturesBigData({
     @Query('page') required int page,
@@ -141,7 +142,7 @@ abstract class Apis {
   @GET('/api/userFollow/addOrUpdateFollow')
   Future getAddFollow({
     @Query('baseCoin') required String baseCoin,
-    @Query('type') String type = '1',
+    @Query('type') int type = 1,
   });
 
   @POST('/api/userFollow/addOrUpdateFollow')
@@ -155,7 +156,7 @@ abstract class Apis {
   @GET('/api/userFollow/delFollow')
   Future getDelFollow({
     @Query('baseCoin') required String baseCoin,
-    @Query('type') String type = '1',
+    @Query('type') int type = 1,
   });
 
   @POST('/api/userFollow/delFollow')
@@ -202,18 +203,19 @@ abstract class Apis {
     @Query('size') int size = 100,
   });
 
-  //合约持仓2
-  @GET('/api/instruments/aggForIos')
-  Future<TickersDataEntity?> getFuturesBigData2({
-    @Query('page') required int page,
-    @Query('size') required int size,
-    @Query('sortBy') String? sortBy,
-    @Query('sortType') required String sortType,
-    @Query('sort') String? sort,
-    @Query('openInterest') String? openInterest,
-    @Query('isFollow') int? isFollow,
-    @Query('type') String? type,
-  });
+  //
+  // //合约持仓2
+  // @GET('/api/instruments/aggForIos')
+  // Future<TickersDataEntity?> getFuturesBigData2({
+  //   @Query('page') required int page,
+  //   @Query('size') required int size,
+  //   @Query('sortBy') String? sortBy,
+  //   @Query('sortType') required String sortType,
+  //   @Query('sort') String? sort,
+  //   @Query('openInterest') String? openInterest,
+  //   @Query('isFollow') int? isFollow,
+  //   @Query('type') String? type,
+  // });
 
   //多空比
   @GET('/api/longshort/realtimeAll')

@@ -48,9 +48,7 @@ class ReorderPage extends StatelessWidget {
                 {for (var item in logic.list) item.key: item.value});
             Get.find<ContractCoinLogic>().getColumns(Get.context!);
             Get.find<ContractCoinLogic>().gridSource.buildDataGridRows();
-            Get.find<ContractCoinLogic>().gridSource.updateDataSource();
-            Get.find<ContractCoinLogic>().fGridSource.buildDataGridRows();
-            Get.find<ContractCoinLogic>().fGridSource.updateDataSource();
+            Get.find<ContractCoinLogic>().gridSourceF.buildDataGridRows();
           },
         );
       }),

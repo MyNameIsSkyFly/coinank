@@ -80,7 +80,7 @@ class _EmptyView extends StatelessWidget {
         GridView.builder(
           shrinkWrap: true,
           itemCount: state.fixedCoin.length,
-          padding: const EdgeInsets.all(15).copyWith(top: 0),
+          padding: const EdgeInsets.all(15).copyWith(top: 15),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               mainAxisExtent: 72,

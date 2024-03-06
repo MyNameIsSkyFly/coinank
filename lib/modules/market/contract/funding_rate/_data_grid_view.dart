@@ -16,7 +16,6 @@ class _DataGridViewState extends State<_DataGridView> {
 
   List<GridColumn> getColumns() {
     List<GridColumn> columns;
-    int index = 0;
     columns = <GridColumn>[
       GridColumn(
           columnName: '1',

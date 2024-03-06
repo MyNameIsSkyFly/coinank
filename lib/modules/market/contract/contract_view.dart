@@ -36,11 +36,11 @@ class _ContractPageState extends State<ContractPage> {
           dividerColor: Theme.of(context).dividerTheme.color,
           tabs: [
             Tab(text: S.of(context).s_favorite),
-            Tab(text: S.of(context).coinType),
+            Tab(text: S.of(context).s_crypto_coin_short),
             Tab(text: S.of(context).s_oi),
             // Tab(text: S.of(context).s_futures_market),
             Tab(text: S.of(context).s_rekt),
-            Tab(text: S.of(context).s_funding_rate_short),
+            Tab(text: S.of(context).s_funding_rate),
           ],
         ),
       ),
