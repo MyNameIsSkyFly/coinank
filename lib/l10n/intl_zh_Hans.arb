@@ -400,11 +400,9 @@
   "candleChartPro": "专业K线",
   "customizeList": "自定义列表",
   "edit": "编辑",
-  "lsRatioOfAccountX": "L/S Ratio Of Account ({value})",
-  "customList": "自定义列表",
-  "liq_abbr": "Liq",
-  "longShortPersonRatio": "多空人数比({value})",
-  "marketCapChange": "MarketCap Change",
+  "lsRatioOfAccountX": "多空人数比({value})",
+  "liq_abbr": "爆仓",
+  "marketCapChange": "市值變化",
   "addedToFavorites": "收藏成功",
   "removedFromFavorites": "已取消收藏"
 }

@@ -55,7 +55,6 @@ class _EditCustomizeSpotPageState extends State<EditCustomizeSpotPage> {
                     _item(text: '4h', value: 'priceChangeH4'),
                     _item(text: '8h', value: 'priceChangeH8'),
                     _item(text: '12h', value: 'priceChangeH12'),
-                    _item(text: '24h', value: 'priceChangeH24'),
                   ],
                 ),
                 _text(sof.otherData),

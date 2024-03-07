@@ -35,7 +35,7 @@ mixin SpotLogicMixin {
                     const Gap(4),
                     Expanded(
                       child: Text(
-                        S.of(context).customList,
+                        S.of(context).customizeList,
                         style: Styles.tsBody_12m(context),
                       ),
                     ),

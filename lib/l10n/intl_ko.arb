@@ -398,13 +398,11 @@
   "fullyDilutedValuationIntro": "FDV = 현재가 x 최대 유통량(또는 최대 유통량이 유효하지 않은 경우 총 유통량)\n\n코인 최대 유통량을 파악할 수 있는 경우 유통 중인 시가총액(가치)입니다. 이미션/방출(emission) 일정에 따라 FDV에 도달하기까지 3, 5, 10년 이상이 걸릴 수 있다는 점에 유의하시기 바랍니다.",
   "maxSupplyIntro": "암호화폐의 수명 동안 존재하도록 코딩된 코인의 최대 개수입니다. 주식시장에서의 발행가능주식수와 유사합니다.\n\n최대 공급량 = 코딩된 이론상 최대 수량",
   "candleChartPro": "Candle Pro",
-  "customizeList": "自定义列表",
-  "edit": "编辑",
+  "customizeList": "Customize",
+  "edit": "편집하다",
   "lsRatioOfAccountX": "L/S Ratio Of Account ({value})",
-  "customList": "自定义列表",
   "liq_abbr": "Liq",
-  "longShortPersonRatio": "多空人数比({value})",
   "marketCapChange": "MarketCap Change",
-  "addedToFavorites": "收藏成功",
-  "removedFromFavorites": "已取消收藏"
+  "addedToFavorites": "추가됨",
+  "removedFromFavorites": "제거됨"
 }

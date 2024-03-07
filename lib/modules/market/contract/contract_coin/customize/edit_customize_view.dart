@@ -52,7 +52,6 @@ class _EditCustomizePageState extends State<EditCustomizePage> {
                     _item(text: '4H', value: 'priceChangeH4'),
                     _item(text: '6H', value: 'priceChangeH6'),
                     _item(text: '12H', value: 'priceChangeH12'),
-                    _item(text: '24H', value: 'priceChangeH24'),
                   ],
                 ),
                 _text(sof.s_oi_chg),
