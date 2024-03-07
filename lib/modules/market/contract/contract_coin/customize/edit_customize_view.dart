@@ -159,9 +159,13 @@ class _EditCustomizePageState extends State<EditCustomizePage> {
                         style: FilledButton.styleFrom(
                             backgroundColor: Styles.cLine(context)),
                         onPressed: () async {
-                          await StoreLogic.to.removeSpotSortOrder();
-                          map = StoreLogic.to.spotSortOrder;
-                          setState(() {});
+                          await StoreLogic.to.removeContractCoinSortOrder();
+                          logic.initData();
+                          var contractCoinLogic = Get.find<ContractCoinLogic>();
+                          contractCoinLogic.getColumns(Get.context!);
+                          contractCoinLogic.gridSource.buildDataGridRows();
+                          contractCoinLogic.gridSourceF.buildDataGridRows();
+                          Get.back();
                         },
                         child: Text(
                           sof.s_reset,
@@ -173,10 +177,10 @@ class _EditCustomizePageState extends State<EditCustomizePage> {
                       onPressed: () async {
                         await StoreLogic.to.saveContractCoinSortOrder(map);
                         logic.initData();
-                        Get.find<ContractCoinLogic>().getColumns(Get.context!);
-                        Get.find<ContractCoinLogic>()
-                            .gridSource
-                            .buildDataGridRows();
+                        var contractCoinLogic = Get.find<ContractCoinLogic>();
+                        contractCoinLogic.getColumns(Get.context!);
+                        contractCoinLogic.gridSource.buildDataGridRows();
+                        contractCoinLogic.gridSourceF.buildDataGridRows();
                         Get.back();
                       },
                       child: Text(sof.s_ok,

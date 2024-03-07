@@ -46,9 +46,10 @@ class ReorderPage extends StatelessWidget {
             logic.list.insert(newIndex, item);
             await StoreLogic.to.saveContractCoinSortOrder(
                 {for (var item in logic.list) item.key: item.value});
-            Get.find<ContractCoinLogic>().getColumns(Get.context!);
-            Get.find<ContractCoinLogic>().gridSource.buildDataGridRows();
-            Get.find<ContractCoinLogic>().gridSourceF.buildDataGridRows();
+            var contractCoinLogic = Get.find<ContractCoinLogic>();
+            contractCoinLogic.getColumns(Get.context!);
+            contractCoinLogic.gridSource.buildDataGridRows();
+            contractCoinLogic.gridSourceF.buildDataGridRows();
           },
         );
       }),

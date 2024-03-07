@@ -88,8 +88,12 @@ class _EditCustomizeSpotPageState extends State<EditCustomizeSpotPage> {
                             backgroundColor: Styles.cLine(context)),
                         onPressed: () async {
                           await StoreLogic.to.removeSpotSortOrder();
-                          map = StoreLogic.to.spotSortOrder;
-                          setState(() {});
+                          logic.initData();
+                          var spotLogic = Get.find<SpotLogic>();
+                          spotLogic.getColumns(Get.context!);
+                          spotLogic.gridSource.buildDataGridRows();
+                          spotLogic.gridSourceF.buildDataGridRows();
+                          Get.back();
                         },
                         child: Text(
                           sof.s_reset,
@@ -101,8 +105,10 @@ class _EditCustomizeSpotPageState extends State<EditCustomizeSpotPage> {
                       onPressed: () async {
                         await StoreLogic.to.saveSpotSortOrder(map);
                         logic.initData();
-                        Get.find<SpotLogic>().getColumns(Get.context!);
-                        Get.find<SpotLogic>().gridSource.buildDataGridRows();
+                        var spotLogic = Get.find<SpotLogic>();
+                        spotLogic.getColumns(Get.context!);
+                        spotLogic.gridSource.buildDataGridRows();
+                        spotLogic.gridSourceF.buildDataGridRows();
                         Get.back();
                       },
                       child: Text(sof.s_ok,

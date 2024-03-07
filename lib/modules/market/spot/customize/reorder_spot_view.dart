@@ -46,8 +46,10 @@ class ReorderSpotPage extends StatelessWidget {
             logic.list.insert(newIndex, item);
             await StoreLogic.to.saveSpotSortOrder(
                 {for (var item in logic.list) item.key: item.value});
-            Get.find<SpotLogic>().getColumns(Get.context!);
-            Get.find<SpotLogic>().gridSource.buildDataGridRows();
+            var spotLogic = Get.find<SpotLogic>();
+            spotLogic.getColumns(Get.context!);
+            spotLogic.gridSource.buildDataGridRows();
+            spotLogic.gridSourceF.buildDataGridRows();
           },
         );
       }),
