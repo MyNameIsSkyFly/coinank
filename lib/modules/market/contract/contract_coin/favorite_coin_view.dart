@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:ank_app/entity/event/theme_event.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:ank_app/widget/market_datagrid_sizer.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -33,14 +34,14 @@ class _FavoriteCoinPageState extends State<FavoriteCoinPage> {
       children: [
         Expanded(child: Obx(() {
           return IndexedStack(
-            index: state.isLoading.value
+            index: state.isLoadingF.value
                 ? 0
                 : state.favoriteData.isEmpty
                     ? 1
                     : 2,
             children: [
               Visibility(
-                  visible: state.isLoading.value,
+                  visible: state.isLoadingF.value,
                   child:
                       const LottieIndicator(margin: EdgeInsets.only(top: 200))),
               _EmptyView(state: state, logic: logic),
@@ -49,7 +50,7 @@ class _FavoriteCoinPageState extends State<FavoriteCoinPage> {
                 //     const ERScrollBehavior(ClampingScrollPhysics()),
                 onRefresh: logic.onRefreshF,
                 child: Obx(() {
-                  return state.isLoading.value
+                  return state.isLoadingF.value
                       ? const LottieIndicator(
                           margin: EdgeInsets.only(top: 200),
                         )

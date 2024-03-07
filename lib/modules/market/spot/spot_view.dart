@@ -4,6 +4,7 @@ import 'package:ank_app/entity/event/theme_event.dart';
 import 'package:ank_app/modules/market/spot/spot_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/custom_underliner_tab_indicator.dart';
+import 'package:ank_app/widget/market_datagrid_sizer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -32,7 +33,8 @@ class _SpotPageState extends State<SpotPage> {
           TabBar(
             tabAlignment: TabAlignment.start,
             isScrollable: true,
-            labelPadding: const EdgeInsets.only(left: 15, right: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 5),
+            labelPadding: const EdgeInsets.symmetric(horizontal: 10),
             labelColor: Theme.of(context).textTheme.bodyMedium?.color,
             labelStyle: Styles.tsBody_16m(context),
             unselectedLabelStyle: Styles.tsBody_16m(context),

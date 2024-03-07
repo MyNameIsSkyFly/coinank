@@ -125,6 +125,7 @@ class _DataGridView extends StatelessWidget {
               allowTriStateSorting: true,
               allowSorting: true,
               horizontalScrollPhysics: const ClampingScrollPhysics(),
+              columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
               source: logic.gridSource,
               columns: getColumns(context)),
         ),

@@ -103,7 +103,7 @@ class PriceChangeLogic extends FullLifeCycleController with FullLifeCycleMixin {
       size: 100,
       sortBy: state.sortBy,
       sortType: state.sortType,
-      sort: 'priceChangeH24',
+      // sort: 'priceChangeH24',
     );
     state.originalData = data?.list;
     state.contentDataList.value = List.from(state.originalData ?? []);

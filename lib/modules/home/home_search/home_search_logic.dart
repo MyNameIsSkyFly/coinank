@@ -22,13 +22,20 @@ class HomeSearchLogic extends GetxController {
   final ercList = RxList<SearchV2ItemEntity>();
   final baseList = RxList<SearchV2ItemEntity>();
   Timer? _timer;
-
+  final textTrigger = RxString('');
   @override
   void onReady() {
     initHot();
     initHistory();
     initMarked();
     pollingHot();
+    initDebounce();
+  }
+
+  void initDebounce() {
+    debounce(textTrigger, (callback) {
+      search(callback);
+    });
   }
 
   void pollingHot() {

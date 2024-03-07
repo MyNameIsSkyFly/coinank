@@ -60,9 +60,10 @@ class HomeSearchPage extends StatelessWidget {
                     ),
                   ),
                   onChanged: (value) {
-                    if (value.isEmpty) logic.keyword.value = '';
+                    if (value.trim().isEmpty) logic.keyword.value = '';
+                    logic.textTrigger.value = value.trim();
                   },
-                  onSubmitted: (v) => logic.search(v),
+                  // onSubmitted: (v) => logic.search(v),
                 ),
               ),
               InkWell(
@@ -135,17 +136,24 @@ class _ResultViewState extends State<_ResultView>
         ),
         Expanded(
             child: TabBarView(controller: tabController, children: [
-          _SummaryView(logic: widget.logic, tabController: tabController),
-          Obx(() => _TabItemView(
-              list: widget.logic.baseList.value, logic: widget.logic)),
-          Obx(() => _TabItemView(
-              list: widget.logic.brcList.value, logic: widget.logic)),
-          Obx(() => _TabItemView(
-              list: widget.logic.ercList.value, logic: widget.logic)),
-          Obx(() => _TabItemView(
-              list: widget.logic.arcList.value, logic: widget.logic)),
-          Obx(() => _TabItemView(
-              list: widget.logic.ascList.value, logic: widget.logic)),
+          AliveWidget(
+              child: _SummaryView(
+                  logic: widget.logic, tabController: tabController)),
+          AliveWidget(
+              child: Obx(() => _TabItemView(
+                  list: widget.logic.baseList.value, logic: widget.logic))),
+          AliveWidget(
+              child: Obx(() => _TabItemView(
+                  list: widget.logic.brcList.value, logic: widget.logic))),
+          AliveWidget(
+              child: Obx(() => _TabItemView(
+                  list: widget.logic.ercList.value, logic: widget.logic))),
+          AliveWidget(
+              child: Obx(() => _TabItemView(
+                  list: widget.logic.arcList.value, logic: widget.logic))),
+          AliveWidget(
+              child: Obx(() => _TabItemView(
+                  list: widget.logic.ascList.value, logic: widget.logic))),
         ]))
       ],
     );
@@ -221,46 +229,48 @@ class _AllItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverVisibility(
-      visible: list.isNotEmpty,
-      sliver: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Gap(20),
-          Padding(
-            padding: const EdgeInsets.only(left: 15),
-            child: Text(title, style: Styles.tsBody_16m(context)),
-          ),
-          const Gap(10),
-          ListView.builder(
-            padding: EdgeInsets.zero,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: min(3, list.length),
-            itemBuilder: (context, index) =>
-                _Item(logic: logic, item: list[index], index: index),
-          ),
-          const Gap(10),
-          if (list.length > 3)
+    return Obx(() {
+      return SliverVisibility(
+        visible: list.isNotEmpty,
+        sliver: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Gap(20),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: FilledButton.tonal(
-                  style: FilledButton.styleFrom(
-                    backgroundColor: Theme.of(context).dividerTheme.color,
-                ),
-                onPressed: () {
-                  tabController.animateTo(tabIndex,
-                      duration: const Duration(milliseconds: 50));
-                },
-                child: Text(
-                  S.of(context).viewMore,
-                  style: Styles.tsBody_16(context),
-                )),
-          ),
-          const Gap(10),
-        ],
-      ).sliverBox,
-    );
+              padding: const EdgeInsets.only(left: 15),
+              child: Text(title, style: Styles.tsBody_16m(context)),
+            ),
+            const Gap(10),
+            ListView.builder(
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: min(3, list.length),
+              itemBuilder: (context, index) =>
+                  _Item(logic: logic, item: list[index], index: index),
+            ),
+            const Gap(10),
+            if (list.length > 3)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: FilledButton.tonal(
+                    style: FilledButton.styleFrom(
+                      backgroundColor: Theme.of(context).dividerTheme.color,
+                    ),
+                    onPressed: () {
+                      tabController.animateTo(tabIndex,
+                          duration: const Duration(milliseconds: 50));
+                    },
+                    child: Text(
+                      S.of(context).viewMore,
+                      style: Styles.tsBody_16(context),
+                    )),
+              ),
+            const Gap(10),
+          ],
+        ).sliverBox,
+      );
+    });
   }
 }
 
@@ -454,8 +464,8 @@ class _TabItemViewState extends State<_TabItemView>
         Expanded(
           child: ListView.builder(
             itemCount: list.length,
-            itemBuilder: (context, index) => _Item(
-                logic: widget.logic, item: list[index], index: index),
+            itemBuilder: (context, index) =>
+                _Item(logic: widget.logic, item: list[index], index: index),
           ),
         )
       ],
@@ -579,37 +589,19 @@ class _Item extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         child: Row(
           children: [
-            if (item.tag == SearchEntityType.BASECOIN)
-              GestureDetector(
-                onTap: () {
-                  if (logic.marked.contains(item)) {
-                    logic.unMark(item);
-                } else {
-                  logic.mark(item);
-                }
-              },
-              child: Obx(() {
-                return Icon(
-                  Icons.star_rounded,
-                  color: logic.marked.contains(item)
-                      ? Styles.cYellow
-                      : Styles.cSub(context).withOpacity(0.3),
-                );
-              }),
-            ),
             if (showIndex)
               SizedBox(
                   width: 40,
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
-                  child: Text(
-                    '${index + 1}',
-                    style: Styles.tsBody_16m(context),
-                    textAlign: TextAlign.center,
-                  ),
+                    child: Text(
+                      '${index + 1}',
+                      style: Styles.tsBody_16m(context),
+                      textAlign: TextAlign.center,
+                    ),
                   )),
-            if (!showIndex && item.tag == SearchEntityType.BASECOIN)
-              const Gap(15),
+            // if (!showIndex && item.tag == SearchEntityType.BASECOIN)
+            //   const Gap(15),
             ImageUtil.networkImage(
                 item.tag == SearchEntityType.BASECOIN
                     ? AppConst.imageHost(item.baseCoin ?? '')

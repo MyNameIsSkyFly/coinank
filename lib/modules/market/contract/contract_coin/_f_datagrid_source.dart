@@ -94,8 +94,7 @@ class FGridDataSource extends DataGridSource {
 
   Widget _rateText(_KeyValue data) {
     if (data.key == 'price') {
-      return Align(
-        alignment: Alignment.centerLeft,
+      return Center(
         child: AnimatedColorText(
           text: data.convertedValue,
           value: data.value ?? 0,
@@ -123,8 +122,7 @@ class FGridDataSource extends DataGridSource {
         ),
       );
     }
-    return Align(
-      alignment: Alignment.centerLeft,
+    return Center(
       child: AutoSizeText(
         data.convertedValue,
         maxLines: 1,
@@ -238,6 +236,6 @@ class _KeyValue {
 
   @override
   String toString() {
-    return handleValue(key ?? '', value);
+    return '  ${handleValue(key ?? ' ', value)}  ';
   }
 }

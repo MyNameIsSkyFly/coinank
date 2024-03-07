@@ -46,7 +46,7 @@ class _FDataGridViewState extends State<_FDataGridView> {
             controller: dataGridCtrl,
             gridLinesVisibility: GridLinesVisibility.none,
             headerGridLinesVisibility: GridLinesVisibility.none,
-            columnSizer: CustomGridColumnSizer(),
+            columnSizer: MarketDataGridSizer(),
             allowSorting: true,
             allowTriStateSorting: true,
             columnWidthMode: ColumnWidthMode.auto,
@@ -54,6 +54,7 @@ class _FDataGridViewState extends State<_FDataGridView> {
             horizontalScrollPhysics: const ClampingScrollPhysics(),
             source: widget.logic.gridSourceF,
             columns: widget.logic.columnsF.value,
+            columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
             onCellTap: (details) {
               if (details.rowColumnIndex.rowIndex == 0) return;
               var baseCoin = widget.logic.gridSourceF
@@ -63,7 +64,7 @@ class _FDataGridViewState extends State<_FDataGridView> {
               final item = widget.logic.dataF
                   .firstWhereOrNull((element) => element.baseCoin == baseCoin);
               if (item == null) return;
-              AppNav.toCoinDetail(item);
+              AppNav.toCoinDetail(item, toSpot: true);
             },
             onCellLongPress: (details) {
               if (details.rowColumnIndex.rowIndex == 0) return;

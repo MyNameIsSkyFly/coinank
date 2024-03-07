@@ -59,7 +59,7 @@ class MainLogic extends GetxController {
       if (result != ConnectivityResult.none) {
         getActivity();
         Get.find<HomeLogic>().onRefresh();
-        Get.find<ContractCoinLogic>().onRefresh();
+        Get.find<ContractCoinLogic>().onRefreshF();
         AppConst.eventBus.fire(ThemeChangeEvent(type: ThemeChangeType.locale));
         tryLogin();
         Get.find<ChartLogic>().onRefresh();

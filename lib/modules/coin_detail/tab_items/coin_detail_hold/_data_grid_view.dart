@@ -106,6 +106,7 @@ class DataGridView extends StatelessWidget {
             shrinkWrapRows: true,
             horizontalScrollPhysics: const ClampingScrollPhysics(),
             source: productDataGridSource,
+            columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
             columns: getColumns(context)),
       );
     });

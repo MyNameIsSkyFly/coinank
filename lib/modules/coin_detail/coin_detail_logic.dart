@@ -8,10 +8,12 @@ class CoinDetailLogic extends GetxController {
   late TabController tabController;
   bool supportContract = false;
   bool supportSpot = false;
+  late bool toSpot;
 
   @override
   void onInit() {
     coin = Get.arguments['coin'];
+    toSpot = Get.arguments['toSpot'] ?? false;
     supportSpot = coin.supportSpot ?? false;
     supportContract = coin.supportContract ?? false;
     super.onInit();

@@ -101,6 +101,9 @@ class LongShortRatioLogic extends FullLifeCycleController
     }
     final data = await Apis().getShortRateData(
         interval: state.longSortTime.value, baseCoin: state.type.value);
+    data
+        ?.where((element) => element.exchangeName == 'Okex')
+        .forEach((e) => e.exchangeName = 'Okx');
     state.dataList.value = data ?? [];
     Loading.dismiss();
   }

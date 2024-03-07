@@ -57,7 +57,7 @@ class _DataGridViewState extends State<_DataGridView> {
               ),
             ),
             Text(
-              list[index],
+              list[index] == 'Okex' ? 'Okx' : list[index],
               style: Styles.tsBody_12m(context),
             ),
           ],
@@ -112,6 +112,7 @@ class _DataGridViewState extends State<_DataGridView> {
           horizontalScrollPhysics: const ClampingScrollPhysics(),
           source: widget.logic.gridSource,
           columns: getColumns(),
+          columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
           onCellTap: (details) {
             if (details.rowColumnIndex.rowIndex == 0) return;
             var baseCoin = widget.logic.gridSource
@@ -126,6 +127,7 @@ class _DataGridViewState extends State<_DataGridView> {
                   '${StoreLogic.to.h5Prefix}/fundingRate/hist?coin=${item.symbol}',
               dynamicTitle: true,
               title: item.symbol,
+              showLoading: true,
             );
           },
           onCellLongPress: (details) {
@@ -154,6 +156,9 @@ class _DataGridViewState extends State<_DataGridView> {
                   await Apis()
                       .postAddFollow(baseCoin: item.symbol ?? '', type: 2);
                   item.follow = true;
+                }
+                if (widget.logic.isFavorite.value) {
+                  widget.logic.onRefresh(showLoading: true);
                 }
               } else {
                 AppNav.toLogin();

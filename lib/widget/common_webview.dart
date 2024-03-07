@@ -108,7 +108,6 @@ class _CommonWebViewState extends State<CommonWebView>
     WidgetsBinding.instance.addObserver(this);
     _themeChangeSubscription =
         AppConst.eventBus.on<ThemeChangeEvent>().listen((event) async {
-      await InAppWebViewController.clearAllCache();
       await CommonWebView.setCookieValue();
       reload();
     });

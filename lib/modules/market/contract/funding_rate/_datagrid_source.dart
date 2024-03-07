@@ -179,7 +179,7 @@ class GridDataSource extends DataGridSource {
             .firstWhereOrNull(
                 (dynamic element) => element.columnName == sortColumn.name)
             ?.value
-            ?.$1 ??
+            ?.value1 ??
         (sortColumn.sortDirection == DataGridSortDirection.ascending
             ? 10
             : -10);
@@ -188,7 +188,7 @@ class GridDataSource extends DataGridSource {
             .firstWhereOrNull(
                 (dynamic element) => element.columnName == sortColumn.name)
             ?.value
-            ?.$1 ??
+            ?.value1 ??
         (sortColumn.sortDirection == DataGridSortDirection.ascending
             ? 10
             : -10);

@@ -91,8 +91,7 @@ class GridDataSource extends DataGridSource {
 
   Widget _rateText(_KeyValue data) {
     if (data.key == 'price') {
-      return Align(
-        alignment: Alignment.centerLeft,
+      return Center(
         child: AnimatedColorText(
           text: data.convertedValue,
           value: data.value ?? 0,
@@ -103,8 +102,7 @@ class GridDataSource extends DataGridSource {
     }
     if (data.isRate) {
       return Container(
-        width: 100,
-        padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 5),
+        padding: const EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
           color: data.value == null || data.value == 0
@@ -120,8 +118,7 @@ class GridDataSource extends DataGridSource {
         ),
       );
     }
-    return Align(
-      alignment: Alignment.centerLeft,
+    return Center(
       child: AutoSizeText(
         data.convertedValue,
         maxLines: 1,
@@ -211,6 +208,6 @@ class _KeyValue {
 
   @override
   String toString() {
-    return handleValue(key ?? '', value);
+    return '  ${handleValue(key ?? ' ', value)}  ';
   }
 }

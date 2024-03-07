@@ -16,41 +16,7 @@ class EditCustomizePage extends StatefulWidget {
 
 class _EditCustomizePageState extends State<EditCustomizePage> {
   final logic = Get.find<ReorderLogic>();
-  final map = StoreLogic.to.contractCoinSortOrder;
-  final _resetMap = {
-    'priceChangeH1': true,
-    'priceChangeH4': false,
-    'priceChangeH6': false,
-    'priceChangeH12': false,
-    'priceChangeH24': true,
-    'openInterestChM5': false,
-    'openInterestChM15': false,
-    'openInterestChM30': false,
-    'openInterestCh1': true,
-    'openInterestCh4': true,
-    'openInterestCh24': false,
-    'openInterestCh2D': false,
-    'openInterestCh3D': false,
-    'openInterestCh7D': false,
-    'liquidationH1': true,
-    'liquidationH4': false,
-    'liquidationH12': false,
-    'liquidationH24': true,
-    'longShortRatio': false,
-    'longShortPerson': false,
-    'lsPersonChg5m': false,
-    'lsPersonChg15m': false,
-    'lsPersonChg30m': false,
-    'lsPersonChg1h': false,
-    'lsPersonChg4h': false,
-    'longShortPosition': false,
-    'longShortAccount': false,
-    'marketCap': true,
-    'marketCapChange24H': false,
-    'circulatingSupply': false,
-    'totalSupply': false,
-    'maxSupply': false
-  };
+  var map = StoreLogic.to.contractCoinSortOrder;
 
   Future<void> updateMap(String key, bool value) async {
     map[key] = value;
@@ -162,7 +128,7 @@ class _EditCustomizePageState extends State<EditCustomizePage> {
                         value: 'longShortAccount'),
                   ],
                 ),
-                Text(sof.marketCap),
+                _text(sof.marketCap),
                 Wrap(
                   spacing: 10,
                   runSpacing: 10,
@@ -193,10 +159,9 @@ class _EditCustomizePageState extends State<EditCustomizePage> {
                     child: FilledButton(
                         style: FilledButton.styleFrom(
                             backgroundColor: Styles.cLine(context)),
-                        onPressed: () {
-                          for (var e in _resetMap.entries) {
-                            map[e.key] = e.value;
-                          }
+                        onPressed: () async {
+                          await StoreLogic.to.removeSpotSortOrder();
+                          map = StoreLogic.to.spotSortOrder;
                           setState(() {});
                         },
                         child: Text(

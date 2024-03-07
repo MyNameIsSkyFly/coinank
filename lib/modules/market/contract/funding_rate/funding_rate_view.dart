@@ -1,7 +1,3 @@
-import 'dart:math';
-
-import 'package:ank_app/entity/marker_funding_rate_entity.dart';
-import 'package:ank_app/modules/market/contract/funding_rate/funding_rate_state.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -30,9 +26,13 @@ class FundingRatePage extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             children: [
               GestureDetector(
-                onTap: () {
+                onTap: () async {
+                  if (!StoreLogic.isLogin) {
+                    AppNav.toLogin();
+                    return;
+                  }
                   logic.isFavorite.toggle();
-                  logic.onRefresh(showLoading: true);
+                  await logic.onRefresh(showLoading: true);
                 },
                 child: Container(
                     height: 32,
@@ -148,149 +148,6 @@ class FundingRatePage extends StatelessWidget {
         }),
       ],
     );
-  }
-}
-
-class _TableView extends StatelessWidget {
-  const _TableView({
-    super.key,
-    required this.state,
-  });
-
-  final FundingRateState state;
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(() {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                margin: const EdgeInsets.only(left: 15),
-                decoration: BoxDecoration(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? Colors.white12
-                            : Colors.black12,
-                        blurRadius: 2,
-                        offset: const Offset(2, 0),
-                      )
-                    ]),
-                width: 100,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.zero,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemExtent: state.isHide.value ? 48 : 58,
-                  itemCount: state.contentDataList.length,
-                  itemBuilder: (cnt, idx) {
-                    MarkerFundingRateEntity item =
-                        state.contentDataList.toList()[idx];
-                    return Row(
-                      children: [
-                        ClipOval(
-                          child: ImageUtil.networkImage(
-                            AppConst.imageHost(item.symbol ?? ''),
-                            width: 24,
-                            height: 24,
-                          ),
-                        ),
-                        const Gap(10),
-                        Expanded(
-                          child: Text(
-                            item.symbol ?? '',
-                            style: Styles.tsBody_14m(context),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ),
-              Expanded(
-                child: SizedBox(
-                  height: max(state.contentDataList.length * 48, 480),
-                  child: ListView.builder(
-                    padding: const EdgeInsets.only(left: 8),
-                    controller: state.contentController,
-                    scrollDirection: Axis.horizontal,
-                    physics: const ClampingScrollPhysics(),
-                    itemCount: state.topList.length,
-                    shrinkWrap: true,
-                    itemBuilder: (cnt, index) {
-                      return SizedBox(
-                        width: 100,
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          padding: EdgeInsets.zero,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemExtent: state.isHide.value ? 48 : 58,
-                          itemCount: state.contentDataList.length,
-                          itemBuilder: (cnt, idx) {
-                            MarkerFundingRateEntity item =
-                                state.contentDataList.toList()[idx];
-                            String mapKey = state.topList.toList()[index];
-                            return Obx(() {
-                              Exchange? exchangeItem = item.cmap![mapKey];
-                              if (!state.isCmap.value) {
-                                exchangeItem = item.umap![mapKey];
-                              }
-                              return Align(
-                                alignment: Alignment.centerLeft,
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      AppUtil.getRate(
-                                          rate: exchangeItem?.fundingRate,
-                                          precision: 4,
-                                          showAdd: false),
-                                      style:
-                                          Styles.tsBody_12m(context).copyWith(
-                                        fontSize: state.isHide.value ? 16 : 14,
-                                        color: AppUtil.getColorWithFundRate(
-                                            exchangeItem?.fundingRate),
-                                      ),
-                                    ),
-                                    if (!state.isHide.value)
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 4),
-                                        child: Text(
-                                          AppUtil.getRate(
-                                              rate: exchangeItem?.estimatedRate,
-                                              precision: 4,
-                                              showAdd: false),
-                                          style: Styles.tsBody_12m(context)
-                                              .copyWith(
-                                            fontSize:
-                                                state.isHide.value ? 16 : 14,
-                                            color: AppUtil.getColorWithFundRate(
-                                                exchangeItem?.estimatedRate),
-                                          ),
-                                        ),
-                                      ),
-                                  ],
-                                ),
-                              );
-                            });
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      );
-    });
   }
 }
 

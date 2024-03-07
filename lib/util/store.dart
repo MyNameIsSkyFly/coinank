@@ -385,9 +385,13 @@ class StoreLogic extends GetxController {
   Map<String, bool> get contractCoinSortOrder {
     final result = _SpUtil()._getString(_SpKeys.contractCoinSortOrder,
         defaultValue:
-            '{"price":true,"fundingRate":true,"turnover24h":true,"openInterest":true,"priceChangeH1":true,"priceChangeH4":false,"priceChangeH6":false,"priceChangeH12":false,"priceChangeH24":true,"openInterestChM5":false,"openInterestChM15":false,"openInterestChM30":false,"openInterestCh1":true,"openInterestCh4":true,"openInterestCh24":false,"openInterestCh2D":false,"openInterestCh3D":false,"openInterestCh7D":false,"liquidationH1":true,"liquidationH4":false,"liquidationH12":false,"liquidationH24":true,"longShortRatio":false,"longShortPerson":false,"lsPersonChg5m":false,"lsPersonChg15m":false,"lsPersonChg30m":false,"lsPersonChg1h":false,"lsPersonChg4h":false,"longShortPosition":false,"longShortAccount":false,"marketCap":true,"marketCapChange24H":false,"circulatingSupply":false,"totalSupply":false,"maxSupply":false}');
+            '{"price":true,"priceChangeH24":true,"openInterest":true,"openInterestCh24":true,"turnover24h":true,"fundingRate":true,"priceChangeH1":false,"priceChangeH4":false,"priceChangeH6":false,"priceChangeH12":false,"openInterestChM5":false,"openInterestChM15":false,"openInterestChM30":false,"openInterestCh1":false,"openInterestCh4":false,"openInterestCh2D":false,"openInterestCh3D":false,"openInterestCh7D":false,"liquidationH1":false,"liquidationH4":false,"liquidationH12":false,"liquidationH24":false,"longShortRatio":false,"longShortPerson":false,"lsPersonChg5m":false,"lsPersonChg15m":false,"lsPersonChg30m":false,"lsPersonChg1h":false,"lsPersonChg4h":false,"longShortPosition":false,"longShortAccount":false,"marketCap":true,"marketCapChange24H":false,"circulatingSupply":false,"totalSupply":false,"maxSupply":false}');
     return jsonDecode(result).cast<String, bool>();
-  } //contractCoinSortOrder
+  }
+
+  Future<bool> removeContractCoinSortOrder() {
+    return _SpUtil()._remove(_SpKeys.contractCoinSortOrder);
+  }
 
   Future<bool> saveSpotSortOrder(Map<String, bool> sortOrder) {
     return _SpUtil()._saveString(_SpKeys.spotSortOrder, jsonEncode(sortOrder));
@@ -396,8 +400,12 @@ class StoreLogic extends GetxController {
   Map<String, bool> get spotSortOrder {
     final result = _SpUtil()._getString(_SpKeys.spotSortOrder,
         defaultValue:
-            '{"price":true,"turnover24h":true,"turnoverChg24h":true,"priceChangeM5":false,"priceChangeM15":false,"priceChangeM30":false,"priceChangeH1":true,"priceChangeH4":true,"priceChangeH8":true,"priceChangeH12":false,"priceChangeH24":true,"marketCap":true,"marketCapChange24H":false,"circulatingSupply":false,"totalSupply":true,"maxSupply":false}');
+            '{"price":true,"priceChangeH24":true,"turnover24h":true,"turnoverChg24h":true,"priceChangeM5":false,"priceChangeM15":false,"priceChangeM30":false,"priceChangeH1":true,"priceChangeH4":true,"priceChangeH8":true,"priceChangeH12":false,"marketCap":true,"marketCapChange24H":false,"circulatingSupply":false,"totalSupply":true,"maxSupply":false}');
     return jsonDecode(result).cast<String, bool>();
+  }
+
+  Future<bool> removeSpotSortOrder() {
+    return _SpUtil()._remove(_SpKeys.spotSortOrder);
   }
 }
 

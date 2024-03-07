@@ -46,7 +46,7 @@ class _DataGridViewState extends State<_DataGridView> {
           controller: dataGridCtrl,
           gridLinesVisibility: GridLinesVisibility.none,
           headerGridLinesVisibility: GridLinesVisibility.none,
-          columnSizer: CustomGridColumnSizer(),
+          columnSizer: MarketDataGridSizer(),
           allowSorting: true,
           allowTriStateSorting: true,
           columnWidthMode: ColumnWidthMode.auto,
@@ -54,6 +54,7 @@ class _DataGridViewState extends State<_DataGridView> {
           horizontalScrollPhysics: const ClampingScrollPhysics(),
           source: widget.logic.gridSource,
           columns: widget.logic.columns.value,
+          columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
           onCellTap: (details) {
             if (details.rowColumnIndex.rowIndex == 0) return;
             var baseCoin = widget.logic.gridSource
@@ -165,29 +166,5 @@ class _SortIcon extends StatelessWidget {
       }
     }
     return icon ?? Image.asset(Assets.commonIconSortN, width: 9, height: 12);
-  }
-}
-
-class CustomGridColumnSizer extends ColumnSizer {
-  @override
-  double computeHeaderCellWidth(GridColumn column, TextStyle style) {
-    return super.computeHeaderCellWidth(column, style);
-  }
-
-  @override
-  double computeCellWidth(GridColumn column, DataGridRow row, Object? cellValue,
-      TextStyle textStyle) {
-    return super.computeCellWidth(column, row, cellValue, textStyle);
-  }
-
-  @override
-  double computeHeaderCellHeight(GridColumn column, TextStyle textStyle) {
-    return super.computeHeaderCellHeight(column, textStyle);
-  }
-
-  @override
-  double computeCellHeight(GridColumn column, DataGridRow row,
-      Object? cellValue, TextStyle textStyle) {
-    return super.computeCellHeight(column, row, cellValue, textStyle);
   }
 }

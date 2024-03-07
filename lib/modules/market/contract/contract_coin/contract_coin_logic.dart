@@ -275,8 +275,8 @@ class ContractCoinLogic extends FullLifeCycleController
       }
     }
     Loading.dismiss();
-    if (state.isLoading.value) {
-      state.isLoading.value = false;
+    if (state.isLoadingF.value) {
+      state.isLoadingF.value = false;
     }
     if (!StoreLogic.isLogin) {
       state.favoriteData.assignAll(data?.list?.where((element) =>
@@ -334,19 +334,23 @@ class ContractCoinLogic extends FullLifeCycleController
   @override
   void onReady() {
     super.onReady();
-    onRefresh();
-    onRefreshF();
+    if (!StoreLogic.isLogin) onRefreshF();
   }
 
+  bool firstLoginEvent = true;
   @override
   void onInit() {
     super.onInit();
     _startTimer();
-    if (StoreLogic.isLogin) {
-      loginSubscription = AppConst.eventBus.on<LoginStatusChangeEvent>().listen(
-            (event) => onRefresh(),
-          );
-    }
+    loginSubscription = AppConst.eventBus.on<LoginStatusChangeEvent>().listen(
+      (event) {
+        if (!firstLoginEvent) {
+          onRefresh();
+        }
+        firstLoginEvent = false;
+        onRefreshF();
+      },
+    );
     getColumns(Get.context!);
   }
 

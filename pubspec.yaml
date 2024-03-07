@@ -64,7 +64,6 @@ dependencies:
     git:
       url: https://github.com/elliotkhd/flutter_screenshot_callback.git
       ref: d49ac805
-  photo_manager: ^3.0.0-dev.5
   awesome_dio_interceptor: ^1.2.0
   flutter_native_splash: ^2.3.10
   screenshot_ntv: ^1.0.2

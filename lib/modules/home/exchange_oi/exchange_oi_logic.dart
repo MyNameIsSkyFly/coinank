@@ -96,6 +96,9 @@ class ExchangeOiLogic extends GetxController {
   Future<void> loadData() async {
     final result = await Apis()
         .getExchangeIOList(baseCoin: menuParamEntity.value.baseCoin);
+    result
+        ?.where((element) => element.exchangeName == 'Okex')
+        .forEach((e) => e.exchangeName = 'Okx');
     oiList.assignAll(result ?? []);
   }
 
@@ -153,7 +156,7 @@ setChartData($jsonData, "$platformString", "openInterest", ${jsonEncode(options)
   }
 
   Future<String?> openSelector(List<String> items) async {
-    final result = await Get.bottomSheet(
+    var result = await Get.bottomSheet(
       const CustomBottomSheetPage(),
       isScrollControlled: true,
       isDismissible: true,
@@ -161,6 +164,7 @@ setChartData($jsonData, "$platformString", "openInterest", ${jsonEncode(options)
         arguments: {'title': '', 'list': items, 'current': ''},
       ),
     );
+    result = result == 'Okx' ? 'Okex' : result;
     return result as String?;
   }
 

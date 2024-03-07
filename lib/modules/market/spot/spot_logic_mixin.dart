@@ -15,53 +15,48 @@ mixin SpotLogicMixin {
     sortOrderMap = StoreLogic.to.spotSortOrder.entries
         .where((element) => element.value == true)
         .toList();
-    var grids = [
-      GridColumn(
-        columnName: '0',
-        width: 100,
-        allowSorting: false,
-        label: Builder(builder: (context) {
-          return InkWell(
-            onTap: () => Get.toNamed(ReorderSpotPage.routeName),
-            child: Row(
-              children: [
-                const Gap(15),
-                Image.asset(
-                  Assets.commonIcPuzzlePiece,
-                  width: 12,
-                  height: 12,
-                  color: Styles.cBody(context),
+    List<GridColumn> grids() => [
+          GridColumn(
+            columnName: '0',
+            width: 100,
+            allowSorting: false,
+            label: Builder(builder: (context) {
+              return InkWell(
+                onTap: () => Get.toNamed(ReorderSpotPage.routeName),
+                child: Row(
+                  children: [
+                    const Gap(15),
+                    Image.asset(
+                      Assets.commonIcPuzzlePiece,
+                      width: 12,
+                      height: 12,
+                      color: Styles.cBody(context),
+                    ),
+                    const Gap(4),
+                    Expanded(
+                      child: Text(
+                        S.of(context).customList,
+                        style: Styles.tsBody_12m(context),
+                      ),
+                    ),
+                  ],
                 ),
-                const Gap(4),
-                Expanded(
-                  child: Text(
-                    S.of(context).customList,
-                    style: Styles.tsBody_12m(context),
-                  ),
-                ),
-              ],
-            ),
-          );
-        }),
-      ),
-      ...sortOrderMap.mapIndexed(
-          (index, e) => _gridColumn(context, index, textMap(e.key))),
-    ];
-    columns.assignAll(grids);
-    columnsF.assignAll(grids);
+              );
+            }),
+          ),
+          ...sortOrderMap.mapIndexed(
+              (index, e) => _gridColumn(context, index, textMap(e.key))),
+        ];
+    columns.assignAll(grids());
+    columnsF.assignAll(grids());
   }
 
   GridColumn _gridColumn(BuildContext context, int index, String text) {
     return GridColumn(
         columnName: text,
-        maximumWidth: text == S.current.s_price ? 270 : double.nan,
-        minimumWidth: text == S.current.s_price ? 80 : double.nan,
-        // maximumWidth: 120,
-        autoFitPadding: const EdgeInsets.only(right: 10),
-        filterIconPadding: EdgeInsets.zero,
+        autoFitPadding: EdgeInsets.zero,
         label: Builder(builder: (context) {
-          return Padding(
-            padding: const EdgeInsets.only(left: 8),
+          return Center(
             child: Text(
               text,
               style: Styles.tsSub_12m(context),

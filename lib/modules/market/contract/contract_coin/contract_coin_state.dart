@@ -38,6 +38,7 @@ class ContractCoinState {
   RxBool isScrollDown = true.obs;
   RxBool isScrollDownF = true.obs;
   RxBool isLoading = true.obs;
+  RxBool isLoadingF = true.obs;
 
   final favoriteOiSort = Rx(SortStatus.down);
   final favoriteOiChangeSort = Rx(SortStatus.normal);

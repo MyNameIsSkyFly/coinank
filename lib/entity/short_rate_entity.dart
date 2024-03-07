@@ -5,7 +5,7 @@ part 'short_rate_entity.g.dart';
 @JsonSerializable(createToJson: true)
 class ShortRateEntity {
   final String? baseCoin;
-  final String? exchangeName;
+  String? exchangeName;
   final String? interval;
   final double? sellTradeTurnover;
   final double? buyTradeTurnover;
@@ -15,7 +15,7 @@ class ShortRateEntity {
   final List<double>? shortRatios;
   final List<double>? tss;
 
-  const ShortRateEntity(
+  ShortRateEntity(
     this.longRatios,
     this.shortRatios,
     this.tss, {

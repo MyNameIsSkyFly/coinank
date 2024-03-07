@@ -16,22 +16,7 @@ class EditCustomizeSpotPage extends StatefulWidget {
 
 class _EditCustomizeSpotPageState extends State<EditCustomizeSpotPage> {
   final logic = Get.find<ReorderSpotLogic>();
-  final map = StoreLogic.to.spotSortOrder;
-  final _resetMap = {
-    'priceChangeM5': false,
-    'priceChangeM15': false,
-    'priceChangeM30': false,
-    'priceChangeH1': true,
-    'priceChangeH4': true,
-    'priceChangeH8': true,
-    'priceChangeH12': false,
-    'priceChangeH24': true,
-    'marketCap': true,
-    'marketCapChange24H': false,
-    'circulatingSupply': false,
-    'totalSupply': true,
-    'maxSupply': false
-  };
+  var map = StoreLogic.to.spotSortOrder;
 
   Future<void> updateMap(String key, bool value) async {
     map[key] = value;
@@ -102,10 +87,9 @@ class _EditCustomizeSpotPageState extends State<EditCustomizeSpotPage> {
                     child: FilledButton(
                         style: FilledButton.styleFrom(
                             backgroundColor: Styles.cLine(context)),
-                        onPressed: () {
-                          for (var e in _resetMap.entries) {
-                            map[e.key] = e.value;
-                          }
+                        onPressed: () async {
+                          await StoreLogic.to.removeSpotSortOrder();
+                          map = StoreLogic.to.spotSortOrder;
                           setState(() {});
                         },
                         child: Text(

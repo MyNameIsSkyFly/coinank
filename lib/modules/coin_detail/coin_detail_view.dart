@@ -24,13 +24,16 @@ class _CoinDetailPageState extends State<CoinDetailPage>
   @override
   void initState() {
     super.initState();
-    logic.tabController =
-        TabController(length: 4, vsync: this, animationDuration: Duration.zero);
-      logic.tabController = TabController(
-        length:
-            2 + (logic.supportContract ? 1 : 0) + (logic.supportSpot ? 1 : 0),
-        vsync: this,
-        animationDuration: Duration.zero);
+    logic.tabController = TabController(
+      length: 2 + (logic.supportContract ? 1 : 0) + (logic.supportSpot ? 1 : 0),
+      vsync: this,
+      animationDuration: Duration.zero,
+      initialIndex: logic.toSpot
+          ? logic.supportContract
+              ? 1
+              : 0
+          : 0,
+    );
   }
 
   @override

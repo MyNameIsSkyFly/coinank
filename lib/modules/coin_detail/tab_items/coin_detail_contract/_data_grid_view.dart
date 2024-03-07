@@ -196,6 +196,8 @@ class _DataGridViewState extends State<_DataGridView> {
                   frozenColumnsCount: 1,
                   horizontalScrollPhysics: const ClampingScrollPhysics(),
                   source: widget.logic.gridSource,
+                  columnWidthCalculationRange:
+                      ColumnWidthCalculationRange.allRows,
                   columns: getColumns(context)),
             ),
           ],

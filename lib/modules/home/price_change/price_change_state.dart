@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,7 @@ class PriceChangeState {
   PriceChangeState() {
     final arg = Get.arguments;
     isPrice = arg?['isPrice'] as bool? ?? false;
+    sortBy = isPrice ? 'priceChangeH24' : 'openInterestCh24';
     if (isPrice) {
       topList = [
         '${S.current.s_price}(\$)',

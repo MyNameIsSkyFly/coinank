@@ -50,7 +50,9 @@ class AppNav {
     Get.toNamed(AboutPage.routeName);
   }
 
-  static Future toCoinDetail(MarkerTickerEntity coin) async {
-    Get.toNamed(CoinDetailPage.routeName, arguments: {'coin': coin});
+  static Future toCoinDetail(MarkerTickerEntity coin,
+      {bool toSpot = false}) async {
+    Get.toNamed(CoinDetailPage.routeName,
+        arguments: {'coin': coin, 'toSpot': toSpot});
   }
 }

@@ -4,6 +4,7 @@ import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/animated_color_text.dart';
 import 'package:ank_app/widget/rate_with_sign.dart';
 import 'package:collection/collection.dart';
+import 'package:decimal/decimal.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -76,11 +77,13 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
                   _row(
                       title: S.of(context).allTimeHigh,
                       value: detail.value?.marketData?.ath?.usd,
-                      showDollar: true),
+                      showDollar: true,
+                      needFormat: false),
                   _row(
                       title: S.of(context).allTimeLow,
                       value: detail.value?.marketData?.atl?.usd,
-                      showDollar: true),
+                      showDollar: true,
+                      needFormat: false),
                   _row(
                     title: S.of(context).marketCap,
                     value: detail.value?.marketData?.marketCap?.usd,
@@ -302,6 +305,7 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
       {required String title,
       required double? value,
       bool showDollar = false,
+      bool needFormat = true,
       String? hintText}) {
     return Padding(
       padding: const EdgeInsets.only(top: 15),
@@ -346,7 +350,7 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
           Expanded(
               flex: 15,
               child: Text(
-                ('${showDollar ? '\$' : ''}${formatter.format(value ?? 0)}'),
+                ('${showDollar ? '\$' : ''}${needFormat ? formatter.format(value ?? 0) : (Decimal.tryParse('$value') ?? 0).toString()}'),
                 style: Styles.tsBody_14(context),
               )),
         ],

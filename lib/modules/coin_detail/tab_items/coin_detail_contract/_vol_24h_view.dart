@@ -50,14 +50,14 @@ setChartData($jsonData, "$platformString", "volChart", ${jsonEncode(options)});
   }
 
   Future<String?> openSelector(List<String> items) async {
-    final result = await showCupertinoModalPopup(
+    var result = await showCupertinoModalPopup(
       context: context,
       builder: (context) =>
           SelectorSheetWithInterceptor(title: '', dataList: items),
       barrierDismissible: true,
       barrierColor: Colors.black26,
     );
-
+    result = result == 'Okx' ? 'Okex' : result;
     return result as String?;
   }
 
@@ -84,7 +84,7 @@ setChartData($jsonData, "$platformString", "volChart", ${jsonEncode(options)});
   }
 
   final exchangeItems = const [
-    'ALL', 'Binance', 'Okex', 'Bybit', 'CME', 'Bitget', 'Bitmex', //end
+    'ALL', 'Binance', 'Okx', 'Bybit', 'CME', 'Bitget', 'Bitmex', //end
     'Bitfinex', 'Gate', 'Deribit', 'Huobi', 'Kraken' //end
   ];
   final intervalItems = const ['15m', '30m', '1h', '2h', '4h', '12h', '1d'];
