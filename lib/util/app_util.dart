@@ -307,7 +307,7 @@ class AppUtil {
     Get.dialog(ShareDialog(image: image), useSafeArea: false);
   }
 
-  static String compressNumberWithLotsOfZeros(double numberString) {
+  static String compressNumberWithLotsOfZeros(double original) {
     int countLeadingZeros(String str) {
       int count = 0;
       for (int i = 0; i < str.length; i++) {
@@ -319,7 +319,7 @@ class AppUtil {
       return count;
     }
 
-    final number = Decimal.parse('$numberString');
+    final number = Decimal.parse('$original');
     var split = number.toString().split('.');
     final integerPart = split[0];
     final decimalPart = split.elementAtOrNull(1);

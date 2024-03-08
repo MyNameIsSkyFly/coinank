@@ -2,51 +2,72 @@ import 'dart:async';
 
 import 'package:ank_app/entity/body/futures_big_data_body.dart';
 import 'package:ank_app/entity/futures_big_data_entity.dart';
+import 'package:ank_app/modules/home/price_change/_grid_source.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:ank_app/widget/triple_state_sort_button.dart';
+import 'package:collection/collection.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import 'price_change_state.dart';
 
 class PriceChangeLogic extends FullLifeCycleController with FullLifeCycleMixin {
   final PriceChangeState state = PriceChangeState();
+  late final gridSource = PriceChgGridSource(list: []);
+
+  final columns = RxList<GridColumn>();
+
+  void getColumns() {
+    final items = [
+      GridColumn(
+          columnName: 'Coin',
+          width: 120,
+          autoFitPadding: EdgeInsets.zero,
+          label: Builder(builder: (context) {
+            return Container(
+              margin: const EdgeInsets.symmetric(horizontal: 15),
+              width: 100,
+              child: Center(
+                child: Text(
+                  'Coin',
+                  style: Styles.tsSub_14(context),
+                ),
+              ),
+            );
+          })),
+      ...state.topList.mapIndexed((index, e) => GridColumn(
+            columnName: e,
+            autoFitPadding: const EdgeInsets.only(right: 6),
+            label: Builder(builder: (context) {
+              return Center(
+                  child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(
+                      child: Text(
+                    e,
+                    style: Styles.tsBody_12(context),
+                    textAlign: TextAlign.center,
+                  )),
+                  const Gap(4),
+                  TripleStateSortIcon(
+                      isAsc: state.sortByList[index] == state.sortBy
+                          ? state.sortType == 'ascend'
+                              ? true
+                              : false
+                          : null)
+                ],
+              ));
+            }),
+          ))
+    ];
+    columns.assignAll(items);
+  }
 
   Future<void> tapSort(int idx) async {
-    if (state.isPrice) {
-      switch (idx) {
-        case 0:
-          state.sortBy = 'price';
-        case 1:
-          state.sortBy = 'priceChangeM5';
-        case 2:
-          state.sortBy = 'priceChangeM15';
-        case 3:
-          state.sortBy = 'priceChangeM30';
-        case 4:
-          state.sortBy = 'priceChangeH1';
-        case 5:
-          state.sortBy = 'priceChangeH4';
-        case 6:
-          state.sortBy = 'priceChangeH24';
-        default:
-          break;
-      }
-    } else {
-      switch (idx) {
-        case 0:
-          state.sortBy = 'price';
-        case 1:
-          state.sortBy = 'openInterest';
-        case 2:
-          state.sortBy = 'openInterestCh1';
-        case 3:
-          state.sortBy = 'openInterestCh4';
-        case 4:
-          state.sortBy = 'openInterestCh24';
-        default:
-          break;
-      }
-    }
+    state.sortBy = state.sortByList[idx];
     if (state.statusList[idx] == SortStatus.normal) {
       state.statusList[idx] = SortStatus.down;
       state.sortType = 'descend';
@@ -63,6 +84,7 @@ class PriceChangeLogic extends FullLifeCycleController with FullLifeCycleMixin {
     statusList[idx] = state.statusList[idx];
     state.statusList.value = List.from(statusList);
     await onRefresh(true);
+    getColumns();
   }
 
   void tapItem(MarkerTickerEntity item) {
@@ -93,8 +115,8 @@ class PriceChangeLogic extends FullLifeCycleController with FullLifeCycleMixin {
       sortBy: state.sortBy,
       sortType: state.sortType,
     );
-    state.originalData = data?.list;
-    state.contentDataList.value = List.from(state.originalData ?? []);
+    gridSource.list.assignAll(data?.list ?? []);
+    gridSource.buildDataGridRows();
   }
 
   Future<void> getBigData() async {
@@ -105,8 +127,8 @@ class PriceChangeLogic extends FullLifeCycleController with FullLifeCycleMixin {
       sortType: state.sortType,
       // sort: 'priceChangeH24',
     );
-    state.originalData = data?.list;
-    state.contentDataList.value = List.from(state.originalData ?? []);
+    gridSource.list.assignAll(data?.list ?? []);
+    gridSource.buildDataGridRows();
   }
 
   _startTimer() async {
@@ -143,6 +165,7 @@ class PriceChangeLogic extends FullLifeCycleController with FullLifeCycleMixin {
     state.titleController.addListener(_updateContent);
     state.contentController.addListener(_updateTitle);
     _startTimer();
+    getColumns();
   }
 
   @override

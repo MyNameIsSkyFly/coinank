@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ank_app/entity/event/event_coin_marked.dart';
 import 'package:ank_app/entity/event/theme_event.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/market_datagrid_sizer.dart';
@@ -26,6 +27,23 @@ class FavoriteCoinPage extends StatefulWidget {
 class _FavoriteCoinPageState extends State<FavoriteCoinPage> {
   final logic = Get.put(ContractCoinLogic());
   final state = Get.find<ContractCoinLogic>().state;
+  StreamSubscription? _refreshSubscription;
+
+  @override
+  void initState() {
+    _refreshSubscription =
+        AppConst.eventBus.on<EventCoinMarked>().listen((event) {
+      if (event.isSpot) return;
+      logic.onRefreshF();
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _refreshSubscription?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

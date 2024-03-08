@@ -23,7 +23,7 @@
     <script src="./numeral.min.js"></script>
     <script src="./moment.min.js"></script>
     <!-- <script src="./data.js"></script> -->
-    <script src="./api2.js"></script>
+    <script src="./api3.js"></script>
 
 
     <script type="text/javascript">
@@ -480,6 +480,7 @@
 
             dataParams = getDataParams(dataParams);
 
+            myChart.showLoading();
             option = await buildKlineChart(dataParams, dataOptions);
 
 
@@ -523,7 +524,7 @@
         //     "kline", 
         //     {
         //     theme: "light",
-        //     locale:"zh"
+        //     locale:"en"
         // })
 
         // setChartData(sourceData, "android", "aggLiqMap", {

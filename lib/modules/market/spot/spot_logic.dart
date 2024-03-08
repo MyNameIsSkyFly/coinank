@@ -1,17 +1,24 @@
+import 'dart:async';
+
 import 'package:ank_app/entity/futures_big_data_entity.dart';
+import 'package:ank_app/modules/main/main_logic.dart';
+import 'package:ank_app/modules/market/market_logic.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '_datagrid_source.dart';
+import '_f_datagrid_source.dart';
 import 'spot_logic_mixin.dart';
 
 class SpotLogic extends GetxController with SpotLogicMixin {
   late final gridSource = GridDataSource([]);
   final data = RxList<MarkerTickerEntity>();
 
-  late final gridSourceF = GridDataSource([]);
+  late final gridSourceF = FGridDataSource([]);
   final dataF = RxList<MarkerTickerEntity>();
   RxBool isLoading = true.obs;
+  late TabController tabCtrl;
   final fixedCoin = [
     //line
     'BTC', 'ETH', 'SHIB', 'FDUSD', 'SOL', 'DOGE', 'XRP', 'USDC'
@@ -23,6 +30,7 @@ class SpotLogic extends GetxController with SpotLogicMixin {
   @override
   void onInit() {
     getColumns(Get.context!);
+    _startTimer();
     super.onInit();
   }
 
@@ -60,6 +68,24 @@ class SpotLogic extends GetxController with SpotLogicMixin {
     columns.refresh();
   }
 
+  Timer? pollingTimer;
+
+  void _startTimer() async {
+    pollingTimer = Timer.periodic(const Duration(seconds: 7), (timer) async {
+      // if (kDebugMode) return;
+      if (Get.find<MarketLogic>().tabCtrl.index != 1) return;
+      var index = tabCtrl.index;
+      if (Get.find<MainLogic>().state.selectedIndex.value == 1 &&
+          Get.currentRoute == '/') {
+        if (index == 0) {
+          await getMarketDataF();
+        } else if (index == 1) {
+          await getMarketData();
+        }
+      }
+    });
+  }
+
   Future<void> tapCollect(MarkerTickerEntity item) async {
     if (!StoreLogic.isLogin) {
       if (item.follow == true) {
@@ -73,11 +99,11 @@ class SpotLogic extends GetxController with SpotLogicMixin {
       }
     } else {
       if (item.follow == true) {
-        await Apis().getDelFollow(baseCoin: item.baseCoin!);
+        await Apis().getDelFollow(baseCoin: item.baseCoin!, type: 4);
         AppUtil.showToast(S.current.removedFromFavorites);
         item.follow = false;
       } else {
-        await Apis().getAddFollow(baseCoin: item.baseCoin!);
+        await Apis().getAddFollow(baseCoin: item.baseCoin!, type: 4);
         AppUtil.showToast(S.current.addedToFavorites);
         item.follow = true;
       }

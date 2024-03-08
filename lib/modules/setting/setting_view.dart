@@ -91,16 +91,24 @@ class _SettingPageState extends State<SettingPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            Text(S.of(context).inviteScore,
-                                style: Styles.tsBody_14(context).semibold),
-                            Text('${StoreLogic.to.loginUserInfo?.score ?? 0}',
-                                style: Styles.tsMain_14.semibold),
-                            const Gap(10),
-                            const Icon(Icons.keyboard_arrow_right_rounded,
-                                size: 18),
-                          ],
+                        GestureDetector(
+                          onTap: () => AppNav.openWebUrl(
+                            url: 'https://coinank.com/users/referral',
+                            dynamicTitle: true,
+                            title: '',
+                            showLoading: true,
+                          ),
+                          child: Row(
+                            children: [
+                              Text(S.of(context).inviteScore,
+                                  style: Styles.tsBody_14(context).semibold),
+                              Text('${StoreLogic.to.loginUserInfo?.score ?? 0}',
+                                  style: Styles.tsMain_14.semibold),
+                              const Gap(10),
+                              const Icon(Icons.keyboard_arrow_right_rounded,
+                                  size: 18),
+                            ],
+                          ),
                         ),
                         const Gap(5),
                         GestureDetector(

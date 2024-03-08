@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ank_app/entity/event/event_coin_marked.dart';
 import 'package:ank_app/entity/event/theme_event.dart';
 import 'package:ank_app/modules/market/spot/spot_logic.dart';
 import 'package:ank_app/res/export.dart';
@@ -21,45 +22,51 @@ class SpotPage extends StatefulWidget {
   State<SpotPage> createState() => _SpotPageState();
 }
 
-class _SpotPageState extends State<SpotPage> {
+class _SpotPageState extends State<SpotPage>
+    with SingleTickerProviderStateMixin {
   final logic = Get.put(SpotLogic());
 
   @override
+  void initState() {
+    logic.tabCtrl = TabController(length: 2, vsync: this);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Column(
-        children: [
-          TabBar(
-            tabAlignment: TabAlignment.start,
-            isScrollable: true,
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            labelPadding: const EdgeInsets.symmetric(horizontal: 10),
-            labelColor: Theme.of(context).textTheme.bodyMedium?.color,
-            labelStyle: Styles.tsBody_16m(context),
-            unselectedLabelStyle: Styles.tsBody_16m(context),
-            unselectedLabelColor: Theme.of(context).textTheme.bodySmall?.color,
-            indicatorSize: TabBarIndicatorSize.label,
-            indicator: const CustomUnderlineTabIndicator(),
-            dividerColor: Theme.of(context).dividerTheme.color,
-            tabs: [
-              Tab(text: S.of(context).s_favorite),
-              Tab(text: S.of(context).s_crypto_coin_short),
+    return Column(
+      children: [
+        TabBar(
+          controller: logic.tabCtrl,
+          tabAlignment: TabAlignment.start,
+          isScrollable: true,
+          padding: const EdgeInsets.symmetric(horizontal: 5),
+          labelPadding: const EdgeInsets.symmetric(horizontal: 10),
+          labelColor: Theme.of(context).textTheme.bodyMedium?.color,
+          labelStyle: Styles.tsBody_16m(context),
+          unselectedLabelStyle: Styles.tsBody_16m(context),
+          unselectedLabelColor: Theme.of(context).textTheme.bodySmall?.color,
+          indicatorSize: TabBarIndicatorSize.label,
+          indicator: const CustomUnderlineTabIndicator(),
+          dividerColor: Theme.of(context).dividerTheme.color,
+          tabs: [
+            Tab(text: S.of(context).s_favorite),
+            Tab(text: S.of(context).s_crypto_coin_short),
+          ],
+        ),
+        Expanded(
+          child: TabBarView(
+            controller: logic.tabCtrl,
+            physics: const NeverScrollableScrollPhysics(),
+            children: [
+              AliveWidget(
+                child: _FavoriteView(logic: logic),
+              ),
+              AliveWidget(child: _DataGridView(logic: logic)),
             ],
           ),
-          Expanded(
-            child: TabBarView(
-              physics: const NeverScrollableScrollPhysics(),
-              children: [
-                AliveWidget(
-                  child: _FavoriteView(logic: logic),
-                ),
-                AliveWidget(child: _DataGridView(logic: logic)),
-              ],
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

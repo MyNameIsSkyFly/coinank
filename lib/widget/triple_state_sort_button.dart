@@ -61,3 +61,35 @@ class TripleStateSortButton extends StatelessWidget {
     );
   }
 }
+
+class TripleStateSortIcon extends StatelessWidget {
+  const TripleStateSortIcon(
+      {super.key, required this.isAsc, this.twoState = false});
+
+  final bool? isAsc;
+  final bool twoState;
+
+  @override
+  Widget build(BuildContext context) {
+    return Transform.scale(
+      scaleY: 0.7,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            CupertinoIcons.triangle_fill,
+            size: 7,
+            color: isAsc == true ? Styles.cMain : Styles.cSub(context),
+          ),
+          Transform.rotate(
+              angle: 3.1415926,
+              child: Icon(
+                CupertinoIcons.triangle_fill,
+                size: 7,
+                color: isAsc == false ? Styles.cMain : Styles.cSub(context),
+              )),
+        ],
+      ),
+    );
+  }
+}

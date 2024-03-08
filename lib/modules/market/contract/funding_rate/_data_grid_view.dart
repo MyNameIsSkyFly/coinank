@@ -124,7 +124,7 @@ class _DataGridViewState extends State<_DataGridView> {
             if (item == null) return;
             AppNav.openWebUrl(
               url:
-                  '${StoreLogic.to.h5Prefix}/fundingRate/hist?coin=${item.symbol}',
+                  '${Urls.h5Prefix}/${Urls.webLanguage}fundingRate/hist?coin=${item.symbol}',
               dynamicTitle: true,
               title: item.symbol,
               showLoading: true,

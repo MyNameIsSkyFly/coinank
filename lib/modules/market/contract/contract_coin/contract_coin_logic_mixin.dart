@@ -54,11 +54,13 @@ mixin ContractCoinLogicMixin {
   GridColumn _gridColumn(BuildContext context, int index, String text) {
     return GridColumn(
         columnName: text,
+        maximumWidth: 140,
         autoFitPadding: EdgeInsets.zero,
         label: Builder(builder: (context) {
           return Center(
             child: Text(
               text,
+              textAlign: TextAlign.center,
               style: Styles.tsSub_12m(context),
             ),
           );

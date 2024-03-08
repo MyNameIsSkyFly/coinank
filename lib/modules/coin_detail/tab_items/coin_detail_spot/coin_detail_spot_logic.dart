@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:ank_app/entity/contract_market_entity.dart';
+import 'package:ank_app/entity/event/event_coin_marked.dart';
 import 'package:ank_app/modules/main/main_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:get/get.dart';
@@ -43,9 +44,9 @@ class CoinDetailSpotLogic extends GetxController {
   Future<void> toggleMarked() async {
     if (!StoreLogic.isLogin) {
       if (marked.value) {
-        StoreLogic.to.removeFavoriteSpot(baseCoin);
+        await StoreLogic.to.removeFavoriteSpot(baseCoin);
       } else {
-        StoreLogic.to.saveFavoriteSpot(baseCoin);
+        await StoreLogic.to.saveFavoriteSpot(baseCoin);
       }
     } else {
       if (marked.value) {
@@ -54,6 +55,7 @@ class CoinDetailSpotLogic extends GetxController {
         await Apis().getAddFollow(baseCoin: baseCoin, type: 4);
       }
     }
+    AppConst.eventBus.fire(EventCoinMarked(isSpot: true));
     marked.toggle();
   }
 

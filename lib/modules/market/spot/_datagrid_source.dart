@@ -101,20 +101,21 @@ class GridDataSource extends DataGridSource {
       );
     }
     if (data.isRate) {
-      return Container(
-        padding: const EdgeInsets.symmetric(vertical: 5),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4),
-          color: data.value == null || data.value == 0
-              ? Styles.cUp(context)
-              : data.value! > 0
-                  ? Styles.cUp(context)
-                  : Styles.cDown(context),
-        ),
-        alignment: Alignment.center,
-        child: Text(
-          data.convertedValue,
-          style: const TextStyle(color: Colors.white, fontSize: 12),
+      return Center(
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 5),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4),
+            color: data.value == null || data.value == 0
+                ? Styles.cUp(context)
+                : data.value! > 0
+                    ? Styles.cUp(context)
+                    : Styles.cDown(context),
+          ),
+          child: Text(
+            data.toString(),
+            style: const TextStyle(color: Colors.white, fontSize: 12),
+          ),
         ),
       );
     }

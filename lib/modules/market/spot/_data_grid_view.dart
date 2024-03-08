@@ -14,8 +14,16 @@ class _DataGridView extends StatefulWidget {
 class _DataGridViewState extends State<_DataGridView> {
   late List<GridColumn> columns;
 
-  StreamSubscription? _localeChangeSubscription;
   final dataGridCtrl = DataGridController();
+  StreamSubscription? _localeChangeSubscription;
+  StreamSubscription? _refreshSubscription;
+
+  @override
+  void dispose() {
+    _refreshSubscription?.cancel();
+    _localeChangeSubscription?.cancel();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -25,13 +33,12 @@ class _DataGridViewState extends State<_DataGridView> {
       widget.logic.getColumns(context);
       widget.logic.gridSource.buildDataGridRows();
     });
+    _refreshSubscription =
+        AppConst.eventBus.on<EventCoinMarked>().listen((event) {
+      if (event.isSpot) return;
+      widget.logic.getMarketDataF();
+    });
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _localeChangeSubscription?.cancel();
-    super.dispose();
   }
 
   @override

@@ -26,6 +26,7 @@ class PriceChangeState {
   bool isRefresh = false;
   bool appVisible = true;
   RxBool isLoading = true.obs;
+  var sortByList = [];
   PriceChangeState() {
     final arg = Get.arguments;
     isPrice = arg?['isPrice'] as bool? ?? false;
@@ -33,22 +34,39 @@ class PriceChangeState {
     if (isPrice) {
       topList = [
         '${S.current.s_price}(\$)',
+        '${S.current.s_price_chg}(24h)',
         '${S.current.s_price_chg}(5m)',
         '${S.current.s_price_chg}(15m)',
         '${S.current.s_price_chg}(30m)',
         '${S.current.s_price_chg}(1h)',
         '${S.current.s_price_chg}(4h)',
-        '${S.current.s_price_chg}(24h)',
       ];
     } else {
       topList = [
         '${S.current.s_price}(\$)',
+        '${S.current.s_oi_chg}(24H)',
         '${S.current.s_oi_vol}(\$)',
         '${S.current.s_oi_chg}(1H)',
         '${S.current.s_oi_chg}(4H)',
-        '${S.current.s_oi_chg}(24H)',
       ];
     }
+    sortByList = isPrice
+        ? [
+            'price',
+            'priceChangeH24',
+            'priceChangeM5',
+            'priceChangeM15',
+            'priceChangeM30',
+            'priceChangeH1',
+            'priceChangeH4',
+          ]
+        : [
+            'price',
+            'openInterestCh24',
+            'openInterest',
+            'openInterestCh1',
+            'openInterestCh4',
+          ];
     statusList.value =
         List.generate(topList.length, (index) => SortStatus.normal);
   }
