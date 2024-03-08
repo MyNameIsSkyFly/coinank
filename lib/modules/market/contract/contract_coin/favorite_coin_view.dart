@@ -127,19 +127,9 @@ class _EmptyView extends StatelessWidget {
                       return Row(
                         children: [
                           Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  state.fixedCoin[index],
-                                  style: Styles.tsBody_16(context).medium,
-                                ),
-                                Text(
-                                  S.of(context).s_swap,
-                                  style: Styles.tsSub_12(context),
-                                ),
-                              ],
+                            child: Text(
+                              state.fixedCoin[index],
+                              style: Styles.tsBody_16(context).medium,
                             ),
                           ),
                           if (state.selectedFixedCoin

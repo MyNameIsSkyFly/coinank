@@ -21,10 +21,10 @@ class SpotLogic extends GetxController with SpotLogicMixin {
   late TabController tabCtrl;
   final fixedCoin = [
     //line
-    'BTC', 'ETH', 'SHIB', 'FDUSD', 'SOL', 'DOGE', 'XRP', 'USDC'
+    'BTC', 'ETH', 'SOL', 'XRP', 'BNB', 'ORDI', 'DOGE', 'ARB'
   ];
   final selectedFixedCoin = RxList<String>(
-      ['BTC', 'ETH', 'SHIB', 'FDUSD', 'SOL', 'DOGE', 'XRP', 'USDC']);
+      ['BTC', 'ETH', 'SOL', 'XRP', 'BNB', 'ORDI', 'DOGE', 'ARB']);
   final fetching = RxBool(false);
 
   @override
@@ -49,7 +49,13 @@ class SpotLogic extends GetxController with SpotLogicMixin {
   Future<void> getMarketDataF() async {
     TickersDataEntity? result;
     if (StoreLogic.isLogin) {
-      result = await Apis().getSpotAgg(page: 1, size: 500, isFollow: true);
+      result = await Apis().getSpotAgg(
+          page: 1,
+          size: 500,
+          isFollow: true,
+          extras: {
+            'showToast': false
+          }).catchError((e) => TickersDataEntity(list: []));
     } else {
       if (StoreLogic.to.favoriteSpot.isEmpty) {
         result = TickersDataEntity(list: []);

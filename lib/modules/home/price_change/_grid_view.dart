@@ -32,7 +32,7 @@ class _GridView extends StatelessWidget {
                 .getCells()[0]
                 .value;
             final item = logic.state.originalData
-                ?.firstWhereOrNull((element) => element.baseCoin == baseCoin);
+                .firstWhereOrNull((element) => element.baseCoin == baseCoin);
             if (item == null) return;
             AppNav.toCoinDetail(item);
           },

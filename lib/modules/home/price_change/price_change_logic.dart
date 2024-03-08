@@ -92,7 +92,6 @@ class PriceChangeLogic extends FullLifeCycleController with FullLifeCycleMixin {
   }
 
   Future<void> onRefresh(bool showLoading) async {
-    state.oldContentDataList = List.from(state.originalData ?? []);
     state.isRefresh = true;
     if (showLoading) {
       Loading.show();
@@ -117,6 +116,7 @@ class PriceChangeLogic extends FullLifeCycleController with FullLifeCycleMixin {
     );
     gridSource.list.assignAll(data?.list ?? []);
     gridSource.buildDataGridRows();
+    state.originalData.assignAll(data?.list ?? []);
   }
 
   Future<void> getBigData() async {
@@ -129,6 +129,7 @@ class PriceChangeLogic extends FullLifeCycleController with FullLifeCycleMixin {
     );
     gridSource.list.assignAll(data?.list ?? []);
     gridSource.buildDataGridRows();
+    state.originalData.assignAll(data?.list ?? []);
   }
 
   _startTimer() async {

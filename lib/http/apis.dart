@@ -337,5 +337,6 @@ abstract class Apis {
     @Query('sort') String? sort,
     @Query('isFollow') bool? isFollow,
     @Query('baseCoins') String? baseCoins,
+    @Extras() Map<String, dynamic>? extras,
   });
 }

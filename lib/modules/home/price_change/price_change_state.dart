@@ -14,10 +14,7 @@ class PriceChangeState {
   //descend 降序
   //ascend 升序
   String sortType = 'descend';
-  List<MarkerTickerEntity>? data;
-  List<MarkerTickerEntity>? originalData;
-  RxList<MarkerTickerEntity> contentDataList = RxList.empty();
-  List<MarkerTickerEntity> oldContentDataList = [];
+  List<MarkerTickerEntity> originalData = [];
 
   ScrollController titleController = ScrollController();
   ScrollController contentController = ScrollController();

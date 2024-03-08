@@ -31,7 +31,7 @@ class _ShareDialogState extends State<ShareDialog> {
     if (Platform.isAndroid) {
       AppGlobal.justSavedImage = true;
       Future.delayed(
-        const Duration(seconds: 5),
+        const Duration(seconds: 2),
         () => AppGlobal.justSavedImage = false,
       );
     }

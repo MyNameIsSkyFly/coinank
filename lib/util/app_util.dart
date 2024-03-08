@@ -20,6 +20,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:screenshot_ntv/screenshot_ntv.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../widget/adaptive_dialog_action.dart';
@@ -302,7 +303,11 @@ class AppUtil {
   }
 
   static Future<void> shareImage({Uint8List? image}) async {
-    image ??= await FfNativeScreenshot().takeScreenshot();
+    if (Platform.isIOS) {
+      image ??= await FfNativeScreenshot().takeScreenshot();
+    } else {
+      image ??= await ScreenshotNtv.takeScreenshot();
+    }
     if (image == null) return;
     Get.dialog(ShareDialog(image: image), useSafeArea: false);
   }

@@ -40,7 +40,7 @@ class _MarketPageState extends State<MarketPage>
                     dividerColor: Colors.transparent,
                     indicatorColor: Colors.transparent,
                     labelStyle: Styles.tsBody_18m(context),
-                    unselectedLabelStyle: Styles.tsSub_16(context).medium,
+                    unselectedLabelStyle: Styles.tsSub_18(context).medium,
                     controller: logic.tabCtrl,
                     tabs: [
                       Tab(text: S.of(context).derivatives),
