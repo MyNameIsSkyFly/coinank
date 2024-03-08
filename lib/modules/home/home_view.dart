@@ -263,6 +263,7 @@ class _ChartView extends StatelessWidget {
       }
       return GridView.builder(
         padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 5),
+        physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 4,
