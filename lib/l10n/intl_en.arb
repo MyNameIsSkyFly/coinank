@@ -329,7 +329,7 @@
   "inviteScore": "Invitation Points:",
   "searchTrending": "Trending",
   "addToFavorite": "Add to favorites",
-  "ahr999Index": "BTC Ahr999 Index",
+  "fundingRateHeatMap": "BTC Ahr999 Index",
   "btcReduceCountDown": "BTC Halving Countdown",
   "days": "days",
   "hours": "hours",
@@ -407,5 +407,6 @@
   "liq_abbr": "Liq",
   "marketCapChange": "MarketCap Change",
   "addedToFavorites": "Added",
-  "removedFromFavorites": "Removed"
+  "removedFromFavorites": "Removed",
+  "marketCapShort": "Market Cap"
 }

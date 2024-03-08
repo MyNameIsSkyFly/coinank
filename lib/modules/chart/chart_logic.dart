@@ -61,4 +61,10 @@ class ChartLogic extends GetxController {
     initTopData();
     initRecentList();
   }
+
+  @override
+  void onClose() {
+    appThemeSubscription?.cancel();
+    super.onClose();
+  }
 }

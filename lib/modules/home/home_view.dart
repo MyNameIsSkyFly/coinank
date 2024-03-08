@@ -230,9 +230,9 @@ class _ChartView extends StatelessWidget {
         ChartEntity(title: S.of(context).s_liqmap, key: 'liqMapChart'),
         ChartEntity(title: S.of(context).s_liq_hot_map, key: 'liqHeatMapChart'),
         ChartEntity(
-            title: S.of(context).ahr999Index,
-            key: 'ahrIndex',
-            path: '${Urls.h5Prefix}/${Urls.webLanguage}indexdata/ahrIndex'),
+            title: S.of(context).fundingRateHeatMap,
+            key: 'frHeapMap',
+            path: '${Urls.h5Prefix}/${Urls.webLanguage}fundingRate/frHeatMap'),
         ChartEntity(title: S.of(context).more, key: 'more'),
       ];
       final chartLogic = Get.put(ChartLogic());
@@ -256,7 +256,7 @@ class _ChartView extends StatelessWidget {
           chartItems[5] =
               allData.firstWhere((element) => element.key == 'liqHeatMapChart');
           chartItems[6] =
-              allData.firstWhere((element) => element.key == 'ahrIndex');
+              allData.firstWhere((element) => element.key == 'frHeapMap');
         } catch (e) {
           debugPrint(e.toString());
         }

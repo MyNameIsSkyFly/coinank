@@ -62,7 +62,7 @@ class _EditCustomizeSpotPageState extends State<EditCustomizeSpotPage> {
                   spacing: 10,
                   runSpacing: 10,
                   children: [
-                    _item(text: sof.marketCap, value: 'marketCap'),
+                    _item(text: sof.marketCapShort, value: 'marketCap'),
                     _item(
                         text: sof.circulatingSupply,
                         value: 'circulatingSupply'),
