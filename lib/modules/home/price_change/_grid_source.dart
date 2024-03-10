@@ -140,7 +140,8 @@ class PriceChgGridSource extends DataGridSource {
                     child: Text(
                       row.getCells()[0].value.toString(),
                       overflow: TextOverflow.ellipsis,
-                      style: Styles.tsBody_14m(context),
+                      style: Styles.tsBody_14m(context)
+                          .copyWith(fontWeight: FontWeight.w700),
                     ),
                   ),
                 ),
@@ -150,13 +151,15 @@ class PriceChgGridSource extends DataGridSource {
         );
       }),
       Builder(builder: (context) {
-        return Center(
+        return Align(
+          alignment: Alignment.centerLeft,
           child: Padding(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.only(left: 10),
             child: AnimatedColorText(
-              text: row.getCells()[1].value.toString().trim(),
+              text: row.getCells()[1].value.convertedValue.trim(),
               value: row.getCells()[1].value.value,
-              style: Styles.tsBody_16m(context),
+              style: Styles.tsBody_16m(context)
+                  .copyWith(fontWeight: FontWeight.w700),
               recyclable: true,
               // normalColor: colorList[index],
               // animationColor: animationColor,
@@ -166,9 +169,12 @@ class PriceChgGridSource extends DataGridSource {
       }),
       Builder(builder: (context) {
         var data = row.getCells()[2].value;
-        return Center(
+        return Align(
+          alignment: Alignment.centerLeft,
           child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+              width: 80,
+              margin: const EdgeInsets.only(left: 10),
+              padding: const EdgeInsets.symmetric(vertical: 7),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(4),
                 color: data.value == null || data.value == 0
@@ -178,19 +184,24 @@ class PriceChgGridSource extends DataGridSource {
                         : Styles.cDown(context),
               ),
               child: Text(
-                data.toString().trim(),
-                style: const TextStyle(color: Colors.white, fontSize: 12),
+                data.convertedValue.trim(),
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700),
               )),
         );
       }),
       if (logic.state.isPrice) ...[
         for (var i = 3; i < 8; i++)
           Builder(builder: (context) {
-            var data = row.getCells()[i].value;
-            return Center(
+            var data = row.getCells()[i].value as _StringConverter;
+            return Align(
+              alignment: Alignment.centerLeft,
               child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  width: 80,
+                  padding: const EdgeInsets.symmetric(vertical: 7),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),
                     color: data.value == null || data.value == 0
@@ -200,20 +211,26 @@ class PriceChgGridSource extends DataGridSource {
                             : Styles.cDown(context),
                   ),
                   child: Text(
-                    data.toString().trim(),
-                    style: const TextStyle(color: Colors.white, fontSize: 12),
+                    data.convertedValue,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700),
                   )),
             );
           }),
       ] else ...[
         Builder(builder: (context) {
-          return Center(
+          return Align(
+            alignment: Alignment.centerLeft,
             child: Padding(
               padding: const EdgeInsets.all(8),
               child: Text(
-                row.getCells()[3].value.toString().trim(),
+                row.getCells()[3].value.convertedValue.trim(),
                 maxLines: 1,
-                style: Styles.tsBody_16m(context),
+                style: Styles.tsBody_16m(context)
+                    .copyWith(fontWeight: FontWeight.w700),
               ),
             ),
           );
@@ -221,10 +238,12 @@ class PriceChgGridSource extends DataGridSource {
         for (var i = 4; i < 6; i++)
           Builder(builder: (context) {
             var data = row.getCells()[i].value;
-            return Center(
+            return Align(
+              alignment: Alignment.centerLeft,
               child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  width: 80,
+                  margin: const EdgeInsets.only(left: 10),
+                  padding: const EdgeInsets.symmetric(vertical: 7),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),
                     color: data.value == null || data.value == 0
@@ -234,8 +253,12 @@ class PriceChgGridSource extends DataGridSource {
                             : Styles.cDown(context),
                   ),
                   child: Text(
-                    data.toString().trim(),
-                    style: const TextStyle(color: Colors.white, fontSize: 12),
+                    data.convertedValue,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700),
                   )),
             );
           }),
@@ -261,9 +284,11 @@ class _StringConverter {
       (['-', '+'].any((e) => converter(value).startsWith(e)) ||
           converter(value) == '0.00%');
 
+  String get convertedValue => converter((value ?? 0));
+
   @override
   String toString() {
-    if (isRate) return '  ${converter((value ?? 0))}  ';
+    if (isRate) return '  +200.00%  ';
     return '  ${converter((value ?? 0))}  ';
   }
 }

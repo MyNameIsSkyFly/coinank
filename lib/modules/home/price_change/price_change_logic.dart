@@ -28,23 +28,22 @@ class PriceChangeLogic extends FullLifeCycleController with FullLifeCycleMixin {
           label: Builder(builder: (context) {
             return Container(
               margin: const EdgeInsets.symmetric(horizontal: 15),
-              width: 100,
-              child: Center(
-                child: Text(
-                  'Coin',
-                  style: Styles.tsSub_14(context),
-                ),
+              width: 120,
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Coin',
+                style: Styles.tsSub_14(context),
               ),
             );
           })),
       ...state.topList.mapIndexed((index, e) => GridColumn(
             columnName: e,
-            autoFitPadding: const EdgeInsets.only(right: 6),
+            maximumWidth: 140,
+            autoFitPadding: const EdgeInsets.symmetric(horizontal: 10),
             label: Builder(builder: (context) {
-              return Center(
-                  child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              return Row(
                 children: [
+                  const Gap(10),
                   Flexible(
                       child: Text(
                     e,
@@ -59,7 +58,7 @@ class PriceChangeLogic extends FullLifeCycleController with FullLifeCycleMixin {
                               : false
                           : null)
                 ],
-              ));
+              );
             }),
           ))
     ];

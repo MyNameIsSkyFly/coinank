@@ -4,25 +4,27 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 class MarketDataGridSizer extends ColumnSizer {
   @override
   double computeHeaderCellWidth(GridColumn column, TextStyle style) {
-    return super.computeHeaderCellWidth(column, const TextStyle(fontSize: 12));
+    return super.computeHeaderCellWidth(
+        column, const TextStyle(fontSize: 12, fontWeight: FontWeight.w700));
   }
 
   @override
   double computeCellWidth(GridColumn column, DataGridRow row, Object? cellValue,
       TextStyle textStyle) {
-    return super.computeCellWidth(
-        column, row, cellValue, const TextStyle(fontSize: 16));
+    return super.computeCellWidth(column, row, cellValue,
+        const TextStyle(fontSize: 16, fontWeight: FontWeight.w700));
   }
 
   @override
   double computeHeaderCellHeight(GridColumn column, TextStyle textStyle) {
-    return super.computeHeaderCellHeight(column, const TextStyle(fontSize: 12));
+    return super.computeHeaderCellHeight(
+        column, const TextStyle(fontSize: 12, fontWeight: FontWeight.w700));
   }
 
   @override
   double computeCellHeight(GridColumn column, DataGridRow row,
       Object? cellValue, TextStyle textStyle) {
-    return super.computeCellHeight(
-        column, row, cellValue, const TextStyle(fontSize: 16));
+    return super.computeCellHeight(column, row, cellValue,
+        const TextStyle(fontSize: 16, fontWeight: FontWeight.w700));
   }
 }

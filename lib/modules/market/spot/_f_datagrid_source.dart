@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 // ignore: depend_on_referenced_packages
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import 'spot_key_value.dart';
 import 'spot_logic.dart';
 
 /// Set product's data collection to data grid source.
@@ -37,7 +38,7 @@ class FGridDataSource extends DataGridSource {
             .mapIndexed((index, e) {
           return DataGridCell(
               columnName: logic.textMap(e.key),
-              value: _KeyValue(e.key, entity.toJson()[e.key],
+              value: SpotKeyValue(e.key, entity.toJson()[e.key],
                   numberFormat: _numberFormat, baseCoin: entity.baseCoin));
         })
       ]);
@@ -89,7 +90,7 @@ class FGridDataSource extends DataGridSource {
     ]);
   }
 
-  Widget _rateText(_KeyValue data) {
+  Widget _rateText(SpotKeyValue data) {
     if (data.key == 'price') {
       return Align(
         alignment: Alignment.centerLeft,
@@ -162,55 +163,5 @@ class FGridDataSource extends DataGridSource {
     } else {
       return valueB.compareTo(valueA);
     }
-  }
-}
-
-class _KeyValue {
-  final String key;
-  final double? value;
-  final NumberFormat? numberFormat;
-  final String? baseCoin;
-
-  _KeyValue(this.key, this.value, {this.numberFormat, this.baseCoin});
-
-  String get convertedValue => handleValue(key, value);
-
-  bool get isRate {
-    var tmp = convertedValue;
-    return ['+', '-'].any((element) =>
-        (tmp.startsWith(element)) && tmp.endsWith('%') ||
-        tmp == '0.00%' ||
-        tmp == '0.0000%');
-  }
-
-  String handleValue(String key, double? value) {
-    final tmp = value ?? 0;
-    return switch (key) {
-      'price' => AppUtil.compressNumberWithLotsOfZeros(value ?? 0),
-      'turnover24h' ||
-      'marketCap' =>
-        '\$${AppUtil.getLargeFormatString('$tmp', precision: 2)}',
-      'priceChangeH24' ||
-      'priceChangeH12' ||
-      'priceChangeH8' ||
-      'priceChangeH4' ||
-      'priceChangeH1' ||
-      'priceChangeM5' ||
-      'priceChangeM15' ||
-      'priceChangeM30' =>
-        '${tmp > 0 ? '+' : ''}${tmp.toStringAsFixed(2)}%',
-      'circulatingSupply' ||
-      'totalSupply' ||
-      'maxSupply' =>
-        numberFormat?.format(tmp) ?? '',
-      'turnoverChg24h' =>
-        '${(value ?? 0) > 0 ? '+' : ''}${((value ?? 0) * 100).toStringAsFixed(2)}%',
-      _ => '0',
-    };
-  }
-
-  @override
-  String toString() {
-    return '  ${handleValue(key ?? ' ', value)}  ';
   }
 }
