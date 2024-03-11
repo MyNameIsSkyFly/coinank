@@ -29,7 +29,6 @@ class ContractCoinState {
 
   // bool isCollect = false;
   Timer? pollingTimer;
-  bool isRefresh = false;
   bool appVisible = true;
 
   // ScrollController scrollController = ScrollController();

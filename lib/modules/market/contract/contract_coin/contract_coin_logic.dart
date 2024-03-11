@@ -206,7 +206,6 @@ class ContractCoinLogic extends FullLifeCycleController
     if (showLoading) {
       Loading.show();
     }
-    state.isRefresh = true;
     state.fetching.value = true;
     final data = await Apis().getFuturesBigData(
       page: 1,
@@ -227,7 +226,6 @@ class ContractCoinLogic extends FullLifeCycleController
     }
     state.data.assignAll(data?.list ?? []);
     update(['data']);
-    state.isRefresh = false;
     StoreLogic.to.setContractData(data?.list ?? []);
     gridSource.items.assignAll(data?.list ?? []);
     gridSource.buildDataGridRows();
@@ -248,7 +246,6 @@ class ContractCoinLogic extends FullLifeCycleController
     if (showLoading) {
       Loading.show();
     }
-    state.isRefresh = true;
     TickersDataEntity? data;
     if (StoreLogic.isLogin) {
       data = await Apis().getFuturesBigData(
@@ -286,7 +283,6 @@ class ContractCoinLogic extends FullLifeCycleController
       state.favoriteData.assignAll(data?.list ?? []);
     }
     // sortFavorite();
-    state.isRefresh = false;
     gridSourceF.items.assignAll(data?.list ?? []);
     gridSourceF.buildDataGridRows();
   }
@@ -298,7 +294,6 @@ class ContractCoinLogic extends FullLifeCycleController
       if (Get.find<MarketLogic>().tabCtrl.index != 0) return;
       var index = Get.find<ContractLogic>().state.tabController?.index;
       if (Get.find<MainLogic>().state.selectedIndex.value == 1 &&
-          !state.isRefresh &&
           Get.currentRoute == '/') {
         if (index == 0) {
           await onRefreshF();

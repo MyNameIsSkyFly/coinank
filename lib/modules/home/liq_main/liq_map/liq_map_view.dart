@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/common_webview.dart';
 import 'package:flutter/material.dart';
@@ -118,6 +120,7 @@ class LiqMapPage extends StatelessWidget {
                       url: Urls.chartUrl,
                       onWebViewCreated: (controller) =>
                           state.webCtrl = controller,
+                      enableZoom: Platform.isAndroid ? true : false,
                       onLoadStop: (controller) =>
                           logic.updateReadyStatus(webReady: true),
                     ),
@@ -204,6 +207,7 @@ class LiqMapPage extends StatelessWidget {
                     margin: const EdgeInsets.all(15),
                     child: CommonWebView(
                       url: Urls.chartUrl,
+                      enableZoom: Platform.isAndroid ? true : false,
                       onWebViewCreated: (controller) =>
                           state.aggWebCtrl = controller,
                       onLoadStop: (controller) =>

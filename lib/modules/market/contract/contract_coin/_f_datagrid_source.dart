@@ -71,8 +71,7 @@ class FGridDataSource extends DataGridSource {
                   child: Text(
                     row.getCells()[0].value.toString(),
                     overflow: TextOverflow.ellipsis,
-                    style: Styles.tsBody_14m(context)
-                        .copyWith(fontWeight: FontWeight.w700),
+                    style: Styles.tsBody_14m(context),
                   ),
                 ),
               ),

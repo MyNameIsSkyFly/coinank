@@ -93,7 +93,8 @@ class _SettingPageState extends State<SettingPage> {
                       children: [
                         GestureDetector(
                           onTap: () => AppNav.openWebUrl(
-                            url: 'https://coinank.com/users/referral',
+                            url:
+                                '${Urls.h5Prefix}/${Urls.webLanguage}users/referral',
                             dynamicTitle: true,
                             title: '',
                             showLoading: true,

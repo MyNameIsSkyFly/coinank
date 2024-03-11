@@ -140,8 +140,7 @@ class PriceChgGridSource extends DataGridSource {
                     child: Text(
                       row.getCells()[0].value.toString(),
                       overflow: TextOverflow.ellipsis,
-                      style: Styles.tsBody_14m(context)
-                          .copyWith(fontWeight: FontWeight.w700),
+                      style: Styles.tsBody_14m(context),
                     ),
                   ),
                 ),
@@ -158,8 +157,7 @@ class PriceChgGridSource extends DataGridSource {
             child: AnimatedColorText(
               text: row.getCells()[1].value.convertedValue.trim(),
               value: row.getCells()[1].value.value,
-              style: Styles.tsBody_16m(context)
-                  .copyWith(fontWeight: FontWeight.w700),
+              style: Styles.tsBody_16m(context),
               recyclable: true,
               // normalColor: colorList[index],
               // animationColor: animationColor,
@@ -186,10 +184,7 @@ class PriceChgGridSource extends DataGridSource {
               child: Text(
                 data.convertedValue.trim(),
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700),
+                style: const TextStyle(color: Colors.white, fontSize: 12),
               )),
         );
       }),
@@ -213,10 +208,7 @@ class PriceChgGridSource extends DataGridSource {
                   child: Text(
                     data.convertedValue,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700),
+                    style: const TextStyle(color: Colors.white, fontSize: 12),
                   )),
             );
           }),
@@ -229,8 +221,7 @@ class PriceChgGridSource extends DataGridSource {
               child: Text(
                 row.getCells()[3].value.convertedValue.trim(),
                 maxLines: 1,
-                style: Styles.tsBody_16m(context)
-                    .copyWith(fontWeight: FontWeight.w700),
+                style: Styles.tsBody_16m(context),
               ),
             ),
           );
@@ -255,10 +246,7 @@ class PriceChgGridSource extends DataGridSource {
                   child: Text(
                     data.convertedValue,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700),
+                    style: const TextStyle(color: Colors.white, fontSize: 12),
                   )),
             );
           }),

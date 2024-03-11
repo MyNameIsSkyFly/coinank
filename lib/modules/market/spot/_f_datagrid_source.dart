@@ -1,7 +1,5 @@
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/res/export.dart';
-import 'package:ank_app/widget/animated_color_text.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -84,51 +82,10 @@ class FGridDataSource extends DataGridSource {
           .mapIndexed(
             (index, e) => Container(
               padding: const EdgeInsets.all(8),
-              child: _rateText((row.getCells()[index + 1].value)),
+              child: (row.getCells()[index + 1].value as SpotKeyValue).rateText,
             ),
           )
     ]);
-  }
-
-  Widget _rateText(SpotKeyValue data) {
-    if (data.key == 'price') {
-      return Align(
-        alignment: Alignment.centerLeft,
-        child: AnimatedColorText(
-          text: data.convertedValue,
-          value: data.value ?? 0,
-          style: TextStyle(fontSize: 16, fontWeight: Styles.fontMedium),
-          recyclable: true,
-        ),
-      );
-    }
-    if (data.isRate) {
-      return Center(
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 5),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(4),
-            color: data.value == null || data.value == 0
-                ? Styles.cUp(context)
-                : data.value! > 0
-                    ? Styles.cUp(context)
-                    : Styles.cDown(context),
-          ),
-          child: Text(
-            data.toString(),
-            style: const TextStyle(color: Colors.white, fontSize: 12),
-          ),
-        ),
-      );
-    }
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: AutoSizeText(
-        data.convertedValue,
-        maxLines: 1,
-        style: Styles.tsBody_16m(context),
-      ),
-    );
   }
 
   /// Update DataSource

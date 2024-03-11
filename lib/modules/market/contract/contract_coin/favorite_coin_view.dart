@@ -94,76 +94,82 @@ class _EmptyView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        GridView.builder(
-          shrinkWrap: true,
-          itemCount: state.fixedCoin.length,
-          padding: const EdgeInsets.all(15).copyWith(top: 15),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisExtent: 72,
-              crossAxisSpacing: 15,
-              mainAxisSpacing: 15),
-          itemBuilder: (context, index) {
-            return StatefulBuilder(builder: (context, setState) {
-              return GestureDetector(
-                onTap: () {
-                  if (state.selectedFixedCoin
-                      .contains(state.fixedCoin[index])) {
-                    state.selectedFixedCoin.remove(state.fixedCoin[index]);
-                  } else {
-                    state.selectedFixedCoin.add(state.fixedCoin[index]);
-                  }
-                  setState(() {});
-                },
-                child: Container(
-                    padding: const EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).cardColor,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Obx(() {
-                      return Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              state.fixedCoin[index],
-                              style: Styles.tsBody_16(context).medium,
-                            ),
-                          ),
-                          if (state.selectedFixedCoin
-                              .contains(state.fixedCoin[index]))
-                            const Icon(CupertinoIcons.checkmark_alt_circle,
-                                color: Styles.cMain)
-                          else
-                            Icon(CupertinoIcons.circle,
-                                color: Styles.cSub(context).withOpacity(0.5))
-                        ],
-                      );
-                    })),
-              );
-            });
-          },
+    return EasyRefresh(
+      onRefresh: () async => logic.onRefreshF(),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: state.fixedCoin.length,
+              padding: const EdgeInsets.all(15).copyWith(top: 15),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisExtent: 72,
+                  crossAxisSpacing: 15,
+                  mainAxisSpacing: 15),
+              itemBuilder: (context, index) {
+                return StatefulBuilder(builder: (context, setState) {
+                  return GestureDetector(
+                    onTap: () {
+                      if (state.selectedFixedCoin
+                          .contains(state.fixedCoin[index])) {
+                        state.selectedFixedCoin.remove(state.fixedCoin[index]);
+                      } else {
+                        state.selectedFixedCoin.add(state.fixedCoin[index]);
+                      }
+                      setState(() {});
+                    },
+                    child: Container(
+                        padding: const EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).cardColor,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Obx(() {
+                          return Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  state.fixedCoin[index],
+                                  style: Styles.tsBody_16(context).medium,
+                                ),
+                              ),
+                              if (state.selectedFixedCoin
+                                  .contains(state.fixedCoin[index]))
+                                const Icon(CupertinoIcons.checkmark_alt_circle,
+                                    color: Styles.cMain)
+                              else
+                                Icon(CupertinoIcons.circle,
+                                    color:
+                                        Styles.cSub(context).withOpacity(0.5))
+                            ],
+                          );
+                        })),
+                  );
+                });
+              },
+            ),
+            const Gap(20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Obx(() {
+                return FilledButton(
+                    onPressed: state.selectedFixedCoin.isEmpty
+                        ? null
+                        : () {
+                            if (state.fetching.value) return;
+                            state.fetching.value = true;
+                            logic.saveFixedCoin().whenComplete(
+                                () => state.fetching.value = false);
+                          },
+                    child: Text(S.of(context).addToFavorite));
+              }),
+            )
+          ],
         ),
-        const Gap(20),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Obx(() {
-            return FilledButton(
-                onPressed: state.selectedFixedCoin.isEmpty
-                    ? null
-                    : () {
-                        if (state.fetching.value) return;
-                        state.fetching.value = true;
-                        logic
-                            .saveFixedCoin()
-                            .whenComplete(() => state.fetching.value = false);
-                      },
-                child: Text(S.of(context).addToFavorite));
-          }),
-        )
-      ],
+      ),
     );
   }
 }

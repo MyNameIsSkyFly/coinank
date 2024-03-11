@@ -1,5 +1,4 @@
-import 'package:ank_app/res/styles.dart';
-import 'package:ank_app/util/app_util.dart';
+import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/animated_color_text.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:decimal/decimal.dart';
@@ -34,7 +33,7 @@ class ContractCoinKeyValue {
           child: AnimatedColorText(
             text: convertedValue,
             value: value ?? 0,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+            style: TextStyle(fontSize: 16, fontWeight: Styles.fontMedium),
             recyclable: true,
           ),
         ),
@@ -60,9 +59,7 @@ class ContractCoinKeyValue {
               convertedValue,
               textAlign: TextAlign.center,
               style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700),
+                  color: Colors.white, fontSize: 12),
             ),
           );
         }),
@@ -76,8 +73,7 @@ class ContractCoinKeyValue {
           return AutoSizeText(
             convertedValue,
             maxLines: 1,
-            style: Styles.tsBody_16m(context)
-                .copyWith(fontWeight: FontWeight.w700),
+            style: Styles.tsBody_16m(context),
           );
         }),
       ),
