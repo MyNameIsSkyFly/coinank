@@ -6,7 +6,7 @@
   "KEY_PASSWORD": "uukr.com",
   "STORE_FILE": "keystore/uukr.key",
   "STORE_PASSWORD": "uukr.com",
-  "VERSION_NAME": "2.1.1",
-  "VERSION_CODE": "235"
+  "VERSION_NAME": "2.1.7",
+  "VERSION_CODE": "237"
 }
 
