@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ank_app/constants/urls.dart';
 import 'package:ank_app/modules/home/home_search/home_search_view.dart';
 import 'package:ank_app/modules/home/liq_main/liq_main_view.dart';
@@ -28,10 +30,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final logic = Get.put(HomeLogic());
-
+  var canQuit = false;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    var child = Scaffold(
       appBar: AppBar(
         toolbarHeight: 44,
         leadingWidth: 150,
@@ -114,6 +116,22 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
+    );
+    return WillPopScope(
+      onWillPop: () async {
+        if (!Platform.isAndroid) return true;
+        if (!canQuit) {
+          canQuit = true;
+          AppUtil.showToast(S.of(context).tapAgainToExit);
+          Future.delayed(const Duration(seconds: 2), () {
+            canQuit = false;
+          });
+          return false;
+        } else {
+          return true;
+        }
+      },
+      child: child,
     );
   }
 }
@@ -829,34 +847,6 @@ class _TotalOiAndFuturesVol extends StatelessWidget {
   }
 }
 
-class _CheckDetailRow extends StatelessWidget {
-  const _CheckDetailRow({
-    required this.title,
-    this.onTap,
-  });
-
-  final String title;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return _OutlinedContainer(
-      onTap: onTap,
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              title,
-              style: Styles.tsBody_14m(context),
-            ),
-          ),
-          const Icon(CupertinoIcons.chevron_right, size: 12)
-        ],
-      ),
-    );
-  }
-}
-
 class _LongShortRatio extends StatelessWidget {
   const _LongShortRatio({
     required this.title,
@@ -1167,10 +1157,9 @@ class _OutlinedContainer extends StatelessWidget {
 }
 
 class _FilledContainer extends StatelessWidget {
-  const _FilledContainer({this.child, this.padding, this.onTap});
+  const _FilledContainer({this.child, this.onTap});
 
   final Widget? child;
-  final EdgeInsets? padding;
   final VoidCallback? onTap;
 
   @override
@@ -1184,7 +1173,7 @@ class _FilledContainer extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         onTap: onTap,
         child: Container(
-          padding: padding ?? const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           child: child,
         ),
       ),
@@ -1193,7 +1182,7 @@ class _FilledContainer extends StatelessWidget {
 }
 
 class _ChartItem extends StatelessWidget {
-  const _ChartItem({super.key, required this.item});
+  const _ChartItem({required this.item});
 
   final ChartEntity item;
 
