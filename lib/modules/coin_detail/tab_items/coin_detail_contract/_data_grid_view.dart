@@ -2,7 +2,6 @@ part of 'coin_detail_contract_view.dart';
 
 class _DataGridView extends StatefulWidget {
   const _DataGridView({
-    super.key,
     required this.logic,
   });
 
@@ -14,8 +13,7 @@ class _DataGridView extends StatefulWidget {
 
 class _DataGridViewState extends State<_DataGridView> {
   List<GridColumn> getColumns(BuildContext context) {
-    List<GridColumn> columns;
-    columns = <GridColumn>[
+    List<GridColumn> columns = <GridColumn>[
       GridColumn(
           columnName: '1',
           width: 120,

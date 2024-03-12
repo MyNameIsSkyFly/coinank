@@ -33,7 +33,7 @@ class ContractSearchLogic extends GetxController {
     StoreLogic.to.setContractData(data?.list ?? []);
   }
 
-  tapCollect(MarkerTickerEntity item) async {
+  Future<void> tapCollect(MarkerTickerEntity item) async {
     if (!StoreLogic.isLogin) {
       AppNav.toLogin();
     } else {

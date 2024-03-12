@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:ank_app/modules/home/liq_main/liq_hot_map/liq_hot_map_view.dart';
 import 'package:ank_app/modules/home/liq_main/liq_map/liq_map_view.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class LiqMainState {
   RxInt index = 0.obs;

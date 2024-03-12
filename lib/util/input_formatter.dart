@@ -19,7 +19,7 @@ class RegexExpression {
 
   ///只允许输入数字
   static const String regexOnlyNum = r'(^[0-9]+$)';
-  static const String regexOnlyMinSixNum = r'(^[0-9]{6,})';
+  static const String regexOnlyMinSixNum = '(^[0-9]{6,})';
 
   ///只允许输入26字母
   static const String regexOnlyLetter = r'(^[A-Za-z]+$)';

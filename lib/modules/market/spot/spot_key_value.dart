@@ -24,12 +24,16 @@ class SpotKeyValue {
 
   Widget get rateText {
     if (key == 'price') {
-      return Center(
-        child: AnimatedColorText(
-          text: convertedValue,
-          value: value ?? 0,
-          style: TextStyle(fontSize: 16, fontWeight: Styles.fontMedium),
-          recyclable: true,
+      return Align(
+        alignment: Alignment.centerLeft,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 10),
+          child: AnimatedColorText(
+            text: convertedValue,
+            value: value ?? 0,
+            style: const TextStyle(fontSize: 16, fontWeight: Styles.fontMedium),
+            recyclable: true,
+          ),
         ),
       );
     }
@@ -59,14 +63,19 @@ class SpotKeyValue {
         }),
       );
     }
-    return Center(
-      child: Builder(builder: (context) {
-        return AutoSizeText(
-          convertedValue,
-          maxLines: 1,
-          style: Styles.tsBody_16m(context),
-        );
-      }),
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 10),
+        child: Builder(builder: (context) {
+          return AutoSizeText(
+            convertedValue,
+            maxLines: 1,
+            style: Styles.tsBody_16m(context),
+            minFontSize: 7,
+          );
+        }),
+      ),
     );
   }
 
@@ -98,6 +107,6 @@ class SpotKeyValue {
 
   @override
   String toString() {
-    return isRate ? '  +200.00%  ' : '  ${handleValue(key ?? ' ', value)}  ';
+    return isRate ? '  +200.00%  ' : '  ${handleValue(key, value)}  ';
   }
 }

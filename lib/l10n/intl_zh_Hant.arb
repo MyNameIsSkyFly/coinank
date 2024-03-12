@@ -405,5 +405,6 @@
   "liq_abbr": "爆倉",
   "marketCapChange": "MarketCap Change",
   "addedToFavorites": "收藏成功",
-  "removedFromFavorites": "已取消收藏"
+  "removedFromFavorites": "已取消收藏",
+  "tapAgainToExit": "Tap again to exit"
 }

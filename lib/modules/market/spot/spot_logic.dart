@@ -76,7 +76,7 @@ class SpotLogic extends GetxController with SpotLogicMixin {
 
   Timer? pollingTimer;
 
-  void _startTimer() async {
+  Future<void> _startTimer() async {
     pollingTimer = Timer.periodic(const Duration(seconds: 7), (timer) async {
       // if (kDebugMode) return;
       if (Get.find<MarketLogic>().tabCtrl.index != 1) return;

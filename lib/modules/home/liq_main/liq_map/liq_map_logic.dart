@@ -12,7 +12,7 @@ import 'liq_map_state.dart';
 class LiqMapLogic extends GetxController {
   final LiqMapState state = LiqMapState();
 
-  chooseSymbol(bool isAgg) async {
+  Future<void> chooseSymbol(bool isAgg) async {
     final result = await showModalBottomSheet(
       context: Get.context!,
       builder: (_) {
@@ -47,7 +47,7 @@ class LiqMapLogic extends GetxController {
     }
   }
 
-  chooseTime(bool isAgg) async {
+  Future<void> chooseTime(bool isAgg) async {
     final result = await showModalBottomSheet(
       context: Get.context!,
       isScrollControlled: true,
@@ -82,7 +82,7 @@ class LiqMapLogic extends GetxController {
     }
   }
 
-  onRefresh() async {
+  Future<void> onRefresh() async {
     if (state.refreshBCanPress) {
       state.refreshBCanPress = false;
       await getJsonData(isAgg: false);
@@ -159,7 +159,7 @@ setChartData($jsData, "$platformString", "$type", ${jsonEncode(options)});
     }
   }
 
-  onAggRefresh() async {
+  Future<void> onAggRefresh() async {
     if (state.aggRefreshBCanPress) {
       state.aggRefreshBCanPress = false;
       await getAggJsonData(isAgg: true);

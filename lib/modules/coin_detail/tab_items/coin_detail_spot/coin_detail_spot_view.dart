@@ -66,7 +66,7 @@ class _CoinDetailSpotViewState extends State<CoinDetailSpotView>
                             text:
                                 '\$${Decimal.parse('${logic.coin24hInfo.value?.lastPrice ?? 0}')}',
                             value: logic.coin24hInfo.value?.lastPrice ?? 0,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontWeight: Styles.fontMedium, fontSize: 18),
                           ),
                           RateWithSign(
@@ -79,7 +79,7 @@ class _CoinDetailSpotViewState extends State<CoinDetailSpotView>
                           AppUtil.toKLine(
                               logic.detailLogic.coin.exchangeName ?? '',
                               logic.detailLogic.coin.symbol ?? '',
-                              logic.baseCoin ?? '',
+                              logic.baseCoin,
                               'SWAP');
                         },
                         child: const ImageIcon(

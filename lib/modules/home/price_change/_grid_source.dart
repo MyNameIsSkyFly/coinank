@@ -166,7 +166,7 @@ class PriceChgGridSource extends DataGridSource {
         );
       }),
       Builder(builder: (context) {
-        var data = row.getCells()[2].value;
+        var data = row.getCells()[2].value as _StringConverter;
         return Align(
           alignment: Alignment.centerLeft,
           child: Container(
@@ -262,21 +262,21 @@ class PriceChgGridSource extends DataGridSource {
 }
 
 class _StringConverter {
-  final dynamic value;
-  final String Function(dynamic original) converter;
+  final double? value;
+  final String Function(double original) converter;
 
   _StringConverter(this.value, this.converter);
 
   bool get isRate =>
       (value is double) &&
-      (['-', '+'].any((e) => converter(value).startsWith(e)) ||
-          converter(value) == '0.00%');
+      (['-', '+'].any((e) => converter(value ?? 0).startsWith(e)) ||
+          converter(value ?? 0) == '0.00%');
 
-  String get convertedValue => converter((value ?? 0));
+  String get convertedValue => converter(value ?? 0);
 
   @override
   String toString() {
     if (isRate) return '  +200.00%  ';
-    return '  ${converter((value ?? 0))}  ';
+    return '  ${converter(value ?? 0)}  ';
   }
 }

@@ -12,11 +12,11 @@ class _DataGridView extends StatefulWidget {
 }
 
 class _DataGridViewState extends State<_DataGridView> {
+  // ignore: invalid_use_of_protected_member
   List get list => widget.logic.state.topList.value;
 
   List<GridColumn> getColumns() {
-    List<GridColumn> columns;
-    columns = <GridColumn>[
+    return <GridColumn>[
       GridColumn(
           columnName: '1',
           width: 100,
@@ -38,7 +38,6 @@ class _DataGridViewState extends State<_DataGridView> {
       _gridColumn(5),
       _gridColumn(6),
     ];
-    return columns;
   }
 
   GridColumn _gridColumn(int index) {
@@ -174,9 +173,7 @@ class _DataGridViewState extends State<_DataGridView> {
     OverlayState overlayState = Overlay.of(context);
     OverlayEntry? overlayEntry;
     overlayEntry = OverlayEntry(
-      builder: (context) => SizedBox(
-        width: double.infinity,
-        height: double.infinity,
+      builder: (context) => SizedBox.expand(
         child: Stack(
           children: [
             ModalBarrier(onDismiss: () => overlayEntry?.remove()),

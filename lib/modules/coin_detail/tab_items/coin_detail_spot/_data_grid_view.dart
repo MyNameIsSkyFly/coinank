@@ -2,15 +2,13 @@ part of 'coin_detail_spot_view.dart';
 
 class _DataGridView extends StatelessWidget {
   const _DataGridView({
-    super.key,
     required this.logic,
   });
 
   final CoinDetailSpotLogic logic;
 
   List<GridColumn> getColumns(BuildContext context) {
-    List<GridColumn> columns;
-    columns = <GridColumn>[
+    return [
       GridColumn(
           columnName: '1',
           width: 110,
@@ -73,7 +71,6 @@ class _DataGridView extends StatelessWidget {
             ),
           )),
     ];
-    return columns;
   }
 
   @override

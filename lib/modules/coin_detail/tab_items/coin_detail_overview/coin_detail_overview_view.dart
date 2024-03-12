@@ -46,7 +46,7 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
                           AnimatedColorText(
                             text: '\$${coinInfo?.lastPrice ?? 0}',
                             value: coinInfo?.lastPrice ?? 0,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontWeight: Styles.fontMedium, fontSize: 18),
                           ),
                           RateWithSign(rate: coinInfo?.priceChange24h),
@@ -149,7 +149,7 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
                                   '';
                               return ExpandableText(
                                 (description.isEmpty ? en : description)
-                                    .replaceAll(RegExp(r'<[^>]*>'), ''),
+                                    .replaceAll(RegExp('<[^>]*>'), ''),
                                 collapseOnTextTap: true,
                                 expandText: S.of(context).more,
                                 collapseText: S.of(context).less,
@@ -350,7 +350,7 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
           Expanded(
               flex: 15,
               child: Text(
-                ('${showDollar ? '\$' : ''}${needFormat ? formatter.format(value ?? 0) : (Decimal.tryParse('$value') ?? 0).toString()}'),
+                '${showDollar ? '\$' : ''}${needFormat ? formatter.format(value ?? 0) : (Decimal.tryParse('$value') ?? 0).toString()}',
                 style: Styles.tsBody_14(context),
               )),
         ],

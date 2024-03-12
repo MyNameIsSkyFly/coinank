@@ -12,7 +12,7 @@ class TopItemDetailPage extends StatelessWidget {
   final String title;
   final List<ChartSubItem> subs;
 
-  tapItem(ChartSubItem sub) {
+  void tapItem(ChartSubItem sub) {
     AppNav.openWebUrl(
       url: '${Urls.h5Prefix}${sub.path}',
       title: sub.title,

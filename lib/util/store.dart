@@ -95,6 +95,7 @@ class StoreLogic extends GetxController {
 
   RxList<MarkerTickerEntity> contractData = RxList.empty();
 
+  // ignore: use_setters_to_change_properties
   void setContractData(List<MarkerTickerEntity> v) {
     contractData.value = v;
   }
@@ -194,8 +195,7 @@ class StoreLogic extends GetxController {
 
   String get uniappDomain {
     var withoutHttps = _SpUtil()._getString(_SpKeys.uniappDomain,
-        defaultValue: ''
-            'coinsoto-h5.s3.ap-northeast-1.amazonaws.com');
+        defaultValue: 'coinsoto-h5.s3.ap-northeast-1.amazonaws.com');
     return 'https://$withoutHttps';
   }
 

@@ -63,6 +63,7 @@ class _DataGridViewState extends State<_DataGridView> {
               frozenColumnsCount: 1,
               horizontalScrollPhysics: const ClampingScrollPhysics(),
               source: widget.logic.gridSource,
+              // ignore: invalid_use_of_protected_member
               columns: widget.logic.columns.value,
               columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
               onCellTap: (details) {
@@ -104,9 +105,7 @@ class _DataGridViewState extends State<_DataGridView> {
     OverlayState overlayState = Overlay.of(context);
     OverlayEntry? overlayEntry;
     overlayEntry = OverlayEntry(
-      builder: (context) => SizedBox(
-        width: double.infinity,
-        height: double.infinity,
+      builder: (context) => SizedBox.expand(
         child: Stack(
           children: [
             ModalBarrier(onDismiss: () => overlayEntry?.remove()),

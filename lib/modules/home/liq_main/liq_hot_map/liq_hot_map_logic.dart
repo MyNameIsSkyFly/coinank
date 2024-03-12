@@ -13,7 +13,7 @@ import 'liq_hot_map_state.dart';
 class LiqHotMapLogic extends GetxController {
   final LiqHotMapState state = LiqHotMapState();
 
-  chooseSymbol() async {
+  Future<void> chooseSymbol() async {
     final result = await showModalBottomSheet(
       context: Get.context!,
       builder: (_) {
@@ -41,7 +41,7 @@ class LiqHotMapLogic extends GetxController {
     }
   }
 
-  chooseTime() async {
+  Future<void> chooseTime() async {
     final result = await showModalBottomSheet(
       context: Get.context!,
       builder: (_) {
@@ -70,7 +70,7 @@ class LiqHotMapLogic extends GetxController {
     }
   }
 
-  onRefresh() async {
+  Future<void> onRefresh() async {
     if (state.refreshBCanPress) {
       state.refreshBCanPress = false;
       _updateChart();
@@ -87,7 +87,7 @@ class LiqHotMapLogic extends GetxController {
     _updateChart();
   }
 
-  _updateChart() async {
+  void _updateChart() {
     final dataParams = {
       'symbol': state.symbol.value,
       'interval': state.interval.value,

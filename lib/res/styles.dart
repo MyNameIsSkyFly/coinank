@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 
@@ -26,8 +25,9 @@ class Styles {
   static Color cLine(BuildContext context) =>
       Theme.of(context).dividerTheme.color!;
 
-  static final fontMedium =
-      Platform.isAndroid ? FontWeight.w600 : FontWeight.w500;
+  static const fontMedium = FontWeight.w600;
+
+  // Platform.isAndroid ? FontWeight.w600 : FontWeight.w500;
 
 //====================正文======================
   static TextStyle tsBody_10(BuildContext context) =>
@@ -142,7 +142,7 @@ class Styles {
 //====================主色======================
   static const tsMain_12 = TextStyle(fontSize: 12, color: cMain, height: 1.4);
   static const tsMain_14 = TextStyle(fontSize: 14, color: cMain, height: 1.4);
-  static final tsMain_14m = TextStyle(
+  static const tsMain_14m = TextStyle(
       fontSize: 14, color: cMain, fontWeight: fontMedium, height: 1.4);
   static const tsMain_15 = TextStyle(fontSize: 15, color: cMain, height: 1.4);
   static const tsMain_16 = TextStyle(fontSize: 16, color: cMain, height: 1.4);

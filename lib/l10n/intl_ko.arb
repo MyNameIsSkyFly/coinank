@@ -405,5 +405,6 @@
   "liq_abbr": "Liq",
   "marketCapChange": "MarketCap Change",
   "addedToFavorites": "추가됨",
-  "removedFromFavorites": "제거됨"
+  "removedFromFavorites": "제거됨",
+  "tapAgainToExit": "Tap again to exit"
 }

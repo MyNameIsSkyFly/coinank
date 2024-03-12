@@ -9,9 +9,10 @@ import 'package:flutter/services.dart';
 import 'package:jpush_google_flutter/jpush_google_flutter.dart';
 
 class JPushUtil {
-  JPushUtil._();
 
   factory JPushUtil() => _instance;
+
+  JPushUtil._();
   static final _instance = JPushUtil._();
   final JPush _jpush = JPush();
 
@@ -66,7 +67,7 @@ class JPushUtil {
     _jpush.applyPushAuthority();
   }
 
-  _handeData(Map<String, dynamic> message) async {
+  Future<void> _handeData(Map<String, dynamic> message) async {
     if (Platform.isAndroid) {
       _jpush.clearNotification(
           notificationId: message['extras']

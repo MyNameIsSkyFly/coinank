@@ -53,7 +53,7 @@ class _CoinDialogWithInterceptorState extends State<_CoinDialogWithInterceptor>
     return tmpList.where((element) =>
         (currentProductType == null ||
             element.productType == currentProductType) &&
-        (isFavorite ? element.follow == true : true) &&
+        (!isFavorite || element.follow == true) &&
         (currentExchange.value == null ||
             element.exchangeName == currentExchange.value) &&
         (currentKeyword == null ||
@@ -350,7 +350,6 @@ final _productTypeMap = {
 
 class _Item extends StatelessWidget {
   const _Item({
-    super.key,
     required this.item,
     required this.onTapMark,
   });

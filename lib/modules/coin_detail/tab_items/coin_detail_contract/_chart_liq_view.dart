@@ -2,7 +2,6 @@ part of 'coin_detail_contract_view.dart';
 
 class _ChartLiqView extends StatefulWidget {
   const _ChartLiqView({
-    super.key,
     required this.logic,
   });
 

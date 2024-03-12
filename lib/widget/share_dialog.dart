@@ -45,7 +45,7 @@ class _ShareDialogState extends State<ShareDialog> {
     if (image == null) return;
     final filePath = await saveImageToFile(image);
     final result = await Share.shareXFiles([XFile(filePath)]);
-    switch ((result.status)) {
+    switch (result.status) {
       case ShareResultStatus.success:
         AppUtil.showToast(S.current.endOfShare);
         Get.back();

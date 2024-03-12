@@ -73,7 +73,6 @@ class _SpotPageState extends State<SpotPage>
 
 class _FavoriteView extends StatefulWidget {
   const _FavoriteView({
-    super.key,
     required this.logic,
   });
 

@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_protected_member
+
 import 'package:ank_app/entity/hold_address_entity.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +20,7 @@ class DataGridView extends StatelessWidget {
   final bool showChange;
 
   List<GridColumn> getColumns(BuildContext context) {
-    List<GridColumn> columns;
-    columns = <GridColumn>[
+    return <GridColumn>[
       GridColumn(
           columnName: '1',
           width: 40,
@@ -85,7 +86,6 @@ class DataGridView extends StatelessWidget {
             ),
           )),
     ];
-    return columns;
   }
 
   @override

@@ -53,6 +53,7 @@ class _FDataGridViewState extends State<_FDataGridView> {
           frozenColumnsCount: 1,
           horizontalScrollPhysics: const ClampingScrollPhysics(),
           source: widget.logic.gridSourceF,
+          // ignore: invalid_use_of_protected_member
           columns: widget.logic.fColumns.value,
           columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
           onCellTap: (details) {
@@ -95,9 +96,7 @@ class _FDataGridViewState extends State<_FDataGridView> {
     OverlayState overlayState = Overlay.of(context);
     OverlayEntry? overlayEntry;
     overlayEntry = OverlayEntry(
-      builder: (context) => SizedBox(
-        width: double.infinity,
-        height: double.infinity,
+      builder: (context) => SizedBox.expand(
         child: Stack(
           children: [
             ModalBarrier(onDismiss: () => overlayEntry?.remove()),

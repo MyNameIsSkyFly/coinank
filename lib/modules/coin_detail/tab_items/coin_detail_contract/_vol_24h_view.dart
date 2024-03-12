@@ -2,7 +2,6 @@ part of 'coin_detail_contract_view.dart';
 
 class _Vol24hView extends StatefulWidget {
   const _Vol24hView({
-    super.key,
     required this.logic,
   });
 

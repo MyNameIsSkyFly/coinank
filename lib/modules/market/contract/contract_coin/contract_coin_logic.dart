@@ -29,32 +29,31 @@ class ContractCoinLogic extends FullLifeCycleController
       (a, b) {
         if (state.favoriteSortBy == 'openInterestCh24') {
           if (state.favoriteOiChangeSort.value == SortStatus.normal) {
-            return (b.openInterest ?? 0).compareTo((a.openInterest ?? 0));
+            return (b.openInterest ?? 0).compareTo(a.openInterest ?? 0);
           }
           var result =
-              (b.openInterestCh24 ?? 0).compareTo((a.openInterestCh24 ?? 0));
+              (b.openInterestCh24 ?? 0).compareTo(a.openInterestCh24 ?? 0);
           return state.favoriteOiChangeSort.value != SortStatus.down
               ? -result
               : result;
         } else if (state.favoriteSortBy == 'price') {
           if (state.favoritePriceSort.value == SortStatus.normal) {
-            return (b.openInterest ?? 0).compareTo((a.openInterest ?? 0));
+            return (b.openInterest ?? 0).compareTo(a.openInterest ?? 0);
           }
-          var result = (b.price ?? 0).compareTo((a.price ?? 0));
+          var result = (b.price ?? 0).compareTo(a.price ?? 0);
           return state.favoritePriceSort.value != SortStatus.down
               ? -result
               : result;
         } else if (state.favoriteSortBy == 'priceChangeH24') {
           if (state.favoritePriceChangeSort.value == SortStatus.normal) {
-            return (b.openInterest ?? 0).compareTo((a.openInterest ?? 0));
+            return (b.openInterest ?? 0).compareTo(a.openInterest ?? 0);
           }
-          var result =
-              (b.priceChangeH24 ?? 0).compareTo((a.priceChangeH24 ?? 0));
+          var result = (b.priceChangeH24 ?? 0).compareTo(a.priceChangeH24 ?? 0);
           return state.favoritePriceChangeSort.value != SortStatus.down
               ? -result
               : result;
         }
-        var result = (b.openInterest ?? 0).compareTo((a.openInterest ?? 0));
+        var result = (b.openInterest ?? 0).compareTo(a.openInterest ?? 0);
         return state.favoriteOiSort.value != SortStatus.down ? -result : result;
       },
     );
@@ -287,7 +286,7 @@ class ContractCoinLogic extends FullLifeCycleController
     gridSourceF.buildDataGridRows();
   }
 
-  _startTimer() async {
+  void _startTimer() {
     state.pollingTimer =
         Timer.periodic(const Duration(seconds: 7), (timer) async {
       if (kDebugMode) return;

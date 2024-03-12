@@ -2,7 +2,6 @@ part of 'coin_detail_contract_view.dart';
 
 class _HeatMapView extends StatefulWidget {
   const _HeatMapView({
-    super.key,
     required this.logic,
   });
 

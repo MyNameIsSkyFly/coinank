@@ -32,7 +32,7 @@ class ReorderPage extends StatelessWidget {
             final item = logic.list[index];
             return ListTile(
               key: ValueKey(item.key),
-              title: Text(pLogic.textMap(item.key) ?? ''),
+              title: Text(pLogic.textMap(item.key)),
               contentPadding: const EdgeInsets.symmetric(horizontal: 15),
               trailing: ReorderableDragStartListener(
                 index: index,

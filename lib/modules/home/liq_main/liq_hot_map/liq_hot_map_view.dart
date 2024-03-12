@@ -113,7 +113,7 @@ class LiqHotMapPage extends StatelessWidget {
                 child: CommonWebView(
                   url: Urls.chartUrl,
                   onWebViewCreated: (controller) => state.webCtrl = controller,
-                  enableZoom: Platform.isAndroid ? true : false,
+                  enableZoom: Platform.isAndroid, //? true : false
                   onLoadStop: (controller) =>
                       logic.updateReadyStatus(webReady: true),
                 ),

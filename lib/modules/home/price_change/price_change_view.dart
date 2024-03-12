@@ -34,4 +34,3 @@ class PriceChangePage extends StatelessWidget {
     );
   }
 }
-

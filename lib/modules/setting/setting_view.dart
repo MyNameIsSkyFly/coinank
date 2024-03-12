@@ -312,7 +312,7 @@ class _ThemeChangeLine extends StatelessWidget {
             style: Styles.tsBody_16(context),
           )),
           GestureDetector(
-            onTap: () => AppUtil.changeTheme(!(StoreLogic.to.isDarkMode)),
+            onTap: () => AppUtil.changeTheme(!StoreLogic.to.isDarkMode),
             child: Stack(
               children: [
                 AnimatedContainer(

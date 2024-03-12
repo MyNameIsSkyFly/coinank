@@ -105,37 +105,37 @@ class GridDataSource extends DataGridSource {
       Container(
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.all(8),
-        child: _rateText((row.getCells()[1].value)),
+        child: _rateText(row.getCells()[1].value),
       ),
       Container(
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.all(8),
-        child: _rateText((row.getCells()[2].value)),
+        child: _rateText(row.getCells()[2].value),
       ),
       Container(
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.all(8),
-        child: _rateText((row.getCells()[3].value)),
+        child: _rateText(row.getCells()[3].value),
       ),
       Container(
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.all(8),
-        child: _rateText((row.getCells()[4].value)),
+        child: _rateText(row.getCells()[4].value),
       ),
       Container(
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.all(8),
-        child: _rateText((row.getCells()[5].value)),
+        child: _rateText(row.getCells()[5].value),
       ),
       Container(
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.all(8),
-        child: _rateText((row.getCells()[6].value)),
+        child: _rateText(row.getCells()[6].value),
       ),
       Container(
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.all(8),
-        child: _rateText((row.getCells()[7].value)),
+        child: _rateText(row.getCells()[7].value),
       ),
     ]);
   }

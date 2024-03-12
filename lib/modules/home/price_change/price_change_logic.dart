@@ -54,8 +54,6 @@ class PriceChangeLogic extends FullLifeCycleController with FullLifeCycleMixin {
                   TripleStateSortIcon(
                       isAsc: state.sortByList[index] == state.sortBy
                           ? state.sortType == 'ascend'
-                              ? true
-                              : false
                           : null)
                 ],
               );
@@ -131,7 +129,7 @@ class PriceChangeLogic extends FullLifeCycleController with FullLifeCycleMixin {
     state.originalData.assignAll(data?.list ?? []);
   }
 
-  _startTimer() async {
+  void _startTimer() {
     state.pollingTimer =
         Timer.periodic(const Duration(seconds: 5), (timer) async {
       if (!state.isRefresh && state.appVisible) {

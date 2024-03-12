@@ -56,12 +56,10 @@ class _SettingLine extends StatelessWidget {
   const _SettingLine({
     required this.onTap,
     required this.title,
-    this.value,
   });
 
   final VoidCallback? onTap;
   final String title;
-  final String? value;
 
   @override
   Widget build(BuildContext context) {
@@ -72,10 +70,6 @@ class _SettingLine extends StatelessWidget {
         child: Row(
           children: [
             Expanded(child: Text(title, style: Styles.tsBody_16(context))),
-            Text(
-              value ?? '',
-              style: Styles.tsSub_14(context),
-            ),
             const Gap(5),
             Icon(
               Icons.keyboard_arrow_right_rounded,

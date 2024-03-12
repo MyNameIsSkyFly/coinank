@@ -2,7 +2,6 @@ part of 'coin_detail_contract_view.dart';
 
 class _ExchangeOiView extends StatefulWidget {
   const _ExchangeOiView({
-    super.key,
     required this.logic,
   });
 

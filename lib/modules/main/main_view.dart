@@ -98,7 +98,7 @@ class MyBottomBar extends StatelessWidget {
       onTap: onTap != null
           ? () {
               if (onTap != null) {
-                onTap!(i);
+                onTap?.call(i);
               }
             }
           : null,

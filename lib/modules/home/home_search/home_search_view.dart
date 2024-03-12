@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_protected_member
+
 import 'dart:math';
 
 import 'package:ank_app/entity/search_v2_entity.dart';
@@ -96,7 +98,7 @@ class HomeSearchPage extends StatelessWidget {
 }
 
 class _ResultView extends StatefulWidget {
-  const _ResultView({super.key, required this.logic});
+  const _ResultView({required this.logic});
 
   final HomeSearchLogic logic;
 
@@ -162,7 +164,6 @@ class _ResultViewState extends State<_ResultView>
 
 class _SummaryView extends StatelessWidget {
   const _SummaryView({
-    super.key,
     required this.logic,
     required this.tabController,
   });
@@ -275,7 +276,7 @@ class _AllItem extends StatelessWidget {
 }
 
 class _TabItemView extends StatefulWidget {
-  const _TabItemView({super.key, required this.list, required this.logic});
+  const _TabItemView({required this.list, required this.logic});
 
   final List<SearchV2ItemEntity> list;
   final HomeSearchLogic logic;
@@ -319,28 +320,28 @@ class _TabItemViewState extends State<_TabItemView>
       (a, b) {
         if (favoriteSortBy == 'openInterestCh24') {
           if (favoriteOiChangeSort.value == SortStatus.normal) {
-            return (b.oi ?? 0).compareTo((a.oi ?? 0));
+            return (b.oi ?? 0).compareTo(a.oi ?? 0);
           }
-          var result = (b.oiChg ?? 0).compareTo((a.oiChg ?? 0));
+          var result = (b.oiChg ?? 0).compareTo(a.oiChg ?? 0);
           return favoriteOiChangeSort.value != SortStatus.down
               ? -result
               : result;
         } else if (favoriteSortBy == 'price') {
           if (favoritePriceSort.value == SortStatus.normal) {
-            return (b.oi ?? 0).compareTo((a.oi ?? 0));
+            return (b.oi ?? 0).compareTo(a.oi ?? 0);
           }
-          var result = (b.price ?? 0).compareTo((a.price ?? 0));
+          var result = (b.price ?? 0).compareTo(a.price ?? 0);
           return favoritePriceSort.value != SortStatus.down ? -result : result;
         } else if (favoriteSortBy == 'priceChangeH24') {
           if (favoritePriceChangeSort.value == SortStatus.normal) {
-            return (b.oi ?? 0).compareTo((a.oi ?? 0));
+            return (b.oi ?? 0).compareTo(a.oi ?? 0);
           }
-          var result = (b.priceChg ?? 0).compareTo((a.priceChg ?? 0));
+          var result = (b.priceChg ?? 0).compareTo(a.priceChg ?? 0);
           return favoritePriceChangeSort.value != SortStatus.down
               ? -result
               : result;
         }
-        var result = (b.oi ?? 0).compareTo((a.oi ?? 0));
+        var result = (b.oi ?? 0).compareTo(a.oi ?? 0);
         return favoriteOiSort.value != SortStatus.down ? -result : result;
       },
     );
@@ -475,7 +476,6 @@ class _TabItemViewState extends State<_TabItemView>
 
 class _DefaultView extends StatelessWidget {
   const _DefaultView({
-    super.key,
     required this.logic,
   });
 
@@ -568,7 +568,6 @@ class _DefaultView extends StatelessWidget {
 
 class _Item extends StatelessWidget {
   const _Item({
-    super.key,
     required this.logic,
     required this.item,
     required this.index,
@@ -660,7 +659,7 @@ class _Item extends StatelessWidget {
 }
 
 class _Tag extends StatelessWidget {
-  const _Tag({super.key, this.type});
+  const _Tag({this.type});
 
   final SearchEntityType? type;
 

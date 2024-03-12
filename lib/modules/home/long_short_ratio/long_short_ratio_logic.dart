@@ -13,13 +13,13 @@ class LongShortRatioLogic extends FullLifeCycleController
     with FullLifeCycleMixin {
   final LongShortRatioState state = LongShortRatioState();
 
-  tapHeader(String type) async {
+  Future<void> tapHeader(String type) async {
     if (type == state.type.value) return;
     state.type.value = type;
     await onRefresh(true);
   }
 
-  toSearch() async {
+  Future<void> toSearch() async {
     final result = await Get.toNamed(RouteConfig.contractMarketSearch,
         arguments: state.headerTitles);
     if (result != null) {
@@ -34,7 +34,7 @@ class LongShortRatioLogic extends FullLifeCycleController
     }
   }
 
-  chooseTime(bool isHeader) async {
+  Future<void> chooseTime(bool isHeader) async {
     final result = await Get.bottomSheet(
       const CustomBottomSheetPage(),
       isScrollControlled: true,

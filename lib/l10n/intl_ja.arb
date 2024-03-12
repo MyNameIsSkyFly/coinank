@@ -406,5 +406,6 @@
   "liq_abbr": "Liq",
   "marketCapChange": "MarketCap Change",
   "addedToFavorites": "追加した",
-  "removedFromFavorites": "削除されました"
+  "removedFromFavorites": "削除されました",
+  "tapAgainToExit": "Tap again to exit"
 }

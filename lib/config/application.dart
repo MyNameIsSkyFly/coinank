@@ -37,7 +37,7 @@ class Application {
     }
   }
 
-  initLoading() {
+  void initLoading() {
     EasyLoading.instance
       ..indicatorWidget = Lottie.asset(
           StoreLogic.to.isDarkMode == true

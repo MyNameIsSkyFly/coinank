@@ -25,11 +25,11 @@ class GridDataSource extends DataGridSource {
   /// Build DataGridRows
   void buildDataGridRows() {
     dataGridRows = items
-        .where((element) => _gridType == 0
-            ? true
-            : _gridType == 1
+        .where((element) =>
+            _gridType == 0 ||
+            (_gridType == 1
                 ? element.contractType?.toUpperCase() == 'SWAP'
-                : element.contractType?.toUpperCase() == 'FUTURES')
+                : element.contractType?.toUpperCase() == 'FUTURES'))
         .map<DataGridRow>((ContractMarketEntity entity) {
       return DataGridRow(cells: <DataGridCell<dynamic>>[
         DataGridCell<String>(

@@ -33,7 +33,7 @@ class ContractCoinKeyValue {
           child: AnimatedColorText(
             text: convertedValue,
             value: value ?? 0,
-            style: TextStyle(fontSize: 16, fontWeight: Styles.fontMedium),
+            style: const TextStyle(fontSize: 16, fontWeight: Styles.fontMedium),
             recyclable: true,
           ),
         ),
@@ -74,6 +74,7 @@ class ContractCoinKeyValue {
             convertedValue,
             maxLines: 1,
             style: Styles.tsBody_16m(context),
+            minFontSize: 7,
           );
         }),
       ),
@@ -136,6 +137,6 @@ class ContractCoinKeyValue {
         ? '  +0.0000%'
         : isRate
             ? '  +200.00%  '
-            : '  ${handleValue(key ?? ' ', value)}  ';
+            : '  ${handleValue(key, value)}  ';
   }
 }

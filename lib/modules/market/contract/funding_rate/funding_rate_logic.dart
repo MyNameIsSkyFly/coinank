@@ -60,12 +60,12 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin {
     if (result != null) {
       if (time == result) return;
       state.time.value = result as String;
-      state.timeType = timeMap[state.time.value] as String;
+      state.timeType = timeMap[state.time.value] ?? 'current';
       onRefresh(showLoading: true);
     }
   }
 
-  tapSearch() async {
+  Future<void> tapSearch() async {
     final result = await showModalBottomSheet(
       isScrollControlled: true,
       context: Get.context!,
@@ -122,7 +122,7 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin {
     }
   }
 
-  _startTimer() async {
+  void _startTimer() {
     state.pollingTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
       if (kDebugMode) return;
       if (Get.find<MarketLogic>().tabCtrl.index != 0) return;
@@ -135,7 +135,7 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin {
     });
   }
 
-  _scrollListener() {
+  void _scrollListener() {
     double offset = state.scrollController.offset;
     state.isScrollDown.value = offset <= 0 || state.offset - offset > 0;
     state.offset = offset;

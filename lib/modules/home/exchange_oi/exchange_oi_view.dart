@@ -165,7 +165,7 @@ class ExchangeOiPage extends StatelessWidget {
                           margin: const EdgeInsets.all(15),
                           child: CommonWebView(
                             url: Urls.chartUrl,
-                            enableZoom: Platform.isAndroid ? true : false,
+                            enableZoom: Platform.isAndroid, //? true : false
                             onLoadStop: (controller) =>
                                 logic.updateReadyStatus(webReady: true),
                             onWebViewCreated: (controller) {

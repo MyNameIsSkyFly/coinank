@@ -15,7 +15,7 @@ class ContractMarketLogic extends FullLifeCycleController
     with FullLifeCycleMixin {
   final ContractMarketState state = ContractMarketState();
 
-  tapHeader(String type) async {
+  Future<void> tapHeader(String type) async {
     if (type == state.type) return;
     state.type = type;
     update(['header']);
@@ -23,7 +23,7 @@ class ContractMarketLogic extends FullLifeCycleController
     await onRefresh(true);
   }
 
-  toSearch() async {
+  Future<void> toSearch() async {
     final result = await Get.toNamed(RouteConfig.contractMarketSearch,
         arguments: state.headerTitles);
     if (result != null) {

@@ -105,9 +105,7 @@ class ContactUsPage extends StatelessWidget {
 }
 
 class _LinkItem extends StatelessWidget {
-  const _LinkItem(
-      {super.key,
-      required this.asset,
+  const _LinkItem({required this.asset,
       required this.title,
       required this.linkUrl,
       required this.linkText});
@@ -140,9 +138,7 @@ class _LinkItem extends StatelessWidget {
 }
 
 class _CopyItem extends StatelessWidget {
-  const _CopyItem(
-      {super.key,
-      required this.asset,
+  const _CopyItem({required this.asset,
       required this.title,
       required this.text});
 
@@ -176,8 +172,7 @@ class _CopyItem extends StatelessWidget {
 }
 
 class _ArrowItem extends StatelessWidget {
-  const _ArrowItem(
-      {super.key, required this.asset, required this.title, this.onTap});
+  const _ArrowItem({required this.asset, required this.title, this.onTap});
 
   final String asset;
   final String title;

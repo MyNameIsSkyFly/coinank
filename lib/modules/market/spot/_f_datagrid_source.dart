@@ -99,7 +99,7 @@ class FGridDataSource extends DataGridSource {
     final double valueA = a
             ?.getCells()
             .firstWhereOrNull(
-                (dynamic element) => element.columnName == sortColumn.name)
+                (element) => element.columnName == sortColumn.name)
             ?.value
             ?.value ??
         (sortColumn.sortDirection == DataGridSortDirection.ascending

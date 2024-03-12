@@ -2,7 +2,6 @@ part of 'coin_detail_contract_view.dart';
 
 class _ChartWeightedFundingView extends StatefulWidget {
   const _ChartWeightedFundingView({
-    super.key,
     required this.logic,
   });
 

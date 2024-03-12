@@ -267,8 +267,8 @@ class AppUtil {
 
   static String decodeBase64(String data) => utf8.decode(base64.decode(data));
 
-  static toKLine(String exchangeName, String symbol, String baseCoin,
-      String? productType) async {
+  static Future<void> toKLine(String exchangeName, String symbol,
+      String baseCoin, String? productType) async {
     Get.until((route) => route.settings.name == '/');
     if (Get.find<MainLogic>().state.isFirstKLine) {
       Get.find<MainLogic>().selectTab(2);
@@ -306,6 +306,7 @@ class AppUtil {
     if (Platform.isIOS) {
       image ??= await FfNativeScreenshot().takeScreenshot();
     } else {
+      // ignore: parameter_assignments
       image ??= await ScreenshotNtv.takeScreenshot();
     }
     if (image == null) return;

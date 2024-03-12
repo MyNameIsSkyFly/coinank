@@ -18,7 +18,7 @@ mixin SpotLogicMixin {
     List<GridColumn> grids() => [
           GridColumn(
             columnName: '0',
-            width: 100,
+            width: 110,
             allowSorting: false,
             label: Builder(builder: (context) {
               return InkWell(
@@ -55,12 +55,12 @@ mixin SpotLogicMixin {
     return GridColumn(
         columnName: text,
         maximumWidth: 140,
-        autoFitPadding: EdgeInsets.zero,
+        autoFitPadding: const EdgeInsets.symmetric(horizontal: 10),
         label: Builder(builder: (context) {
-          return Center(
+          return Padding(
+            padding: const EdgeInsets.only(left: 20),
             child: Text(
               text,
-              textAlign: TextAlign.center,
               style: Styles.tsSub_12m(context),
             ),
           );
