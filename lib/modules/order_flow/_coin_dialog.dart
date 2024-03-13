@@ -50,10 +50,12 @@ class _CoinDialogWithInterceptorState extends State<_CoinDialogWithInterceptor>
               : b.price?.compareTo(a.price ?? 0)) ??
           0);
     }
+    if (isFavorite) {
+      return tmpList.where((element) => element.follow == true);
+    }
     return tmpList.where((element) =>
         (currentProductType == null ||
             element.productType == currentProductType) &&
-        (!isFavorite || element.follow == true) &&
         (currentExchange.value == null ||
             element.exchangeName == currentExchange.value) &&
         (currentKeyword == null ||
@@ -133,6 +135,11 @@ class _CoinDialogWithInterceptorState extends State<_CoinDialogWithInterceptor>
                             style: Styles.tsBody_14(context),
                             onTapOutside: (event) =>
                                 FocusManager.instance.primaryFocus?.unfocus(),
+                            onChanged: (value) {
+                              currentKeyword = value;
+                              list.assignAll(filteredList);
+                            },
+                            inputFormatters: [UpperCaseTextFormatter()],
                             decoration: InputDecoration(
                                 filled: true,
                                 isDense: true,
@@ -172,6 +179,7 @@ class _CoinDialogWithInterceptorState extends State<_CoinDialogWithInterceptor>
                           child: Row(
                             children: [
                               _productTypesView(context),
+                              const Gap(10),
                               _exchangeSelectorView(context),
                             ],
                           ),
@@ -227,7 +235,7 @@ class _CoinDialogWithInterceptorState extends State<_CoinDialogWithInterceptor>
 
                                 return _Item(
                                   item: item,
-                                  onTapMark: getData,
+                                  onTapMark: () => list.refresh(),
                                 );
                               },
                             );
@@ -286,18 +294,29 @@ class _CoinDialogWithInterceptorState extends State<_CoinDialogWithInterceptor>
     return MenuAnchor(
       builder:
           (BuildContext context, MenuController controller, Widget? child) {
-        return Obx(() {
-          return IconButton(
-            onPressed: () {
+        return ObxValue((isOpen) {
+          return GestureDetector(
+            onTap: () {
               if (controller.isOpen) {
                 controller.close();
+                isOpen.value = false;
               } else {
                 controller.open();
+                isOpen.value = true;
               }
             },
-            icon: Text(currentExchange.value ?? S.of(context).s_all),
+            child: Row(
+              children: [
+                Text(currentExchange.value ?? S.of(context).s_all),
+                Icon(
+                    isOpen.value
+                        ? CupertinoIcons.chevron_up
+                        : CupertinoIcons.chevron_down,
+                    size: 15),
+              ],
+            ),
           );
-        });
+        }, RxBool(false));
       },
       // clipBehavior: Clip.none,
       style: MenuStyle(
@@ -382,12 +401,26 @@ class _Item extends StatelessWidget {
                         baseCoin:
                             '${item.exchangeName}@${item.baseCoin}@${item.symbol}@${item.productType}',
                         type: 3);
+                    item.follow = false;
+                    final tmp = StoreLogic.to.orderFlowSymbolsJson;
+                    tmp
+                        .where((element) => element.symbol == item.symbol)
+                        .firstOrNull
+                        ?.follow = false;
+                    StoreLogic.to.saveOrderFlowSymbolsJson(tmp);
                   } else {
                     //Bitget@BTC@BTCUSDT_UMCBL@SWAP
                     await Apis().postAddFollow(
                         baseCoin:
                             '${item.exchangeName}@${item.baseCoin}@${item.symbol}@${item.productType}',
                         type: 3);
+                    item.follow = true;
+                    final tmp = StoreLogic.to.orderFlowSymbolsJson;
+                    tmp
+                        .where((element) => element.symbol == item.symbol)
+                        .firstOrNull
+                        ?.follow = true;
+                    StoreLogic.to.saveOrderFlowSymbolsJson(tmp);
                   }
                   onTapMark();
                 },

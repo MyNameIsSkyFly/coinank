@@ -14,12 +14,12 @@ class OrderFlowSymbolEntity {
   final int? expireAt;
   final int? updateAt;
   final bool? hot;
-  final bool? follow;
+  bool? follow;
   final int? followIndex;
   final double? price;
   final double? priceChangeH24;
 
-  const OrderFlowSymbolEntity({
+  OrderFlowSymbolEntity({
     this.symbol,
     this.baseCoin,
     this.exchangeName,

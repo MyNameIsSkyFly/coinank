@@ -22,7 +22,7 @@ class SettingLogic extends GetxController {
       versionName.value =
           '${AppConst.isPlayVersion ? 'GPlay AAB' : 'Apk'} ${pInfo.version}(${pInfo.buildNumber})';
     } else {
-      versionName.value = pInfo.version;
+      versionName.value = '${pInfo.version}(${pInfo.buildNumber})';
     }
   }
 
