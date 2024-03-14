@@ -1,6 +1,6 @@
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/res/export.dart';
-import 'package:ank_app/widget/animated_color_text.dart';
+import 'package:ank_app/widget/data_grid_widgets.dart';
 import 'package:collection/collection.dart';
 import 'package:dart_scope_functions/dart_scope_functions.dart';
 import 'package:flutter/material.dart';
@@ -149,107 +149,25 @@ class PriceChgGridSource extends DataGridSource {
           ),
         );
       }),
-      Builder(builder: (context) {
-        return Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: AnimatedColorText(
-              text: row.getCells()[1].value.convertedValue.trim(),
-              value: row.getCells()[1].value.value,
-              style: Styles.tsBody_16m(context),
-              recyclable: true,
-              // normalColor: colorList[index],
-              // animationColor: animationColor,
-            ),
-          ),
-        );
-      }),
-      Builder(builder: (context) {
-        var data = row.getCells()[2].value as _StringConverter;
-        return Align(
-          alignment: Alignment.centerLeft,
-          child: Container(
-              width: 80,
-              margin: const EdgeInsets.only(left: 10),
-              padding: const EdgeInsets.symmetric(vertical: 7),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(4),
-                color: data.value == null || data.value == 0
-                    ? Styles.cUp(context)
-                    : data.value! > 0
-                        ? Styles.cUp(context)
-                        : Styles.cDown(context),
-              ),
-              child: Text(
-                data.convertedValue.trim(),
-                textAlign: TextAlign.center,
-                style: const TextStyle(color: Colors.white, fontSize: 12),
-              )),
-        );
-      }),
+      DataGridPriceText(
+          (row.getCells()[1].value as _StringConverter).convertedValue.trim(),
+          value: (row.getCells()[1].value as _StringConverter).value),
+      DataGridRateText(
+          (row.getCells()[2].value as _StringConverter).convertedValue.trim(),
+          value: (row.getCells()[2].value as _StringConverter).value),
       if (logic.state.isPrice) ...[
         for (var i = 3; i < 8; i++)
-          Builder(builder: (context) {
-            var data = row.getCells()[i].value as _StringConverter;
-            return Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                  width: 80,
-                  padding: const EdgeInsets.symmetric(vertical: 7),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    color: data.value == null || data.value == 0
-                        ? Styles.cUp(context)
-                        : data.value! > 0
-                            ? Styles.cUp(context)
-                            : Styles.cDown(context),
-                  ),
-                  child: Text(
-                    data.convertedValue,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(color: Colors.white, fontSize: 12),
-                  )),
-            );
-          }),
+          DataGridRateText(
+              (row.getCells()[i].value as _StringConverter).convertedValue,
+              value: (row.getCells()[i].value as _StringConverter).value),
       ] else ...[
-        Builder(builder: (context) {
-          return Align(
-            alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: const EdgeInsets.all(8),
-              child: Text(
-                row.getCells()[3].value.convertedValue.trim(),
-                maxLines: 1,
-                style: Styles.tsBody_16m(context),
-              ),
-            ),
-          );
-        }),
+        DataGridNormalText((row.getCells()[3].value as _StringConverter)
+            .convertedValue
+            .trim()),
         for (var i = 4; i < 6; i++)
-          Builder(builder: (context) {
-            var data = row.getCells()[i].value;
-            return Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                  width: 80,
-                  margin: const EdgeInsets.only(left: 10),
-                  padding: const EdgeInsets.symmetric(vertical: 7),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    color: data.value == null || data.value == 0
-                        ? Styles.cUp(context)
-                        : data.value! > 0
-                            ? Styles.cUp(context)
-                            : Styles.cDown(context),
-                  ),
-                  child: Text(
-                    data.convertedValue,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(color: Colors.white, fontSize: 12),
-                  )),
-            );
-          }),
+          DataGridRateText(
+              (row.getCells()[i].value as _StringConverter).convertedValue,
+              value: (row.getCells()[i].value as _StringConverter).value),
       ],
     ]);
   }

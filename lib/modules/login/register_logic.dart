@@ -16,6 +16,7 @@ class RegisterLogic extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    // ignore: avoid_dynamic_calls
     isFindPwd = Get.arguments?['isFindPwd'] as bool? ?? false;
     final lastTime = StoreLogic.to.lastSendCodeTime;
     final now = DateTime.now();

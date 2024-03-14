@@ -1,6 +1,5 @@
 import 'package:ank_app/res/export.dart';
-import 'package:ank_app/widget/animated_color_text.dart';
-import 'package:auto_size_text/auto_size_text.dart';
+import 'package:ank_app/widget/data_grid_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -23,60 +22,9 @@ class SpotKeyValue {
   }
 
   Widget get rateText {
-    if (key == 'price') {
-      return Align(
-        alignment: Alignment.centerLeft,
-        child: Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: AnimatedColorText(
-            text: convertedValue,
-            value: value ?? 0,
-            style: const TextStyle(fontSize: 16, fontWeight: Styles.fontMedium),
-            recyclable: true,
-          ),
-        ),
-      );
-    }
-    if (isRate) {
-      return Align(
-        alignment: Alignment.centerLeft,
-        child: Builder(builder: (context) {
-          return Container(
-            width: 80,
-            margin: const EdgeInsets.only(left: 10),
-            padding: const EdgeInsets.symmetric(vertical: 7),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4),
-              color: value == null || value == 0
-                  ? Styles.cUp(context)
-                  : value! > 0
-                      ? Styles.cUp(context)
-                      : Styles.cDown(context),
-            ),
-            child: Text(
-              convertedValue,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                  color: Colors.white, fontSize: 12),
-            ),
-          );
-        }),
-      );
-    }
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 10),
-        child: Builder(builder: (context) {
-          return AutoSizeText(
-            convertedValue,
-            maxLines: 1,
-            style: Styles.tsBody_16m(context),
-            minFontSize: 7,
-          );
-        }),
-      ),
-    );
+    if (key == 'price') return DataGridPriceText(convertedValue, value: value);
+    if (isRate) return DataGridRateText(convertedValue, value: value);
+    return DataGridNormalText(convertedValue);
   }
 
   String handleValue(String key, double? value) {

@@ -23,6 +23,7 @@ import 'package:retrofit/retrofit.dart';
 
 import '../constants/urls.dart';
 import '../entity/btc_reduce_entity.dart';
+import '../entity/category_grid_entity.dart';
 import '../entity/coin_detail_contract_info_entity.dart';
 import '../entity/futures_big_data_entity.dart';
 import '../entity/head_statistics_entity.dart';
@@ -334,9 +335,16 @@ abstract class Apis {
     @Query('size') required int size,
     @Query('sortBy') String? sortBy,
     @Query('sortType') String sortType = 'descend',
-    @Query('sort') String? sort,
     @Query('isFollow') bool? isFollow,
     @Query('baseCoins') String? baseCoins,
     @Extras() Map<String, dynamic>? extras,
+  });
+
+  @POST('/api/instruments/categories')
+  Future<List<CategoryGridEntity>?> getContractCategories({
+    @Query('productType') String? productType,
+    @Query('sortBy') String? sortBy,
+    @Query('sortType') String sortType = 'descend',
+    @Query('sort') String? sort,
   });
 }

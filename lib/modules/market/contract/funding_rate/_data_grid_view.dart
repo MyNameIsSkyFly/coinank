@@ -13,7 +13,7 @@ class _DataGridView extends StatefulWidget {
 
 class _DataGridViewState extends State<_DataGridView> {
   // ignore: invalid_use_of_protected_member
-  List get list => widget.logic.state.topList.value;
+  List<String> get list => widget.logic.state.topList.value;
 
   List<GridColumn> getColumns() {
     return <GridColumn>[

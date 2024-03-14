@@ -409,5 +409,6 @@
   "addedToFavorites": "Added",
   "removedFromFavorites": "Removed",
   "marketCapShort": "Market Cap",
-  "tapAgainToExit": "Tap again to exit"
+  "tapAgainToExit": "Tap again to exit",
+  "category": "分类"
 }

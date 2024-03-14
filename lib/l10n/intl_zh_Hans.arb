@@ -406,5 +406,6 @@
   "marketCapChange": "市值變化",
   "addedToFavorites": "收藏成功",
   "removedFromFavorites": "已取消收藏",
-  "tapAgainToExit": "Tap again to exit"
+  "tapAgainToExit": "Tap again to exit",
+  "category": "分类"
 }

@@ -1,4 +1,4 @@
-// ignore_for_file: invalid_use_of_internal_member
+// ignore_for_file: invalid_use_of_internal_member, avoid_dynamic_calls
 
 import 'dart:developer';
 import 'dart:io';

@@ -406,5 +406,6 @@
   "marketCapChange": "MarketCap Change",
   "addedToFavorites": "추가됨",
   "removedFromFavorites": "제거됨",
-  "tapAgainToExit": "Tap again to exit"
+  "tapAgainToExit": "Tap again to exit",
+  "category": "分类"
 }

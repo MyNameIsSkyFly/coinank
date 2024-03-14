@@ -174,20 +174,20 @@ class GridDataSource extends DataGridSource {
 
   @override
   int compare(DataGridRow? a, DataGridRow? b, SortColumnDetails sortColumn) {
-    final double valueA = a
-            ?.getCells()
-            .firstWhereOrNull(
-                (dynamic element) => element.columnName == sortColumn.name)
-            ?.value
+    final double valueA = (a
+                ?.getCells()
+                .firstWhereOrNull(
+                    (element) => element.columnName == sortColumn.name)
+                ?.value as _DataClass?)
             ?.value1 ??
         (sortColumn.sortDirection == DataGridSortDirection.ascending
             ? 10
             : -10);
-    final double valueB = b
-            ?.getCells()
-            .firstWhereOrNull(
-                (dynamic element) => element.columnName == sortColumn.name)
-            ?.value
+    final double valueB = (b
+                ?.getCells()
+                .firstWhereOrNull(
+                    (element) => element.columnName == sortColumn.name)
+                ?.value as _DataClass?)
             ?.value1 ??
         (sortColumn.sortDirection == DataGridSortDirection.ascending
             ? 10

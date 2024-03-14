@@ -49,7 +49,7 @@ class GridDataSource extends DataGridSource {
           child: FittedBox(
             fit: BoxFit.scaleDown,
             child: Text(
-              (row.getCells()[0].value + 1).toString(),
+              ((row.getCells()[0].value as int) + 1).toString(),
               style: Styles.tsBody_14m(Get.context!),
             ),
           ),
@@ -135,14 +135,12 @@ class GridDataSource extends DataGridSource {
     if (sortColumn.name == '1') {
       final String? valueA = a
           ?.getCells()
-          .firstWhereOrNull(
-              (dynamic element) => element.columnName == sortColumn.name)
+          .firstWhereOrNull((element) => element.columnName == sortColumn.name)
           ?.value
           ?.toString();
       final String? valueB = b
           ?.getCells()
-          .firstWhereOrNull(
-              (dynamic element) => element.columnName == sortColumn.name)
+          .firstWhereOrNull((element) => element.columnName == sortColumn.name)
           ?.value
           ?.toString();
       if (valueA == null || valueB == null) {
@@ -157,13 +155,11 @@ class GridDataSource extends DataGridSource {
     } else {
       final double? valueA = a
           ?.getCells()
-          .firstWhereOrNull(
-              (dynamic element) => element.columnName == sortColumn.name)
+          .firstWhereOrNull((element) => element.columnName == sortColumn.name)
           ?.value;
       final double? valueB = b
           ?.getCells()
-          .firstWhereOrNull(
-              (dynamic element) => element.columnName == sortColumn.name)
+          .firstWhereOrNull((element) => element.columnName == sortColumn.name)
           ?.value;
       if (valueA == null || valueB == null) {
         return 0;

@@ -49,7 +49,7 @@ class GridDataSource extends DataGridSource {
         child: Padding(
           padding: const EdgeInsets.all(10).copyWith(left: 15),
           child: Text(
-            (row.getCells()[0].value + 1).toString(),
+            ((row.getCells()[0].value as int) + 1).toString(),
             style: Styles.tsBody_14(Get.context!),
           ),
         ),
@@ -139,13 +139,11 @@ class GridDataSource extends DataGridSource {
     } else {
       final double? valueA = a
           ?.getCells()
-          .firstWhereOrNull(
-              (dynamic element) => element.columnName == sortColumn.name)
+          .firstWhereOrNull((element) => element.columnName == sortColumn.name)
           ?.value;
       final double? valueB = b
           ?.getCells()
-          .firstWhereOrNull(
-              (dynamic element) => element.columnName == sortColumn.name)
+          .firstWhereOrNull((element) => element.columnName == sortColumn.name)
           ?.value;
       if (valueA == null || valueB == null) {
         return 0;

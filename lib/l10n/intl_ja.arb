@@ -407,5 +407,6 @@
   "marketCapChange": "MarketCap Change",
   "addedToFavorites": "追加した",
   "removedFromFavorites": "削除されました",
-  "tapAgainToExit": "Tap again to exit"
+  "tapAgainToExit": "Tap again to exit",
+  "category": "分类"
 }

@@ -38,6 +38,7 @@ class _ContractPageState extends State<ContractPage> {
           tabs: [
             Tab(text: S.of(context).s_favorite),
             Tab(text: S.of(context).s_crypto_coin_short),
+            Tab(text: S.of(context).category),
             Tab(text: S.of(context).s_oi),
             // Tab(text: S.of(context).s_futures_market),
             Tab(text: S.of(context).s_rekt),

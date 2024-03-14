@@ -12,7 +12,9 @@ class CoinDetailLogic extends GetxController {
 
   @override
   void onInit() {
+    // ignore: avoid_dynamic_calls
     coin = Get.arguments['coin'];
+    // ignore: avoid_dynamic_calls
     toSpot = Get.arguments['toSpot'] ?? false;
     supportSpot = coin.supportSpot ?? false;
     supportContract = coin.supportContract ?? false;

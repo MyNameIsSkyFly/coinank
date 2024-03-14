@@ -164,7 +164,7 @@ class GridDataSource extends DataGridSource {
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.all(8),
         child: Text(
-          '${((row.getCells()[7].value ?? 0) * 100).toStringAsFixed(4)}%',
+          '${(((row.getCells()[7].value as double?) ?? 0) * 100).toStringAsFixed(4)}%',
           overflow: TextOverflow.ellipsis,
           style: Styles.tsBody_14m(Get.context!),
         ),
@@ -183,14 +183,12 @@ class GridDataSource extends DataGridSource {
     if (sortColumn.name == '1') {
       final String? valueA = a
           ?.getCells()
-          .firstWhereOrNull(
-              (dynamic element) => element.columnName == sortColumn.name)
+          .firstWhereOrNull((element) => element.columnName == sortColumn.name)
           ?.value
           ?.toString();
       final String? valueB = b
           ?.getCells()
-          .firstWhereOrNull(
-              (dynamic element) => element.columnName == sortColumn.name)
+          .firstWhereOrNull((element) => element.columnName == sortColumn.name)
           ?.value
           ?.toString();
       if (valueA == null || valueB == null) {
@@ -205,13 +203,11 @@ class GridDataSource extends DataGridSource {
     } else {
       final double? valueA = a
           ?.getCells()
-          .firstWhereOrNull(
-              (dynamic element) => element.columnName == sortColumn.name)
+          .firstWhereOrNull((element) => element.columnName == sortColumn.name)
           ?.value;
       final double? valueB = b
           ?.getCells()
-          .firstWhereOrNull(
-              (dynamic element) => element.columnName == sortColumn.name)
+          .firstWhereOrNull((element) => element.columnName == sortColumn.name)
           ?.value;
       if (valueA == null || valueB == null) {
         return 0;

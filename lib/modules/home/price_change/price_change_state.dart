@@ -26,6 +26,7 @@ class PriceChangeState {
   var sortByList = [];
   PriceChangeState() {
     final arg = Get.arguments;
+    // ignore: avoid_dynamic_calls
     isPrice = arg?['isPrice'] as bool? ?? false;
     sortBy = isPrice ? 'priceChangeH24' : 'openInterestCh24';
     if (isPrice) {
