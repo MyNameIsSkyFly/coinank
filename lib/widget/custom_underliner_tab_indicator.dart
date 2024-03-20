@@ -14,6 +14,13 @@ class CustomUnderlineTabIndicator extends Decoration {
     this.width = 32,
   });
 
+  const CustomUnderlineTabIndicator.thin({
+    this.borderSide = const BorderSide(width: 2, color: Styles.cMain),
+    this.insets = EdgeInsets.zero,
+    this.strokeCap = StrokeCap.round,
+    this.width = 32,
+  });
+
   @override
   Decoration? lerpFrom(Decoration? a, double t) {
     if (a is CustomUnderlineTabIndicator) {

@@ -1,3 +1,4 @@
+import 'package:ank_app/modules/market/contract/contract_coin/widgets/customize_filter_header_view.dart';
 import 'package:ank_app/modules/market/spot/widgets/spot_coin_data_grid_view.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,17 +18,33 @@ class FSpotCoinView extends StatelessWidget {
       return IndexedStack(
         index: logic.isLoading.value
             ? 0
-            : logic.dataF.isEmpty
-                ? 1
+            : logic.data.isEmpty
+                ? StoreLogic().spotCoinFilter == null
+                    ? 1
+                    : 2
                 : 2,
         children: [
           Visibility(
               visible: logic.isLoading.value,
               child: const LottieIndicator(margin: EdgeInsets.only(top: 200))),
           _EmptyView(logic: logic),
-          EasyRefresh(
-            onRefresh: () async => logic.onRefresh(),
-            child: SpotCoinGridView(logic: logic),
+          Stack(
+            children: [
+              Column(
+                children: [
+                  CustomizeFilterHeaderView(
+                      onFinishFilter: () => logic.onRefresh(), isSpot: true),
+                  Expanded(
+                      child: EasyRefresh(
+                          onRefresh: () async => logic.onRefresh(),
+                          child: SpotCoinGridView(logic: logic))),
+                ],
+              ),
+              if (logic.data.isEmpty)
+                Center(
+                    child: Image.asset(Assets.commonIcEmptyBox,
+                        height: 150, width: 150)),
+            ],
           )
         ],
       );

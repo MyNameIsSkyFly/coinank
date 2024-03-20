@@ -49,61 +49,59 @@ class _SpotCoinGridViewState extends State<SpotCoinGridView> {
   @override
   Widget build(BuildContext context) {
     widget.logic.dataSource.context = context;
-    return EasyRefresh(
-      onRefresh: () async => widget.logic.onRefresh(),
-      child: Obx(() {
-        return SfTheme(
-          data: SfThemeData(
-              dataGridThemeData: SfDataGridThemeData(
-                  frozenPaneLineColor: Colors.transparent,
-                  sortIcon: _SortIcon(widget.logic))),
-          child: SfDataGrid(
-              controller: dataGridCtrl,
-              gridLinesVisibility: GridLinesVisibility.none,
-              headerGridLinesVisibility: GridLinesVisibility.none,
-              columnSizer: MarketDataGridSizer(),
-              allowSorting: true,
-              allowTriStateSorting: true,
-              columnWidthMode: ColumnWidthMode.auto,
-              frozenColumnsCount: 1,
-              horizontalScrollPhysics: const ClampingScrollPhysics(),
-              source: widget.logic.dataSource,
-              // ignore: invalid_use_of_protected_member
-              columns: widget.logic.dataSource.columns.value,
-              columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
-              onCellTap: (details) {
-                if (details.rowColumnIndex.rowIndex == 0) return;
-                var baseCoin = widget.logic.dataSource
-                    .effectiveRows[details.rowColumnIndex.rowIndex - 1]
-                    .getCells()[0]
-                    .value;
-                final item = widget.logic.dataSource.items.firstWhereOrNull(
-                    (element) => element.baseCoin == baseCoin);
-                if (item == null) return;
-                AppNav.toCoinDetail(item, toSpot: true);
-              },
-              onCellLongPress: (details) {
-                if (details.rowColumnIndex.rowIndex == 0) return;
-                var baseCoin = widget.logic.dataSource
-                    .effectiveRows[details.rowColumnIndex.rowIndex - 1]
-                    .getCells()[0]
-                    .value;
-                final item = widget.logic.dataSource.items.firstWhereOrNull(
-                    (element) => element.baseCoin == baseCoin);
-                if (item == null) return;
-                late bool marked;
-                if (StoreLogic.isLogin) {
-                  marked = item.follow == true;
-                } else {
-                  marked = StoreLogic.to.favoriteSpot.contains(item.baseCoin);
-                }
-                showOverlayAt(details.globalPosition, marked, onTap: () {
-                  widget.logic.tapCollect(item.baseCoin);
-                });
-              }),
-        );
-      }),
-    );
+    return Obx(() {
+      return SfTheme(
+        data: SfThemeData(
+            dataGridThemeData: SfDataGridThemeData(
+                frozenPaneLineColor: Colors.transparent,
+                sortIcon: _SortIcon(widget.logic))),
+        child: SfDataGrid(
+            controller: dataGridCtrl,
+            gridLinesVisibility: GridLinesVisibility.none,
+            headerGridLinesVisibility: GridLinesVisibility.none,
+            columnSizer: MarketDataGridSizer(),
+            allowSorting: true,
+            allowTriStateSorting: true,
+            columnWidthMode: ColumnWidthMode.auto,
+            frozenColumnsCount: 1,
+            headerRowHeight: 32,
+            horizontalScrollPhysics: const ClampingScrollPhysics(),
+            source: widget.logic.dataSource,
+            // ignore: invalid_use_of_protected_member
+            columns: widget.logic.dataSource.columns.value,
+            columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
+            onCellTap: (details) {
+              if (details.rowColumnIndex.rowIndex == 0) return;
+              var baseCoin = widget.logic.dataSource
+                  .effectiveRows[details.rowColumnIndex.rowIndex - 1]
+                  .getCells()[0]
+                  .value;
+              final item = widget.logic.dataSource.items
+                  .firstWhereOrNull((element) => element.baseCoin == baseCoin);
+              if (item == null) return;
+              AppNav.toCoinDetail(item, toSpot: true);
+            },
+            onCellLongPress: (details) {
+              if (details.rowColumnIndex.rowIndex == 0) return;
+              var baseCoin = widget.logic.dataSource
+                  .effectiveRows[details.rowColumnIndex.rowIndex - 1]
+                  .getCells()[0]
+                  .value;
+              final item = widget.logic.dataSource.items
+                  .firstWhereOrNull((element) => element.baseCoin == baseCoin);
+              if (item == null) return;
+              late bool marked;
+              if (StoreLogic.isLogin) {
+                marked = item.follow == true;
+              } else {
+                marked = StoreLogic.to.favoriteSpot.contains(item.baseCoin);
+              }
+              showOverlayAt(details.globalPosition, marked, onTap: () {
+                widget.logic.tapCollect(item.baseCoin);
+              });
+            }),
+      );
+    });
   }
 
   void showOverlayAt(Offset tapPosition, bool marked, {VoidCallback? onTap}) {

@@ -27,7 +27,9 @@ class _ContractCoinPageFState extends State<ContractCoinPageF> {
             index: logic.isLoading.value
                 ? 0
                 : logic.data.isEmpty
-                    ? 1
+                    ? StoreLogic().contractCoinFilter == null
+                        ? 1
+                        : 2
                     : 2,
             children: [
               Visibility(
@@ -35,16 +37,24 @@ class _ContractCoinPageFState extends State<ContractCoinPageF> {
                   child:
                       const LottieIndicator(margin: EdgeInsets.only(top: 200))),
               _FixedCoins(logic: logic),
-              Column(
+              Stack(
                 children: [
-                  CustomizeFilterHeaderView(
-                      onFinishFilter: () => logic.onRefresh()),
-                  Expanded(
-                    child: EasyRefresh(
-                      onRefresh: () async => logic.onRefresh(),
-                      child: ContractCoinGridView(logic: logic),
-                    ),
+                  Column(
+                    children: [
+                      CustomizeFilterHeaderView(
+                          onFinishFilter: () => logic.onRefresh()),
+                      Expanded(
+                        child: EasyRefresh(
+                          onRefresh: () async => logic.onRefresh(),
+                          child: ContractCoinGridView(logic: logic),
+                        ),
+                      ),
+                    ],
                   ),
+                  if (logic.data.isEmpty)
+                    Center(
+                        child: Image.asset(Assets.commonIcEmptyBox,
+                            height: 150, width: 150)),
                 ],
               )
             ],

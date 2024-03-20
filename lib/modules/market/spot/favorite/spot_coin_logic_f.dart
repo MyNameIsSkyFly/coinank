@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:ank_app/entity/event/event_coin_marked.dart';
+import 'package:ank_app/entity/event/event_coin_order_changed.dart';
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/modules/main/main_logic.dart';
 import 'package:ank_app/modules/market/market_logic.dart';
@@ -13,7 +14,7 @@ import 'package:get/get.dart';
 import '../widgets/spot_coin_datagrid_source.dart';
 
 class FSpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
-  final dataF = RxList<MarkerTickerEntity>();
+  final data = RxList<MarkerTickerEntity>();
   RxBool isLoading = true.obs;
   late TabController tabCtrl;
   final fixedCoin = [
@@ -24,6 +25,7 @@ class FSpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
       ['BTC', 'ETH', 'SOL', 'XRP', 'BNB', 'ORDI', 'DOGE', 'ARB']);
   final fetching = RxBool(false);
   StreamSubscription? _favoriteChangedSubscription;
+  StreamSubscription? _orderChangedSubscription;
   @override
   GridDataSource dataSource = GridDataSource([]);
 
@@ -37,6 +39,13 @@ class FSpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
       if (!event.isSpot) return;
       onRefresh();
     });
+    _orderChangedSubscription =
+        AppConst.eventBus.on<EventCoinOrderChanged>().listen((event) {
+      if (!event.isSpot) return;
+      dataSource.getColumns(Get.context!);
+      dataSource.buildDataGridRows();
+    });
+
     super.onInit();
   }
 
@@ -47,7 +56,7 @@ class FSpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
   Future<void> onRefresh({bool showLoading = false}) async {
     TickersDataEntity? result;
     if (StoreLogic.isLogin) {
-      result = await Apis().getSpotAgg(
+      result = await Apis().postSpotAgg(StoreLogic().spotCoinFilter ?? {},
           page: 1,
           size: 500,
           isFollow: true,
@@ -66,7 +75,7 @@ class FSpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
       }
     }
     if (isLoading.value) isLoading.value = false;
-    dataF.assignAll(result?.list ?? []);
+    data.assignAll(result?.list ?? []);
     dataSource.items.assignAll(result?.list ?? []);
     dataSource.buildDataGridRows();
     dataSource.getColumns(Get.context!);
@@ -91,7 +100,7 @@ class FSpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
   @override
   Future<void> tapCollect(String? baseCoin) async {
     final item =
-        dataF.firstWhereOrNull((element) => element.baseCoin == baseCoin);
+        data.firstWhereOrNull((element) => element.baseCoin == baseCoin);
     if (!StoreLogic.isLogin) {
       if (StoreLogic.to.favoriteSpot.contains(item?.baseCoin)) {
         await StoreLogic.to.removeFavoriteSpot(baseCoin ?? '');
@@ -140,6 +149,7 @@ class FSpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
   void onClose() {
     _pollingTimer?.cancel();
     _favoriteChangedSubscription?.cancel();
+    _orderChangedSubscription?.cancel();
     super.onClose();
   }
 }

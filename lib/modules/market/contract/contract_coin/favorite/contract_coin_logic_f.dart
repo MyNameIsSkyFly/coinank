@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:ank_app/entity/event/event_coin_marked.dart';
+import 'package:ank_app/entity/event/event_coin_order_changed.dart';
 import 'package:ank_app/entity/event/logged_event.dart';
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/modules/main/main_logic.dart';
@@ -16,6 +17,7 @@ class ContractCoinLogicF extends GetxController
     implements ContractCoinBaseLogic {
   StreamSubscription? _loginSubscription;
   StreamSubscription? _favoriteChangedSubscription;
+  StreamSubscription? _orderChangedSubscription;
   final data = RxList<MarkerTickerEntity>();
 
   Timer? _pollingTimer;
@@ -28,7 +30,7 @@ class ContractCoinLogicF extends GetxController
   final fetching = RxBool(false);
 
   @override
-  GridDataSource dataSource = GridDataSource([]);
+  ContractCoinGridSource dataSource = ContractCoinGridSource([]);
 
   @override
   void tapItem(MarkerTickerEntity item) {
@@ -178,6 +180,12 @@ class ContractCoinLogicF extends GetxController
       if (event.isSpot) return;
       onRefresh();
     });
+    _orderChangedSubscription =
+        AppConst.eventBus.on<EventCoinOrderChanged>().listen((event) {
+      if (event.isSpot || event.isCategory) return;
+      dataSource.getColumns(Get.context!);
+      dataSource.buildDataGridRows();
+    });
     dataSource.getColumns(Get.context!);
   }
 
@@ -187,6 +195,7 @@ class ContractCoinLogicF extends GetxController
     _pollingTimer = null;
     _loginSubscription?.cancel();
     _favoriteChangedSubscription?.cancel();
+    _orderChangedSubscription?.cancel();
     super.onClose();
   }
 }

@@ -10,14 +10,15 @@ import '../../../utils/text_maps.dart';
 import 'contract_coin_key_value.dart';
 
 /// Set product's data collection to data grid source.
-class GridDataSource extends DataGridSource {
+class ContractCoinGridSource extends DataGridSource {
   /// Creates the product data source class with required details.
-  GridDataSource(this.items) {
+  ContractCoinGridSource(this.items) {
     buildDataGridRows();
   }
 
   /// Instance of products.
   final List<MarkerTickerEntity> items;
+  bool isCategory = false;
 
   /// Instance of DataGridRow.
   List<DataGridRow> dataGridRows = <DataGridRow>[];
@@ -28,7 +29,10 @@ class GridDataSource extends DataGridSource {
     dataGridRows = items.mapIndexed<DataGridRow>((index, entity) {
       return DataGridRow(cells: <DataGridCell<dynamic>>[
         DataGridCell(columnName: '0', value: entity.baseCoin),
-        ...StoreLogic.to.contractCoinSortOrder.entries
+        ...(isCategory
+                ? StoreLogic.to.categoryContractOrder
+                : StoreLogic.to.contractCoinSortOrder)
+            .entries
             .where((element) => element.value == true)
             .mapIndexed((index, e) {
           return DataGridCell(
@@ -74,7 +78,10 @@ class GridDataSource extends DataGridSource {
           ],
         ),
       ),
-      ...StoreLogic.to.contractCoinSortOrder.entries
+      ...(isCategory
+              ? StoreLogic.to.categoryContractOrder
+              : StoreLogic.to.contractCoinSortOrder)
+          .entries
           .where((element) => element.value == true)
           .mapIndexed(
             (index, e) => Container(
@@ -124,7 +131,10 @@ class GridDataSource extends DataGridSource {
   final columns = RxList<GridColumn>();
 
   void getColumns(BuildContext context) {
-    sortOrderMap = StoreLogic.to.contractCoinSortOrder.entries
+    sortOrderMap = (isCategory
+            ? StoreLogic.to.categoryContractOrder
+            : StoreLogic.to.contractCoinSortOrder)
+        .entries
         .where((element) => element.value == true)
         .toList();
     List<GridColumn> gridColumns() => [

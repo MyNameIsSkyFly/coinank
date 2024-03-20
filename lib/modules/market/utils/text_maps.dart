@@ -1,4 +1,6 @@
+import 'package:ank_app/entity/category_info_item_entity.dart';
 import 'package:ank_app/generated/l10n.dart';
+import 'package:get/get.dart';
 
 abstract class MarketMaps {
   static String contractTextMap(String key) => switch (key) {
@@ -61,27 +63,11 @@ abstract class MarketMaps {
         _ => '',
       };
 
-  static String categoryTextMap(String? tag) => switch (tag) {
-        'layer-1' => 'Layer 1',
-        'ethereum-ecosystem' => S.current.ethereumEcosystem,
-        'solana-ecosystem' => S.current.solanaEcosystem,
-        'defi' => 'Defi',
-        'smart-contracts' => S.current.smartContracts,
-        'binance-smart-chain' => S.current.binanceSmartChain,
-        'memes' => 'Memes',
-        'polygon-ecosystem' => S.current.polygonEcosystem,
-        'avalanche-ecosystem' => S.current.avalancheEcosystem,
-        'arbitrum-ecosytem' => S.current.arbitrumEcosytem,
-        'ai-big-data' => S.current.aiBigData,
-        'optimism-ecosystem' => S.current.optimismEcosystem,
-        'metaverse' => S.current.metaverse,
-        'layer-2' => 'Layer 2',
-        'gaming' => S.current.gaming,
-        'polkadot-ecosystem' => S.current.polkadotEcosystem,
-        'brc-20' => 'Brc20',
-        'storage' => S.current.storage,
-        'launchpool' => 'Launchpool',
-        'fans token' => S.current.fansToken,
-        _ => '',
-      };
+  static final allCategories = <CategoryInfoItemEntity>[];
+
+  static String categoryTextMap(String? tag) =>
+      allCategories
+          .firstWhereOrNull((element) => element.type == tag)
+          ?.showName ??
+      '';
 }

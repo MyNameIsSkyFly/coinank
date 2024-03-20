@@ -416,7 +416,7 @@ class StoreLogic extends GetxController {
 
   Map<String, String>? get contractCoinFilter {
     final result = _SpUtil()._getString(_SpKeys.contractCoinFilter);
-    if (result.isEmpty) return null;
+    if (result.isEmpty || result == '{}') return null;
     // ignore: avoid_dynamic_calls
     return jsonDecode(result).cast<String, String>();
   }
@@ -426,13 +426,13 @@ class StoreLogic extends GetxController {
   }
 
 //spotCoinFilter
-  Future<bool> saveSpotCoinFilter(Map<String, bool> filter) {
+  Future<bool> saveSpotCoinFilter(Map<String, String?> filter) {
     return _SpUtil()._saveString(_SpKeys.spotCoinFilter, jsonEncode(filter));
   }
 
   Map<String, String>? get spotCoinFilter {
     final result = _SpUtil()._getString(_SpKeys.spotCoinFilter);
-    if (result.isEmpty) return null;
+    if (result.isEmpty || result == '{}') return null;
     // ignore: avoid_dynamic_calls
     return jsonDecode(result).cast<String, String>();
   }

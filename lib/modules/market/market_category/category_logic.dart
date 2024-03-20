@@ -7,6 +7,7 @@ mixin ContractCategoryLogic {
   bool isSpot = false;
 
   void onInit() {
+    //todo 轮询
     gridSource.isSpot = isSpot;
     getColumn();
     initData();
@@ -25,52 +26,63 @@ mixin ContractCategoryLogic {
     final data = await Apis().getContractCategories(
       productType: isSpot ? 'SPOT' : 'SWAP',
     );
+    MarketMaps.allCategories.assignAll(await Apis().getAllCategories() ?? []);
     gridSource.list.assignAll(data ?? []);
     gridSource.refresh();
     getColumn();
   }
 
   void getColumn() {
+    Widget text(String text) => Builder(builder: (context) {
+          return Padding(
+            padding: const EdgeInsets.only(left: 8),
+            child: Text(
+              text,
+              style: Styles.tsSub_12m(context),
+            ),
+          );
+        });
     columns.assignAll([
       GridColumn(
         maximumWidth: 133,
         allowSorting: false,
         columnName: S.current.category,
-        label: Text(S.current.category),
+        label: Container(
+            alignment: Alignment.centerLeft, child: text(S.current.category)),
       ),
       GridColumn(
         columnName: '${S.current.s_24h_turnover}(\$)',
-        label: Text('${S.current.s_24h_turnover}(\$)'),
+        label: text('${S.current.s_24h_turnover}(\$)'),
       ),
       GridColumn(
         columnName: '${S.current.s_24h_turnover}(%)',
-        label: Text('${S.current.s_24h_turnover}(%)'),
+        label: text('${S.current.s_24h_turnover}(%)'),
       ),
       if (!isSpot) ...[
         GridColumn(
           columnName: '${S.current.s_oi}(\$)',
-          label: Text('${S.current.s_oi}(\$)'),
+          label: text('${S.current.s_oi}(\$)'),
         ),
         GridColumn(
           columnName: '${S.current.s_oi}(1H%)',
-          label: Text('${S.current.s_oi}(1H%)'),
+          label: text('${S.current.s_oi}(1H%)'),
         ),
         GridColumn(
           columnName: '${S.current.s_oi}(24H%)',
-          label: Text('${S.current.s_oi}(24H%)'),
+          label: text('${S.current.s_oi}(24H%)'),
         )
       ],
       GridColumn(
         columnName: '${S.current.marketCap}(\$)',
-        label: Text('${S.current.marketCap}(\$)'),
+        label: text('${S.current.marketCap}(\$)'),
       ),
       GridColumn(
         columnName: S.current.topMarketCoin,
-        label: Text(S.current.topMarketCoin),
+        label: text(S.current.topMarketCoin),
       ),
       GridColumn(
         columnName: S.current.topGainerCoin,
-        label: Text(S.current.topGainerCoin),
+        label: text(S.current.topGainerCoin),
       ),
     ]);
   }

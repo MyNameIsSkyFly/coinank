@@ -4,18 +4,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'contract_coin_filter_logic.dart';
 
 class ContractCoinFilterPage extends StatefulWidget {
-  const ContractCoinFilterPage({super.key});
+  const ContractCoinFilterPage(
+      {super.key, this.isSpot = false, this.isCategory = false});
 
+  final bool isSpot;
+  final bool isCategory;
   @override
   State<ContractCoinFilterPage> createState() => _ContractCoinFilterPageState();
 }
 
 class _ContractCoinFilterPageState extends State<ContractCoinFilterPage>
     with _Data {
-  final logic = Get.put(ContractCoinFilterLogic());
   var selectedFilterKeys = <String>{};
 
   //form key
@@ -23,7 +24,21 @@ class _ContractCoinFilterPageState extends State<ContractCoinFilterPage>
 
   @override
   void initState() {
-    filterKeys.addAll(StoreLogic().contractCoinFilter ?? {});
+    if (widget.isSpot) {
+      filterKeys.clear();
+      filterKeys.addAll({
+        'price': null,
+        'priceChangeH24': null,
+        'priceChangeH1': null,
+        'turnover24h': null,
+        'marketCap': null,
+        'circulatingSupply': null
+      });
+    }
+    filterKeys.addAll((widget.isSpot
+            ? StoreLogic().spotCoinFilter
+            : StoreLogic().contractCoinFilter) ??
+        {});
     filterKeys.forEach((key, value) {
       if (value == null) return;
       final valueList = value.split('~');
@@ -56,6 +71,7 @@ class _ContractCoinFilterPageState extends State<ContractCoinFilterPage>
         children: [
           Row(
             children: [
+              const Gap(15),
               Expanded(
                 child: Text(
                   //todo intl
@@ -65,10 +81,14 @@ class _ContractCoinFilterPageState extends State<ContractCoinFilterPage>
               ),
               //close button
               GestureDetector(
+                behavior: HitTestBehavior.opaque,
                 onTap: () => Get.back(),
-                child: Icon(
-                  Icons.close,
-                  color: Styles.cBody(context),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Icon(
+                    Icons.close,
+                    color: Styles.cBody(context),
+                  ),
                 ),
               )
             ],
@@ -78,7 +98,7 @@ class _ContractCoinFilterPageState extends State<ContractCoinFilterPage>
               key: formKey,
               child: ListView(
                 padding: const EdgeInsets.only(top: 20),
-                children: [...filterKeys.keys.map((e) => _item(e, 'value'))],
+                children: [...filterKeys.keys.map((e) => _item(e))],
               ),
             ),
           ),
@@ -123,10 +143,15 @@ class _ContractCoinFilterPageState extends State<ContractCoinFilterPage>
                       onPressed: () {
                         filterKeyCache.forEach((key, value) {
                           filterKeys[key] = value.convertedValue;
+                        });
+                        if (widget.isSpot) {
+                          StoreLogic().saveSpotCoinFilter(filterKeys
+                            ..removeWhere((key, value) => value == null));
+                        } else {
                           StoreLogic().saveContractCoinFilter(filterKeys
                             ..removeWhere((key, value) => value == null));
-                        });
-                        Get.back();
+                        }
+                        Get.back(result: true);
                       },
                       child: Text(sof.s_ok,
                           style: const TextStyle(
@@ -140,7 +165,7 @@ class _ContractCoinFilterPageState extends State<ContractCoinFilterPage>
     );
   }
 
-  Widget _item(String filterKey, String value) {
+  Widget _item(String filterKey) {
     return GestureDetector(
       onTap: () {
         setState(() {

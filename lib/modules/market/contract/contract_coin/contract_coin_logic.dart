@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:ank_app/entity/event/event_coin_marked.dart';
+import 'package:ank_app/entity/event/event_coin_order_changed.dart';
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/modules/main/main_logic.dart';
 import 'package:ank_app/modules/market/contract/contract_coin/widgets/contract_coin_base_logic.dart';
@@ -13,14 +14,20 @@ import 'widgets/contract_coin_datagrid_source.dart';
 
 class ContractCoinLogic extends GetxController
     implements ContractCoinBaseLogic {
+  ContractCoinLogic({required this.isCategory});
+
+  final bool isCategory;
+
+  final isInitializing = RxBool(true);
   String? tag;
 
   final data = RxList<MarkerTickerEntity>();
   Timer? _pollingTimer;
   StreamSubscription? _favoriteChangedSubscription;
+  StreamSubscription? _orderChangedSubscription;
 
   @override
-  GridDataSource dataSource = GridDataSource([]);
+  ContractCoinGridSource dataSource = ContractCoinGridSource([]);
 
   @override
   void tapItem(MarkerTickerEntity item) {
@@ -77,6 +84,7 @@ class ContractCoinLogic extends GetxController
       _fetching = false;
     });
     if (!StoreLogic.isLogin) _addFollowTag(result);
+    if (isInitializing.value) isInitializing.value = false;
     data.assignAll(result?.list ?? []);
     dataSource.items.assignAll(data);
     dataSource.getColumns(Get.context!);
@@ -112,6 +120,7 @@ class ContractCoinLogic extends GetxController
     super.onInit();
     _startTimer();
     onRefresh(showLoading: true);
+    dataSource.isCategory = isCategory;
     dataSource.getColumns(Get.context!);
     _favoriteChangedSubscription =
         AppConst.eventBus.on<EventCoinMarked>().listen(
@@ -125,6 +134,13 @@ class ContractCoinLogic extends GetxController
         }
       },
     );
+    _orderChangedSubscription =
+        AppConst.eventBus.on<EventCoinOrderChanged>().listen((event) {
+      if (event.isSpot) return;
+      if (isCategory != event.isCategory) return;
+      dataSource.getColumns(Get.context!);
+      dataSource.buildDataGridRows();
+    });
   }
 
   @override
@@ -132,6 +148,7 @@ class ContractCoinLogic extends GetxController
     _pollingTimer?.cancel();
     _pollingTimer = null;
     _favoriteChangedSubscription?.cancel();
+    _orderChangedSubscription?.cancel();
     super.onClose();
   }
 }

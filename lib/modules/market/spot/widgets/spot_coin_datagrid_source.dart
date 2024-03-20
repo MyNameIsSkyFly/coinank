@@ -8,7 +8,6 @@ import 'package:intl/intl.dart';
 // ignore: depend_on_referenced_packages
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../customize/reorder_spot_view.dart';
 import 'spot_key_value.dart';
 
 /// Set product's data collection to data grid source.
@@ -123,7 +122,6 @@ class GridDataSource extends DataGridSource {
 
   var sortOrderMap = <MapEntry<String, bool>>[];
   final columns = RxList<GridColumn>();
-  final columnsF = RxList<GridColumn>();
 
   void getColumns(BuildContext context) {
     sortOrderMap = StoreLogic.to.spotSortOrder.entries
@@ -134,35 +132,21 @@ class GridDataSource extends DataGridSource {
             columnName: '0',
             width: 110,
             allowSorting: false,
-            label: Builder(builder: (context) {
-              return InkWell(
-                onTap: () => Get.toNamed(ReorderSpotPage.routeName),
-                child: Row(
-                  children: [
-                    const Gap(15),
-                    Image.asset(
-                      Assets.commonIcPuzzlePiece,
-                      width: 12,
-                      height: 12,
-                      color: Styles.cBody(context),
-                    ),
-                    const Gap(4),
-                    Expanded(
-                      child: Text(
-                        S.of(context).customizeList,
-                        style: Styles.tsBody_12m(context),
-                      ),
-                    ),
-                  ],
+            label: Padding(
+              padding: const EdgeInsets.only(left: 15),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  S.of(context).coinType,
+                  style: Styles.tsSub_12m(context),
                 ),
-              );
-            }),
+              ),
+            ),
           ),
           ...sortOrderMap.mapIndexed((index, e) =>
               _gridColumn(context, index, MarketMaps.spotTextMap(e.key))),
         ];
     columns.assignAll(grids());
-    columnsF.assignAll(grids());
   }
 
   GridColumn _gridColumn(BuildContext context, int index, String text) {

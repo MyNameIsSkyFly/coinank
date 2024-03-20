@@ -8,6 +8,7 @@ import 'package:ank_app/widget/data_grid_widgets.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 part 'category_logic.dart';
@@ -41,36 +42,41 @@ class _ContractCategoryPageState extends State<ContractCategoryPage>
     return EasyRefresh(
       onRefresh: () async => initData(),
       child: Obx(() {
-        return SfDataGrid(
-          source: gridSource,
-          columns: columns.value,
-          columnWidthMode: ColumnWidthMode.auto,
-          allowTriStateSorting: true,
-          allowSorting: true,
-          frozenColumnsCount: 1,
-          columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
-          horizontalScrollPhysics: const ClampingScrollPhysics(),
-          headerRowHeight: 32,
-          gridLinesVisibility: GridLinesVisibility.none,
-          rowHeight: 55,
-          headerGridLinesVisibility: GridLinesVisibility.none,
-          onCellTap: (details) {
-            if (details.rowColumnIndex.rowIndex == 0) return;
-            String? tagText = (gridSource
-                    .effectiveRows[details.rowColumnIndex.rowIndex - 1]
-                    .getCells()[0]
-                    .value as _TextValue)
-                .text;
-            String? tag;
-            for (int i = 0; i < categoryTags.length; i++) {
-              if (MarketMaps.categoryTextMap(categoryTags[i]) == tagText) {
-                tag = categoryTags[i];
-                break;
+        return SfTheme(
+          data: SfThemeData(
+              dataGridThemeData: SfDataGridThemeData(
+                  frozenPaneLineColor: Colors.transparent,
+                  sortIcon: _SortIcon(gridSource))),
+          child: SfDataGrid(
+            source: gridSource,
+            columns: columns.value,
+            columnWidthMode: ColumnWidthMode.auto,
+            allowTriStateSorting: true,
+            allowSorting: true,
+            frozenColumnsCount: 1,
+            columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
+            horizontalScrollPhysics: const ClampingScrollPhysics(),
+            headerRowHeight: 32,
+            gridLinesVisibility: GridLinesVisibility.none,
+            rowHeight: 55,
+            headerGridLinesVisibility: GridLinesVisibility.none,
+            onCellTap: (details) {
+              if (details.rowColumnIndex.rowIndex == 0) return;
+              String? tagText = (gridSource
+                      .effectiveRows[details.rowColumnIndex.rowIndex - 1]
+                      .getCells()[0]
+                      .value as _TextValue)
+                  .text;
+              String? tag;
+              for (int i = 0; i < categoryTags.length; i++) {
+                if (MarketMaps.categoryTextMap(categoryTags[i]) == tagText) {
+                  tag = categoryTags[i];
+                  break;
+                }
               }
-            }
-            print(tag);
-            AppNav.toCategoryDetail(tag: tag);
-          },
+              AppNav.toCategoryDetail(tag: tag);
+            },
+          ),
         );
       }),
     );
@@ -249,5 +255,34 @@ class _TextValue {
   @override
   String toString() {
     return '${lengthHelper ?? text}';
+  }
+}
+
+class _SortIcon extends StatelessWidget {
+  const _SortIcon(this.dataSource);
+
+  final _DataGridSource dataSource;
+
+  @override
+  Widget build(BuildContext context) {
+    Widget? icon;
+    String columnName = '';
+    context.visitAncestorElements((element) {
+      if (element is GridHeaderCellElement) {
+        columnName = element.column.columnName;
+      }
+      return true;
+    });
+    var column = dataSource.sortedColumns
+        .where((element) => element.name == columnName)
+        .firstOrNull;
+    if (column != null) {
+      if (column.sortDirection == DataGridSortDirection.ascending) {
+        icon = Image.asset(Assets.commonIconSortUp, width: 9, height: 12);
+      } else if (column.sortDirection == DataGridSortDirection.descending) {
+        icon = Image.asset(Assets.commonIconSortDown, width: 9, height: 12);
+      }
+    }
+    return icon ?? Image.asset(Assets.commonIconSortN, width: 9, height: 12);
   }
 }

@@ -1,11 +1,10 @@
-import 'package:ank_app/modules/market/contract/contract_coin/contract_coin_logic.dart';
+import 'package:ank_app/entity/event/event_coin_order_changed.dart';
 import 'package:ank_app/modules/market/contract/contract_coin/customize/edit_customize_view.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../utils/text_maps.dart';
-import '../favorite/contract_coin_logic_f.dart';
 import 'reorder_logic.dart';
 
 class ReorderPage extends StatelessWidget {
@@ -48,19 +47,12 @@ class ReorderPage extends StatelessWidget {
             if (!logic.isCategory) {
               await StoreLogic.to.saveContractCoinSortOrder(
                   {for (var item in logic.list) item.key: item.value});
-              if (Get.isRegistered<ContractCoinLogic>()) {
-                var contractCoinLogic = Get.find<ContractCoinLogic>();
-                contractCoinLogic.dataSource.getColumns(Get.context!);
-                contractCoinLogic.dataSource.buildDataGridRows();
-              }
-              if (Get.isRegistered<ContractCoinLogicF>()) {
-                var contractCoinLogic = Get.find<ContractCoinLogicF>();
-                contractCoinLogic.dataSource.getColumns(Get.context!);
-                contractCoinLogic.dataSource.buildDataGridRows();
-              }
             } else {
-              //todo category
+              await StoreLogic.to.saveCategoryContractOrder(
+                  {for (var item in logic.list) item.key: item.value});
             }
+            AppConst.eventBus
+                .fire(EventCoinOrderChanged(isCategory: logic.isCategory));
           },
         );
       }),

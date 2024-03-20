@@ -1,20 +1,20 @@
+import 'package:ank_app/entity/event/event_coin_order_changed.dart';
 import 'package:ank_app/modules/market/spot/customize/edit_customize_spot_view.dart';
-import 'package:ank_app/modules/market/spot/favorite/spot_coin_logic_f.dart';
 import 'package:ank_app/modules/market/utils/text_maps.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../spot_coin/spot_coin_logic.dart';
-import '../spot_logic.dart';
 import 'reorder_spot_logic.dart';
 
 class ReorderSpotPage extends StatelessWidget {
   ReorderSpotPage({super.key});
 
   static const routeName = '/spotCoinReorder';
+
   final logic = Get.put(ReorderSpotLogic());
-  final pLogic = Get.find<SpotLogic>();
+
+  // final pLogic = Get.find<SpotLogic>();
 
   @override
   Widget build(BuildContext context) {
@@ -50,19 +50,12 @@ class ReorderSpotPage extends StatelessWidget {
             if (!logic.isCategory) {
               await StoreLogic.to.saveSpotSortOrder(
                   {for (var item in logic.list) item.key: item.value});
-              if (Get.isRegistered<SpotLogic>()) {
-                var contractCoinLogic = Get.find<SpotCoinLogic>();
-                contractCoinLogic.dataSource.getColumns(Get.context!);
-                contractCoinLogic.dataSource.buildDataGridRows();
-              }
-              if (Get.isRegistered<FSpotCoinLogic>()) {
-                var contractCoinLogic = Get.find<FSpotCoinLogic>();
-                contractCoinLogic.dataSource.getColumns(Get.context!);
-                contractCoinLogic.dataSource.buildDataGridRows();
-              }
             } else {
-              //todo category
+              await StoreLogic.to.saveCategorySpotOrder(
+                  {for (var item in logic.list) item.key: item.value});
             }
+            AppConst.eventBus.fire(EventCoinOrderChanged(
+                isCategory: logic.isCategory, isSpot: true));
           },
         );
       }),

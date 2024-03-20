@@ -413,19 +413,5 @@
   "marketCategory": "行情分类",
   "errorInputLessThanX": "错误，输入的值小于{value}",
   "errorInputMoreThanX": "错误，输入的值大于{value}",
-  "errorInputRange": "错误, 请输入有效的范围.",
-  "ethereumEcosystem": "以太坊生态",
-  "solanaEcosystem": "Solana生态",
-  "smartContracts": "智能合约",
-  "binanceSmartChain": "币安智能合约",
-  "polygonEcosystem": "Polygon生态",
-  "avalancheEcosystem": "雪崩生态",
-  "arbitrumEcosytem": "Arbitrum生态",
-  "aiBigData": "AI",
-  "optimismEcosystem": "Optimism生态",
-  "metaverse": "元宇宙",
-  "gaming": "游戏",
-  "polkadotEcosystem": "Polkadot生态",
-  "storage": "存储",
-  "fansToken": "粉丝代币"
+  "errorInputRange": "错误, 请输入有效的范围."
 }

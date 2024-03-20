@@ -7,12 +7,18 @@ class ReorderSpotLogic extends GetxController {
 
   @override
   void onInit() {
-    super.onInit();
+    isCategory = Get.arguments['isCategory'] ?? false;
     initData();
+    super.onInit();
   }
 
   void initData() {
-    final order = StoreLogic.to.spotSortOrder;
+    late Map<String, bool> order;
+    if (!isCategory) {
+      order = StoreLogic.to.spotSortOrder;
+    } else {
+      order = StoreLogic.to.categorySpotOrder;
+    }
     list.assignAll(order.entries.where((element) => element.value == true));
   }
 }

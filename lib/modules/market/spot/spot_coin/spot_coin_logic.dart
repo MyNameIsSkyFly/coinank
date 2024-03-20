@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:ank_app/entity/event/event_coin_marked.dart';
+import 'package:ank_app/entity/event/event_coin_order_changed.dart';
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/modules/main/main_logic.dart';
 import 'package:ank_app/modules/market/market_logic.dart';
@@ -13,11 +14,17 @@ import '../spot_logic.dart';
 import '../widgets/spot_coin_datagrid_source.dart';
 
 class SpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
+  SpotCoinLogic({required this.isCategory});
+
+  final bool isCategory;
+  String? tag;
+  final isInitializing = RxBool(true);
   @override
   GridDataSource dataSource = GridDataSource([]);
   final data = RxList<MarkerTickerEntity>();
 
   StreamSubscription? _favoriteChangedSubscription;
+  StreamSubscription? _orderChangedSubscription;
   RxBool isLoading = true.obs;
 
   final fetching = RxBool(false);
@@ -38,17 +45,29 @@ class SpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
         }
       },
     );
+    _orderChangedSubscription =
+        AppConst.eventBus.on<EventCoinOrderChanged>().listen((event) {
+      if (!event.isSpot) return;
+      if (isCategory != event.isCategory) return;
+      dataSource.getColumns(Get.context!);
+      dataSource.buildDataGridRows();
+    });
+
     super.onInit();
   }
 
   @override
   Future<void> onRefresh({bool showLoading = false}) async {
     if (showLoading) Loading.show();
-    final result = await Apis().getSpotAgg(page: 1, size: 500).whenComplete(() {
+    final result = await Apis()
+        .postSpotAgg(StoreLogic().spotCoinFilter ?? {},
+            page: 1, size: 500, tag: tag)
+        .whenComplete(() {
       if (showLoading) Loading.dismiss();
     });
 
     data.assignAll(result?.list ?? []);
+    if (isInitializing.value) isInitializing.value = false;
     dataSource.items.assignAll(data);
     dataSource.buildDataGridRows();
     dataSource.getColumns(Get.context!);
@@ -107,6 +126,7 @@ class SpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
   void onClose() {
     _pollingTimer?.cancel();
     _favoriteChangedSubscription?.cancel();
+    _orderChangedSubscription?.cancel();
     super.onClose();
   }
 }

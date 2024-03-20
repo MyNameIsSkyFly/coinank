@@ -1,3 +1,4 @@
+import 'package:ank_app/modules/market/spot/customize/reorder_spot_view.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,8 +7,14 @@ import '../customize/reorder_view.dart';
 import '../filter/contract_coin_filter_view.dart';
 
 class CustomizeFilterHeaderView extends StatelessWidget {
-  const CustomizeFilterHeaderView({super.key, this.onFinishFilter});
+  const CustomizeFilterHeaderView(
+      {super.key,
+      this.onFinishFilter,
+      this.isSpot = false,
+      this.isCategory = false});
 
+  final bool isSpot;
+  final bool isCategory;
   final VoidCallback? onFinishFilter;
 
   @override
@@ -21,7 +28,9 @@ class CustomizeFilterHeaderView extends StatelessWidget {
         children: [
           Expanded(
             child: InkWell(
-              onTap: () => Get.toNamed(ReorderPage.routeName),
+              onTap: () => Get.toNamed(
+                  isSpot ? ReorderSpotPage.routeName : ReorderPage.routeName,
+                  arguments: {'isCategory': isCategory}),
               child: Row(
                 children: [
                   Image.asset(
@@ -43,10 +52,12 @@ class CustomizeFilterHeaderView extends StatelessWidget {
           ),
           GestureDetector(
               onTap: () {
-                Get.bottomSheet(const ContractCoinFilterPage(),
-                        isScrollControlled: true, ignoreSafeArea: false)
-                    .then((value) {
-                  onFinishFilter?.call();
+                Get.bottomSheet(
+                  ContractCoinFilterPage(isSpot: isSpot),
+                  isScrollControlled: true,
+                  ignoreSafeArea: false,
+                ).then((value) {
+                  if (value == true) onFinishFilter?.call();
                 });
               },
               child:

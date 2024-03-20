@@ -15,7 +15,7 @@ class ContractCoinPage extends StatefulWidget {
 }
 
 class _ContractCoinPageState extends State<ContractCoinPage> {
-  final logic = Get.put(ContractCoinLogic());
+  final logic = Get.put(ContractCoinLogic(isCategory: false));
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +23,21 @@ class _ContractCoinPageState extends State<ContractCoinPage> {
       children: [
         CustomizeFilterHeaderView(onFinishFilter: () => logic.onRefresh()),
         Expanded(
-          child: EasyRefresh(
-            footer: const MaterialFooter(),
-            onRefresh: logic.onRefresh,
-            child: ContractCoinGridView(logic: logic),
-          ),
+          child: Obx(() {
+            return Stack(
+              children: [
+                EasyRefresh(
+                  footer: const MaterialFooter(),
+                  onRefresh: logic.onRefresh,
+                  child: ContractCoinGridView(logic: logic),
+                ),
+                if (logic.data.isEmpty && !logic.isInitializing.value)
+                  Center(
+                      child: Image.asset(Assets.commonIcEmptyBox,
+                          height: 150, width: 150)),
+              ],
+            );
+          }),
         ),
       ],
     );
