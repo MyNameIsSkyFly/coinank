@@ -1,10 +1,11 @@
 import 'package:ank_app/modules/market/spot/customize/edit_customize_spot_view.dart';
-import 'package:ank_app/modules/market/spot/favorite/f_spot_logic.dart';
+import 'package:ank_app/modules/market/spot/favorite/spot_coin_logic_f.dart';
 import 'package:ank_app/modules/market/utils/text_maps.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../spot_coin/spot_coin_logic.dart';
 import '../spot_logic.dart';
 import 'reorder_spot_logic.dart';
 
@@ -50,12 +51,12 @@ class ReorderSpotPage extends StatelessWidget {
               await StoreLogic.to.saveSpotSortOrder(
                   {for (var item in logic.list) item.key: item.value});
               if (Get.isRegistered<SpotLogic>()) {
-                var contractCoinLogic = Get.find<SpotLogic>();
+                var contractCoinLogic = Get.find<SpotCoinLogic>();
                 contractCoinLogic.dataSource.getColumns(Get.context!);
                 contractCoinLogic.dataSource.buildDataGridRows();
               }
-              if (Get.isRegistered<FSpotLogic>()) {
-                var contractCoinLogic = Get.find<FSpotLogic>();
+              if (Get.isRegistered<FSpotCoinLogic>()) {
+                var contractCoinLogic = Get.find<FSpotCoinLogic>();
                 contractCoinLogic.dataSource.getColumns(Get.context!);
                 contractCoinLogic.dataSource.buildDataGridRows();
               }

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../utils/text_maps.dart';
-import '../favorite/f_contract_coin_logic.dart';
+import '../favorite/contract_coin_logic_f.dart';
 import 'reorder_logic.dart';
 
 class ReorderPage extends StatelessWidget {
@@ -53,8 +53,8 @@ class ReorderPage extends StatelessWidget {
                 contractCoinLogic.dataSource.getColumns(Get.context!);
                 contractCoinLogic.dataSource.buildDataGridRows();
               }
-              if (Get.isRegistered<FContractCoinLogic>()) {
-                var contractCoinLogic = Get.find<FContractCoinLogic>();
+              if (Get.isRegistered<ContractCoinLogicF>()) {
+                var contractCoinLogic = Get.find<ContractCoinLogicF>();
                 contractCoinLogic.dataSource.getColumns(Get.context!);
                 contractCoinLogic.dataSource.buildDataGridRows();
               }

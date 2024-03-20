@@ -12,7 +12,7 @@ import 'package:get/get.dart';
 
 import '../widgets/spot_coin_datagrid_source.dart';
 
-class FSpotLogic extends GetxController implements SpotCoinBaseLogic {
+class FSpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
   final dataF = RxList<MarkerTickerEntity>();
   RxBool isLoading = true.obs;
   late TabController tabCtrl;

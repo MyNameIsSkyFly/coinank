@@ -128,7 +128,7 @@ class _DataGridSource extends DataGridSource {
             columnName: S.current.topGainerCoin,
             value: _TextValue('${item.bestChg}', item.bestChg ?? 0,
                 lengthHelper: '       ${item.bestCoin} ${item.bestChg}%',
-                extras: {'coin': item.topMarketCoin, 'chg': item.bestChg})),
+                extras: {'coin': item.bestCoin, 'chg': item.bestChg})),
         // cell('${item.bestChg}',
         //     columnName: S.current.topGainerCoin, value: item.bestChg),
       ]);

@@ -58,7 +58,8 @@ class DataGridRateText extends StatelessWidget {
         child: Text(
           text,
           textAlign: TextAlign.center,
-          style: const TextStyle(color: Colors.white, fontSize: 12),
+          style: const TextStyle(
+              color: Colors.white, fontSize: 12, fontWeight: Styles.fontMedium),
         ),
       ),
     );

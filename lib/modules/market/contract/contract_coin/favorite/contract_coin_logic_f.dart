@@ -12,7 +12,7 @@ import 'package:get/get.dart';
 
 import '../widgets/contract_coin_datagrid_source.dart';
 
-class FContractCoinLogic extends GetxController
+class ContractCoinLogicF extends GetxController
     implements ContractCoinBaseLogic {
   StreamSubscription? _loginSubscription;
   StreamSubscription? _favoriteChangedSubscription;

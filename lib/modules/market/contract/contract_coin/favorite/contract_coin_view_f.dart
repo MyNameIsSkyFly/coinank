@@ -5,17 +5,17 @@ import 'package:get/get.dart';
 
 import '../widgets/contract_coin_grid_view.dart';
 import '../widgets/customize_filter_header_view.dart';
-import 'f_contract_coin_logic.dart';
+import 'contract_coin_logic_f.dart';
 
-class FavoriteCoinPage extends StatefulWidget {
-  const FavoriteCoinPage({super.key});
+class ContractCoinPageF extends StatefulWidget {
+  const ContractCoinPageF({super.key});
 
   @override
-  State<FavoriteCoinPage> createState() => _FavoriteCoinPageState();
+  State<ContractCoinPageF> createState() => _ContractCoinPageFState();
 }
 
-class _FavoriteCoinPageState extends State<FavoriteCoinPage> {
-  final logic = Get.put(FContractCoinLogic());
+class _ContractCoinPageFState extends State<ContractCoinPageF> {
+  final logic = Get.put(ContractCoinLogicF());
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +60,7 @@ class _FixedCoins extends StatelessWidget {
     required this.logic,
   });
 
-  final FContractCoinLogic logic;
+  final ContractCoinLogicF logic;
 
   @override
   Widget build(BuildContext context) {

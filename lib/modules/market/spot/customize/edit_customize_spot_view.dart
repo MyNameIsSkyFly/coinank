@@ -1,8 +1,9 @@
-import 'package:ank_app/modules/market/spot/favorite/f_spot_logic.dart';
+import 'package:ank_app/modules/market/spot/favorite/spot_coin_logic_f.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../spot_coin/spot_coin_logic.dart';
 import '../spot_logic.dart';
 import 'reorder_spot_logic.dart';
 
@@ -91,12 +92,12 @@ class _EditCustomizeSpotPageState extends State<EditCustomizeSpotPage> {
                           await StoreLogic.to.removeSpotSortOrder();
                           logic.initData();
                           if (Get.isRegistered<SpotLogic>()) {
-                            var logic = Get.find<SpotLogic>();
+                            var logic = Get.find<SpotCoinLogic>();
                             logic.dataSource.getColumns(Get.context!);
                             logic.dataSource.buildDataGridRows();
                           }
-                          if (Get.isRegistered<FSpotLogic>()) {
-                            var logic = Get.find<FSpotLogic>();
+                          if (Get.isRegistered<FSpotCoinLogic>()) {
+                            var logic = Get.find<FSpotCoinLogic>();
                             logic.dataSource.getColumns(Get.context!);
                             logic.dataSource.buildDataGridRows();
                           }
@@ -113,12 +114,12 @@ class _EditCustomizeSpotPageState extends State<EditCustomizeSpotPage> {
                         await StoreLogic.to.saveSpotSortOrder(map);
                         logic.initData();
                         if (Get.isRegistered<SpotLogic>()) {
-                          var logic = Get.find<SpotLogic>();
+                          var logic = Get.find<SpotCoinLogic>();
                           logic.dataSource.getColumns(Get.context!);
                           logic.dataSource.buildDataGridRows();
                         }
-                        if (Get.isRegistered<FSpotLogic>()) {
-                          var logic = Get.find<FSpotLogic>();
+                        if (Get.isRegistered<FSpotCoinLogic>()) {
+                          var logic = Get.find<FSpotCoinLogic>();
                           logic.dataSource.getColumns(Get.context!);
                           logic.dataSource.buildDataGridRows();
                         }

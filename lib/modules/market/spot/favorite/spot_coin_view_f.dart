@@ -4,12 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'f_spot_logic.dart';
+import 'spot_coin_logic_f.dart';
 
 class FSpotCoinView extends StatelessWidget {
   FSpotCoinView({super.key});
 
-  final logic = Get.put(FSpotLogic());
+  final logic = Get.put(FSpotCoinLogic());
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class _EmptyView extends StatelessWidget {
     required this.logic,
   });
 
-  final FSpotLogic logic;
+  final FSpotCoinLogic logic;
 
   @override
   Widget build(BuildContext context) {

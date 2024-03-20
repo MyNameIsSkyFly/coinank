@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 import '../market_category/category_view.dart';
 import 'contract_coin/contract_coin_view.dart';
-import 'contract_coin/favorite/favorite_coin_view.dart';
+import 'contract_coin/favorite/contract_coin_view_f.dart';
 
 class ContractState {
   TabController? tabController;
@@ -16,7 +16,7 @@ class ContractState {
 
   ContractState() {
     tabPage = [
-      keepAlivePage(const FavoriteCoinPage()),
+      keepAlivePage(const ContractCoinPageF()),
       keepAlivePage(const ContractCoinPage()),
       keepAlivePage(const ContractCategoryPage()),
       keepAlivePage(const ExchangeOiPage()),

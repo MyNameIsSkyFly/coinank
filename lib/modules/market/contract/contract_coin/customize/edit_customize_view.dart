@@ -4,7 +4,7 @@ import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../favorite/f_contract_coin_logic.dart';
+import '../favorite/contract_coin_logic_f.dart';
 
 class EditCustomizePage extends StatefulWidget {
   const EditCustomizePage({super.key});
@@ -169,8 +169,8 @@ class _EditCustomizePageState extends State<EditCustomizePage> {
                                 .getColumns(Get.context!);
                             contractCoinLogic.dataSource.buildDataGridRows();
                           }
-                          if (Get.isRegistered<FContractCoinLogic>()) {
-                            var fLogic = Get.find<FContractCoinLogic>();
+                          if (Get.isRegistered<ContractCoinLogicF>()) {
+                            var fLogic = Get.find<ContractCoinLogicF>();
                             fLogic.dataSource.getColumns(Get.context!);
                             fLogic.dataSource.buildDataGridRows();
                           }
@@ -191,8 +191,8 @@ class _EditCustomizePageState extends State<EditCustomizePage> {
                           contractCoinLogic.dataSource.getColumns(Get.context!);
                           contractCoinLogic.dataSource.buildDataGridRows();
                         }
-                        if (Get.isRegistered<FContractCoinLogic>()) {
-                          var fLogic = Get.find<FContractCoinLogic>();
+                        if (Get.isRegistered<ContractCoinLogicF>()) {
+                          var fLogic = Get.find<ContractCoinLogicF>();
                           fLogic.dataSource.getColumns(Get.context!);
                           fLogic.dataSource.buildDataGridRows();
                         }

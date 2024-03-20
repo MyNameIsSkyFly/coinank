@@ -3,10 +3,11 @@ import 'dart:async';
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/entity/search_v2_entity.dart';
 import 'package:ank_app/modules/home/home_search/home_search_view.dart';
-import 'package:ank_app/modules/market/contract/contract_coin/favorite/f_contract_coin_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:dart_scope_functions/dart_scope_functions.dart';
 import 'package:get/get.dart';
+
+import '../../market/contract/contract_coin/favorite/contract_coin_logic_f.dart';
 
 class HomeSearchLogic extends GetxController {
   final searchResult = RxList<SearchV2Entity>();
@@ -151,11 +152,11 @@ class HomeSearchLogic extends GetxController {
   }
 
   Future<void> mark(SearchV2ItemEntity item) async {
-    await Get.find<FContractCoinLogic>().tapCollect(item.baseCoin);
+    await Get.find<ContractCoinLogicF>().tapCollect(item.baseCoin);
   }
 
   Future<void> unMark(SearchV2ItemEntity item) async {
-    await Get.find<FContractCoinLogic>().tapCollect(item.baseCoin);
+    await Get.find<ContractCoinLogicF>().tapCollect(item.baseCoin);
   }
 
   Future<void> search(String keyword) async {
