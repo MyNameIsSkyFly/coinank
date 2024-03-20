@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 class ReorderSpotLogic extends GetxController {
   final list = <MapEntry<String, dynamic>>[].obs;
+  var isCategory = false;
 
   @override
   void onInit() {

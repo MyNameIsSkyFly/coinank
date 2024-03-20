@@ -1,4 +1,6 @@
 import 'package:ank_app/modules/market/spot/customize/edit_customize_spot_view.dart';
+import 'package:ank_app/modules/market/spot/favorite/f_spot_logic.dart';
+import 'package:ank_app/modules/market/utils/text_maps.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -32,7 +34,7 @@ class ReorderSpotPage extends StatelessWidget {
             final item = logic.list[index];
             return ListTile(
               key: ValueKey(item.key),
-              title: Text(pLogic.textMap(item.key)),
+              title: Text(MarketMaps.spotTextMap(item.key)),
               contentPadding: const EdgeInsets.symmetric(horizontal: 15),
               trailing: ReorderableDragStartListener(
                 index: index,
@@ -44,12 +46,22 @@ class ReorderSpotPage extends StatelessWidget {
             if (oldIndex < newIndex) newIndex -= 1;
             final item = logic.list.removeAt(oldIndex);
             logic.list.insert(newIndex, item);
-            await StoreLogic.to.saveSpotSortOrder(
-                {for (var item in logic.list) item.key: item.value});
-            var spotLogic = Get.find<SpotLogic>();
-            spotLogic.getColumns(Get.context!);
-            spotLogic.gridSource.buildDataGridRows();
-            spotLogic.gridSourceF.buildDataGridRows();
+            if (!logic.isCategory) {
+              await StoreLogic.to.saveSpotSortOrder(
+                  {for (var item in logic.list) item.key: item.value});
+              if (Get.isRegistered<SpotLogic>()) {
+                var contractCoinLogic = Get.find<SpotLogic>();
+                contractCoinLogic.dataSource.getColumns(Get.context!);
+                contractCoinLogic.dataSource.buildDataGridRows();
+              }
+              if (Get.isRegistered<FSpotLogic>()) {
+                var contractCoinLogic = Get.find<FSpotLogic>();
+                contractCoinLogic.dataSource.getColumns(Get.context!);
+                contractCoinLogic.dataSource.buildDataGridRows();
+              }
+            } else {
+              //todo category
+            }
           },
         );
       }),

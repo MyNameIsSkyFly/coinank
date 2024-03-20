@@ -22,7 +22,7 @@ Future<void> main() async {
       .then((value) => FlutterNativeSplash.remove());
 
   /// getx初始化
-  StoreBinding().dependencies();
+  // StoreBinding().dependencies();
   await Application.instance.init();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge,
       overlays: [SystemUiOverlay.top]);

@@ -1,6 +1,7 @@
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/modules/coin_detail/coin_detail_view.dart';
 import 'package:ank_app/modules/login/register_view.dart';
+import 'package:ank_app/modules/market/market_category/category_detail/category_detail_view.dart';
 import 'package:ank_app/modules/setting/about/about_view.dart';
 import 'package:ank_app/modules/setting/contact_us/contact_us_view.dart';
 import 'package:get/get.dart';
@@ -54,5 +55,12 @@ class AppNav {
       {bool toSpot = false}) async {
     Get.toNamed(CoinDetailPage.routeName,
         arguments: {'coin': coin, 'toSpot': toSpot});
+  }
+
+  static Future toCategoryDetail({required String? tag}) async {
+    Get.toNamed(
+      CategoryDetailPage.routeName,
+      arguments: {'tag': tag},
+    );
   }
 }

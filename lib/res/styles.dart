@@ -25,6 +25,9 @@ class Styles {
   static Color cLine(BuildContext context) =>
       Theme.of(context).dividerTheme.color!;
 
+  static Color cScaffoldBackground(BuildContext context) =>
+      Theme.of(context).scaffoldBackgroundColor;
+
   static const fontMedium = FontWeight.w600;
 
   // Platform.isAndroid ? FontWeight.w600 : FontWeight.w500;

@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:ank_app/entity/event/logged_event.dart';
-import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/entity/order_flow_symbol.dart';
 import 'package:ank_app/entity/user_info_entity.dart';
 import 'package:ank_app/pigeon/host_api.g.dart';
@@ -18,7 +17,13 @@ import '../entity/chart_entity.dart';
 import '../entity/search_v2_entity.dart';
 
 class StoreLogic extends GetxController {
-  static StoreLogic get to => Get.find();
+  static StoreLogic get to => _instance;
+
+  static final StoreLogic _instance = StoreLogic._();
+
+  factory StoreLogic() => _instance;
+
+  StoreLogic._();
 
   static bool isLogin = false;
 
@@ -28,9 +33,9 @@ class StoreLogic extends GetxController {
   }
 
   static Future<void> clearUserInfo() async {
-    await StoreLogic.to.removeLoginUserInfo();
-    await StoreLogic.to.removeLoginPassword();
-    await StoreLogic.to.removeLoginUsername();
+    await to.removeLoginUserInfo();
+    await to.removeLoginPassword();
+    await to.removeLoginUsername();
     MessageHostApi().saveLoginInfo('');
     StoreLogic.updateLoginStatus();
     await CommonWebView.setCookieValue();
@@ -38,8 +43,8 @@ class StoreLogic extends GetxController {
   }
 
   static void updateLoginStatus() {
-    isLogin = StoreLogic.to.loginUserInfo?.token != null &&
-        StoreLogic.to.loginUserInfo!.token!.isNotEmpty;
+    isLogin =
+        to.loginUserInfo?.token != null && to.loginUserInfo!.token!.isNotEmpty;
     Get.forceAppUpdate();
   }
 
@@ -91,13 +96,6 @@ class StoreLogic extends GetxController {
   bool get isUpGreen {
     var isGreen = _SpUtil()._getBool(_SpKeys.upGreen, defaultValue: true);
     return isGreen;
-  }
-
-  RxList<MarkerTickerEntity> contractData = RxList.empty();
-
-  // ignore: use_setters_to_change_properties
-  void setContractData(List<MarkerTickerEntity> v) {
-    contractData.value = v;
   }
 
   Future<bool> saveLoginPassword(String password) {
@@ -409,6 +407,73 @@ class StoreLogic extends GetxController {
   Future<bool> removeSpotSortOrder() {
     return _SpUtil()._remove(_SpKeys.spotSortOrder);
   }
+
+  //contractCoinFilter
+  Future<bool> saveContractCoinFilter(Map<String, String?> filter) {
+    return _SpUtil()
+        ._saveString(_SpKeys.contractCoinFilter, jsonEncode(filter));
+  }
+
+  Map<String, String>? get contractCoinFilter {
+    final result = _SpUtil()._getString(_SpKeys.contractCoinFilter);
+    if (result.isEmpty) return null;
+    // ignore: avoid_dynamic_calls
+    return jsonDecode(result).cast<String, String>();
+  }
+
+  Future<bool> removeContractCoinFilter() {
+    return _SpUtil()._remove(_SpKeys.contractCoinFilter);
+  }
+
+//spotCoinFilter
+  Future<bool> saveSpotCoinFilter(Map<String, bool> filter) {
+    return _SpUtil()._saveString(_SpKeys.spotCoinFilter, jsonEncode(filter));
+  }
+
+  Map<String, String>? get spotCoinFilter {
+    final result = _SpUtil()._getString(_SpKeys.spotCoinFilter);
+    if (result.isEmpty) return null;
+    // ignore: avoid_dynamic_calls
+    return jsonDecode(result).cast<String, String>();
+  }
+
+  Future<bool> removeSpotCoinFilter() {
+    return _SpUtil()._remove(_SpKeys.spotCoinFilter);
+  }
+
+  Future<bool> saveCategoryContractOrder(Map<String, bool> sortOrder) {
+    return _SpUtil()
+        ._saveString(_SpKeys.categoryContractOrder, jsonEncode(sortOrder));
+  }
+
+  Map<String, bool> get categoryContractOrder {
+    final result = _SpUtil()._getString(_SpKeys.categoryContractOrder,
+        defaultValue:
+            '{"price":true,"priceChangeH24":true,"openInterest":true,"openInterestCh24":true,"turnover24h":true,"fundingRate":true,"priceChangeH1":false,"priceChangeH4":false,"priceChangeH6":false,"priceChangeH12":false,"openInterestChM5":false,"openInterestChM15":false,"openInterestChM30":false,"openInterestCh1":false,"openInterestCh4":false,"openInterestCh2D":false,"openInterestCh3D":false,"openInterestCh7D":false,"liquidationH1":false,"liquidationH4":false,"liquidationH12":false,"liquidationH24":false,"longShortRatio":false,"longShortPerson":false,"lsPersonChg5m":false,"lsPersonChg15m":false,"lsPersonChg30m":false,"lsPersonChg1h":false,"lsPersonChg4h":false,"longShortPosition":false,"longShortAccount":false,"marketCap":true,"marketCapChange24H":false,"circulatingSupply":false,"totalSupply":false,"maxSupply":false}');
+    // ignore: avoid_dynamic_calls
+    return jsonDecode(result).cast<String, bool>();
+  }
+
+  Future<bool> removeCategoryContractOrder() {
+    return _SpUtil()._remove(_SpKeys.categoryContractOrder);
+  }
+
+  Future<bool> saveCategorySpotOrder(Map<String, bool> sortOrder) {
+    return _SpUtil()
+        ._saveString(_SpKeys.categorySpotOrder, jsonEncode(sortOrder));
+  }
+
+  Map<String, bool> get categorySpotOrder {
+    final result = _SpUtil()._getString(_SpKeys.categorySpotOrder,
+        defaultValue:
+            '{"price":true,"priceChangeH24":true,"turnover24h":true,"turnoverChg24h":true,"priceChangeM5":false,"priceChangeM15":false,"priceChangeM30":false,"priceChangeH1":true,"priceChangeH4":true,"priceChangeH8":true,"priceChangeH12":false,"marketCap":true,"marketCapChange24H":false,"circulatingSupply":false,"totalSupply":true,"maxSupply":false}');
+    // ignore: avoid_dynamic_calls
+    return jsonDecode(result).cast<String, bool>();
+  }
+
+  Future<bool> removeCategorySpotOrder() {
+    return _SpUtil()._remove(_SpKeys.categorySpotOrder);
+  }
 }
 
 class _SpKeys {
@@ -440,11 +505,14 @@ class _SpKeys {
   static const recentChart = 'recentChart';
   static const favoriteContract = 'favoriteContract';
   static const favoriteSpot = 'favoriteSpot';
-  static const markedSearchResult = 'markedSearchResult';
   static const tappedSearchResult = 'tappedSearchResult';
   static const orderFlowSymbolsJson = 'orderFlowSymbolsJson';
   static const contractCoinSortOrder = 'contractCoinSortOrder';
   static const spotSortOrder = 'spotCoinSortOrder';
+  static const contractCoinFilter = 'contractCoinFilter';
+  static const spotCoinFilter = 'spotCoinFilter';
+  static const categoryContractOrder = 'categoryContractOrder';
+  static const categorySpotOrder = 'categorySpotOrder';
 }
 
 class _SpUtil {

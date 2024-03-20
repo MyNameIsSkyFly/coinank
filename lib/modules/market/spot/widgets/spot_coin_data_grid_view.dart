@@ -1,17 +1,27 @@
-part of 'spot_view.dart';
+import 'dart:async';
 
-class _DataGridView extends StatefulWidget {
-  const _DataGridView({
+import 'package:ank_app/entity/event/theme_event.dart';
+import 'package:ank_app/modules/market/spot/widgets/spot_coin_base_logic.dart';
+import 'package:ank_app/res/export.dart';
+import 'package:ank_app/widget/market_datagrid_sizer.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+
+class SpotCoinGridView extends StatefulWidget {
+  const SpotCoinGridView({
+    super.key,
     required this.logic,
   });
 
-  final SpotLogic logic;
+  final SpotCoinBaseLogic logic;
 
   @override
-  State<_DataGridView> createState() => _DataGridViewState();
+  State<SpotCoinGridView> createState() => _SpotCoinGridViewState();
 }
 
-class _DataGridViewState extends State<_DataGridView> {
+class _SpotCoinGridViewState extends State<SpotCoinGridView> {
   late List<GridColumn> columns;
 
   final dataGridCtrl = DataGridController();
@@ -27,31 +37,26 @@ class _DataGridViewState extends State<_DataGridView> {
 
   @override
   void initState() {
-    widget.logic.getMarketData(showLoading: true);
+    widget.logic.onRefresh(showLoading: true);
     _localeChangeSubscription =
         AppConst.eventBus.on<ThemeChangeEvent>().listen((event) {
-      widget.logic.getColumns(context);
-      widget.logic.gridSource.buildDataGridRows();
-    });
-    _refreshSubscription =
-        AppConst.eventBus.on<EventCoinMarked>().listen((event) {
-      if (event.isSpot) return;
-      widget.logic.getMarketDataF();
+      widget.logic.dataSource.getColumns(context);
+      widget.logic.dataSource.buildDataGridRows();
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    widget.logic.gridSource.context = context;
+    widget.logic.dataSource.context = context;
     return EasyRefresh(
-      onRefresh: () async => widget.logic.getMarketData(),
+      onRefresh: () async => widget.logic.onRefresh(),
       child: Obx(() {
         return SfTheme(
           data: SfThemeData(
               dataGridThemeData: SfDataGridThemeData(
                   frozenPaneLineColor: Colors.transparent,
-                  sortIcon: const _SortIcon())),
+                  sortIcon: _SortIcon(widget.logic))),
           child: SfDataGrid(
               controller: dataGridCtrl,
               gridLinesVisibility: GridLinesVisibility.none,
@@ -62,28 +67,28 @@ class _DataGridViewState extends State<_DataGridView> {
               columnWidthMode: ColumnWidthMode.auto,
               frozenColumnsCount: 1,
               horizontalScrollPhysics: const ClampingScrollPhysics(),
-              source: widget.logic.gridSource,
+              source: widget.logic.dataSource,
               // ignore: invalid_use_of_protected_member
-              columns: widget.logic.columns.value,
+              columns: widget.logic.dataSource.columns.value,
               columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
               onCellTap: (details) {
                 if (details.rowColumnIndex.rowIndex == 0) return;
-                var baseCoin = widget.logic.gridSource
+                var baseCoin = widget.logic.dataSource
                     .effectiveRows[details.rowColumnIndex.rowIndex - 1]
                     .getCells()[0]
                     .value;
-                final item = widget.logic.data.firstWhereOrNull(
+                final item = widget.logic.dataSource.items.firstWhereOrNull(
                     (element) => element.baseCoin == baseCoin);
                 if (item == null) return;
                 AppNav.toCoinDetail(item, toSpot: true);
               },
               onCellLongPress: (details) {
                 if (details.rowColumnIndex.rowIndex == 0) return;
-                var baseCoin = widget.logic.gridSource
+                var baseCoin = widget.logic.dataSource
                     .effectiveRows[details.rowColumnIndex.rowIndex - 1]
                     .getCells()[0]
                     .value;
-                final item = widget.logic.data.firstWhereOrNull(
+                final item = widget.logic.dataSource.items.firstWhereOrNull(
                     (element) => element.baseCoin == baseCoin);
                 if (item == null) return;
                 late bool marked;
@@ -93,7 +98,7 @@ class _DataGridViewState extends State<_DataGridView> {
                   marked = StoreLogic.to.favoriteSpot.contains(item.baseCoin);
                 }
                 showOverlayAt(details.globalPosition, marked, onTap: () {
-                  Get.find<SpotLogic>().tapCollect(item);
+                  widget.logic.tapCollect(item.baseCoin);
                 });
               }),
         );
@@ -148,11 +153,12 @@ class _DataGridViewState extends State<_DataGridView> {
 }
 
 class _SortIcon extends StatelessWidget {
-  const _SortIcon();
+  const _SortIcon(this.logic);
+
+  final SpotCoinBaseLogic logic;
 
   @override
   Widget build(BuildContext context) {
-    final logic = Get.find<SpotLogic>();
     Widget? icon;
     String columnName = '';
     context.visitAncestorElements((element) {
@@ -161,7 +167,7 @@ class _SortIcon extends StatelessWidget {
       }
       return true;
     });
-    var column = logic.gridSource.sortedColumns
+    var column = logic.dataSource.sortedColumns
         .where((element) => element.name == columnName)
         .firstOrNull;
     if (column != null) {

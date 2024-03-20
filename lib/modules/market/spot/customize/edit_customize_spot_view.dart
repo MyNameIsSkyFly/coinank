@@ -1,3 +1,4 @@
+import 'package:ank_app/modules/market/spot/favorite/f_spot_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -89,10 +90,16 @@ class _EditCustomizeSpotPageState extends State<EditCustomizeSpotPage> {
                         onPressed: () async {
                           await StoreLogic.to.removeSpotSortOrder();
                           logic.initData();
-                          var spotLogic = Get.find<SpotLogic>();
-                          spotLogic.getColumns(Get.context!);
-                          spotLogic.gridSource.buildDataGridRows();
-                          spotLogic.gridSourceF.buildDataGridRows();
+                          if (Get.isRegistered<SpotLogic>()) {
+                            var logic = Get.find<SpotLogic>();
+                            logic.dataSource.getColumns(Get.context!);
+                            logic.dataSource.buildDataGridRows();
+                          }
+                          if (Get.isRegistered<FSpotLogic>()) {
+                            var logic = Get.find<FSpotLogic>();
+                            logic.dataSource.getColumns(Get.context!);
+                            logic.dataSource.buildDataGridRows();
+                          }
                           Get.back();
                         },
                         child: Text(
@@ -105,10 +112,16 @@ class _EditCustomizeSpotPageState extends State<EditCustomizeSpotPage> {
                       onPressed: () async {
                         await StoreLogic.to.saveSpotSortOrder(map);
                         logic.initData();
-                        var spotLogic = Get.find<SpotLogic>();
-                        spotLogic.getColumns(Get.context!);
-                        spotLogic.gridSource.buildDataGridRows();
-                        spotLogic.gridSourceF.buildDataGridRows();
+                        if (Get.isRegistered<SpotLogic>()) {
+                          var logic = Get.find<SpotLogic>();
+                          logic.dataSource.getColumns(Get.context!);
+                          logic.dataSource.buildDataGridRows();
+                        }
+                        if (Get.isRegistered<FSpotLogic>()) {
+                          var logic = Get.find<FSpotLogic>();
+                          logic.dataSource.getColumns(Get.context!);
+                          logic.dataSource.buildDataGridRows();
+                        }
                         Get.back();
                       },
                       child: Text(sof.s_ok,

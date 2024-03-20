@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:ank_app/entity/body/futures_big_data_body.dart';
 import 'package:ank_app/entity/btc_reduce_entity.dart';
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/entity/head_statistics_entity.dart';
@@ -72,7 +71,7 @@ class HomeLogic extends GetxController {
 
   Future<void> loadPriceChgData() async {
     final data = await Apis().postFuturesBigData(
-      const FuturesBigDataBody(openInterest: '5000000~'),
+      {'openInterest': '5000000~'},
       page: 1,
       size: 3,
       sortBy: 'priceChangeH24',

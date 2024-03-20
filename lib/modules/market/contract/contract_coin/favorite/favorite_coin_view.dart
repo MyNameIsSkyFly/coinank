@@ -1,21 +1,11 @@
-import 'dart:async';
-
-import 'package:ank_app/entity/event/event_coin_marked.dart';
-import 'package:ank_app/entity/event/theme_event.dart';
 import 'package:ank_app/res/export.dart';
-import 'package:ank_app/widget/market_datagrid_sizer.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:syncfusion_flutter_core/theme.dart';
-import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import 'contract_coin_logic.dart';
-import 'contract_coin_state.dart';
-
-part '_f_data_grid_view.dart';
+import '../widgets/contract_coin_grid_view.dart';
+import '../widgets/customize_filter_header_view.dart';
+import 'f_contract_coin_logic.dart';
 
 class FavoriteCoinPage extends StatefulWidget {
   const FavoriteCoinPage({super.key});
@@ -25,25 +15,7 @@ class FavoriteCoinPage extends StatefulWidget {
 }
 
 class _FavoriteCoinPageState extends State<FavoriteCoinPage> {
-  final logic = Get.put(ContractCoinLogic());
-  final state = Get.find<ContractCoinLogic>().state;
-  StreamSubscription? _refreshSubscription;
-
-  @override
-  void initState() {
-    _refreshSubscription =
-        AppConst.eventBus.on<EventCoinMarked>().listen((event) {
-      if (event.isSpot) return;
-      logic.onRefreshF();
-    });
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _refreshSubscription?.cancel();
-    super.dispose();
-  }
+  final logic = Get.put(FContractCoinLogic());
 
   @override
   Widget build(BuildContext context) {
@@ -52,28 +24,28 @@ class _FavoriteCoinPageState extends State<FavoriteCoinPage> {
       children: [
         Expanded(child: Obx(() {
           return IndexedStack(
-            index: state.isLoadingF.value
+            index: logic.isLoading.value
                 ? 0
-                : state.favoriteData.isEmpty
+                : logic.data.isEmpty
                     ? 1
                     : 2,
             children: [
               Visibility(
-                  visible: state.isLoadingF.value,
+                  visible: logic.isLoading.value,
                   child:
                       const LottieIndicator(margin: EdgeInsets.only(top: 200))),
-              _EmptyView(state: state, logic: logic),
-              EasyRefresh(
-                // scrollBehaviorBuilder: (physics) =>
-                //     const ERScrollBehavior(ClampingScrollPhysics()),
-                onRefresh: logic.onRefreshF,
-                child: Obx(() {
-                  return state.isLoadingF.value
-                      ? const LottieIndicator(
-                          margin: EdgeInsets.only(top: 200),
-                        )
-                      : _FDataGridView(logic: logic);
-                }),
+              _FixedCoins(logic: logic),
+              Column(
+                children: [
+                  CustomizeFilterHeaderView(
+                      onFinishFilter: () => logic.onRefresh()),
+                  Expanded(
+                    child: EasyRefresh(
+                      onRefresh: () async => logic.onRefresh(),
+                      child: ContractCoinGridView(logic: logic),
+                    ),
+                  ),
+                ],
               )
             ],
           );
@@ -83,26 +55,24 @@ class _FavoriteCoinPageState extends State<FavoriteCoinPage> {
   }
 }
 
-class _EmptyView extends StatelessWidget {
-  const _EmptyView({
-    required this.state,
+class _FixedCoins extends StatelessWidget {
+  const _FixedCoins({
     required this.logic,
   });
 
-  final ContractCoinState state;
-  final ContractCoinLogic logic;
+  final FContractCoinLogic logic;
 
   @override
   Widget build(BuildContext context) {
     return EasyRefresh(
-      onRefresh: () async => logic.onRefreshF(),
+      onRefresh: () async => logic.onRefresh(),
       child: SingleChildScrollView(
         child: Column(
           children: [
             GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: state.fixedCoin.length,
+              itemCount: logic.fixedCoin.length,
               padding: const EdgeInsets.all(15).copyWith(top: 15),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
@@ -113,11 +83,11 @@ class _EmptyView extends StatelessWidget {
                 return StatefulBuilder(builder: (context, setState) {
                   return GestureDetector(
                     onTap: () {
-                      if (state.selectedFixedCoin
-                          .contains(state.fixedCoin[index])) {
-                        state.selectedFixedCoin.remove(state.fixedCoin[index]);
+                      if (logic.selectedFixedCoin
+                          .contains(logic.fixedCoin[index])) {
+                        logic.selectedFixedCoin.remove(logic.fixedCoin[index]);
                       } else {
-                        state.selectedFixedCoin.add(state.fixedCoin[index]);
+                        logic.selectedFixedCoin.add(logic.fixedCoin[index]);
                       }
                       setState(() {});
                     },
@@ -132,12 +102,12 @@ class _EmptyView extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: Text(
-                                  state.fixedCoin[index],
+                                  logic.fixedCoin[index],
                                   style: Styles.tsBody_16(context).medium,
                                 ),
                               ),
-                              if (state.selectedFixedCoin
-                                  .contains(state.fixedCoin[index]))
+                              if (logic.selectedFixedCoin
+                                  .contains(logic.fixedCoin[index]))
                                 const Icon(CupertinoIcons.checkmark_alt_circle,
                                     color: Styles.cMain)
                               else
@@ -156,13 +126,13 @@ class _EmptyView extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Obx(() {
                 return FilledButton(
-                    onPressed: state.selectedFixedCoin.isEmpty
+                    onPressed: logic.selectedFixedCoin.isEmpty
                         ? null
                         : () {
-                            if (state.fetching.value) return;
-                            state.fetching.value = true;
+                            if (logic.fetching.value) return;
+                            logic.fetching.value = true;
                             logic.saveFixedCoin().whenComplete(
-                                () => state.fetching.value = false);
+                                () => logic.fetching.value = false);
                           },
                     child: Text(S.of(context).addToFavorite));
               }),

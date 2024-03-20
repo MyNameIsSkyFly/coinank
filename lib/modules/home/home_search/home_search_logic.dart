@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/entity/search_v2_entity.dart';
 import 'package:ank_app/modules/home/home_search/home_search_view.dart';
-import 'package:ank_app/modules/market/contract/contract_coin/contract_coin_logic.dart';
+import 'package:ank_app/modules/market/contract/contract_coin/favorite/f_contract_coin_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:dart_scope_functions/dart_scope_functions.dart';
 import 'package:get/get.dart';
@@ -12,7 +12,6 @@ class HomeSearchLogic extends GetxController {
   final searchResult = RxList<SearchV2Entity>();
 
   final history = RxList<SearchV2ItemEntity>();
-  final marked = RxList<SearchV2ItemEntity>();
   final hot = RxList<SearchV2ItemEntity>();
   final keyword = ''.obs;
 
@@ -27,7 +26,6 @@ class HomeSearchLogic extends GetxController {
   void onReady() {
     initHot();
     initHistory();
-    initMarked();
     pollingHot();
     initDebounce();
   }
@@ -92,22 +90,6 @@ class HomeSearchLogic extends GetxController {
     history.assignAll(StoreLogic.to.tappedSearchResult);
   }
 
-  //init marked
-  void initMarked() {
-    if (!StoreLogic.isLogin) {
-      marked.assignAll(StoreLogic.to.favoriteContract.map((e) =>
-          SearchV2ItemEntity(baseCoin: e, tag: SearchEntityType.BASECOIN)));
-    } else {
-      final list = Get.find<ContractCoinLogic>().state.favoriteData.map((e) =>
-          SearchV2ItemEntity(
-              baseCoin: e.baseCoin,
-              exchangeName: e.exchangeName,
-              symbol: e.symbol,
-              tag: SearchEntityType.BASECOIN));
-      marked.assignAll(list);
-    }
-  }
-
   Future<void> clearHistory() async {
     await StoreLogic.to.clearTappedSearchResult();
     initHistory();
@@ -169,13 +151,11 @@ class HomeSearchLogic extends GetxController {
   }
 
   Future<void> mark(SearchV2ItemEntity item) async {
-    await Get.find<ContractCoinLogic>().tapCollectF(item.baseCoin);
-    initMarked();
+    await Get.find<FContractCoinLogic>().tapCollect(item.baseCoin);
   }
 
   Future<void> unMark(SearchV2ItemEntity item) async {
-    await Get.find<ContractCoinLogic>().tapCollectF(item.baseCoin);
-    initMarked();
+    await Get.find<FContractCoinLogic>().tapCollect(item.baseCoin);
   }
 
   Future<void> search(String keyword) async {

@@ -4,6 +4,7 @@ import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../favorite/f_contract_coin_logic.dart';
 
 class EditCustomizePage extends StatefulWidget {
   const EditCustomizePage({super.key});
@@ -161,10 +162,18 @@ class _EditCustomizePageState extends State<EditCustomizePage> {
                         onPressed: () async {
                           await StoreLogic.to.removeContractCoinSortOrder();
                           logic.initData();
-                          var contractCoinLogic = Get.find<ContractCoinLogic>();
-                          contractCoinLogic.getColumns(Get.context!);
-                          contractCoinLogic.gridSource.buildDataGridRows();
-                          contractCoinLogic.gridSourceF.buildDataGridRows();
+                          if (Get.isRegistered<ContractCoinLogic>()) {
+                            var contractCoinLogic =
+                                Get.find<ContractCoinLogic>();
+                            contractCoinLogic.dataSource
+                                .getColumns(Get.context!);
+                            contractCoinLogic.dataSource.buildDataGridRows();
+                          }
+                          if (Get.isRegistered<FContractCoinLogic>()) {
+                            var fLogic = Get.find<FContractCoinLogic>();
+                            fLogic.dataSource.getColumns(Get.context!);
+                            fLogic.dataSource.buildDataGridRows();
+                          }
                           Get.back();
                         },
                         child: Text(
@@ -177,10 +186,16 @@ class _EditCustomizePageState extends State<EditCustomizePage> {
                       onPressed: () async {
                         await StoreLogic.to.saveContractCoinSortOrder(map);
                         logic.initData();
-                        var contractCoinLogic = Get.find<ContractCoinLogic>();
-                        contractCoinLogic.getColumns(Get.context!);
-                        contractCoinLogic.gridSource.buildDataGridRows();
-                        contractCoinLogic.gridSourceF.buildDataGridRows();
+                        if (Get.isRegistered<ContractCoinLogic>()) {
+                          var contractCoinLogic = Get.find<ContractCoinLogic>();
+                          contractCoinLogic.dataSource.getColumns(Get.context!);
+                          contractCoinLogic.dataSource.buildDataGridRows();
+                        }
+                        if (Get.isRegistered<FContractCoinLogic>()) {
+                          var fLogic = Get.find<FContractCoinLogic>();
+                          fLogic.dataSource.getColumns(Get.context!);
+                          fLogic.dataSource.buildDataGridRows();
+                        }
                         Get.back();
                       },
                       child: Text(sof.s_ok,

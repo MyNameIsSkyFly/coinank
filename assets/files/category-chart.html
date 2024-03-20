@@ -1,0 +1,359 @@
+<!--
+	此示例下载自 https://echarts.apache.org/examples/zh/editor.html?c=line-simple
+-->
+<!DOCTYPE html>
+<html lang="zh-CN" style="height: 100%">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<head>
+    <meta charset="utf-8">
+    <style type="text/css">
+        .tooltip-box {
+            font-size: 0.6rem;
+            line-height: 0.8rem;
+            min-width: 8rem;
+        }
+    </style>
+</head>
+
+<body style="height: 100%; margin: 0">
+    <div id="container" style="height: 100%"></div>
+
+
+    <script type="text/javascript" src="./e.js"></script>
+    <script src="./numeral.min.js"></script>
+    <script src="./moment.min.js"></script>
+    <!-- <script src="./data.js"></script> -->
+    <script src="./api4.js"></script>
+
+
+    <script type="text/javascript">
+
+        let dom = document.getElementById('container');
+        let myChart = echarts.init(dom, null, {
+            renderer: 'canvas',
+            useDirtyRect: false
+        });
+
+        const upColor = "#37bc88";
+        const downColor = "#e4455a";
+
+        let options = {
+            platform: "andoird",
+            language: "zh",
+            height: "",
+            dataType: ""
+        }
+
+
+        let inside = true;
+        let grid = {
+            left: 8,
+            right: 8
+        }
+
+        const langZh = {
+            turnover24h:"24小时成交额",
+            openInterest:"持仓",
+            fundingRate:"资金费率",
+            marketCap:"市值"
+        }
+
+        const langZhTw = {
+            turnover24h:"24小时成交额",
+            openInterest:"持倉",
+            fundingRate:"資金費率",
+            marketCap:"市值"
+        }
+
+        const langEn = {
+            turnover24h:"24H Turnover",
+            openInterest:"OI",
+            fundingRate:"Funding Rate",
+            marketCap:"Market Cap"
+        } 
+
+        const langConfig = {
+            zh:langZh,
+            'zh-tw':langZhTw,
+            en:langEn
+        }
+
+        let lang = langEn;
+        window.addEventListener('resize', myChart.resize);
+
+        const formatAmount = function (value, local, format) {
+
+            if (format === undefined) {
+                format = "0,0.00";
+            }
+            if (local != undefined) {
+                local = local.toLowerCase();
+            }
+            if ("zh" == local || "zh-cn" == local) {
+                if (value >= 100000000) {
+                    return numeral((value / 100000000)).format(format) + "亿";
+                } else if (value >= 10000) {
+                    return numeral((value / 10000)).format(format) + "万";
+                } else {
+                    return numeral(value).format(format);
+                }
+            } else {//英文单位
+                return numeral(value).format(format + 'a').toLocaleUpperCase();
+            }
+        }
+
+        const formatPriceV2 = function (value){
+            if (value === "" || value === undefined || value === NaN || value === null || value === "NaN" || value === "null") {
+                return "-";
+            }
+            if (!value) {
+                return "-";
+            }
+            value = ""+value;
+            if(value.indexOf("e") != -1){
+                value = parseFloat(value)
+                let eformat = value.toExponential() // 转换为标准的科学计数法形式（字符串）
+                let tmpArray = eformat.match(/\d(?:\.(\d*))?e([+-]\d+)/) // 分离出小数值和指数值
+                value = value.toFixed(Math.max(0, (tmpArray[1] || '').length - tmpArray[2]))
+                if (value * 10000 >= 0.1) {
+                    return value;
+                }
+
+                let [a, b] = value.split(".");
+                let i = 0;
+                for (; i < b.length; i++) {
+                    if (b[i] !== '0') {
+                        break;
+                    }
+                }
+
+                let sub = b.substring(i, i + 4 > b.length ? b.length : i + 4);
+                return `0.0{${i - 1}}${sub}`
+
+            }
+
+            if(value == 0){
+                return value;
+            }
+            if(value > 1){
+                let input = numeral(value);
+                return input.format("0.00")
+            } else {
+                let price = value;
+                if (typeof value === "number") {
+                    price =  value.toPrecision(4);
+                }
+
+                if (price * 10000 >= 0.1) {
+                    return Number(value).toPrecision(4);
+                }
+                price = price + "";
+                let [a, b] = price.split(".");
+                let i = 0;
+                try{
+                    for (; i < b.length; i++) {
+                        if (b[i] !== '0') {
+                            break;
+                        }
+                    }
+                }catch (e){
+                }
+
+                let sub = b.substring(i, i + 4 > b.length ? b.length : i + 4);
+                return `0.0{${i - 1}}${sub}`
+
+            }
+        }
+
+
+        const buildChart = async (data, dataOptions = {})=>{
+            
+            let {type} = data;
+            let {locale} = dataOptions;
+            let source = await getData(data);
+
+            let xAxisData = [];
+            let dataList = [];
+
+            source.forEach(item=>{
+                xAxisData.push(item.baseCoin);
+                dataList.push(item[type]);
+            })
+            let series = [];
+
+            if ("fundingRate" === type){
+            series.push({
+                name: lang[type],
+                type: "bar",
+                lineStyle: {
+                width: 0,
+                },
+                itemStyle: {
+                normal:{
+                    color: function (params){
+                    if (params.value > 0) {
+                        return "#4fa973"
+                    }else{
+                        return "#C24853";
+                    }
+                    }
+                }
+                },
+                showSymbol: false,
+                stack: 'Total',
+                color: "#4fa973",
+                areaStyle: {
+                opacity: 1
+                },
+                tooltip: {
+                valueFormatter:(value) => {
+                    if ("fundingRate" === type) {
+                    return (value * 100).toFixed(4) + "%";
+                    }else{
+                    return formatAmount(value, locale, "$0,0.00");
+                    }
+                }
+                },
+                data: dataList
+            });
+            }else{
+            series.push({
+                name: lang[type],
+                type: "bar",
+                lineStyle: {
+                width: 0,
+                },
+                showSymbol: false,
+                stack: 'Total',
+                color: 'rgb(22,119,255, 0.8)',
+                areaStyle: {
+                opacity: 1
+                },
+                tooltip: {
+                valueFormatter:(value) => {
+                    if ("fundingRate" === type) {
+                    return (value * 100).toFixed(4) + "%";
+                    }else{
+                    return formatAmount(value, locale, "$0,0.00");
+                    }
+                }
+                },
+                data: dataList
+            });
+            }
+
+
+            let chartData = {
+            xAxis: [
+                {
+                zlevel:10,
+                data: xAxisData,
+                axisLabel: {
+                    interval: 0,
+                    rotate: 60,
+                    fontSize: 10,
+                },
+                splitLine:false,
+                axisTick:{
+                    show:false
+                }
+                }
+            ],
+            grid: grid,
+            yAxis: [
+                {
+                    zlevel:10,
+                type: "fundingRate" === type ? 'value' : 'log',
+                splitLine:false,
+                axisLabel: {
+                    formatter: (value) => {
+                    if ("fundingRate" === type) {
+                        return value;
+                    }else{
+                        return "$" + formatAmount(Math.abs(value), locale.value, "0,0");
+                    }
+                    },
+                    inside: inside,
+                },
+                },
+            ],
+            tooltip: {
+                trigger: 'axis',
+                confine: true,
+                axisPointer: { 
+                },
+            },
+            legend: {
+                right: 50,
+                type: 'scroll'
+            },
+            series: series
+            };
+            
+            return chartData;
+        }
+
+
+        const getData = async (data, dataOptions = {}) => {
+            
+            let {productType, category, type} = data;
+            
+            let resp;
+            if("SPOT" === productType){
+                resp = await fetchSpotCategoryData(data)
+            }else {
+                resp = await fetchCategoryData(data)
+            }  
+
+            let dataKey = "oiUSD"
+            if("oi" === type){
+                dataKey = "oiUSD"
+            }else if('vol' === type){
+                dataKey = "turnover24h"
+            }
+            
+            let dataSets = {};
+
+            //处理特别的交易对数据
+            resp = await resp.json()
+
+            return resp.data.list;
+        }
+
+        async function setChartData(dataParams, platform, dataType, dataOptions = {}) {
+
+
+            let { data } = dataParams;
+            let {locale} = dataOptions;
+            
+            lang = langConfig[locale] || langEn
+
+
+            myChart.showLoading("default", {color:"#4363F2", maskColor:"transparent"});
+            let option = await buildChart(dataParams, dataOptions);
+
+            if (option && typeof option === 'object') {
+                myChart.setOption(option, true);
+            }
+            myChart.hideLoading();
+
+        }
+        
+        // setChartData(
+        //     {
+        //         productType:"spot", 
+        //         category:"layer-1", 
+        //         type:"marketCap",
+        //     },
+        //     "android", 
+        //     "categoryHeatMap", 
+        //     {
+        //         theme: "dark",
+        //         locale:"zh"
+        //     }
+        // )
+
+    </script>
+</body>
+
+</html>

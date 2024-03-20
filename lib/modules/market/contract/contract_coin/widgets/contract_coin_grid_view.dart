@@ -1,19 +1,28 @@
-part of 'contract_coin_view.dart';
+import 'dart:async';
 
-class _DataGridView extends StatefulWidget {
-  const _DataGridView({
+import 'package:ank_app/entity/event/theme_event.dart';
+import 'package:ank_app/res/export.dart';
+import 'package:ank_app/widget/market_datagrid_sizer.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+
+import 'contract_coin_base_logic.dart';
+
+class ContractCoinGridView extends StatefulWidget {
+  const ContractCoinGridView({
+    super.key,
     required this.logic,
   });
 
-  final ContractCoinLogic logic;
+  final ContractCoinBaseLogic logic;
 
   @override
-  State<_DataGridView> createState() => _DataGridViewState();
+  State<ContractCoinGridView> createState() => _ContractCoinGridViewState();
 }
 
-class _DataGridViewState extends State<_DataGridView> {
-  late List<GridColumn> columns;
-
+class _ContractCoinGridViewState extends State<ContractCoinGridView> {
   StreamSubscription? _localeChangeSubscription;
   final dataGridCtrl = DataGridController();
 
@@ -21,8 +30,8 @@ class _DataGridViewState extends State<_DataGridView> {
   void initState() {
     _localeChangeSubscription =
         AppConst.eventBus.on<ThemeChangeEvent>().listen((event) {
-      widget.logic.getColumns(context);
-      widget.logic.gridSource.buildDataGridRows();
+      widget.logic.dataSource.getColumns(context);
+      widget.logic.dataSource.buildDataGridRows();
     });
     super.initState();
   }
@@ -33,9 +42,10 @@ class _DataGridViewState extends State<_DataGridView> {
     super.dispose();
   }
 
+  // ContractCoinState get state => widget.logic.state;
   @override
   Widget build(BuildContext context) {
-    widget.logic.gridSource.context = context;
+    widget.logic.dataSource.context = context;
     return Obx(() {
       return SfTheme(
         data: SfThemeData(
@@ -50,45 +60,49 @@ class _DataGridViewState extends State<_DataGridView> {
           allowSorting: true,
           allowTriStateSorting: true,
           columnWidthMode: ColumnWidthMode.auto,
+          headerRowHeight: 32,
           frozenColumnsCount: 1,
           horizontalScrollPhysics: const ClampingScrollPhysics(),
-          source: widget.logic.gridSource,
-          // ignore: invalid_use_of_protected_member
-          columns: widget.logic.columns.value,
+          source: widget.logic.dataSource,
+          columns: widget.logic.dataSource.columns.value,
           columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
-          onCellTap: (details) {
-            if (details.rowColumnIndex.rowIndex == 0) return;
-            var baseCoin = widget.logic.gridSource
-                .effectiveRows[details.rowColumnIndex.rowIndex - 1]
-                .getCells()[0]
-                .value;
-            final item = widget.logic.state.data
-                .firstWhereOrNull((element) => element.baseCoin == baseCoin);
-            if (item == null) return;
-            AppNav.toCoinDetail(item);
-          },
-          onCellLongPress: (details) {
-            if (details.rowColumnIndex.rowIndex == 0) return;
-            var baseCoin = widget.logic.gridSource
-                .effectiveRows[details.rowColumnIndex.rowIndex - 1]
-                .getCells()[0]
-                .value;
-            final item = widget.logic.state.data
-                .firstWhereOrNull((element) => element.baseCoin == baseCoin);
-            if (item == null) return;
-            late bool marked;
-            if (StoreLogic.isLogin) {
-              marked = item.follow == true;
-            } else {
-              marked = StoreLogic.to.favoriteContract.contains(item.baseCoin);
-            }
-            showOverlayAt(details.globalPosition, marked, onTap: () {
-              Get.find<ContractCoinLogic>().tapCollect(item);
-            });
-          },
+          onCellTap: _handleCellTap,
+          onCellLongPress: _handleCellLongPress,
         ),
       );
     });
+  }
+
+  void _handleCellLongPress(DataGridCellLongPressDetails details) {
+    if (details.rowColumnIndex.rowIndex == 0) return;
+    var baseCoin = widget
+        .logic.dataSource.effectiveRows[details.rowColumnIndex.rowIndex - 1]
+        .getCells()[0]
+        .value;
+    final item = widget.logic.dataSource.items
+        .firstWhereOrNull((element) => element.baseCoin == baseCoin);
+    if (item == null) return;
+    late bool marked;
+    if (StoreLogic.isLogin) {
+      marked = item.follow == true;
+    } else {
+      marked = StoreLogic.to.favoriteContract.contains(item.baseCoin);
+    }
+    showOverlayAt(details.globalPosition, marked, onTap: () {
+      widget.logic.tapCollect(item.baseCoin);
+    });
+  }
+
+  void _handleCellTap(DataGridCellTapDetails details) {
+    if (details.rowColumnIndex.rowIndex == 0) return;
+    var baseCoin = widget
+        .logic.dataSource.effectiveRows[details.rowColumnIndex.rowIndex - 1]
+        .getCells()[0]
+        .value;
+    final item = widget.logic.dataSource.items
+        .firstWhereOrNull((element) => element.baseCoin == baseCoin);
+    if (item == null) return;
+    AppNav.toCoinDetail(item);
   }
 
   void showOverlayAt(Offset tapPosition, bool marked, {VoidCallback? onTap}) {
@@ -142,7 +156,7 @@ class _SortIcon extends StatelessWidget {
     required this.widget,
   });
 
-  final _DataGridView widget;
+  final ContractCoinGridView widget;
 
   @override
   Widget build(BuildContext context) {
@@ -154,7 +168,7 @@ class _SortIcon extends StatelessWidget {
       }
       return true;
     });
-    var column = widget.logic.gridSource.sortedColumns
+    var column = widget.logic.dataSource.sortedColumns
         .where((element) => element.name == columnName)
         .firstOrNull;
     if (column != null) {

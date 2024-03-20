@@ -25,19 +25,21 @@ class ImageUtil {
 
   static Widget coinImage(String coinName,
       {double? size, Widget? errorWidget}) {
-    return CachedNetworkImage(
-      imageUrl: AppConst.imageHost(coinName),
-      width: size,
-      height: size,
-      fadeInDuration: const Duration(milliseconds: 100),
-      errorWidget: (context, url, error) {
-        return errorWidget ??
-            Icon(
-              Icons.hourglass_empty,
-              size: size,
-              color: Colors.grey,
-            );
-      },
+    return ClipOval(
+      child: CachedNetworkImage(
+        imageUrl: AppConst.imageHost(coinName),
+        width: size,
+        height: size,
+        fadeInDuration: const Duration(milliseconds: 100),
+        errorWidget: (context, url, error) {
+          return errorWidget ??
+              Icon(
+                Icons.hourglass_empty,
+                size: size,
+                color: Colors.grey,
+              );
+        },
+      ),
     );
   }
 

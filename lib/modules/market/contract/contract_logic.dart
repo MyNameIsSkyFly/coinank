@@ -10,7 +10,8 @@ class ContractLogic extends GetxController
   @override
   void onInit() {
     super.onInit();
-    state.tabController = TabController(length: 5, vsync: this);
+    state.tabController =
+        TabController(length: 6, vsync: this, initialIndex: 0);
   }
 
   void selectIndex(int index) {

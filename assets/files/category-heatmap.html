@@ -1,0 +1,406 @@
+<!--
+	此示例下载自 https://echarts.apache.org/examples/zh/editor.html?c=line-simple
+-->
+<!DOCTYPE html>
+<html lang="zh-CN" style="height: 100%">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<head>
+    <meta charset="utf-8">
+    <style type="text/css">
+        .tooltip-box {
+            font-size: 0.6rem;
+            line-height: 0.8rem;
+            min-width: 8rem;
+        }
+    </style>
+</head>
+
+<body style="height: 100%; margin: 0">
+    <canvas id="container" style="height: 100%"></div>
+
+
+    <script type="text/javascript" src="./c.js"></script>
+    <script type="text/javascript" src="./chm.js"></script>
+    <script src="./numeral.min.js"></script>
+    <script src="./moment.min.js"></script>
+    <!-- <script src="./data.js"></script> -->
+    <script src="./api4.js"></script>
+
+
+    <script type="text/javascript">
+        
+        const langZh = {
+            turnover24h:"24小时成交额",
+            openInterest:"持仓",
+        }
+
+        const langZhTw = {
+            turnover24h:"24小时成交额",
+            openInterest:"持倉",
+        }
+
+        const langEn = {
+            turnover24h:"24H Turnover",
+            openInterest:"OI",
+        }
+
+        const langConfig = {
+            zh:langZh,
+            'zh-tw':langZhTw,
+            en:langEn
+        }
+
+        let lang = langEn;
+
+        let dom = document.getElementById('container');
+
+        let myChart;
+
+     
+        const longColor = ['#7dd29f', '#5dc787', '#4fa973'];
+        const shortColor = ['#ea7781', '#e45561', '#C24853'];
+
+
+        //重数据中找出最大值跟最小值
+        const calcColor = (data) => {
+        let maxValue;
+        let minValue;
+
+        for (let item of data) {
+            maxValue = (maxValue && maxValue > item.value) ? maxValue : item.value;
+            minValue = (minValue && minValue < item.value) ? minValue : item.value;
+        }
+
+
+        for (let item of data) {
+            let colorIndex;
+            if (maxValue - minValue === 0) {
+            colorIndex = 0;
+            } else {
+            colorIndex = Math.floor((item.value - minValue) / ((maxValue - minValue) / 3));
+            if (colorIndex === 3) {
+                colorIndex = 2;
+            }
+            }
+            console.log(colorIndex);
+            item.color = longColor[Number(colorIndex)];
+        }
+        };
+
+        const formatAmount = function (value, local, format) {
+
+            if (format === undefined) {
+                format = "0,0.00";
+            }
+            if (local != undefined) {
+                local = local.toLowerCase();
+            }
+            if ("zh" == local || "zh-cn" == local) {
+                if (value >= 100000000) {
+                    return numeral((value / 100000000)).format(format) + "亿";
+                } else if (value >= 10000) {
+                    return numeral((value / 10000)).format(format) + "万";
+                } else {
+                    return numeral(value).format(format);
+                }
+            } else {//英文单位
+                return numeral(value).format(format + 'a').toLocaleUpperCase();
+            }
+
+        }
+
+        const buildHeatmapConfig = (dataList, dataOptions)=>{
+            const {locale} = dataOptions;
+
+            // calcColor(dataList);
+            
+            const config = {
+                type: 'treemap',
+                data: {
+                    datasets: [
+                    {
+                        label: 'Fruits',
+                        tree: dataList,
+                        key: 'value',
+                        borderWidth: 0,
+                        borderRadius: 0,
+                        spacing: 1,
+                        backgroundColor(ctx) {
+                        if (ctx.type !== 'data') {
+                            return 'transparent';
+                        }
+                        return ctx.raw._data.color;
+                        },
+                        labels: {
+                        align: 'center',
+                        display: true,
+                        formatter(ctx) {
+                            if (ctx.type !== 'data') {
+                            return;
+                            }
+                            debugger
+                            return [ctx.raw._data.name, formatAmount(ctx.raw._data.value, locale)];
+                        },
+                        color: ['white', 'whiteSmoke'],
+                        hoverColor:['white', 'whiteSmoke'],
+                        font: (ctx)=>{
+                            // console.log(ctx);
+                            let {w, h} = ctx.raw
+                            let area = w * h;
+                            let size = 14;
+                            let weight = "bold"
+                            if (area > 500*250){
+                            size = 48
+                            }else if (area > 400*400) {
+                            size = 42;
+                            }else if (area > 400*200) {
+                            size = 38;
+                            }else if (area > 300*200) {
+                            size = 36;
+                            }else if (area > 300*150) {
+                            size = 32;
+                            }else if (area > 200*200) {
+                            size = 28;
+                            }else if (area > 200*100) {
+                            size = 26;
+                            }else if (area > 100*100) {
+                            size = 22;
+                            }else if (area > 100*50) {
+                            size = 18;
+                            }else if (area > 50*50) {
+                            size = 14;
+                            weight = "normal"
+                            }else{
+                            size = 10;
+                            weight = "normal";
+                            }
+                            // console.log("ctx", ctx, ctx.raw._data.name, size,weight, w,h, area);
+                            return [{size: size, weight: weight}, {size: size-2, weight: weight}];
+                        },
+                            position: 'center'
+                        }
+                    }
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                    title: {
+                        display: false,
+                        text: 'Different fonts and colors on labels'
+                    },
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        // Disable the on-canvas tooltip
+                        enabled: false,
+
+                        callbacks: {
+                        label(item) {
+                            // console.log(item, "item");
+                            let {value, tooltip} = item.raw._data;
+                            return tooltip;
+                        },
+                        title(items) {
+                            // console.log(items);
+                            return items[0].raw._data.name;
+                        }
+                        },
+                        external: function(context) {
+                        // console.log("moveing")
+                        // Tooltip Element
+                        let tooltipEl = document.getElementById('chartjs-tooltip');
+
+                        // console.log(context, 'context');
+                        // Create element on first render
+                        if (!tooltipEl) {
+                            tooltipEl = document.createElement('div');
+                            tooltipEl.id = 'chartjs-tooltip';
+                            tooltipEl.innerHTML = '<table></table>';
+                            document.body.appendChild(tooltipEl);
+                        }
+
+                        // Hide if no tooltip
+                        const tooltipModel = context.tooltip;
+                        if (tooltipModel.opacity === 0) {
+                            tooltipEl.style.opacity = 0;
+                            return;
+                        }
+
+                        // Set caret Position
+                        tooltipEl.classList.remove('above', 'below', 'no-transform');
+                        if (tooltipModel.yAlign) {
+                            tooltipEl.classList.add(tooltipModel.yAlign);
+                        } else {
+                            tooltipEl.classList.add('no-transform');
+                        }
+
+                        function getBody(bodyItem) {
+                            return bodyItem.lines;
+                        }
+
+                        // Set Text
+                        if (tooltipModel.body) {
+                            const titleLines = tooltipModel.title || [];
+                            const bodyLines = tooltipModel.body.map(getBody);
+
+                            let innerHtml = '<thead>';
+
+                            titleLines.forEach(function(title) {
+                            innerHtml += '<tr><th>' + title + '</th></tr>';
+                            });
+                            innerHtml += '</thead><tbody>';
+
+
+                            const longStyle = "color:#37bc88"
+                            const shortStyle = "color:#e4455a"
+                            bodyLines.forEach(function(body, i) {
+                            // console.log(body, i);
+
+
+
+                            const colors = tooltipModel.labelColors[i];
+                            let style = 'background:' + colors.backgroundColor;
+                            style += '; border-color:' + colors.borderColor;
+                            style += '; border-width: 2px';
+                            const span = '<span style="' + style + '"></span>';
+
+
+                            for (let ibody of body) {
+                                let [label, value] = ibody.split(":");
+                                innerHtml += `<tr><td>${span}${label}:</td><td style="${label === "Long" ? longStyle : (label === "Short" ? shortStyle:'')}; width:80px; text-align: right; font-weight: 500">${formatAmount(value, locale)}</td></tr>`;
+                            }
+
+
+                            });
+                            innerHtml += '</tbody>';
+
+                            let tableRoot = tooltipEl.querySelector('table');
+                            // console.log(innerHtml);
+                            tableRoot.innerHTML = innerHtml;
+                        }
+
+                        const position = context.chart.canvas.getBoundingClientRect();
+                        // const bodyFont = Chart.helpers.toFont(tooltipModel.options.bodyFont);
+
+                        let left = position.left + window.pageXOffset + tooltipModel.caretX + tooltipEl.clientWidth;
+                        let winWidth = document.body.clientWidth ;
+                        if (left  > winWidth) {
+                            tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX - tooltipEl.clientWidth + 'px';
+                        }else {
+                            tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX + 'px';
+                        }
+
+                        // Display, position, and set styles for font
+                        tooltipEl.style.opacity = 1;
+                        tooltipEl.style.position = 'absolute';
+                        // tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX + 'px';
+                        tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY + 'px';
+                        // tooltipEl.style.font = bodyFont.string;
+                        tooltipEl.style.padding = '4px';
+                        tooltipEl.style.color = "#fff";
+                        tooltipEl.style.pointerEvents = 'none';
+                        tooltipEl.style.backgroundColor = 'rgba(0, 0, 0, 0.8)'
+                        tooltipEl.style.borderRadius = '6px';
+                        tooltipEl.style.transition = 'top 0.2s ease 0s, left 0.2s ease 0s'
+                        }
+                    }
+                    }
+                }
+            };
+
+            return [config, dataList]
+
+        }
+
+        const getHeatMapData = async (data, dataOptions = {}) => {
+            
+            let {productType, category, type} = data;
+            
+            let resp;
+            if("SPOT" === productType){
+                resp = await fetchSpotCategoryData(data)
+            }else {
+                resp = await fetchCategoryData(data)
+            }  
+
+            let dataKey = "oiUSD"
+            if("oi" === type){
+                dataKey = "oiUSD"
+            }else if('vol' === type){
+                dataKey = "turnover24h"
+            }
+            
+            let dataSets = {};
+
+            //处理特别的交易对数据
+            resp = await resp.json()
+            let dataList = resp.data.list.map(item=>{
+                return {
+                    name: item.baseCoin,
+                    value:item[type],
+                    color: item.priceChangeH24 > 0 ? "#4fa973" : "#C24853",
+                    tooltip: [lang[type] + ":" + item[type]||0 ]
+                }
+            })
+
+            return dataList;
+        }
+        
+        const showOiOrVolHeatMap = async (data, dataOptions)=>{
+
+            let sourceData = await getHeatMapData(data, dataOptions)
+            let [config, dataList] = buildHeatmapConfig(sourceData, dataOptions);
+            if (myChart) {
+                myChart.data.datasets[0].tree = dataList;
+                myChart.update();
+            } else {
+                myChart = new Chart(
+                    dom,
+                    config
+                );
+            }
+        }
+
+        const buildFunc = {
+            "categoryHeatMap": showOiOrVolHeatMap,
+        }
+
+        
+
+        async function setChartData(dataParams, platform, dataType, dataOptions = {}) {
+
+          
+
+            let { data } = dataParams;
+            let {locale} = dataOptions;
+            lang = langConfig[locale] || langEn 
+
+            if(dataType === "categoryHeatMap"){
+                data = dataParams;
+            }
+            let funcTarget = buildFunc[dataType];
+            funcTarget(data, dataOptions);
+        }
+
+        // setChartData(
+        //     {
+        //         productType:"spot", 
+        //         category:"layer-1", 
+        //         type:"turnover24h",
+        //     },
+        //     "android", 
+        //     "categoryHeatMap", 
+        //     {
+        //         theme: "light",
+        //         locale:"zh"
+        //     }
+        // )
+
+
+    </script>
+</body>
+
+</html>

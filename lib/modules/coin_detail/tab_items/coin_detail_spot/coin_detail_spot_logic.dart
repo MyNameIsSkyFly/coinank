@@ -55,8 +55,9 @@ class CoinDetailSpotLogic extends GetxController {
         await Apis().getAddFollow(baseCoin: baseCoin, type: 4);
       }
     }
-    AppConst.eventBus.fire(EventCoinMarked(isSpot: true));
     marked.toggle();
+    AppConst.eventBus.fire(EventCoinMarked(
+        baseCoin: [baseCoin], follow: marked.value, isSpot: true));
   }
 
   Future<void> getCoinInfo24h() async {

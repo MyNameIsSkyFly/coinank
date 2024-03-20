@@ -1,19 +1,12 @@
-import 'dart:async';
-
-import 'package:ank_app/entity/event/event_coin_marked.dart';
-import 'package:ank_app/entity/event/theme_event.dart';
+import 'package:ank_app/modules/market/market_category/category_view.dart';
 import 'package:ank_app/modules/market/spot/spot_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/custom_underliner_tab_indicator.dart';
-import 'package:ank_app/widget/market_datagrid_sizer.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:syncfusion_flutter_core/theme.dart';
-import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-part '_data_grid_view.dart';
-part '_f_data_grid_view.dart';
+import 'favorite/f_spot_view.dart';
+import 'widgets/spot_coin_data_grid_view.dart';
 
 class SpotPage extends StatefulWidget {
   const SpotPage({super.key});
@@ -28,7 +21,7 @@ class _SpotPageState extends State<SpotPage>
 
   @override
   void initState() {
-    logic.tabCtrl = TabController(length: 2, vsync: this);
+    logic.tabCtrl = TabController(length: 3, vsync: this);
     super.initState();
   }
 
@@ -52,6 +45,7 @@ class _SpotPageState extends State<SpotPage>
           tabs: [
             Tab(text: S.of(context).s_favorite),
             Tab(text: S.of(context).s_crypto_coin_short),
+            Tab(text: S.of(context).category),
           ],
         ),
         Expanded(
@@ -59,10 +53,9 @@ class _SpotPageState extends State<SpotPage>
             controller: logic.tabCtrl,
             physics: const NeverScrollableScrollPhysics(),
             children: [
-              AliveWidget(
-                child: _FavoriteView(logic: logic),
-              ),
-              AliveWidget(child: _DataGridView(logic: logic)),
+              AliveWidget(child: FSpotCoinView()),
+              AliveWidget(child: SpotCoinGridView(logic: logic)),
+              const AliveWidget(child: ContractCategoryPage(isSpot: true)),
             ],
           ),
         ),
@@ -71,139 +64,3 @@ class _SpotPageState extends State<SpotPage>
   }
 }
 
-class _FavoriteView extends StatefulWidget {
-  const _FavoriteView({
-    required this.logic,
-  });
-
-  final SpotLogic logic;
-
-  @override
-  State<_FavoriteView> createState() => _FavoriteViewState();
-}
-
-class _FavoriteViewState extends State<_FavoriteView> {
-  @override
-  void initState() {
-    widget.logic.getMarketDataF();
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(() {
-      return IndexedStack(
-        index: widget.logic.isLoading.value
-            ? 0
-            : widget.logic.dataF.isEmpty
-                ? 1
-                : 2,
-        children: [
-          Visibility(
-              visible: widget.logic.isLoading.value,
-              child: const LottieIndicator(margin: EdgeInsets.only(top: 200))),
-          _EmptyView(logic: widget.logic),
-          EasyRefresh(
-            onRefresh: () async => widget.logic.getMarketDataF(),
-            child: Obx(() {
-              return widget.logic.isLoading.value
-                  ? const LottieIndicator(
-                      margin: EdgeInsets.only(top: 200),
-                    )
-                  : _FDataGridView(logic: widget.logic);
-            }),
-          )
-        ],
-      );
-    });
-  }
-}
-
-class _EmptyView extends StatelessWidget {
-  const _EmptyView({
-    required this.logic,
-  });
-
-  final SpotLogic logic;
-
-  @override
-  Widget build(BuildContext context) {
-    return EasyRefresh(
-      onRefresh: () async => logic.getMarketDataF(),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            GridView.builder(
-              shrinkWrap: true,
-              itemCount: logic.fixedCoin.length,
-              physics: const NeverScrollableScrollPhysics(),
-              padding: const EdgeInsets.all(15).copyWith(top: 15),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisExtent: 72,
-                  crossAxisSpacing: 15,
-                  mainAxisSpacing: 15),
-              itemBuilder: (context, index) {
-                return StatefulBuilder(builder: (context, setState) {
-                  return GestureDetector(
-                    onTap: () {
-                      if (logic.selectedFixedCoin
-                          .contains(logic.fixedCoin[index])) {
-                        logic.selectedFixedCoin.remove(logic.fixedCoin[index]);
-                      } else {
-                        logic.selectedFixedCoin.add(logic.fixedCoin[index]);
-                      }
-                      setState(() {});
-                    },
-                    child: Container(
-                        padding: const EdgeInsets.all(15),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).cardColor,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Obx(() {
-                          return Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  logic.fixedCoin[index],
-                                  style: Styles.tsBody_16(context).medium,
-                                ),
-                              ),
-                              if (logic.selectedFixedCoin
-                                  .contains(logic.fixedCoin[index]))
-                                const Icon(CupertinoIcons.checkmark_alt_circle,
-                                    color: Styles.cMain)
-                              else
-                                Icon(CupertinoIcons.circle,
-                                    color:
-                                        Styles.cSub(context).withOpacity(0.5))
-                            ],
-                          );
-                        })),
-                  );
-                });
-              },
-            ),
-            const Gap(20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Obx(() {
-                return FilledButton(
-                    onPressed: logic.selectedFixedCoin.isEmpty
-                        ? null
-                        : () {
-                            if (logic.fetching.value) return;
-                            logic.fetching.value = true;
-                            logic.saveFixedCoin().whenComplete(
-                                () => logic.fetching.value = false);
-                          },
-                    child: Text(S.of(context).addToFavorite));
-              }),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}

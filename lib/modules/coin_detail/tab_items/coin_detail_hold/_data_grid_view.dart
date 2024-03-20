@@ -1,13 +1,5 @@
 // ignore_for_file: invalid_use_of_protected_member
-
-import 'package:ank_app/entity/hold_address_entity.dart';
-import 'package:ank_app/res/export.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:syncfusion_flutter_core/theme.dart';
-import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-
-import '_datagrid_source.dart';
+part of 'coin_detail_hold_view.dart';
 
 class DataGridView extends StatelessWidget {
   const DataGridView({

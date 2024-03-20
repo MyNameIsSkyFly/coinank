@@ -4,6 +4,8 @@ import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../utils/text_maps.dart';
+import '../favorite/f_contract_coin_logic.dart';
 import 'reorder_logic.dart';
 
 class ReorderPage extends StatelessWidget {
@@ -11,7 +13,6 @@ class ReorderPage extends StatelessWidget {
 
   static const routeName = '/contractCoinReorder';
   final logic = Get.put(ReorderLogic());
-  final pLogic = Get.find<ContractCoinLogic>();
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class ReorderPage extends StatelessWidget {
             final item = logic.list[index];
             return ListTile(
               key: ValueKey(item.key),
-              title: Text(pLogic.textMap(item.key)),
+              title: Text(MarketMaps.contractTextMap(item.key)),
               contentPadding: const EdgeInsets.symmetric(horizontal: 15),
               trailing: ReorderableDragStartListener(
                 index: index,
@@ -44,12 +45,22 @@ class ReorderPage extends StatelessWidget {
             if (oldIndex < newIndex) newIndex -= 1;
             final item = logic.list.removeAt(oldIndex);
             logic.list.insert(newIndex, item);
-            await StoreLogic.to.saveContractCoinSortOrder(
-                {for (var item in logic.list) item.key: item.value});
-            var contractCoinLogic = Get.find<ContractCoinLogic>();
-            contractCoinLogic.getColumns(Get.context!);
-            contractCoinLogic.gridSource.buildDataGridRows();
-            contractCoinLogic.gridSourceF.buildDataGridRows();
+            if (!logic.isCategory) {
+              await StoreLogic.to.saveContractCoinSortOrder(
+                  {for (var item in logic.list) item.key: item.value});
+              if (Get.isRegistered<ContractCoinLogic>()) {
+                var contractCoinLogic = Get.find<ContractCoinLogic>();
+                contractCoinLogic.dataSource.getColumns(Get.context!);
+                contractCoinLogic.dataSource.buildDataGridRows();
+              }
+              if (Get.isRegistered<FContractCoinLogic>()) {
+                var contractCoinLogic = Get.find<FContractCoinLogic>();
+                contractCoinLogic.dataSource.getColumns(Get.context!);
+                contractCoinLogic.dataSource.buildDataGridRows();
+              }
+            } else {
+              //todo category
+            }
           },
         );
       }),

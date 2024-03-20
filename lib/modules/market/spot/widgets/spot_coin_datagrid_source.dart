@@ -1,4 +1,5 @@
 import 'package:ank_app/entity/futures_big_data_entity.dart';
+import 'package:ank_app/modules/market/utils/text_maps.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -7,9 +8,8 @@ import 'package:intl/intl.dart';
 // ignore: depend_on_referenced_packages
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import 'contract_coin_key_value.dart';
-import 'contract_coin_logic.dart';
-import 'contract_coin_state.dart';
+import '../customize/reorder_spot_view.dart';
+import 'spot_key_value.dart';
 
 /// Set product's data collection to data grid source.
 class GridDataSource extends DataGridSource {
@@ -17,9 +17,6 @@ class GridDataSource extends DataGridSource {
   GridDataSource(this.items) {
     buildDataGridRows();
   }
-
-  final logic = Get.find<ContractCoinLogic>();
-  late final ContractCoinState state = logic.state;
 
   /// Instance of products.
   final List<MarkerTickerEntity> items;
@@ -33,12 +30,12 @@ class GridDataSource extends DataGridSource {
     dataGridRows = items.mapIndexed<DataGridRow>((index, entity) {
       return DataGridRow(cells: <DataGridCell<dynamic>>[
         DataGridCell(columnName: '0', value: entity.baseCoin),
-        ...StoreLogic.to.contractCoinSortOrder.entries
+        ...StoreLogic.to.spotSortOrder.entries
             .where((element) => element.value == true)
             .mapIndexed((index, e) {
           return DataGridCell(
-              columnName: logic.textMap(e.key),
-              value: ContractCoinKeyValue(e.key, entity.toJson()[e.key],
+              columnName: MarketMaps.spotTextMap(e.key),
+              value: SpotKeyValue(e.key, entity.toJson()[e.key],
                   numberFormat: _numberFormat, baseCoin: entity.baseCoin));
         })
       ]);
@@ -79,13 +76,12 @@ class GridDataSource extends DataGridSource {
           ],
         ),
       ),
-      ...StoreLogic.to.contractCoinSortOrder.entries
+      ...StoreLogic.to.spotSortOrder.entries
           .where((element) => element.value == true)
           .mapIndexed(
             (index, e) => Container(
               padding: const EdgeInsets.all(8),
-              child: (row.getCells()[index + 1].value as ContractCoinKeyValue)
-                  .rateText,
+              child: (row.getCells()[index + 1].value as SpotKeyValue).rateText,
             ),
           )
     ]);
@@ -103,7 +99,7 @@ class GridDataSource extends DataGridSource {
                 ?.getCells()
                 .firstWhereOrNull(
                     (element) => element.columnName == sortColumn.name)
-                ?.value as ContractCoinKeyValue?)
+                ?.value as SpotKeyValue?)
             ?.value ??
         (sortColumn.sortDirection == DataGridSortDirection.ascending
             ? 10
@@ -112,7 +108,7 @@ class GridDataSource extends DataGridSource {
                 ?.getCells()
                 .firstWhereOrNull(
                     (element) => element.columnName == sortColumn.name)
-                ?.value as ContractCoinKeyValue?)
+                ?.value as SpotKeyValue?)
             ?.value ??
         (sortColumn.sortDirection == DataGridSortDirection.ascending
             ? 10
@@ -123,5 +119,65 @@ class GridDataSource extends DataGridSource {
     } else {
       return valueB.compareTo(valueA);
     }
+  }
+
+  var sortOrderMap = <MapEntry<String, bool>>[];
+  final columns = RxList<GridColumn>();
+  final columnsF = RxList<GridColumn>();
+
+  void getColumns(BuildContext context) {
+    sortOrderMap = StoreLogic.to.spotSortOrder.entries
+        .where((element) => element.value == true)
+        .toList();
+    List<GridColumn> grids() => [
+          GridColumn(
+            columnName: '0',
+            width: 110,
+            allowSorting: false,
+            label: Builder(builder: (context) {
+              return InkWell(
+                onTap: () => Get.toNamed(ReorderSpotPage.routeName),
+                child: Row(
+                  children: [
+                    const Gap(15),
+                    Image.asset(
+                      Assets.commonIcPuzzlePiece,
+                      width: 12,
+                      height: 12,
+                      color: Styles.cBody(context),
+                    ),
+                    const Gap(4),
+                    Expanded(
+                      child: Text(
+                        S.of(context).customizeList,
+                        style: Styles.tsBody_12m(context),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }),
+          ),
+          ...sortOrderMap.mapIndexed((index, e) =>
+              _gridColumn(context, index, MarketMaps.spotTextMap(e.key))),
+        ];
+    columns.assignAll(grids());
+    columnsF.assignAll(grids());
+  }
+
+  GridColumn _gridColumn(BuildContext context, int index, String text) {
+    return GridColumn(
+        columnName: text,
+        maximumWidth: 140,
+        autoFitPadding: const EdgeInsets.symmetric(horizontal: 10),
+        label: Builder(builder: (context) {
+          return Padding(
+            padding: const EdgeInsets.only(left: 20),
+            child: Text(
+              text,
+              style: Styles.tsSub_12m(context),
+            ),
+          );
+        }));
   }
 }

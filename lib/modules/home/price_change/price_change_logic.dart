@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:ank_app/entity/body/futures_big_data_body.dart';
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/modules/home/price_change/_grid_source.dart';
 import 'package:ank_app/res/export.dart';
@@ -105,7 +104,7 @@ class PriceChangeLogic extends FullLifeCycleController with FullLifeCycleMixin {
 
   Future<void> getOiData() async {
     final data = await Apis().postFuturesBigData(
-      const FuturesBigDataBody(openInterest: '3000000~'),
+      {'openInterest': '3000000~'},
       page: 1,
       size: 100,
       sortBy: state.sortBy,

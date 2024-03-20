@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:ank_app/entity/activity_entity.dart';
 import 'package:ank_app/entity/app_setting_entity.dart';
-import 'package:ank_app/entity/body/futures_big_data_body.dart';
 import 'package:ank_app/entity/body/test_body.dart';
 import 'package:ank_app/entity/chart_entity.dart';
 import 'package:ank_app/entity/chart_left_entity.dart';
@@ -62,11 +61,16 @@ abstract class Apis {
   Future<HomeInfoEntity?> getHeadStatistics();
 
   @POST('/api/instruments/agg')
-  Future<TickersDataEntity?> postFuturesBigData(@Body() FuturesBigDataBody body,
-      {@Query('page') required int page,
-      @Query('size') required int size,
-      @Query('sortBy') String? sortBy,
-      @Query('sortType') required String sortType});
+  Future<TickersDataEntity?> postFuturesBigData(
+    @Body() Map<String, String?> body, {
+    @Query('page') required int page,
+    @Query('size') required int size,
+    @Query('sortBy') String? sortBy,
+    @Query('sortType') String? sortType,
+    @Query('isFollow') bool? isFollow,
+    @Query('baseCoins') String? baseCoins,
+    @Query('tag') String? tag,
+  });
 
   @Extra({'showToast': false})
   @GET('/api/instruments/agg')
@@ -74,10 +78,11 @@ abstract class Apis {
     @Query('page') required int page,
     @Query('size') required int size,
     @Query('sortBy') String? sortBy,
-    @Query('sortType') required String sortType,
+    @Query('sortType') String? sortType,
     @Query('sort') String? sort,
     @Query('isFollow') bool? isFollow,
     @Query('baseCoins') String? baseCoins,
+    @Query('tag') String? tag,
   });
 
   @GET('/api/fundingRate/top?type=LAST&size=3')
@@ -176,7 +181,6 @@ abstract class Apis {
     @Query('deviceType') required String deviceType,
     @Query('pushPlatform') required String pushPlatform,
     @Query('version') required String version,
-
   });
 
   //持仓html的json

@@ -68,7 +68,6 @@ class GridDataSource extends DataGridSource {
           ),
         ),
       ),
-      if (showChange)
         Align(
           alignment: Alignment.centerLeft,
           child: Padding(
@@ -79,8 +78,9 @@ class GridDataSource extends DataGridSource {
             ),
           ),
         ),
-      Align(
-        alignment: Alignment.centerLeft,
+      if (showChange)
+        Align(
+          alignment: Alignment.centerLeft,
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: FittedBox(
