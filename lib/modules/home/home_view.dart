@@ -684,7 +684,7 @@ class _HotMarket extends StatelessWidget {
               children: [
                 Expanded(
                   child: _OutlinedContainer(
-                    onTap: () => logic.toMarketModule(3),
+                    onTap: () => logic.toMarketModule(4),
                     child: Column(
                       children: [
                         Row(
@@ -742,7 +742,7 @@ class _HotMarket extends StatelessWidget {
                 const Gap(9),
                 Expanded(
                   child: _OutlinedContainer(
-                    onTap: () => logic.toMarketModule(4),
+                    onTap: () => logic.toMarketModule(5),
                     child: Column(
                       children: [
                         Row(
@@ -807,7 +807,7 @@ class _TotalOiAndFuturesVol extends StatelessWidget {
         child: Row(
           children: [
             _FirstLineItem(
-              onTap: () => logic.toMarketModule(2),
+              onTap: () => logic.toMarketModule(3),
               title: S.of(context).s_total_oi,
               value: AppUtil.getLargeFormatString(
                   logic.homeInfoData.value?.openInterest ?? '0'),
@@ -1223,7 +1223,7 @@ class _ChartItem extends StatelessWidget {
             Expanded(
               child: Text(
                 item.title ?? '',
-                style: Styles.tsBody_12(context),
+                style: Styles.tsBody_12m(context),
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 overflow: TextOverflow.visible,

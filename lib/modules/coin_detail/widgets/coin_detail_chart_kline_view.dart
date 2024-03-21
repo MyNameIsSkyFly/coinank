@@ -55,7 +55,7 @@ class _ChartKlineViewState extends State<ChartKlineView> {
     )));
   }
 
-  final timeItems = ['1m', '3m', '5m', '30m', '2h', '6h', '12h'];
+  final timeItems = ['1m', '3m', '5m', '30m', '2H', '6H', '12H'];
 
   Future<String?> openSelector(List<String> items) async {
     final result = await showCupertinoModalPopup(
@@ -80,11 +80,11 @@ class _ChartKlineViewState extends State<ChartKlineView> {
             return Row(
               children: [
                 _timeItem('15m', '15m'),
-                _timeItem('1h', '1h'),
-                _timeItem('4h', '4h'),
-                _timeItem('1d', '1d'),
-                _timeItem('7d', '1w'),
-                _timeItem('30d', '1M'),
+                _timeItem('1H', '1h'),
+                _timeItem('4H', '4h'),
+                _timeItem('1D', '1d'),
+                _timeItem('1W', '1w'),
+                _timeItem('1M', '1M'),
                 Expanded(
                     child: Center(
                         child: GestureDetector(
@@ -92,7 +92,7 @@ class _ChartKlineViewState extends State<ChartKlineView> {
                   onTap: () async {
                     final result = await openSelector(timeItems);
                     if (result == null) return;
-                    interval.value = result;
+                    interval.value = result.toLowerCase();
                     _evaluate();
                   },
                   child: Padding(

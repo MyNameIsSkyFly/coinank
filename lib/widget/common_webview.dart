@@ -208,7 +208,8 @@ class _CommonWebViewState extends State<CommonWebView>
                     ? URLRequest(
                         url: WebUri(widget.urlGetter?.call() ?? widget.url))
                     : null,
-                initialSettings: InAppWebViewSettings(
+
+              initialSettings: InAppWebViewSettings(
                   userAgent: Platform.isAndroid
                       ? 'CoinsohoWeb-flutter-Android'
                       : 'CoinsohoWeb-flutter-IOS',

@@ -82,7 +82,7 @@ class GridDataSource extends DataGridSource {
           onTap: () {
             if (!clickable) return;
             AppUtil.toKLine(
-                item.$2 ?? '', item.$1 ?? '', baseCoin, item.$3 ?? '');
+                item.$2 ?? '', item.$1 ?? '', baseCoin, item.$3 ?? 'SPOT');
           },
           child: Container(
             alignment: Alignment.centerLeft,

@@ -68,37 +68,37 @@ class GridDataSource extends DataGridSource {
           ),
         ),
       ),
+      Align(
+        alignment: Alignment.centerLeft,
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Text(
+            row.getCells()[2].value.toString(),
+            style: Styles.tsBody_14m(Get.context!),
+          ),
+        ),
+      ),
+      if (showChange)
         Align(
           alignment: Alignment.centerLeft,
           child: Padding(
             padding: const EdgeInsets.all(10),
-            child: Text(
-              row.getCells()[2].value.toString(),
-              style: Styles.tsBody_14m(Get.context!),
-            ),
-          ),
-        ),
-      if (showChange)
-        Align(
-          alignment: Alignment.centerLeft,
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Text(
-              row.getCells()[3].value.toString(),
-              style: TextStyle(
-                fontWeight: Styles.fontMedium,
-                color: (double.tryParse(row.getCells()[3].value.toString()) ??
-                            0) >=
-                        0
-                    ? Styles.cUp(Get.context!)
-                    : Styles.cDown(Get.context!),
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                row.getCells()[3].value.toString(),
+                style: TextStyle(
+                  fontWeight: Styles.fontMedium,
+                  color: (double.tryParse(row.getCells()[3].value.toString()) ??
+                              0) >=
+                          0
+                      ? Styles.cUp(Get.context!)
+                      : Styles.cDown(Get.context!),
+                ),
               ),
             ),
           ),
         ),
-      ),
       Align(
         alignment: Alignment.centerLeft,
         child: Padding(
@@ -115,7 +115,7 @@ class GridDataSource extends DataGridSource {
   }
 
   String shortenString(String input,
-      {int prefixLength = 10, int suffixLength = 6}) {
+      {int prefixLength = 4, int suffixLength = 4}) {
     if (input.length <= prefixLength + suffixLength) {
       return input;
     } else {

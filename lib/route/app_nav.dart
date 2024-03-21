@@ -57,10 +57,11 @@ class AppNav {
         arguments: {'coin': coin, 'toSpot': toSpot});
   }
 
-  static Future toCategoryDetail({required String? tag}) async {
+  static Future toCategoryDetail(
+      {required String? tag, required bool isSpot}) async {
     Get.toNamed(
       CategoryDetailPage.routeName,
-      arguments: {'tag': tag},
+      arguments: {'tag': tag, 'isSpot': isSpot},
     );
   }
 }

@@ -16,7 +16,7 @@ class CoinDetailEntity {
   final Localization? localization;
   final Description? description;
   final Links? links;
-  final Image? image;
+  final CoinDetailImage? image;
   final String? countryOrigin;
   final String? genesisDate;
   final double? sentimentVotesUpPercentage;
@@ -290,18 +290,19 @@ class ReposUrl {
 }
 
 @JsonSerializable()
-class Image {
+class CoinDetailImage {
   final String? thumb;
   final String? small;
   final String? large;
 
-  const Image({
+  const CoinDetailImage({
     this.thumb,
     this.small,
     this.large,
   });
 
-  factory Image.fromJson(Map<String, dynamic> json) => _$ImageFromJson(json);
+  factory CoinDetailImage.fromJson(Map<String, dynamic> json) =>
+      _$CoinDetailImageFromJson(json);
 }
 
 @JsonSerializable()

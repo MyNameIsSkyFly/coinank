@@ -51,8 +51,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       const Gap(15),
                       TextFormField(
                         controller: logic.mailCtrl,
-                        validator: (value) => AppUtil.isEmailValid(value ?? '')
-                            ? null
+                        validator: (value) =>
+                            AppUtil.isEmailValid((value ?? '').trim())
+                                ? null
                             : S.of(context).s_valid_emailaddress,
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
@@ -115,8 +116,9 @@ class _RegisterPageState extends State<RegisterPage> {
                             prefixIcon: const Icon(Icons.lock_outline_rounded)),
                       ),
                       const Gap(15),
-                      TextFormField(
-                        controller: logic.referralCtrl,
+                      if (!logic.isFindPwd)
+                        TextFormField(
+                          controller: logic.referralCtrl,
                         decoration: InputDecoration(
                           hintText: S.of(context).plsInputReferral,
                           prefixIconColor: Styles.cBody(context),

@@ -19,11 +19,14 @@ class _CategoryDetailPageState extends State<CategoryDetailPage>
     with SingleTickerProviderStateMixin {
   late TabController tabCtrl;
   String? tag;
+  late bool isSpot;
 
   @override
   void initState() {
     tag = Get.arguments['tag'];
-    tabCtrl = TabController(length: 2, vsync: this);
+    isSpot = Get.arguments['isSpot'] ?? false;
+    tabCtrl =
+        TabController(length: 2, vsync: this, initialIndex: isSpot ? 1 : 0);
     super.initState();
   }
 
@@ -53,7 +56,7 @@ class _CategoryDetailPageState extends State<CategoryDetailPage>
               controller: tabCtrl,
               children: [
                 AliveWidget(child: CategoryDetailContractView(tag: tag)),
-                const AliveWidget(child: CategoryDetailSpotSpotView()),
+                AliveWidget(child: CategoryDetailSpotView(tag: tag)),
               ],
             ),
           ),

@@ -30,7 +30,7 @@ class RegisterLogic extends GetxController {
   String get strType => isFindPwd ? 'findPassWord' : 'register';
 
   Future<void> register() async {
-    final mail = mailCtrl.text;
+    final mail = mailCtrl.text.trim();
     final pwd = pwdCtrl.text;
     final verifyCode = verifyCodeCtrl.text;
     final referral = referralCtrl.text.isEmpty ? null : referralCtrl.text;
@@ -40,7 +40,7 @@ class RegisterLogic extends GetxController {
   }
 
   Future<void> forgetPwd() async {
-    final mail = mailCtrl.text;
+    final mail = mailCtrl.text.trim();
     final pwd = pwdCtrl.text;
     final verifyCode = verifyCodeCtrl.text;
     await Apis().register(mail, pwd, verifyCode, strType);
@@ -59,11 +59,12 @@ class RegisterLogic extends GetxController {
   }
 
   Future<void> sendCode() async {
-    if (!AppUtil.isEmailValid(mailCtrl.text)) {
+    var mail = mailCtrl.text.trim();
+    if (!AppUtil.isEmailValid(mail)) {
       AppUtil.showToast(S.current.s_valid_emailaddress);
       return;
     }
-    await Loading.wrap(() async => Apis().sendCode(mailCtrl.text, strType));
+    await Loading.wrap(() async => Apis().sendCode(mail, strType));
     await StoreLogic.to.saveLastSendCodeTime();
     sendBtnCounter.value = 60;
     startCounter();

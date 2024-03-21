@@ -8,6 +8,10 @@ class Urls {
 
   static String get heatMapUrl => StoreLogic.to.heatMapUrl;
 
+  static String get categoryHeatMapUrl => StoreLogic.to.categoryHeatMapUrl;
+
+  static String get categoryChartUrl => StoreLogic.to.categoryChartUrl;
+
   static String get klineUrl => StoreLogic.to.klineUrl;
 
   static String get depthOrderDomain => StoreLogic.to.depthOrderDomain;

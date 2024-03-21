@@ -5,6 +5,12 @@ import 'package:ank_app/modules/market/contract/contract_coin/widgets/customize_
 import 'package:ank_app/modules/market/utils/text_maps.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:get/get.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+
+import 'category_contract_charts.dart';
+import 'category_type_selector.dart';
 
 class CategoryDetailContractView extends StatefulWidget {
   const CategoryDetailContractView({super.key, this.tag});
@@ -16,30 +22,26 @@ class CategoryDetailContractView extends StatefulWidget {
       _CategoryDetailContractViewState();
 }
 
-class _CategoryDetailContractViewState
-    extends State<CategoryDetailContractView> {
-  final logic = ContractCoinLogic(isCategory: true);
+class _CategoryDetailContractViewState extends State<CategoryDetailContractView>
+    with SingleTickerProviderStateMixin {
+  final logic = Get.put(ContractCoinLogic(isCategory: true), tag: 'category');
+  late TabController tabController;
+  final selectedIndex = 0.obs;
+  final ItemScrollController itemScrollController = ItemScrollController();
 
   @override
   void initState() {
-    logic.tag = widget.tag;
-    logic.onInit();
+    logic.tag.value = widget.tag;
+    tabController =
+        TabController(length: 2, vsync: this, animationDuration: Duration.zero);
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      var indexOfTag = MarketMaps.allCategories
+          .map((e) => e.type)
+          .toList()
+          .indexOf(widget.tag);
+      itemScrollController.jumpTo(index: indexOfTag);
+    });
     super.initState();
-  }
-
-  @override
-  void didUpdateWidget(covariant CategoryDetailContractView oldWidget) {
-    if (oldWidget.tag != widget.tag) {
-      logic.tag = widget.tag;
-      logic.onRefresh();
-    }
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
-  void dispose() {
-    logic.onClose();
-    super.dispose();
   }
 
   @override
@@ -49,7 +51,8 @@ class _CategoryDetailContractViewState
         SizedBox(
             height: 36,
             child: StatefulBuilder(builder: (context, setState) {
-              return ListView.builder(
+              return ScrollablePositionedList.builder(
+                  itemScrollController: itemScrollController,
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   itemBuilder: (context, index) => Builder(builder: (context) {
                         var item = MarketMaps.allCategories[index];
@@ -58,29 +61,44 @@ class _CategoryDetailContractViewState
                   itemCount: MarketMaps.allCategories.length,
                   scrollDirection: Axis.horizontal);
             })),
-        Divider(),
-        Row(
-          children: [
-            Expanded(
-              child: CustomizeFilterHeaderView(
-                  onFinishFilter: () => logic.onRefresh(), isCategory: true),
-            ),
-            Container(
-                height: 36,
-                decoration: BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(color: Styles.cLine(context)))),
-                child: Container(
-                  width: 100,
-                  child: Placeholder(),
-                )),
-          ],
-        ),
+        const Divider(),
+        Obx(() {
+          return Row(
+            children: [
+              Expanded(
+                child: Visibility(
+                  visible: selectedIndex.value == 0,
+                  child: CustomizeFilterHeaderView(
+                      onFinishFilter: () => logic.onRefresh(),
+                      isCategory: true),
+                ),
+              ),
+              CategoryTypeSelector(
+                  leftSelected: selectedIndex.value == 0,
+                  onTapLeft: () {
+                    tabController.animateTo(0);
+                    selectedIndex.value = 0;
+                  },
+                  onTapRight: () {
+                    tabController.animateTo(1);
+                    selectedIndex.value = 1;
+                  }),
+            ],
+          );
+        }),
         Expanded(
-          child: EasyRefresh(
-            footer: const MaterialFooter(),
-            onRefresh: logic.onRefresh,
-            child: ContractCoinGridView(logic: logic),
+          child: TabBarView(
+            controller: tabController,
+            children: [
+              AliveWidget(
+                child: EasyRefresh(
+                  footer: const MaterialFooter(),
+                  onRefresh: logic.onRefresh,
+                  child: ContractCoinGridView(logic: logic),
+                ),
+              ),
+              AliveWidget(child: CategoryContractCharts(tag: widget.tag)),
+            ],
           ),
         ),
       ],
@@ -92,7 +110,7 @@ class _CategoryDetailContractViewState
     return Center(
       child: GestureDetector(
         onTap: () async {
-          logic.tag = item.type;
+          logic.tag.value = item.type;
           await logic.onRefresh(showLoading: true);
           setState(() {});
         },
@@ -103,7 +121,7 @@ class _CategoryDetailContractViewState
             style: TextStyle(
                 fontSize: 14,
                 fontWeight: Styles.fontMedium,
-                color: item.type == logic.tag
+                color: item.type == logic.tag.value
                     ? Styles.cBody(context)
                     : Styles.cSub(context)),
           ),
@@ -112,3 +130,4 @@ class _CategoryDetailContractViewState
     );
   }
 }
+

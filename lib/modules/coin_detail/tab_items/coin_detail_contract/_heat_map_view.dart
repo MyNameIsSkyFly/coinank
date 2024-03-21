@@ -125,7 +125,7 @@ class _HeatMapViewState extends State<_HeatMapView> {
     };
     var platformString = Platform.isAndroid ? 'android' : 'ios';
     var dataParamsString = jsonEncode(dataParams);
-    var localeString = jsonEncode({'locale': 'zh'});
+    var localeString = jsonEncode({'locale': AppUtil.shortLanguageName});
     var jsSource = '''
         setChartData($dataParamsString, "$platformString", "tickerHeatMap", $localeString);    
                 ''';

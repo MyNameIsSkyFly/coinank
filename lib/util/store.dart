@@ -34,8 +34,8 @@ class StoreLogic extends GetxController {
 
   static Future<void> clearUserInfo() async {
     await to.removeLoginUserInfo();
-    await to.removeLoginPassword();
-    await to.removeLoginUsername();
+    // await to.removeLoginPassword();
+    // await to.removeLoginUsername();
     MessageHostApi().saveLoginInfo('');
     StoreLogic.updateLoginStatus();
     await CommonWebView.setCookieValue();
@@ -185,6 +185,29 @@ class StoreLogic extends GetxController {
   String get heatMapUrl {
     return _SpUtil()._getString(_SpKeys.heatMapUrl,
         defaultValue: 'assets/files/heatmap.html');
+  }
+
+  //categoryHeatMapUrl
+  Future<bool> saveCategoryHeatMapUrl(String? categoryHeatMapUrl) {
+    if (categoryHeatMapUrl == null) return Future.value(false);
+    return _SpUtil()
+        ._saveString(_SpKeys.categoryHeatMapUrl, categoryHeatMapUrl);
+  }
+
+  String get categoryHeatMapUrl {
+    return _SpUtil()._getString(_SpKeys.categoryHeatMapUrl,
+        defaultValue: 'assets/files/category-heatmap.html');
+  }
+
+  //categoryChartUrl
+  Future<bool> saveCategoryChartUrl(String? categoryChartUrl) {
+    if (categoryChartUrl == null) return Future.value(false);
+    return _SpUtil()._saveString(_SpKeys.categoryChartUrl, categoryChartUrl);
+  }
+
+  String get categoryChartUrl {
+    return _SpUtil()._getString(_SpKeys.categoryChartUrl,
+        defaultValue: 'assets/files/category-chart.html');
   }
 
   Future<bool> saveUniappDomain(String uniappDomain) {
@@ -474,6 +497,16 @@ class StoreLogic extends GetxController {
   Future<bool> removeCategorySpotOrder() {
     return _SpUtil()._remove(_SpKeys.categorySpotOrder);
   }
+
+  //orderflowCoinSelectorIndex
+  Future<bool> saveOrderflowCoinSelectorIndex(int index) {
+    return _SpUtil()._saveInt(_SpKeys.orderflowCoinSelectorIndex, index);
+  }
+
+  int get orderflowCoinSelectorIndex {
+    return _SpUtil()
+        ._getInt(_SpKeys.orderflowCoinSelectorIndex, defaultValue: 1);
+  }
 }
 
 class _SpKeys {
@@ -495,6 +528,8 @@ class _SpKeys {
   static const chartUrl = 'ank_charturl';
   static const klineUrl = 'ank_kline_url';
   static const heatMapUrl = 'ank_heatmap_url';
+  static const categoryHeatMapUrl = 'ank_category_heatmap_url';
+  static const categoryChartUrl = 'ank_category_chart_url';
   static const uniappDomain = 'ank_uniappDomain';
   static const domain = 'ank_domain';
   static const websocketUrl = 'ank_websocketUrl';
@@ -513,6 +548,7 @@ class _SpKeys {
   static const spotCoinFilter = 'spotCoinFilter';
   static const categoryContractOrder = 'categoryContractOrder';
   static const categorySpotOrder = 'categorySpotOrder';
+  static const orderflowCoinSelectorIndex = 'orderflowCoinSelectorIndex';
 }
 
 class _SpUtil {

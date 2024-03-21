@@ -40,7 +40,7 @@ class DataGridView extends StatelessWidget {
           )),
       GridColumn(
           columnName: '3',
-          width: 70,
+          width: 80,
           label: Container(
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.all(8.0),
@@ -67,7 +67,7 @@ class DataGridView extends StatelessWidget {
             )),
       GridColumn(
           columnName: '5',
-          width: 200,
+          width: 120,
           label: Container(
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.all(8.0),

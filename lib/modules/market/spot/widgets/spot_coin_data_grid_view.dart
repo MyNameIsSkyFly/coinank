@@ -24,20 +24,16 @@ class SpotCoinGridView extends StatefulWidget {
 class _SpotCoinGridViewState extends State<SpotCoinGridView> {
   late List<GridColumn> columns;
 
-  final dataGridCtrl = DataGridController();
   StreamSubscription? _localeChangeSubscription;
-  StreamSubscription? _refreshSubscription;
 
   @override
   void dispose() {
-    _refreshSubscription?.cancel();
     _localeChangeSubscription?.cancel();
     super.dispose();
   }
 
   @override
   void initState() {
-    widget.logic.onRefresh(showLoading: true);
     _localeChangeSubscription =
         AppConst.eventBus.on<ThemeChangeEvent>().listen((event) {
       widget.logic.dataSource.getColumns(context);
@@ -56,7 +52,6 @@ class _SpotCoinGridViewState extends State<SpotCoinGridView> {
                 frozenPaneLineColor: Colors.transparent,
                 sortIcon: _SortIcon(widget.logic))),
         child: SfDataGrid(
-            controller: dataGridCtrl,
             gridLinesVisibility: GridLinesVisibility.none,
             headerGridLinesVisibility: GridLinesVisibility.none,
             columnSizer: MarketDataGridSizer(),

@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:ank_app/entity/category_grid_entity.dart';
 import 'package:ank_app/entity/event/theme_event.dart';
+import 'package:ank_app/modules/main/main_logic.dart';
+import 'package:ank_app/modules/market/spot/spot_logic.dart';
 import 'package:ank_app/modules/market/utils/text_maps.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/data_grid_widgets.dart';
@@ -10,6 +12,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+
+import '../contract/contract_logic.dart';
+import '../market_logic.dart';
 
 part 'category_logic.dart';
 
@@ -74,7 +79,7 @@ class _ContractCategoryPageState extends State<ContractCategoryPage>
                   break;
                 }
               }
-              AppNav.toCategoryDetail(tag: tag);
+              AppNav.toCategoryDetail(tag: tag, isSpot: widget.isSpot);
             },
           ),
         );

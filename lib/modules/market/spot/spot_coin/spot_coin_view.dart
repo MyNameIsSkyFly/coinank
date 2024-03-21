@@ -7,9 +7,14 @@ import 'package:get/get.dart';
 
 import 'spot_coin_logic.dart';
 
-class SpotCoinView extends StatelessWidget {
-  SpotCoinView({super.key});
+class SpotCoinView extends StatefulWidget {
+  const SpotCoinView({super.key});
 
+  @override
+  State<SpotCoinView> createState() => _SpotCoinViewState();
+}
+
+class _SpotCoinViewState extends State<SpotCoinView> {
   final logic = Get.put(SpotCoinLogic(isCategory: false));
 
   @override

@@ -32,7 +32,6 @@ class FSpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
   @override
   void onInit() {
     dataSource.getColumns(Get.context!);
-    onRefresh(showLoading: true);
     _startTimer();
     _favoriteChangedSubscription =
         AppConst.eventBus.on<EventCoinMarked>().listen((event) {
@@ -47,6 +46,12 @@ class FSpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
     });
 
     super.onInit();
+  }
+
+  @override
+  void onReady() {
+    onRefresh();
+    super.onReady();
   }
 
   @override

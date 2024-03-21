@@ -5,13 +5,28 @@ mixin ContractCategoryLogic {
   final columns = RxList<GridColumn>();
   StreamSubscription? _themeSubscription;
   bool isSpot = false;
+  Timer? _pollingTimer;
 
   void onInit() {
-    //todo 轮询
     gridSource.isSpot = isSpot;
     getColumn();
-    initData();
+    initData(showLoading: true);
     listenTheme();
+    _pollingTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
+      if (Get.currentRoute != '/') return;
+      if (Get.isBottomSheetOpen == true) return;
+      if (Get.find<MainLogic>().state.selectedIndex.value != 1) return;
+      if (!isSpot) {
+        if (Get.find<MarketLogic>().tabCtrl.index != 0) return;
+        var index = Get.find<ContractLogic>().state.tabController?.index;
+        if (index != 2) return;
+      } else {
+        if (Get.find<MarketLogic>().tabCtrl.index != 1) return;
+        var index = Get.find<SpotLogic>().tabCtrl.index;
+        if (index != 2) return;
+      }
+      initData();
+    });
   }
 
   void listenTheme() {
@@ -22,10 +37,12 @@ mixin ContractCategoryLogic {
     });
   }
 
-  Future<void> initData() async {
+  Future<void> initData({bool showLoading = false}) async {
+    if (showLoading) Loading.show();
     final data = await Apis().getContractCategories(
       productType: isSpot ? 'SPOT' : 'SWAP',
-    );
+        )
+        .whenComplete(() => Loading.dismiss());
     MarketMaps.allCategories.assignAll(await Apis().getAllCategories() ?? []);
     gridSource.list.assignAll(data ?? []);
     gridSource.refresh();
@@ -89,6 +106,7 @@ mixin ContractCategoryLogic {
 
   void onClose() {
     _themeSubscription?.cancel();
+    _pollingTimer?.cancel();
   }
 
   final categoryTags = [

@@ -54,9 +54,10 @@ class _LoginPageState extends State<LoginPage> {
                       const Gap(15),
                       TextFormField(
                         controller: logic.mailCtrl,
-                        validator: (value) => AppUtil.isEmailValid(value ?? '')
-                            ? null
-                            : S.of(context).s_valid_emailaddress,
+                        validator: (value) =>
+                            AppUtil.isEmailValid((value ?? '').trim())
+                                ? null
+                                : S.of(context).s_valid_emailaddress,
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                             prefixIconColor: Styles.cBody(context),
@@ -73,6 +74,8 @@ class _LoginPageState extends State<LoginPage> {
                             : S.of(context).s_valid_password,
                         keyboardType: TextInputType.visiblePassword,
                         obscureText: true,
+                        onFieldSubmitted: (value) =>
+                            Loading.wrap(() async => logic.login()),
                         decoration: InputDecoration(
                             prefixIconColor: Styles.cBody(context),
                             hintText: S.of(context).s_enter_password,
@@ -93,6 +96,7 @@ class _LoginPageState extends State<LoginPage> {
               FilledButton(
                   onPressed: () {
                     if (!(formKey.currentState?.validate() ?? false)) return;
+                    FocusManager.instance.primaryFocus?.unfocus();
                     Loading.wrap(() async => logic.login());
                   },
                   child: Text(S.of(context).s_login))

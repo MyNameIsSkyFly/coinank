@@ -21,7 +21,19 @@ class _CoinDialogWithInterceptorState extends State<_CoinDialogWithInterceptor>
   @override
   void initState() {
     super.initState();
-    tabCtrl2 = TabController(length: 5, vsync: this, initialIndex: 1);
+    var orderflowCoinSelectorIndex = StoreLogic().orderflowCoinSelectorIndex;
+    if (orderflowCoinSelectorIndex == 0) {
+      currentProductType = null;
+      isFavorite = true;
+    } else if (orderflowCoinSelectorIndex == 1) {
+      currentProductType = null;
+      isFavorite = false;
+    } else {
+      currentProductType = productTypes[orderflowCoinSelectorIndex - 2];
+      isFavorite = false;
+    }
+    tabCtrl2 = TabController(
+        length: 5, vsync: this, initialIndex: orderflowCoinSelectorIndex);
     getDataFromLastFetch();
 
     getData();
@@ -31,7 +43,7 @@ class _CoinDialogWithInterceptorState extends State<_CoinDialogWithInterceptor>
   String? currentProductType;
   String? currentKeyword;
 
-  final productTypes = const ['SWAP', 'FUTURES', 'SPOT'];
+  final productTypes = const ['SWAP', 'SPOT', 'FUTURES'];
   var isFavorite = false;
 
   Iterable<OrderFlowSymbolEntity> get filteredList {
@@ -64,7 +76,7 @@ class _CoinDialogWithInterceptorState extends State<_CoinDialogWithInterceptor>
 
   void getDataFromLastFetch() {
     originalList.assignAll(StoreLogic.to.orderFlowSymbolsJson);
-    list.assignAll(StoreLogic.to.orderFlowSymbolsJson);
+    list.assignAll(filteredList);
     for (var o in originalList) {
       o.exchangeName?.let((it) => exchanges.add(it));
     }
@@ -84,7 +96,7 @@ class _CoinDialogWithInterceptorState extends State<_CoinDialogWithInterceptor>
       o.exchangeName?.let((it) => exchanges.add(it));
     }
     originalList.assignAll(tmp);
-    list.assignAll(tmp);
+    list.assignAll(filteredList);
     StoreLogic.to.saveOrderFlowSymbolsJson(tmp.toList());
   }
 
@@ -271,6 +283,7 @@ class _CoinDialogWithInterceptorState extends State<_CoinDialogWithInterceptor>
             isFavorite = false;
           }
           list.assignAll(filteredList);
+          StoreLogic().saveOrderflowCoinSelectorIndex(value);
         },
         labelStyle: Styles.tsBody_14m(context),
         unselectedLabelStyle: Styles.tsSub_14m(context),
@@ -280,14 +293,18 @@ class _CoinDialogWithInterceptorState extends State<_CoinDialogWithInterceptor>
         indicatorSize: TabBarIndicatorSize.label,
         dividerColor: Colors.transparent,
         tabs: [
-          S.of(context).s_favorite,
-          S.of(context).s_all,
-          S.of(context).s_swap,
-          S.of(context).derivatives,
-          S.of(context).spot
+          _capitalizeFirstLetter(S.of(context).s_favorite),
+          _capitalizeFirstLetter(S.of(context).s_all),
+          _capitalizeFirstLetter(S.of(context).s_swap),
+          _capitalizeFirstLetter(S.of(context).spot),
+          _capitalizeFirstLetter(S.of(context).s_futures),
         ].map((e) => Tab(text: e)).toList(),
       ),
     );
+  }
+
+  String _capitalizeFirstLetter(String str) {
+    return str.toLowerCase().replaceRange(0, 1, str[0].toUpperCase());
   }
 
   MenuAnchor _exchangeSelectorView(BuildContext context) {
@@ -361,11 +378,6 @@ class _CoinDialogWithInterceptorState extends State<_CoinDialogWithInterceptor>
   }
 }
 
-final _productTypeMap = {
-  'SWAP': S.current.s_swap,
-  'FUTURES': S.current.s_futures,
-  'SPOT': S.current.spot,
-};
 
 class _Item extends StatelessWidget {
   const _Item({
@@ -383,6 +395,12 @@ class _Item extends StatelessWidget {
       'FUTURES': Styles.cSub(context),
       'SPOT': Styles.cYellow,
     };
+    final productTypeMap = {
+      'SWAP': S.current.s_swap,
+      'FUTURES': S.current.s_futures,
+      'SPOT': S.current.spot,
+    };
+
     return InkWell(
       onTap: () => AppUtil.toKLine(item.exchangeName ?? '', item.symbol ?? '',
           item.baseCoin ?? '', item.productType),
@@ -450,7 +468,7 @@ class _Item extends StatelessWidget {
                             color: productTypeColorMap[item.productType]
                                 ?.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(2)),
-                        child: Text(_productTypeMap[item.productType] ?? '',
+                        child: Text(productTypeMap[item.productType] ?? '',
                             style: TextStyle(
                                 color: productTypeColorMap[item.productType],
                                 fontSize: 10)),

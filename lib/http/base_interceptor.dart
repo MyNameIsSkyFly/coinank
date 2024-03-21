@@ -13,10 +13,12 @@ import '../generated/l10n.dart';
 import '../util/app_util.dart';
 
 class BaseInterceptor extends Interceptor {
+  late MainLogic mainLogic = Get.find();
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    if (Get.isRegistered<MainLogic>() &&
-        !Get.find<MainLogic>().state.appVisible) return;
+    if (!mainLogic.state.appVisible) {
+      handler.reject(DioException(requestOptions: options));
+    }
     if (StoreLogic.isLogin) {
       options.headers['token'] = StoreLogic.to.loginUserInfo?.token;
     }
@@ -72,8 +74,7 @@ class BaseInterceptor extends Interceptor {
     final startTime = response.requestOptions.extra['startTime'] as DateTime;
     final endTime = DateTime.now();
     final duration = endTime.difference(startTime).inMilliseconds;
-    log('Request URL: ${response.requestOptions.uri} ($duration ms)',
-        name: 'http request');
+    log('Request URL: ${response.requestOptions.uri} ', name: 'http request');
     handler.next(response);
   }
 
@@ -124,7 +125,9 @@ class BaseInterceptor extends Interceptor {
       }
     }
     final showToast = err.requestOptions.extra['showToast'] ?? true;
-    if (showToast) AppUtil.showToast(errorMessage);
+    if (showToast || mainLogic.state.appVisible) {
+      AppUtil.showToast(errorMessage);
+    }
     handler.next(err);
   }
 

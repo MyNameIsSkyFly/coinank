@@ -7,9 +7,14 @@ import 'package:get/get.dart';
 
 import 'spot_coin_logic_f.dart';
 
-class FSpotCoinView extends StatelessWidget {
-  FSpotCoinView({super.key});
+class FSpotCoinView extends StatefulWidget {
+  const FSpotCoinView({super.key});
 
+  @override
+  State<FSpotCoinView> createState() => _FSpotCoinViewState();
+}
+
+class _FSpotCoinViewState extends State<FSpotCoinView> {
   final logic = Get.put(FSpotCoinLogic());
 
   @override
@@ -66,18 +71,18 @@ class _EmptyView extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            GridView.builder(
-              shrinkWrap: true,
-              itemCount: logic.fixedCoin.length,
-              physics: const NeverScrollableScrollPhysics(),
-              padding: const EdgeInsets.all(15).copyWith(top: 15),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisExtent: 72,
-                  crossAxisSpacing: 15,
-                  mainAxisSpacing: 15),
-              itemBuilder: (context, index) {
-                return StatefulBuilder(builder: (context, setState) {
+            StatefulBuilder(builder: (context, setState) {
+              return GridView.builder(
+                shrinkWrap: true,
+                itemCount: logic.fixedCoin.length,
+                physics: const NeverScrollableScrollPhysics(),
+                padding: const EdgeInsets.all(15).copyWith(top: 15),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisExtent: 72,
+                    crossAxisSpacing: 15,
+                    mainAxisSpacing: 15),
+                itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
                       if (logic.selectedFixedCoin
@@ -115,9 +120,9 @@ class _EmptyView extends StatelessWidget {
                           );
                         })),
                   );
-                });
-              },
-            ),
+                },
+              );
+            }),
             const Gap(20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),

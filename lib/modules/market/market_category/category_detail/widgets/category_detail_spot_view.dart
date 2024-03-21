@@ -1,45 +1,46 @@
 import 'package:ank_app/entity/category_info_item_entity.dart';
 import 'package:ank_app/modules/market/contract/contract_coin/widgets/customize_filter_header_view.dart';
+import 'package:ank_app/modules/market/market_category/category_detail/widgets/category_type_selector.dart';
 import 'package:ank_app/modules/market/spot/spot_coin/spot_coin_logic.dart';
 import 'package:ank_app/modules/market/spot/widgets/spot_coin_data_grid_view.dart';
 import 'package:ank_app/modules/market/utils/text_maps.dart';
-import 'package:ank_app/res/styles.dart';
-import 'package:easy_refresh/easy_refresh.dart';
+import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:get/get.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-class CategoryDetailSpotSpotView extends StatefulWidget {
-  const CategoryDetailSpotSpotView({super.key, this.tag});
+import 'category_spot_charts.dart';
+
+class CategoryDetailSpotView extends StatefulWidget {
+  const CategoryDetailSpotView({super.key, this.tag});
 
   final String? tag;
 
   @override
-  State<CategoryDetailSpotSpotView> createState() =>
-      _CategoryDetailSpotViewState();
+  State<CategoryDetailSpotView> createState() => _CategoryDetailSpotViewState();
 }
 
-class _CategoryDetailSpotViewState extends State<CategoryDetailSpotSpotView> {
-  final logic = SpotCoinLogic(isCategory: true);
+class _CategoryDetailSpotViewState extends State<CategoryDetailSpotView>
+    with SingleTickerProviderStateMixin {
+  final logic = Get.put(SpotCoinLogic(isCategory: true), tag: 'category');
+  late TabController tabController;
+  final selectedIndex = 0.obs;
+  final ItemScrollController itemScrollController = ItemScrollController();
 
   @override
   void initState() {
-    logic.tag = widget.tag;
-    logic.onInit();
+    logic.tag.value = widget.tag;
+    tabController =
+        TabController(length: 2, vsync: this, animationDuration: Duration.zero);
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      var indexOfTag = MarketMaps.allCategories
+          .map((e) => e.type)
+          .toList()
+          .indexOf(widget.tag);
+      itemScrollController.jumpTo(index: indexOfTag);
+    });
     super.initState();
-  }
-
-  @override
-  void didUpdateWidget(covariant CategoryDetailSpotSpotView oldWidget) {
-    if (oldWidget.tag != widget.tag) {
-      logic.tag = widget.tag;
-      logic.onRefresh();
-    }
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
-  void dispose() {
-    logic.onClose();
-    super.dispose();
   }
 
   @override
@@ -49,7 +50,8 @@ class _CategoryDetailSpotViewState extends State<CategoryDetailSpotSpotView> {
         SizedBox(
             height: 36,
             child: StatefulBuilder(builder: (context, setState) {
-              return ListView.builder(
+              return ScrollablePositionedList.builder(
+                  itemScrollController: itemScrollController,
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   itemBuilder: (context, index) => Builder(builder: (context) {
                         var item = MarketMaps.allCategories[index];
@@ -58,31 +60,45 @@ class _CategoryDetailSpotViewState extends State<CategoryDetailSpotSpotView> {
                   itemCount: MarketMaps.allCategories.length,
                   scrollDirection: Axis.horizontal);
             })),
-        Divider(),
-        Row(
-          children: [
-            Expanded(
-              child: CustomizeFilterHeaderView(
-                  onFinishFilter: () => logic.onRefresh(),
-                  isSpot: true,
-                  isCategory: true),
-            ),
-            Container(
-                height: 36,
-                decoration: BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(color: Styles.cLine(context)))),
-                child: Container(
-                  width: 100,
-                  child: Placeholder(),
-                ))
-          ],
-        ),
+        const Divider(),
+        Obx(() {
+          return Row(
+            children: [
+              Expanded(
+                child: Visibility(
+                  visible: selectedIndex.value == 0,
+                  child: CustomizeFilterHeaderView(
+                      onFinishFilter: () => logic.onRefresh(),
+                      isCategory: true),
+                ),
+              ),
+              CategoryTypeSelector(
+                  leftSelected: selectedIndex.value == 0,
+                  onTapLeft: () {
+                    tabController.animateTo(0);
+                    selectedIndex.value = 0;
+                  },
+                  onTapRight: () {
+                    tabController.animateTo(1);
+                    selectedIndex.value = 1;
+                  }),
+            ],
+          );
+        }),
         Expanded(
-          child: EasyRefresh(
-            footer: const MaterialFooter(),
-            onRefresh: () async => logic.onRefresh(),
-            child: SpotCoinGridView(logic: logic),
+          child: TabBarView(
+            controller: tabController,
+            physics: const NeverScrollableScrollPhysics(),
+            children: [
+              AliveWidget(
+                child: EasyRefresh(
+                  footer: const MaterialFooter(),
+                  onRefresh: logic.onRefresh,
+                  child: SpotCoinGridView(logic: logic),
+                ),
+              ),
+              AliveWidget(child: CategorySpotCharts(tag: widget.tag)),
+            ],
           ),
         ),
       ],
@@ -94,7 +110,7 @@ class _CategoryDetailSpotViewState extends State<CategoryDetailSpotSpotView> {
     return Center(
       child: GestureDetector(
         onTap: () async {
-          logic.tag = item.type;
+          logic.tag.value = item.type;
           await logic.onRefresh(showLoading: true);
           setState(() {});
         },
@@ -105,7 +121,7 @@ class _CategoryDetailSpotViewState extends State<CategoryDetailSpotSpotView> {
             style: TextStyle(
                 fontSize: 14,
                 fontWeight: Styles.fontMedium,
-                color: item.type == logic.tag
+                color: item.type == logic.tag.value
                     ? Styles.cBody(context)
                     : Styles.cSub(context)),
           ),

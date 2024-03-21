@@ -19,7 +19,7 @@ class ContractCoinLogic extends GetxController
   final bool isCategory;
 
   final isInitializing = RxBool(true);
-  String? tag;
+  final tag = RxnString();
 
   final data = RxList<MarkerTickerEntity>();
   Timer? _pollingTimer;
@@ -77,7 +77,7 @@ class ContractCoinLogic extends GetxController
       StoreLogic().contractCoinFilter ?? {},
       page: 1,
       size: 500,
-      tag: tag,
+      tag: tag.value,
     )
         .whenComplete(() {
       Loading.dismiss();
@@ -101,15 +101,16 @@ class ContractCoinLogic extends GetxController
   void _startTimer() {
     _pollingTimer = Timer.periodic(const Duration(seconds: 7), (timer) async {
       // if (kDebugMode) return;
+      if (isCategory) {
+        await onRefresh();
+        return;
+      }
+      if (Get.currentRoute != '/') return;
       if (Get.isBottomSheetOpen == true) return;
+      if (Get.find<MainLogic>().state.selectedIndex.value != 1) return;
       if (Get.find<MarketLogic>().tabCtrl.index != 0) return;
       var index = Get.find<ContractLogic>().state.tabController?.index;
-      if (Get.find<MainLogic>().state.selectedIndex.value == 1 &&
-          Get.currentRoute == '/') {
-        if (index == 1) {
-          await onRefresh();
-        }
-      }
+      await onRefresh();
     });
   }
 
@@ -119,7 +120,6 @@ class ContractCoinLogic extends GetxController
   void onInit() {
     super.onInit();
     _startTimer();
-    onRefresh(showLoading: true);
     dataSource.isCategory = isCategory;
     dataSource.getColumns(Get.context!);
     _favoriteChangedSubscription =
@@ -141,6 +141,12 @@ class ContractCoinLogic extends GetxController
       dataSource.getColumns(Get.context!);
       dataSource.buildDataGridRows();
     });
+  }
+
+  @override
+  void onReady() {
+    onRefresh(showLoading: true);
+    super.onReady();
   }
 
   @override

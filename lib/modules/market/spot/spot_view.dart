@@ -52,10 +52,10 @@ class _SpotPageState extends State<SpotPage>
           child: TabBarView(
             controller: logic.tabCtrl,
             physics: const NeverScrollableScrollPhysics(),
-            children: [
+            children: const [
               AliveWidget(child: FSpotCoinView()),
               AliveWidget(child: SpotCoinView()),
-              const AliveWidget(child: ContractCategoryPage(isSpot: true)),
+              AliveWidget(child: ContractCategoryPage(isSpot: true)),
             ],
           ),
         ),

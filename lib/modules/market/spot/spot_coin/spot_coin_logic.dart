@@ -7,7 +7,6 @@ import 'package:ank_app/modules/main/main_logic.dart';
 import 'package:ank_app/modules/market/market_logic.dart';
 import 'package:ank_app/modules/market/spot/widgets/spot_coin_base_logic.dart';
 import 'package:ank_app/res/export.dart';
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 import '../spot_logic.dart';
@@ -17,7 +16,7 @@ class SpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
   SpotCoinLogic({required this.isCategory});
 
   final bool isCategory;
-  String? tag;
+  final tag = RxnString();
   final isInitializing = RxBool(true);
   @override
   GridDataSource dataSource = GridDataSource([]);
@@ -52,8 +51,13 @@ class SpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
       dataSource.getColumns(Get.context!);
       dataSource.buildDataGridRows();
     });
-
     super.onInit();
+  }
+
+  @override
+  void onReady() {
+    onRefresh(showLoading: true);
+    super.onReady();
   }
 
   @override
@@ -61,7 +65,7 @@ class SpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
     if (showLoading) Loading.show();
     final result = await Apis()
         .postSpotAgg(StoreLogic().spotCoinFilter ?? {},
-            page: 1, size: 500, tag: tag)
+            page: 1, size: 500, tag: tag.value)
         .whenComplete(() {
       if (showLoading) Loading.dismiss();
     });
@@ -77,7 +81,10 @@ class SpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
 
   Future<void> _startTimer() async {
     _pollingTimer = Timer.periodic(const Duration(seconds: 7), (timer) async {
-      if (kDebugMode) return;
+      if (isCategory) {
+        await onRefresh();
+        return;
+      }
       if (Get.find<MarketLogic>().tabCtrl.index != 1) return;
       var index = Get.find<SpotLogic>().tabCtrl.index;
       if (Get.find<MainLogic>().state.selectedIndex.value == 1 &&

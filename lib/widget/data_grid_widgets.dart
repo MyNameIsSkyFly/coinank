@@ -45,8 +45,8 @@ class DataGridRateText extends StatelessWidget {
       alignment: Alignment.centerLeft,
       child: Container(
         width: 80,
+        height: 30,
         margin: const EdgeInsets.only(left: 10),
-        padding: const EdgeInsets.symmetric(vertical: 7),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
           color: value == null || value == 0
@@ -55,11 +55,12 @@ class DataGridRateText extends StatelessWidget {
                   ? Styles.cUp(context)
                   : Styles.cDown(context),
         ),
+        alignment: Alignment.center,
         child: Text(
           text,
           textAlign: TextAlign.center,
           style: const TextStyle(
-              color: Colors.white, fontSize: 12, fontWeight: Styles.fontMedium),
+              color: Colors.white, fontSize: 14, fontWeight: FontWeight.w500),
         ),
       ),
     );

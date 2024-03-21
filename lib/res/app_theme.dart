@@ -16,6 +16,12 @@ class AppThemes {
         ),
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.white,
+          titleTextStyle: TextStyle(
+            color: Styles.cTextBlack,
+            fontSize: 18,
+            fontWeight: Styles.fontMedium,
+            fontFamily: 'PingFang SC',
+          ),
           scrolledUnderElevation: 0,
           systemOverlayStyle: SystemUiOverlayStyle(
             systemNavigationBarColor: Colors.transparent,
@@ -66,6 +72,12 @@ class AppThemes {
         ),
         appBarTheme: const AppBarTheme(
             backgroundColor: Color(0xff171823),
+            titleTextStyle: TextStyle(
+              color: Color(0xffEFF2F5),
+              fontSize: 18,
+              fontWeight: Styles.fontMedium,
+              fontFamily: 'PingFang SC',
+            ),
             scrolledUnderElevation: 0,
             systemOverlayStyle: SystemUiOverlayStyle(
               systemNavigationBarColor: Colors.transparent,

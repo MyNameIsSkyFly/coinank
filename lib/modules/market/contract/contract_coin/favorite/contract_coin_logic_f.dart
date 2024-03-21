@@ -111,6 +111,7 @@ class ContractCoinLogicF extends GetxController
             .whenComplete(() => _fetching = false);
       }
     }
+    _fetching = false;
     Loading.dismiss();
     if (isLoading.value) {
       isLoading.value = false;

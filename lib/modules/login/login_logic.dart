@@ -12,9 +12,16 @@ class LoginLogic extends GetxController {
   final mailCtrl = TextEditingController();
   final pwdCtrl = TextEditingController();
 
+  @override
+  void onInit() {
+    super.onInit();
+    mailCtrl.text = AppUtil.decodeBase64(StoreLogic.to.loginUsername);
+    pwdCtrl.text = AppUtil.decodeBase64(StoreLogic.to.loginPassword);
+  }
+
   Future<void> login() async {
     final pwd = pwdCtrl.text;
-    final mail = mailCtrl.text;
+    final mail = mailCtrl.text.trim();
     final userInfo = await Apis().login(mail, pwd, StoreLogic.to.deviceId);
 
     AppUtil.showToast(S.current.success_login);
