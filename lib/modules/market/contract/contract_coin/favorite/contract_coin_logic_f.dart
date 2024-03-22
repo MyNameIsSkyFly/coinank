@@ -9,6 +9,7 @@ import 'package:ank_app/modules/market/contract/contract_coin/widgets/contract_c
 import 'package:ank_app/modules/market/contract/contract_logic.dart';
 import 'package:ank_app/modules/market/market_logic.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:get/get.dart';
 
 import '../widgets/contract_coin_datagrid_source.dart';
@@ -28,6 +29,44 @@ class ContractCoinLogicF extends GetxController
       ['BTC', 'ETH', 'SOL', 'XRP', 'BNB', 'ORDI', 'DOGE', 'ARB']);
 
   final fetching = RxBool(false);
+
+  @override
+  void onReady() {
+    super.onReady();
+    if (!StoreLogic.isLogin) {
+      onRefresh();
+      _startTimer();
+    }
+  }
+
+  bool firstLoginEvent = true;
+
+  @override
+  void onInit() {
+    super.onInit();
+    _loginSubscription =
+        AppConst.eventBus.on<LoginStatusChangeEvent>().listen((event) {
+      onRefresh();
+      _startTimer();
+    });
+    _favoriteChangedSubscription =
+        AppConst.eventBus.on<EventCoinMarked>().listen((event) {
+      if (event.isSpot) return;
+      onRefresh();
+    });
+    _orderChangedSubscription =
+        AppConst.eventBus.on<EventCoinOrderChanged>().listen((event) {
+      if (event.isSpot || event.isCategory) return;
+      dataSource.getColumns(Get.context!);
+      dataSource.buildDataGridRows();
+    });
+    dataSource.getColumns(Get.context!);
+    FGBGEvents.stream.listen((event) async {
+      if (event == FGBGType.foreground &&
+          pageVisible &&
+          AppConst.backgroundForAWhile) onRefresh();
+    });
+  }
 
   @override
   ContractCoinGridSource dataSource = ContractCoinGridSource([]);
@@ -79,12 +118,10 @@ class ContractCoinLogicF extends GetxController
 
   @override
   Future<void> onRefresh({bool showLoading = false}) async {
+    if (AppConst.networkConnected == false) return;
     if (_fetching) return;
     _fetching = true;
-    if (AppConst.networkConnected == false) return;
-    if (showLoading) {
-      Loading.show();
-    }
+    if (showLoading) Loading.show();
     TickersDataEntity? result;
     if (StoreLogic.isLogin) {
       result = await Apis()
@@ -128,18 +165,23 @@ class ContractCoinLogicF extends GetxController
     dataSource.buildDataGridRows();
   }
 
+  @override
+  bool get pageVisible {
+    if (Get.isBottomSheetOpen == true) return false;
+    if (Get.currentRoute != '/') return false;
+    if (Get.find<MainLogic>().state.selectedIndex.value != 1) return false;
+    if (Get.find<MarketLogic>().tabCtrl.index != 0) return false;
+    var index = Get.find<ContractLogic>().state.tabController?.index;
+    if (index != 0) return false;
+    return true;
+  }
+
   void _startTimer() {
+    if (_pollingTimer != null) return;
     _pollingTimer = Timer.periodic(const Duration(seconds: 7), (timer) async {
-      // if (kDebugMode) return;
-      if (Get.isBottomSheetOpen == true) return;
-      if (Get.find<MarketLogic>().tabCtrl.index != 0) return;
-      var index = Get.find<ContractLogic>().state.tabController?.index;
-      if (Get.find<MainLogic>().state.selectedIndex.value == 1 &&
-          Get.currentRoute == '/') {
-        if (index == 0) {
-          await onRefresh();
-        }
-      }
+      if (!AppConst.canRequest) return;
+      if (!pageVisible) return;
+      await onRefresh();
     });
   }
 
@@ -161,34 +203,6 @@ class ContractCoinLogicF extends GetxController
     selectedFixedCoin.clear();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-    if (!StoreLogic.isLogin) onRefresh();
-  }
-
-  bool firstLoginEvent = true;
-
-  @override
-  void onInit() {
-    super.onInit();
-    _startTimer();
-    _loginSubscription = AppConst.eventBus
-        .on<LoginStatusChangeEvent>()
-        .listen((event) => onRefresh());
-    _favoriteChangedSubscription =
-        AppConst.eventBus.on<EventCoinMarked>().listen((event) {
-      if (event.isSpot) return;
-      onRefresh();
-    });
-    _orderChangedSubscription =
-        AppConst.eventBus.on<EventCoinOrderChanged>().listen((event) {
-      if (event.isSpot || event.isCategory) return;
-      dataSource.getColumns(Get.context!);
-      dataSource.buildDataGridRows();
-    });
-    dataSource.getColumns(Get.context!);
-  }
 
   @override
   void onClose() {

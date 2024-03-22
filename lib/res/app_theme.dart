@@ -16,6 +16,7 @@ class AppThemes {
         ),
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.white,
+          centerTitle: true,
           titleTextStyle: TextStyle(
             color: Styles.cTextBlack,
             fontSize: 18,
@@ -72,6 +73,7 @@ class AppThemes {
         ),
         appBarTheme: const AppBarTheme(
             backgroundColor: Color(0xff171823),
+            centerTitle: true,
             titleTextStyle: TextStyle(
               color: Color(0xffEFF2F5),
               fontSize: 18,

@@ -39,8 +39,9 @@ class AppNav {
     Get.toNamed(RegisterPage.routeName);
   }
 
-  static Future toFindPwd() async {
-    Get.toNamed(RegisterPage.routeName, arguments: {'isFindPwd': true});
+  static Future toFindPwd({bool isChangePwd = false}) async {
+    Get.toNamed(RegisterPage.routeName,
+        arguments: {'isFindPwd': true, 'isChangePwd': isChangePwd});
   }
 
   static Future toContactUs() async {

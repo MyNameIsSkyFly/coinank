@@ -9,8 +9,7 @@ import 'package:get/get.dart';
 
 import 'long_short_ratio_state.dart';
 
-class LongShortRatioLogic extends FullLifeCycleController
-    with FullLifeCycleMixin {
+class LongShortRatioLogic extends GetxController {
   final LongShortRatioState state = LongShortRatioState();
 
   Future<void> tapHeader(String type) async {
@@ -153,7 +152,7 @@ setChartData(${jsonEncode(json)}, "$platformString", "realtimeLongShort", ${json
   Future<void> _startTimer() async {
     state.pollingTimer =
         Timer.periodic(const Duration(seconds: 5), (timer) async {
-      if (!state.isRefresh && state.appVisible) {
+      if (!state.isRefresh && AppConst.canRequest) {
         await onRefresh(false);
       }
     });
@@ -168,36 +167,15 @@ setChartData(${jsonEncode(json)}, "$platformString", "realtimeLongShort", ${json
   @override
   void onInit() {
     super.onInit();
-    WidgetsBinding.instance.addObserver(this);
     _startTimer();
   }
 
   @override
   void onClose() {
-    WidgetsBinding.instance.removeObserver(this);
     state.pollingTimer?.cancel();
     state.pollingTimer = null;
     super.onClose();
   }
 
-  @override
-  void onDetached() {}
 
-  @override
-  void onHidden() {}
-
-  @override
-  void onInactive() {}
-
-  @override
-  void onPaused() {
-    //应用程序不可见，后台
-    state.appVisible = false;
-  }
-
-  @override
-  void onResumed() {
-    //应用程序可见，前台
-    state.appVisible = true;
-  }
 }

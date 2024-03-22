@@ -7,7 +7,6 @@ import 'package:ank_app/entity/oi_entity.dart';
 import 'package:ank_app/modules/market/contract/contract_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -31,8 +30,6 @@ class ExchangeOiLogic extends GetxController {
   String? jsonData;
   InAppWebViewController? webCtrl;
   final itemScrollController = ItemScrollController();
-  StreamSubscription? _fgbgSubscription;
-  var isAppVisible = true;
   final loading = true.obs;
   var refreshing = false;
   ({bool dataReady, bool webReady, String evJS}) readyStatus =
@@ -40,9 +37,6 @@ class ExchangeOiLogic extends GetxController {
 
   @override
   void onInit() {
-    _fgbgSubscription = FGBGEvents.stream.listen((event) {
-      isAppVisible = event == FGBGType.foreground;
-    });
     Future.wait([loadData(), loadOIData(), loadAllBaseCoins()]).then((value) {
       loading.value = false;
     });
@@ -54,7 +48,7 @@ class ExchangeOiLogic extends GetxController {
 
   void startPolling() {
     _pollingTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
-      if (!isAppVisible ||
+      if (!AppConst.canRequest ||
           Get.find<MainLogic>().state.selectedIndex.value != 1 ||
           Get.find<ContractLogic>().state.tabController?.index != 2) return;
       onRefresh(isPolling: true);
@@ -63,7 +57,6 @@ class ExchangeOiLogic extends GetxController {
 
   @override
   void onClose() {
-    _fgbgSubscription?.cancel();
     _pollingTimer?.cancel();
   }
 

@@ -33,7 +33,7 @@ class _CategoryDetailPageState extends State<CategoryDetailPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(S.of(context).marketCategory)),
+      appBar: AppBar(title: Text(S.of(context).category)),
       body: Column(
         children: [
           SizedBox(

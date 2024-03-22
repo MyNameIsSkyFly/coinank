@@ -11,6 +11,7 @@ import 'package:ank_app/modules/setting/setting_logic.dart';
 import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/activity_dialog.dart';
+import 'package:async/async.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_fgbg/flutter_fgbg.dart';
@@ -41,9 +42,22 @@ class MainLogic extends GetxController {
     super.onReady();
   }
 
+  CancelableOperation? _cancelableOperation;
   void listenAppVisibility() {
     appVisibleSubscription = FGBGEvents.stream.listen((event) {
-      state.appVisible = event == FGBGType.foreground;
+      if (event == FGBGType.background) {
+        _cancelableOperation = CancelableOperation.fromFuture(
+          Future.delayed(const Duration(seconds: 10), () => true),
+        );
+        _cancelableOperation?.value
+            .then((value) => AppConst.backgroundForAWhile = true);
+      } else {
+        _cancelableOperation?.cancel();
+        _cancelableOperation = null;
+        Future.delayed(const Duration(milliseconds: 500),
+            () => AppConst.backgroundForAWhile = false);
+      }
+      AppConst.appVisible = event == FGBGType.foreground;
     });
   }
 
@@ -53,13 +67,15 @@ class MainLogic extends GetxController {
       AppUtil.showToast(S.current.networkConnectFailed);
     }
     _connectivitySubscription =
-        connectivity.onConnectivityChanged.listen((ConnectivityResult result) {
+        connectivity.onConnectivityChanged.listen((result) {
       if (AppConst.networkConnected == true) return;
-      AppConst.networkConnected = result != ConnectivityResult.none;
-      if (result != ConnectivityResult.none) {
+      AppConst.networkConnected = result.contains(ConnectivityResult.wifi) ||
+          result.contains(ConnectivityResult.mobile) ||
+          result.contains(ConnectivityResult.other);
+      if (AppConst.networkConnected) {
         getActivity();
         Get.find<HomeLogic>().onRefresh();
-        Get.find<ContractCoinLogicF>().onRefresh();
+        if (StoreLogic.isLogin) Get.find<ContractCoinLogicF>().onRefresh();
         AppConst.eventBus.fire(ThemeChangeEvent(type: ThemeChangeType.locale));
         tryLogin();
         Get.find<ChartLogic>().onRefresh();
@@ -125,7 +141,7 @@ class MainLogic extends GetxController {
 
   void listenScreenshot() {
     screenshotCallback.addListener(() {
-      if (Get.find<MainLogic>().state.appVisible == false) return;
+      if (AppConst.canRequest == false) return;
       if (Platform.isAndroid && AppGlobal.justSavedImage) return;
       AppUtil.shareImage();
     });

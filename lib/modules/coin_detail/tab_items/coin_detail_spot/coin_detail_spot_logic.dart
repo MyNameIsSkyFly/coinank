@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:ank_app/entity/contract_market_entity.dart';
 import 'package:ank_app/entity/event/event_coin_marked.dart';
-import 'package:ank_app/modules/main/main_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:get/get.dart';
 
@@ -23,7 +22,7 @@ class CoinDetailSpotLogic extends GetxController {
     getCoinInfo24h();
     initMarked();
     _timer = Timer.periodic(const Duration(seconds: 10), (timer) {
-      if (!Get.find<MainLogic>().state.appVisible ||
+      if (!AppConst.canRequest ||
           Get.find<CoinDetailLogic>().tabController.index != 1) return;
       getGridData();
       getCoinInfo24h();

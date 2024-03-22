@@ -15,7 +15,6 @@ class LongShortRatioState {
   Timer? pollingTimer;
   RxBool isLoading = true.obs;
   bool isRefresh = false;
-  bool appVisible = true;
   InAppWebViewController? webCtrl;
   ShortRateEntity? jsData;
   ({bool dataReady, bool webReady, String evJS}) readyStatus =

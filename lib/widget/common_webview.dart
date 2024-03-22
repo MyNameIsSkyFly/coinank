@@ -186,72 +186,75 @@ class _CommonWebViewState extends State<CommonWebView>
           ? null
           : AppTitleBar(
               title: title ?? '',
-                onBack: () => navigator?.maybePop(),
-                actionWidget: _actionWidget),
-        body: Stack(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(
-                  top: widget.safeArea ? AppConst.statusBarHeight : 0),
-              child: InAppWebView(
-                onTitleChanged: (controller, title) {
-                  if (!widget.dynamicTitle) return;
-                  if (this.title == title) return;
-                  setState(() => this.title = title);
-                },
-                initialFile: !widget.url.startsWith('https://') &&
-                        !widget.url.startsWith('http://')
-                    ? widget.url
-                    : null,
-                initialUrlRequest: widget.url.startsWith('https://') ||
-                        widget.url.startsWith('http://')
-                    ? URLRequest(
-                        url: WebUri(widget.urlGetter?.call() ?? widget.url))
-                    : null,
+              onBack: () => navigator?.maybePop(),
+              actionWidget: _actionWidget),
+      body: Stack(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(
+                top: widget.safeArea ? AppConst.statusBarHeight : 0),
+            child: InAppWebView(
+              onTitleChanged: (controller, title) {
+                if (!widget.dynamicTitle) return;
+                if (this.title == title) return;
+                setState(() => this.title = title);
+              },
+              initialFile: !widget.url.startsWith('https://') &&
+                      !widget.url.startsWith('http://')
+                  ? widget.url
+                  : null,
+              initialUrlRequest: widget.url.startsWith('https://') ||
+                      widget.url.startsWith('http://')
+                  ? URLRequest(
+                      url: WebUri(widget.urlGetter?.call() ?? widget.url))
+                  : null,
 
               initialSettings: InAppWebViewSettings(
-                  userAgent: Platform.isAndroid
-                      ? 'CoinsohoWeb-flutter-Android'
-                      : 'CoinsohoWeb-flutter-IOS',
-                  // hardwareAcceleration: !widget.enableShare,
-                  transparentBackground: true,
-                  javaScriptCanOpenWindowsAutomatically: true,
-                ),
-                onWebViewCreated: (controller) => _onWebViewCreated(controller),
-                onLoadStop: (controller, url) => _onLoadStop(controller),
-                onConsoleMessage: (controller, consoleMessage) =>
-                    debugPrint(consoleMessage.toString()),
-                onProgressChanged: (controller, progress) {
-                  _progress = progress;
-                  if (progress == 100) {
-                    setState(() {});
-                  }
-                },
+                userAgent: Platform.isAndroid
+                    ? 'CoinsohoWeb-flutter-Android'
+                    : 'CoinsohoWeb-flutter-IOS',
+                // hardwareAcceleration: !widget.enableShare,
+                transparentBackground: true,
+                javaScriptCanOpenWindowsAutomatically: true,
+                useHybridComposition:
+                    widget.urlGetter?.call().contains('proChart') == true ||
+                        !widget.canPop,
+              ),
+              onWebViewCreated: (controller) => _onWebViewCreated(controller),
+              onLoadStop: (controller, url) => _onLoadStop(controller),
+              onConsoleMessage: (controller, consoleMessage) =>
+                  debugPrint(consoleMessage.toString()),
+              onProgressChanged: (controller, progress) {
+                _progress = progress;
+                if (progress == 100) {
+                  setState(() {});
+                }
+              },
               // onWebContentProcessDidTerminate: (controller) => reload(),
               onWebContentProcessDidTerminate: (controller) =>
                   controller.reload(),
               gestureRecognizers: widget.gestureRecognizers ??
-                    (widget.enableZoom
-                        ? {
-                            Factory<HorizontalDragGestureRecognizer>(
-                              () => HorizontalDragGestureRecognizer(),
-                            ),
-                            Factory<PanGestureRecognizer>(
-                              () => PanGestureRecognizer(),
-                            ),
-                            Factory<ForcePressGestureRecognizer>(
-                              () => ForcePressGestureRecognizer(),
-                            ),
-                            Factory<LongPressGestureRecognizer>(
-                              () => LongPressGestureRecognizer(),
-                            ),
-                          }
-                        : null),
-              ),
+                  (widget.enableZoom
+                      ? {
+                          Factory<HorizontalDragGestureRecognizer>(
+                            () => HorizontalDragGestureRecognizer(),
+                          ),
+                          Factory<PanGestureRecognizer>(
+                            () => PanGestureRecognizer(),
+                          ),
+                          Factory<ForcePressGestureRecognizer>(
+                            () => ForcePressGestureRecognizer(),
+                          ),
+                          Factory<LongPressGestureRecognizer>(
+                            () => LongPressGestureRecognizer(),
+                          ),
+                        }
+                      : null),
             ),
-            if (widget.showLoading && _progress != 100) const LottieIndicator(),
-          ],
-        ),
+          ),
+          if (widget.showLoading && _progress != 100) const LottieIndicator(),
+        ],
+      ),
     );
     if (widget.canPop) return scaffold;
     return WillPopScope(

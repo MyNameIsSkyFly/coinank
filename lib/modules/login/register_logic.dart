@@ -12,12 +12,15 @@ class RegisterLogic extends GetxController {
   final verifyCodeCtrl = TextEditingController();
   final referralCtrl = TextEditingController();
   bool isFindPwd = false;
+  bool isChangePwd = false;
 
   @override
   void onInit() {
     super.onInit();
     // ignore: avoid_dynamic_calls
     isFindPwd = Get.arguments?['isFindPwd'] as bool? ?? false;
+    // ignore: avoid_dynamic_calls
+    isChangePwd = Get.arguments?['isChangePwd'] as bool? ?? false;
     final lastTime = StoreLogic.to.lastSendCodeTime;
     final now = DateTime.now();
     if (now.difference(lastTime).inSeconds < 60) {
@@ -35,7 +38,8 @@ class RegisterLogic extends GetxController {
     final verifyCode = verifyCodeCtrl.text;
     final referral = referralCtrl.text.isEmpty ? null : referralCtrl.text;
     await Apis().register(mail, pwd, verifyCode, strType, referral: referral);
-    AppUtil.showToast(S.current.registerSuccessfully);
+    AppUtil.showToast(
+        isFindPwd ? S.current.passwordChanged : S.current.registerSuccessfully);
     Get.back();
   }
 

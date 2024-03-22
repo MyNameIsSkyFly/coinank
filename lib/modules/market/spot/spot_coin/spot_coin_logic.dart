@@ -7,6 +7,7 @@ import 'package:ank_app/modules/main/main_logic.dart';
 import 'package:ank_app/modules/market/market_logic.dart';
 import 'package:ank_app/modules/market/spot/widgets/spot_coin_base_logic.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:get/get.dart';
 
 import '../spot_logic.dart';
@@ -51,6 +52,12 @@ class SpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
       dataSource.getColumns(Get.context!);
       dataSource.buildDataGridRows();
     });
+
+    FGBGEvents.stream.listen((event) async {
+      if (event == FGBGType.foreground &&
+          pageVisible &&
+          AppConst.backgroundForAWhile) onRefresh();
+    });
     super.onInit();
   }
 
@@ -60,15 +67,19 @@ class SpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
     super.onReady();
   }
 
+  bool _fetching = false;
+
   @override
   Future<void> onRefresh({bool showLoading = false}) async {
+    if (_fetching) return;
+    _fetching = true;
     if (showLoading) Loading.show();
     final result = await Apis()
         .postSpotAgg(StoreLogic().spotCoinFilter ?? {},
             page: 1, size: 500, tag: tag.value)
         .whenComplete(() {
       if (showLoading) Loading.dismiss();
-    });
+    }).whenComplete(() => _fetching = false);
 
     data.assignAll(result?.list ?? []);
     if (isInitializing.value) isInitializing.value = false;
@@ -79,20 +90,25 @@ class SpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
 
   Timer? _pollingTimer;
 
+  @override
+  bool get pageVisible {
+    if (Get.isBottomSheetOpen == true) return false;
+    if (Get.currentRoute != '/') return false;
+    if (Get.find<MainLogic>().state.selectedIndex.value != 1) return false;
+    if (Get.find<MarketLogic>().tabCtrl.index != 1) return false;
+    if (Get.find<SpotLogic>().tabCtrl.index != 1) return false;
+    return true;
+  }
+
   Future<void> _startTimer() async {
     _pollingTimer = Timer.periodic(const Duration(seconds: 7), (timer) async {
+      if (!AppConst.canRequest) return;
       if (isCategory) {
         await onRefresh();
         return;
       }
-      if (Get.find<MarketLogic>().tabCtrl.index != 1) return;
-      var index = Get.find<SpotLogic>().tabCtrl.index;
-      if (Get.find<MainLogic>().state.selectedIndex.value == 1 &&
-          Get.currentRoute == '/') {
-        if (index == 1) {
-          await onRefresh();
-        }
-      }
+      if (!pageVisible) return;
+      await onRefresh();
     });
   }
 

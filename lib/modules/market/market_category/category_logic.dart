@@ -13,6 +13,7 @@ mixin ContractCategoryLogic {
     initData(showLoading: true);
     listenTheme();
     _pollingTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
+      if (!AppConst.canRequest) return;
       if (Get.currentRoute != '/') return;
       if (Get.isBottomSheetOpen == true) return;
       if (Get.find<MainLogic>().state.selectedIndex.value != 1) return;

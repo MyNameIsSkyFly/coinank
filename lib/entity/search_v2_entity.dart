@@ -41,8 +41,10 @@ class SearchV2ItemEntity extends Equatable {
   final bool? supportSpot;
   final bool? supportContract;
   final SearchEntityType? tag;
+  @JsonKey(includeToJson: false, includeFromJson: false)
+  bool isFollow = false;
 
-  const SearchV2ItemEntity({
+  SearchV2ItemEntity({
     this.baseCoin,
     this.exchangeName,
     this.symbol,

@@ -50,7 +50,7 @@ class CategoryTypeSelector extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: ImageIcon(const AssetImage(Assets.commonIcBlocks),
                       size: 20,
-                      color: leftSelected
+                      color: !leftSelected
                           ? Styles.cBody(context)
                           : Styles.cSub(context)),
                 ),

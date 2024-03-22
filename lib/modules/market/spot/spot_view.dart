@@ -63,4 +63,3 @@ class _SpotPageState extends State<SpotPage>
     );
   }
 }
-

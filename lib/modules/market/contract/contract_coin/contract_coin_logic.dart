@@ -7,6 +7,7 @@ import 'package:ank_app/modules/main/main_logic.dart';
 import 'package:ank_app/modules/market/contract/contract_coin/widgets/contract_coin_base_logic.dart';
 import 'package:ank_app/modules/market/contract/contract_logic.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:get/get.dart';
 
 import '../../market_logic.dart';
@@ -70,7 +71,6 @@ class ContractCoinLogic extends GetxController
   Future<void> onRefresh({bool showLoading = false}) async {
     if (_fetching) return;
     _fetching = true;
-    if (AppConst.networkConnected == false) return;
     if (showLoading) Loading.show();
     final result = await Apis()
         .postFuturesBigData(
@@ -87,8 +87,8 @@ class ContractCoinLogic extends GetxController
     if (isInitializing.value) isInitializing.value = false;
     data.assignAll(result?.list ?? []);
     dataSource.items.assignAll(data);
-    dataSource.getColumns(Get.context!);
     dataSource.buildDataGridRows();
+    dataSource.getColumns(Get.context!);
   }
 
   void _addFollowTag(TickersDataEntity? data) {
@@ -98,18 +98,25 @@ class ContractCoinLogic extends GetxController
     }
   }
 
+  @override
+  bool get pageVisible {
+    if (Get.currentRoute != '/') return false;
+    if (Get.isBottomSheetOpen == true) return false;
+    if (Get.find<MainLogic>().state.selectedIndex.value != 1) return false;
+    if (Get.find<MarketLogic>().tabCtrl.index != 0) return false;
+    var index = Get.find<ContractLogic>().state.tabController?.index;
+    if (index != 1) return false;
+    return true;
+  }
+
   void _startTimer() {
     _pollingTimer = Timer.periodic(const Duration(seconds: 7), (timer) async {
-      // if (kDebugMode) return;
+      if (!AppConst.canRequest) return;
       if (isCategory) {
         await onRefresh();
         return;
       }
-      if (Get.currentRoute != '/') return;
-      if (Get.isBottomSheetOpen == true) return;
-      if (Get.find<MainLogic>().state.selectedIndex.value != 1) return;
-      if (Get.find<MarketLogic>().tabCtrl.index != 0) return;
-      var index = Get.find<ContractLogic>().state.tabController?.index;
+      if (!pageVisible) return;
       await onRefresh();
     });
   }
@@ -140,6 +147,12 @@ class ContractCoinLogic extends GetxController
       if (isCategory != event.isCategory) return;
       dataSource.getColumns(Get.context!);
       dataSource.buildDataGridRows();
+    });
+
+    FGBGEvents.stream.listen((event) async {
+      if (event == FGBGType.foreground &&
+          pageVisible &&
+          AppConst.backgroundForAWhile) onRefresh();
     });
   }
 

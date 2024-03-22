@@ -7,16 +7,17 @@ import 'package:ank_app/modules/main/main_logic.dart';
 import 'package:ank_app/modules/market/market_logic.dart';
 import 'package:ank_app/modules/market/spot/widgets/spot_coin_base_logic.dart';
 import 'package:ank_app/res/export.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:get/get.dart';
 
+import '../spot_logic.dart';
 import '../widgets/spot_coin_datagrid_source.dart';
 
 class FSpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
   final data = RxList<MarkerTickerEntity>();
   RxBool isLoading = true.obs;
-  late TabController tabCtrl;
+
+  // late TabController tabCtrl;
   final fixedCoin = [
     //line
     'BTC', 'ETH', 'SOL', 'XRP', 'BNB', 'ORDI', 'DOGE', 'ARB'
@@ -45,6 +46,11 @@ class FSpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
       dataSource.buildDataGridRows();
     });
 
+    FGBGEvents.stream.listen((event) async {
+      if (event == FGBGType.foreground &&
+          pageVisible &&
+          AppConst.backgroundForAWhile) onRefresh();
+    });
     super.onInit();
   }
 
@@ -57,26 +63,30 @@ class FSpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
   @override
   void tapItem(MarkerTickerEntity item) {}
 
+  bool _fetching = false;
+
   @override
   Future<void> onRefresh({bool showLoading = false}) async {
+    if (_fetching) return;
+    _fetching = true;
     TickersDataEntity? result;
     if (StoreLogic.isLogin) {
       result = await Apis().postSpotAgg(StoreLogic().spotCoinFilter ?? {},
           page: 1,
-          size: 500,
-          isFollow: true,
-          extras: {
-            'showToast': false
-          }).catchError((e) => TickersDataEntity(list: []));
+          size: 500, isFollow: true, extras: {'showToast': false})
+          .catchError((e) => TickersDataEntity(list: []))
+          .whenComplete(() => _fetching = false);
     } else {
       if (StoreLogic.to.favoriteSpot.isEmpty) {
         result = TickersDataEntity(list: []);
+        _fetching = false;
       } else {
         result = await Apis().getSpotAgg(
           page: 1,
           size: 500,
           baseCoins: StoreLogic.to.favoriteSpot.join(','),
-        );
+            )
+            .whenComplete(() => _fetching = false);
       }
     }
     if (isLoading.value) isLoading.value = false;
@@ -88,17 +98,22 @@ class FSpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
 
   Timer? _pollingTimer;
 
+  @override
+  bool get pageVisible {
+    if (Get.isBottomSheetOpen == true) return false;
+    if (Get.currentRoute != '/') return false;
+    if (Get.find<MainLogic>().state.selectedIndex.value != 1) return false;
+    if (Get.find<MarketLogic>().tabCtrl.index != 1) return false;
+    if (Get.find<SpotLogic>().tabCtrl.index != 0) return false;
+    return true;
+  }
+
   Future<void> _startTimer() async {
     _pollingTimer = Timer.periodic(const Duration(seconds: 7), (timer) async {
-      if (kDebugMode) return;
-      if (Get.find<MarketLogic>().tabCtrl.index != 1) return;
-      var index = tabCtrl.index;
-      if (Get.find<MainLogic>().state.selectedIndex.value == 1 &&
-          Get.currentRoute == '/') {
-        if (index == 0) {
-          await onRefresh();
-        }
-      }
+      if (!AppConst.canRequest) return;
+      if (!pageVisible) return;
+
+      await onRefresh();
     });
   }
 

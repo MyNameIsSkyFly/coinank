@@ -21,7 +21,6 @@ class PriceChangeState {
   bool isCollect = false;
   Timer? pollingTimer;
   bool isRefresh = false;
-  bool appVisible = true;
   RxBool isLoading = true.obs;
   var sortByList = [];
   PriceChangeState() {

@@ -23,6 +23,7 @@ class CoinDetailOverviewLogic extends GetxController {
     getMarketCapTopList();
     getCoinInfo24h();
     _timer = Timer.periodic(const Duration(seconds: 10), (timer) {
+      if (!AppConst.canRequest) return;
       getCoinInfo24h();
     });
     super.onReady();

@@ -410,8 +410,10 @@
   "category": "分类",
   "topMarketCoin": "最大市值币种",
   "topGainerCoin": "最大涨幅币种",
-  "marketCategory": "行情分类",
+
   "errorInputLessThanX": "错误，输入的值小于{value}",
   "errorInputMoreThanX": "错误，输入的值大于{value}",
-  "errorInputRange": "错误, 请输入有效的范围."
+  "errorInputRange": "错误, 请输入有效的范围.",
+  "changePassword": "修改密码",
+  "passwordChanged": "密码已修改"
 }

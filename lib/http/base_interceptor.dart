@@ -3,22 +3,16 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:ank_app/modules/main/main_logic.dart';
 import 'package:ank_app/route/app_nav.dart';
 import 'package:ank_app/util/store.dart';
 import 'package:dio/dio.dart';
-import 'package:get/get.dart' hide Response;
 
 import '../generated/l10n.dart';
 import '../util/app_util.dart';
 
 class BaseInterceptor extends Interceptor {
-  late MainLogic mainLogic = Get.find();
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    if (!mainLogic.state.appVisible) {
-      handler.reject(DioException(requestOptions: options));
-    }
     if (StoreLogic.isLogin) {
       options.headers['token'] = StoreLogic.to.loginUserInfo?.token;
     }
@@ -125,9 +119,7 @@ class BaseInterceptor extends Interceptor {
       }
     }
     final showToast = err.requestOptions.extra['showToast'] ?? true;
-    if (showToast || mainLogic.state.appVisible) {
-      AppUtil.showToast(errorMessage);
-    }
+    if (showToast) AppUtil.showToast(errorMessage);
     handler.next(err);
   }
 

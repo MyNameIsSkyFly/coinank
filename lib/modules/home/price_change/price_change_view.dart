@@ -23,14 +23,10 @@ class PriceChangePage extends StatelessWidget {
       appBar: AppTitleBar(
         title: state.isPrice ? S.current.s_price_chg : S.current.s_oi_chg,
       ),
-      body: Obx(() {
-        return state.isLoading.value
-            ? const LottieIndicator()
-            : EasyRefresh(
-                onRefresh: () => logic.onRefresh(false),
-                child: _GridView(),
-              );
-      }),
+      body: EasyRefresh(
+        onRefresh: () => logic.onRefresh(false),
+        child: _GridView(),
+      ),
     );
   }
 }

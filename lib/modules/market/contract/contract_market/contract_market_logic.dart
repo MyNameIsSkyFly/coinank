@@ -5,7 +5,6 @@ import 'package:ank_app/modules/market/contract/contract_coin/contract_coin_logi
 import 'package:ank_app/modules/market/contract/contract_logic.dart';
 import 'package:ank_app/modules/market/market_logic.dart';
 import 'package:ank_app/res/export.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -136,7 +135,7 @@ class ContractMarketLogic extends FullLifeCycleController
   Future<void> _startTimer() async {
     state.pollingTimer =
         Timer.periodic(const Duration(seconds: 5), (timer) async {
-      if (kDebugMode) return;
+      if (!AppConst.canRequest) return;
       if (Get.find<MarketLogic>().tabCtrl.index != 0) return;
       if (Get.find<MainLogic>().state.selectedIndex.value == 1 &&
           !state.isRefresh &&

@@ -5,6 +5,8 @@ import 'contract_coin_datagrid_source.dart';
 abstract class ContractCoinBaseLogic {
   late ContractCoinGridSource dataSource;
 
+  bool get pageVisible;
+
   Future<void> tapCollect(String? baseCoin);
 
   void tapItem(MarkerTickerEntity item);

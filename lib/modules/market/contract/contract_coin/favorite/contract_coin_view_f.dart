@@ -42,7 +42,8 @@ class _ContractCoinPageFState extends State<ContractCoinPageF> {
                   Column(
                     children: [
                       CustomizeFilterHeaderView(
-                          onFinishFilter: () => logic.onRefresh()),
+                          onFinishFilter: () =>
+                              logic.onRefresh(showLoading: true)),
                       Expanded(
                         child: EasyRefresh(
                           onRefresh: () async => logic.onRefresh(),

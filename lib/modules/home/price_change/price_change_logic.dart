@@ -12,7 +12,7 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import 'price_change_state.dart';
 
-class PriceChangeLogic extends FullLifeCycleController with FullLifeCycleMixin {
+class PriceChangeLogic extends GetxController {
   final PriceChangeState state = PriceChangeState();
   late final gridSource = PriceChgGridSource(list: []);
 
@@ -31,13 +31,12 @@ class PriceChangeLogic extends FullLifeCycleController with FullLifeCycleMixin {
               alignment: Alignment.centerLeft,
               child: Text(
                 'Coin',
-                style: Styles.tsSub_14(context),
+                style: Styles.tsSub_12(context),
               ),
             );
           })),
       ...state.topList.mapIndexed((index, e) => GridColumn(
             columnName: e,
-            maximumWidth: 140,
             autoFitPadding: const EdgeInsets.symmetric(horizontal: 10),
             label: Builder(builder: (context) {
               return Row(
@@ -46,7 +45,7 @@ class PriceChangeLogic extends FullLifeCycleController with FullLifeCycleMixin {
                   Flexible(
                       child: Text(
                     e,
-                    style: Styles.tsBody_12(context),
+                    style: Styles.tsSub_12(context),
                     textAlign: TextAlign.center,
                   )),
                   const Gap(4),
@@ -89,17 +88,16 @@ class PriceChangeLogic extends FullLifeCycleController with FullLifeCycleMixin {
 
   Future<void> onRefresh(bool showLoading) async {
     state.isRefresh = true;
-    if (showLoading) {
-      Loading.show();
-    }
+    if (showLoading) Loading.show();
     if (state.isPrice) {
-      await getBigData();
+      await getBigData().whenComplete(() => Loading.dismiss());
     } else {
-      await getOiData();
+      await getOiData().whenComplete(() => Loading.dismiss());
     }
     state.isLoading.value = false;
     Loading.dismiss();
     state.isRefresh = false;
+    getColumns();
   }
 
   Future<void> getOiData() async {
@@ -131,7 +129,7 @@ class PriceChangeLogic extends FullLifeCycleController with FullLifeCycleMixin {
   void _startTimer() {
     state.pollingTimer =
         Timer.periodic(const Duration(seconds: 5), (timer) async {
-      if (!state.isRefresh && state.appVisible) {
+      if (!state.isRefresh && AppConst.canRequest) {
         await onRefresh(false);
       }
     });
@@ -152,13 +150,12 @@ class PriceChangeLogic extends FullLifeCycleController with FullLifeCycleMixin {
   @override
   void onReady() {
     super.onReady();
-    onRefresh(false);
+    onRefresh(true);
   }
 
   @override
   void onInit() {
     super.onInit();
-    WidgetsBinding.instance.addObserver(this);
     state.titleController.addListener(_updateContent);
     state.contentController.addListener(_updateTitle);
     _startTimer();
@@ -167,32 +164,10 @@ class PriceChangeLogic extends FullLifeCycleController with FullLifeCycleMixin {
 
   @override
   void onClose() {
-    WidgetsBinding.instance.removeObserver(this);
     state.titleController.removeListener(_updateContent);
     state.contentController.removeListener(_updateTitle);
     state.pollingTimer?.cancel();
     state.pollingTimer = null;
     super.onClose();
-  }
-
-  @override
-  void onDetached() {}
-
-  @override
-  void onHidden() {}
-
-  @override
-  void onInactive() {}
-
-  @override
-  void onPaused() {
-    //应用程序不可见，后台
-    state.appVisible = false;
-  }
-
-  @override
-  void onResumed() {
-    //应用程序可见，前台
-    state.appVisible = true;
   }
 }

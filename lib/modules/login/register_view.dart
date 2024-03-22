@@ -34,7 +34,9 @@ class _RegisterPageState extends State<RegisterPage> {
               const Gap(10),
               Text(
                 logic.isFindPwd
-                    ? S.of(context).s_forget_passwd
+                    ? logic.isChangePwd
+                        ? S.of(context).changePassword
+                        : S.of(context).s_forget_passwd
                     : S.of(context).s_register,
                 style: Styles.tsBody_24(context)
                     .copyWith(fontWeight: FontWeight.w600),
@@ -137,11 +139,12 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ],
                   )),
-              const Gap(15),
-              RichText(
-                text: TextSpan(
-                  children: [
-                    WidgetSpan(
+              if (!logic.isFindPwd) ...[
+                const Gap(15),
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      WidgetSpan(
                         child: GestureDetector(
                       onTap: logic.agree.toggle,
                       child: Obx(() {
@@ -199,7 +202,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           })
                   ],
                 ),
-              ),
+                )
+              ],
               const Gap(30),
               FilledButton(
                   onPressed: () {

@@ -94,7 +94,9 @@ class Application {
   static Future<void> checkNetwork() async {
     var connectivity = Connectivity();
     final result = await connectivity.checkConnectivity();
-    AppConst.networkConnected = result != ConnectivityResult.none;
+    AppConst.networkConnected = result.contains(ConnectivityResult.wifi) ||
+        result.contains(ConnectivityResult.mobile) ||
+        result.contains(ConnectivityResult.other);
   }
 }
 

@@ -6,8 +6,8 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 class AppConst {
   AppConst._();
-  static bool networkConnected = true;
   static const isPlayVersion = bool.fromEnvironment('PLAY');
+  static bool networkConnected = true;
   static final eventBus = EventBus();
   static String imageHost(String imageName) {
     return 'https://cdn01.coinank.com/image/coin/64/$imageName.png';
@@ -20,4 +20,8 @@ class AppConst {
       MediaQuery.of(Get.context!).padding.bottom;
   static PackageInfo? packageInfo;
   static AndroidDeviceInfo? deviceInfo;
+  static bool appVisible = true;
+
+  static bool get canRequest => appVisible && networkConnected;
+  static bool backgroundForAWhile = false;
 }

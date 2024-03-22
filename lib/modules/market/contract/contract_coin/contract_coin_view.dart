@@ -21,14 +21,15 @@ class _ContractCoinPageState extends State<ContractCoinPage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CustomizeFilterHeaderView(onFinishFilter: () => logic.onRefresh()),
+        CustomizeFilterHeaderView(
+            onFinishFilter: () => logic.onRefresh(showLoading: true)),
         Expanded(
           child: Obx(() {
             return Stack(
               children: [
                 EasyRefresh(
                   footer: const MaterialFooter(),
-                  onRefresh: logic.onRefresh,
+                  onRefresh: () async => logic.onRefresh(),
                   child: ContractCoinGridView(logic: logic),
                 ),
                 if (logic.data.isEmpty && !logic.isInitializing.value)

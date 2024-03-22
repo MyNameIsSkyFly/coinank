@@ -5,6 +5,8 @@ import 'spot_coin_datagrid_source.dart';
 abstract class SpotCoinBaseLogic {
   late GridDataSource dataSource;
 
+  bool get pageVisible;
+
   Future<void> tapCollect(String? baseCoin);
 
   void tapItem(MarkerTickerEntity item);

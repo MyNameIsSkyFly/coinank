@@ -19,13 +19,13 @@ class CategoryContractCharts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
+    return const SingleChildScrollView(
+      padding: EdgeInsets.symmetric(horizontal: 15),
       child: Column(
         children: [
-          const SizedBox(height: 10),
+          SizedBox(height: 10),
           _HeatMapView(),
-          const SizedBox(height: 10),
+          SizedBox(height: 10),
           _BarChartView(),
         ],
       ),

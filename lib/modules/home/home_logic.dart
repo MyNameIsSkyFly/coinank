@@ -23,7 +23,6 @@ class HomeLogic extends GetxController {
   final btcReduceData = Rxn<BtcReduceEntity>();
   final hostApi = MessageHostApi();
 
-  bool get appVisible => Get.find<MainLogic>().state.appVisible;
   Timer? pollingTimer;
   Timer? btcReduceTimer;
   bool isRefreshing = false;
@@ -47,7 +46,7 @@ class HomeLogic extends GetxController {
     pollingTimer = Timer.periodic(
       const Duration(seconds: 5),
       (timer) {
-        if (!appVisible ||
+        if (!AppConst.canRequest ||
             mainLogic.state.selectedIndex.value != 0 ||
             isRefreshing ||
             Get.currentRoute != RouteConfig.main) return;

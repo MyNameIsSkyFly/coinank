@@ -409,11 +409,11 @@
   "removedFromFavorites": "削除されました",
   "tapAgainToExit": "もう一度タップして終了します",
   "category": "Category",
-  "topMarketCoin": "最大市值币种",
-  "topGainerCoin": "最大涨幅币种",
-  "marketCategory": "行情分类",
-  "errorInputLessThanX": "错误，输入的值小于{value}",
-  "errorInputMoreThanX": "错误，输入的值大于{value}",
-  "errorInputRange": "错误, 请输入有效的范围."
-
+  "topMarketCoin": "Top Market Coin",
+  "topGainerCoin": "Top Gainer Coin",
+  "errorInputLessThanX": "Error, less than min value {value}",
+  "errorInputMoreThanX": "Error, greater than than max value {value}",
+  "errorInputRange": "Error, please enter a valid range from low to high.",
+  "changePassword": "Change Password",
+  "passwordChanged": "Password Changed"
 }

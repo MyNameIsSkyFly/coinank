@@ -408,10 +408,11 @@
   "removedFromFavorites": "已取消收藏",
   "tapAgainToExit": "再次點擊即可退出",
   "category": "分類",
-  "topMarketCoin": "最大市值币种",
-  "topGainerCoin": "最大涨幅币种",
-  "marketCategory": "行情分类",
-  "errorInputLessThanX": "错误，输入的值小于{value}",
-  "errorInputMoreThanX": "错误，输入的值大于{value}",
-  "errorInputRange": "错误, 请输入有效的范围."
+  "topMarketCoin": "最大市值幣種",
+  "topGainerCoin": "最大漲幅幣種",
+  "errorInputLessThanX": "錯誤, 輸入的值小於{value}",
+  "errorInputMoreThanX": "錯誤, 輸入的值大於{value}",
+  "errorInputRange": "錯誤, 請輸入有效的範圍.",
+  "changePassword": "修改密碼",
+  "passwordChanged": "密碼已修改"
 }

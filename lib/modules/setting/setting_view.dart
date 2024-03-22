@@ -560,6 +560,21 @@ class _DeleteAccountDialog extends StatelessWidget {
           ),
           InkWell(
             onTap: () async {
+              Get.back();
+              AppNav.toFindPwd(isChangePwd: true);
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              child: Row(
+                children: [
+                  Expanded(child: Text(S.of(context).changePassword)),
+                  const CupertinoListTileChevron(),
+                ],
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () async {
               Loading.wrap(() async {
                 await Apis()
                     .sendCode(AppUtil.decodeBase64(StoreLogic.to.loginUsername),

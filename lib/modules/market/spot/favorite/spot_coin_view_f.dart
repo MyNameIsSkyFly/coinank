@@ -38,7 +38,8 @@ class _FSpotCoinViewState extends State<FSpotCoinView> {
               Column(
                 children: [
                   CustomizeFilterHeaderView(
-                      onFinishFilter: () => logic.onRefresh(), isSpot: true),
+                      onFinishFilter: () => logic.onRefresh(showLoading: true),
+                      isSpot: true),
                   Expanded(
                       child: EasyRefresh(
                           onRefresh: () async => logic.onRefresh(),

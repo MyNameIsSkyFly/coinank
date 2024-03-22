@@ -14,7 +14,6 @@ class MainState {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   InAppWebViewController? webViewController;
   bool isFirstKLine = true;
-  bool appVisible = true;
 
   MainState() {
     tabPage = [
