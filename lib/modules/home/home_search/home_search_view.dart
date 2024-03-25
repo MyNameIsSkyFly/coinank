@@ -112,7 +112,7 @@ class _ResultViewState extends State<_ResultView>
 
   @override
   void initState() {
-    tabController = TabController(length: 6, vsync: this);
+    tabController = TabController(length: 7, vsync: this);
     super.initState();
   }
 
@@ -129,7 +129,8 @@ class _ResultViewState extends State<_ResultView>
           unselectedLabelStyle: Styles.tsSub_14m(context),
           tabs: [
             Tab(text: S.current.s_all),
-            Tab(text: S.of(context).spotOrContract),
+            Tab(text: S.of(context).derivatives),
+            Tab(text: S.of(context).spot),
             const Tab(text: 'BRC20'),
             const Tab(text: 'ERC20'),
             const Tab(text: 'ARC20'),
@@ -141,21 +142,18 @@ class _ResultViewState extends State<_ResultView>
           AliveWidget(
               child: _SummaryView(
                   logic: widget.logic, tabController: tabController)),
-          AliveWidget(
-              child: Obx(() => _TabItemView(
-                  list: widget.logic.baseList.value, logic: widget.logic))),
-          AliveWidget(
-              child: Obx(() => _TabItemView(
-                  list: widget.logic.brcList.value, logic: widget.logic))),
-          AliveWidget(
-              child: Obx(() => _TabItemView(
-                  list: widget.logic.ercList.value, logic: widget.logic))),
-          AliveWidget(
-              child: Obx(() => _TabItemView(
-                  list: widget.logic.arcList.value, logic: widget.logic))),
-          AliveWidget(
-              child: Obx(() => _TabItemView(
-                  list: widget.logic.ascList.value, logic: widget.logic))),
+          Obx(() => _TabItemView(
+              list: widget.logic.contractList.value, logic: widget.logic)),
+          Obx(() => _TabItemView(
+              list: widget.logic.spotList.value, logic: widget.logic)),
+          Obx(() => _TabItemView(
+              list: widget.logic.brcList.value, logic: widget.logic)),
+          Obx(() => _TabItemView(
+              list: widget.logic.ercList.value, logic: widget.logic)),
+          Obx(() => _TabItemView(
+              list: widget.logic.arcList.value, logic: widget.logic)),
+          Obx(() => _TabItemView(
+              list: widget.logic.ascList.value, logic: widget.logic)),
         ]))
       ],
     );
@@ -174,38 +172,43 @@ class _SummaryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(slivers: [
-      _AllItem(logic.baseList,
-          title: S.of(context).spotOrContract,
+      _AllItem(logic.contractList,
+          title: S.of(context).derivatives,
           logic: logic,
           tabController: tabController,
           tabIndex: 1),
+      _AllItem(logic.spotList,
+          title: S.of(context).spot,
+          logic: logic,
+          tabController: tabController,
+          tabIndex: 2),
       _AllItem(
         logic.brcList,
         title: 'BRC20',
         logic: logic,
         tabController: tabController,
-        tabIndex: 2,
+        tabIndex: 3,
       ),
       _AllItem(
         logic.ercList,
         title: 'ERC20',
         logic: logic,
         tabController: tabController,
-        tabIndex: 3,
+        tabIndex: 4,
       ),
       _AllItem(
         logic.arcList,
         title: 'ARC20',
         logic: logic,
         tabController: tabController,
-        tabIndex: 4,
+        tabIndex: 5,
       ),
       _AllItem(
         logic.ascList,
         title: 'ASC20',
         logic: logic,
         tabController: tabController,
-        tabIndex: 5,
+        tabIndex: 6,
       ),
       const SliverGap(100),
     ]);
@@ -599,8 +602,18 @@ class _Item extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                   )),
-            // if (!showIndex && item.tag == SearchEntityType.BASECOIN)
-            //   const Gap(15),
+            if (!showIndex && item.tag == SearchEntityType.BASECOIN) ...[
+              GestureDetector(
+                onTap: () => logic.mark(item),
+                child: Icon(
+                  Icons.star_rounded,
+                  color: item.isFollow
+                      ? Styles.cYellow
+                      : Styles.cSub(context).withOpacity(0.3),
+                ),
+              ),
+              const Gap(15)
+            ],
             ImageUtil.networkImage(
                 item.tag == SearchEntityType.BASECOIN
                     ? AppConst.imageHost(item.baseCoin ?? '')

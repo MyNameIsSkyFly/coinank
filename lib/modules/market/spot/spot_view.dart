@@ -17,7 +17,7 @@ class SpotPage extends StatefulWidget {
 
 class _SpotPageState extends State<SpotPage>
     with SingleTickerProviderStateMixin {
-  final logic = Get.put(SpotLogic());
+  final logic = Get.find<SpotLogic>();
 
   @override
   void initState() {
@@ -53,7 +53,7 @@ class _SpotPageState extends State<SpotPage>
             controller: logic.tabCtrl,
             physics: const NeverScrollableScrollPhysics(),
             children: const [
-              AliveWidget(child: FSpotCoinView()),
+              AliveWidget(child: SpotCoinViewF()),
               AliveWidget(child: SpotCoinView()),
               AliveWidget(child: ContractCategoryPage(isSpot: true)),
             ],

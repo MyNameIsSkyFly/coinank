@@ -68,7 +68,8 @@ class BaseInterceptor extends Interceptor {
     final startTime = response.requestOptions.extra['startTime'] as DateTime;
     final endTime = DateTime.now();
     final duration = endTime.difference(startTime).inMilliseconds;
-    log('Request URL: ${response.requestOptions.uri} ', name: 'http request');
+    log('Request URL: ${response.requestOptions.uri} (${duration}ms)',
+        name: 'http request');
     handler.next(response);
   }
 

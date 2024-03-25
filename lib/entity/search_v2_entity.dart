@@ -43,6 +43,8 @@ class SearchV2ItemEntity extends Equatable {
   final SearchEntityType? tag;
   @JsonKey(includeToJson: false, includeFromJson: false)
   bool isFollow = false;
+  @JsonKey(includeToJson: false, includeFromJson: false)
+  bool isSpot = false;
 
   SearchV2ItemEntity({
     this.baseCoin,

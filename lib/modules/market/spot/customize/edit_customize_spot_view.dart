@@ -96,8 +96,8 @@ class _EditCustomizeSpotPageState extends State<EditCustomizeSpotPage> {
                             logic.dataSource.getColumns(Get.context!);
                             logic.dataSource.buildDataGridRows();
                           }
-                          if (Get.isRegistered<FSpotCoinLogic>()) {
-                            var logic = Get.find<FSpotCoinLogic>();
+                          if (Get.isRegistered<SpotCoinLogicF>()) {
+                            var logic = Get.find<SpotCoinLogicF>();
                             logic.dataSource.getColumns(Get.context!);
                             logic.dataSource.buildDataGridRows();
                           }
@@ -118,8 +118,8 @@ class _EditCustomizeSpotPageState extends State<EditCustomizeSpotPage> {
                           logic.dataSource.getColumns(Get.context!);
                           logic.dataSource.buildDataGridRows();
                         }
-                        if (Get.isRegistered<FSpotCoinLogic>()) {
-                          var logic = Get.find<FSpotCoinLogic>();
+                        if (Get.isRegistered<SpotCoinLogicF>()) {
+                          var logic = Get.find<SpotCoinLogicF>();
                           logic.dataSource.getColumns(Get.context!);
                           logic.dataSource.buildDataGridRows();
                         }

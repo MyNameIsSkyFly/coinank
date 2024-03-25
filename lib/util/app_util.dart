@@ -207,7 +207,7 @@ class AppUtil {
     final data = jsonDecode(res.data as String? ?? '{}');
     bool isNeed = false;
     if (Platform.isIOS) {
-      isNeed = (int.tryParse(packageInfo.version.replaceAll('.', '')) ?? 100) <
+      isNeed = (int.tryParse(packageInfo.buildNumber) ?? 100) <
           (int.tryParse('${data['data']['iosVersionCode']}') ?? 0);
     } else {
       isNeed = (int.tryParse(packageInfo.buildNumber) ?? 10000) <

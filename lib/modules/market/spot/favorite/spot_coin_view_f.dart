@@ -7,15 +7,15 @@ import 'package:get/get.dart';
 
 import 'spot_coin_logic_f.dart';
 
-class FSpotCoinView extends StatefulWidget {
-  const FSpotCoinView({super.key});
+class SpotCoinViewF extends StatefulWidget {
+  const SpotCoinViewF({super.key});
 
   @override
-  State<FSpotCoinView> createState() => _FSpotCoinViewState();
+  State<SpotCoinViewF> createState() => _SpotCoinViewFState();
 }
 
-class _FSpotCoinViewState extends State<FSpotCoinView> {
-  final logic = Get.put(FSpotCoinLogic());
+class _SpotCoinViewFState extends State<SpotCoinViewF> {
+  final logic = Get.find<SpotCoinLogicF>();
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +63,7 @@ class _EmptyView extends StatelessWidget {
     required this.logic,
   });
 
-  final FSpotCoinLogic logic;
+  final SpotCoinLogicF logic;
 
   @override
   Widget build(BuildContext context) {

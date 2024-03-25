@@ -130,10 +130,8 @@ class ContractCoinLogicF extends GetxController
         page: 1,
         size: 500,
         isFollow: true,
-      )
-          .catchError((e) {
-        return null;
-      }).whenComplete(() => _fetching = false);
+          )
+          .whenComplete(() => _fetching = false);
     } else {
       if (StoreLogic.to.favoriteContract.isEmpty) {
         result = TickersDataEntity(list: []);

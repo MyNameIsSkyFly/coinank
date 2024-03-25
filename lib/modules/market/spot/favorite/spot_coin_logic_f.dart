@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:ank_app/entity/event/event_coin_marked.dart';
 import 'package:ank_app/entity/event/event_coin_order_changed.dart';
+import 'package:ank_app/entity/event/logged_event.dart';
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/modules/main/main_logic.dart';
 import 'package:ank_app/modules/market/market_logic.dart';
@@ -13,7 +14,7 @@ import 'package:get/get.dart';
 import '../spot_logic.dart';
 import '../widgets/spot_coin_datagrid_source.dart';
 
-class FSpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
+class SpotCoinLogicF extends GetxController implements SpotCoinBaseLogic {
   final data = RxList<MarkerTickerEntity>();
   RxBool isLoading = true.obs;
 
@@ -25,6 +26,7 @@ class FSpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
   final selectedFixedCoin = RxList<String>(
       ['BTC', 'ETH', 'SOL', 'XRP', 'BNB', 'ORDI', 'DOGE', 'ARB']);
   final fetching = RxBool(false);
+  StreamSubscription? _loginSubscription;
   StreamSubscription? _favoriteChangedSubscription;
   StreamSubscription? _orderChangedSubscription;
   @override
@@ -33,7 +35,11 @@ class FSpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
   @override
   void onInit() {
     dataSource.getColumns(Get.context!);
-    _startTimer();
+    _loginSubscription =
+        AppConst.eventBus.on<LoginStatusChangeEvent>().listen((event) {
+      onRefresh();
+      _startTimer();
+    });
     _favoriteChangedSubscription =
         AppConst.eventBus.on<EventCoinMarked>().listen((event) {
       if (!event.isSpot) return;
@@ -56,7 +62,10 @@ class FSpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
 
   @override
   void onReady() {
-    onRefresh();
+    if (!StoreLogic.isLogin) {
+      onRefresh();
+      _startTimer();
+    }
     super.onReady();
   }
 
@@ -168,6 +177,7 @@ class FSpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
   @override
   void onClose() {
     _pollingTimer?.cancel();
+    _loginSubscription?.cancel();
     _favoriteChangedSubscription?.cancel();
     _orderChangedSubscription?.cancel();
     super.onClose();
