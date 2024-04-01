@@ -54,6 +54,7 @@ class CustomizeFilterHeaderView extends StatelessWidget {
               onTap: () {
                 Get.bottomSheet(
                   ContractCoinFilterPage(isSpot: isSpot),
+                  backgroundColor: Colors.transparent,
                   isScrollControlled: true,
                   ignoreSafeArea: false,
                 ).then((value) {

@@ -64,7 +64,7 @@ class MainLogic extends GetxController {
   Future<void> handleNetwork() async {
     var connectivity = Connectivity();
     if (!AppConst.networkConnected) {
-      AppUtil.showToast(S.current.networkConnectFailed);
+      AppUtil.showToast(S.current.error_network);
     }
     _connectivitySubscription =
         connectivity.onConnectivityChanged.listen((result) {

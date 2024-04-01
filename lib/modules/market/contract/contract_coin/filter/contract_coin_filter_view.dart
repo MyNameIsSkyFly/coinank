@@ -2,6 +2,7 @@ import 'package:ank_app/modules/market/utils/text_maps.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 
@@ -61,7 +62,9 @@ class _ContractCoinFilterPageState extends State<ContractCoinFilterPage>
   Widget build(BuildContext context) {
     final sof = S.of(context);
     return Container(
-      margin: EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top + 44),
+      height: MediaQuery.of(context).size.height -
+          MediaQuery.of(context).padding.top -
+          44,
       padding: const EdgeInsets.only(top: 20),
       decoration: BoxDecoration(
         color: Styles.cScaffoldBackground(context),
@@ -74,8 +77,7 @@ class _ContractCoinFilterPageState extends State<ContractCoinFilterPage>
               const Gap(15),
               Expanded(
                 child: Text(
-                  //todo intl
-                  '筛选',
+                  S.of(context).filter,
                   style: Styles.tsBody_16(context),
                 ),
               ),
@@ -204,8 +206,8 @@ class _ContractCoinFilterPageState extends State<ContractCoinFilterPage>
               ),
             ),
             AnimatedCrossFade(
-                firstCurve: Curves.ease,
-                secondCurve: Curves.ease,
+                firstCurve: Curves.easeOutBack,
+                secondCurve: Curves.easeOutBack,
                 firstChild: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -220,11 +222,9 @@ class _ContractCoinFilterPageState extends State<ContractCoinFilterPage>
                           hint: _filterHintMap[filterKey]?.$1,
                         )),
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          child: Text(
-                            //todo intl
-                            'to',
-                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 10)
+                              .copyWith(top: 13),
+                          child: const Text('To'),
                         ),
                         Expanded(
                           child: _textField(
@@ -280,17 +280,16 @@ class _ContractCoinFilterPageState extends State<ContractCoinFilterPage>
       validator: (value) {
         if (value?.isEmpty ?? true) return null;
         final n = num.tryParse(value ?? '');
-        //todo intl
-        if (n == null) return '请输入数字';
+        if (n == null) return 'Error';
         return validator?.call(n.toDouble());
       },
       onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
       autovalidateMode: AutovalidateMode.onUserInteraction,
       keyboardType:
           const TextInputType.numberWithOptions(decimal: true, signed: true),
-      // inputFormatters: [
-      //   UpperCaseTextFormatter
-      // ],
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp(r'^-?\d*\.?\d*'))
+      ],
       style: Styles.tsBody_14(context),
       decoration: InputDecoration(
         hintText: hint,

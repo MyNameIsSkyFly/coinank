@@ -2,7 +2,6 @@
   "@@locale": "ko",
   "userNameNotExist": "사용자 이름이 없습니다",
   "requestTimeOut": "요청 시간 초과",
-  "networkConnectFailed": "네트워크 연결에 실패했습니다",
   "passwordError": "암호가 잘못되었습니다",
   "loginSuccessfully": "로그인에 성공했습니다",
   "plsEnterCorrectEmail": "올바른 이메일 주소를 입력하십시오",
@@ -414,5 +413,6 @@
   "errorInputMoreThanX": "Error, greater than than max value {value}",
   "errorInputRange": "Error, please enter a valid range from low to high.",
   "changePassword": "Change Password",
-  "passwordChanged": "Password Changed"
+  "passwordChanged": "Password Changed",
+  "filter": "Filter"
 }

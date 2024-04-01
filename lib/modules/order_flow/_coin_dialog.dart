@@ -63,7 +63,10 @@ class _CoinDialogWithInterceptorState extends State<_CoinDialogWithInterceptor>
           0);
     }
     if (isFavorite) {
-      return tmpList.where((element) => element.follow == true);
+      return tmpList.where((element) =>
+          element.follow == true &&
+          (currentKeyword == null ||
+              element.symbol?.contains(currentKeyword!) == true));
     }
     return tmpList.where((element) =>
         (currentProductType == null ||
@@ -148,7 +151,7 @@ class _CoinDialogWithInterceptorState extends State<_CoinDialogWithInterceptor>
                             onTapOutside: (event) =>
                                 FocusManager.instance.primaryFocus?.unfocus(),
                             onChanged: (value) {
-                              currentKeyword = value;
+                              currentKeyword = value.toUpperCase().trim();
                               list.assignAll(filteredList);
                             },
                             inputFormatters: [UpperCaseTextFormatter()],

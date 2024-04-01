@@ -116,7 +116,7 @@ class _FundingRateSearchPageState extends State<FundingRateSearchPage> {
                         const Gap(10),
                         Text(
                           item,
-                          style: Styles.tsBody_12m(context),
+                          style: Styles.tsBody_16m(context),
                         ),
                         const Spacer(),
                         Obx(() {

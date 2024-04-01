@@ -77,58 +77,29 @@ setChartData($jsonData, "$platformString", "liqStatistic", ${jsonEncode(options)
   }
 
   final intervalItems = const ['15m', '30m', '1h', '2h', '4h', '12h', '1d'];
-
+  double? _height = 1000;
   @override
   Widget build(BuildContext context) {
     return AliveWidget(
-      child: OverflowBox(
-        minHeight: 515,
-        maxHeight: 515,
-        minWidth: MediaQuery.of(context).size.width,
-        maxWidth: MediaQuery.of(context).size.width,
-        alignment: Alignment.topCenter,
-        child: Column(
-          children: [
-            const Gap(15),
-            Obx(() {
-              return Row(
-                children: [
-                  const Gap(15),
-                  Expanded(
-                    child: Text(
-                      S.of(context).s_liquidation_data,
-                      style: Styles.tsBody_14m(context),
-                    ),
-                  ),
-                  const Gap(10),
-                  _filterChip(context, onTap: () async {
-                    final result = await openSelector(intervalItems);
-                    if (result != null &&
-                        result.toLowerCase() !=
-                            menuParamEntity.value.interval?.toLowerCase()) {
-                      menuParamEntity.value.interval = result;
-                      loadData();
-                      menuParamEntity.refresh();
-                    }
-                  }, text: menuParamEntity.value.interval),
-                  const Gap(15),
-                ],
-              );
-            }),
-            Container(
-              height: 400,
-              width: double.infinity,
-              margin: const EdgeInsets.all(15),
-              child: CommonWebView(
-                url: Urls.chartUrl,
-                enableZoom: true,
-                onLoadStop: (controller) => updateReadyStatus(webReady: true),
-                onWebViewCreated: (controller) {
-                  webCtrl = controller;
-                },
-              ),
-            ),
-          ],
+      child: SingleChildScrollView(
+        child: SizedBox(
+          height: _height,
+          child: CommonWebView(
+            url: Urls.urlLiquidation,
+            enableZoom: true,
+            onLoadStop: (controller) {
+              updateReadyStatus(webReady: true);
+              Future.delayed(const Duration(seconds: 1)).then((value) {
+                controller.getContentHeight().then((value) => setState(() {
+                      print('value==============$value');
+                      _height = value?.toDouble();
+                    }));
+              });
+            },
+            onWebViewCreated: (controller) {
+              webCtrl = controller;
+            },
+          ),
         ),
       ),
     );

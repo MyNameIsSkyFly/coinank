@@ -49,7 +49,6 @@ class _CoinDetailHoldViewState extends State<CoinDetailHoldView> {
                   style: Styles.tsBody_16m(context),
                 ),
                 GestureDetector(
-                  //todo
                   onTap: () {
                     showCupertinoDialog(
                       context: context,

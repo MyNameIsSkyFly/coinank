@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:ank_app/constants/urls.dart';
 import 'package:ank_app/entity/oi_chart_menu_param_entity.dart';
+import 'package:ank_app/entity/oi_entity.dart';
 import 'package:ank_app/modules/coin_detail/tab_items/coin_detail_contract/coin_detail_contract_logic.dart';
 import 'package:ank_app/modules/coin_detail/widgets/coin_detail_chart_kline_view.dart';
 import 'package:ank_app/modules/coin_detail/widgets/coin_detail_selector_view.dart';
@@ -13,6 +14,7 @@ import 'package:ank_app/widget/common_webview.dart';
 import 'package:ank_app/widget/rate_with_sign.dart';
 import 'package:dart_scope_functions/dart_scope_functions.dart';
 import 'package:decimal/decimal.dart';
+import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -39,11 +41,10 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
   final logic = Get.put(CoinDetailContractLogic());
 
   InAppWebViewController? webCtrl;
-  late TabController tabCtrl;
 
   @override
   void initState() {
-    tabCtrl =
+    logic.tabCtrl =
         TabController(length: 6, vsync: this, animationDuration: Duration.zero);
 
     super.initState();
@@ -52,7 +53,8 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
   final dataExpanded = false.obs;
   @override
   Widget build(BuildContext context) {
-    return NestedScrollView(
+    return ExtendedNestedScrollView(
+      onlyOneScrollInBody: true,
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return [
           Obx(() {
@@ -251,7 +253,7 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
           TabBar(
             tabAlignment: TabAlignment.start,
             isScrollable: true,
-            controller: tabCtrl,
+            controller: logic.tabCtrl,
             indicator: const BoxDecoration(
                 border:
                     Border(bottom: BorderSide(color: Styles.cMain, width: 2))),
@@ -270,7 +272,7 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
           Expanded(
             child: TabBarView(
               physics: const NeverScrollableScrollPhysics(),
-              controller: tabCtrl,
+              controller: logic.tabCtrl,
               children: [
                 _DataGridView(logic: logic),
                 _HeatMapView(logic: logic),

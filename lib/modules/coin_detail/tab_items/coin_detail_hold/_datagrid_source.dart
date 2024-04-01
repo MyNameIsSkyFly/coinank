@@ -29,7 +29,12 @@ class GridDataSource extends DataGridSource {
         DataGridCell<String>(columnName: '2', value: entity.quantity),
         DataGridCell<String>(columnName: '3', value: '${entity.percentage}%'),
         DataGridCell<String>(columnName: '4', value: entity.changePercent),
-        DataGridCell<String>(columnName: '5', value: entity.address),
+        DataGridCell<_ValueKey>(
+            columnName: '5',
+            value: _ValueKey(
+                address: entity.address,
+                platform: entity.platform,
+                shortAddress: shortenString(entity.address ?? ''))),
       ]);
     }).toList();
   }
@@ -104,9 +109,32 @@ class GridDataSource extends DataGridSource {
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: FittedBox(
-            child: Text(
-              shortenString(row.getCells()[4].value.toString()),
-              style: Styles.tsBody_14m(Get.context!),
+            child: GestureDetector(
+              onTap: () => AppUtil.copy(row.getCells()[4].value.address ?? ''),
+              child: Row(
+                children: [
+                  Text(
+                    row.getCells()[4].value.shortAddress ?? '',
+                    style: Styles.tsBody_14m(Get.context!),
+                  ),
+                  if ((row.getCells()[4].value.platform as String?)
+                          ?.isNotEmpty ==
+                      true) ...[
+                    const Gap(5),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Styles.cSub(Get.context!).withOpacity(0.2),
+                      ),
+                      child: Text(
+                        row.getCells()[4].value.platform ?? '',
+                        style: Styles.tsBody_12(Get.context!),
+                      ),
+                    )
+                  ],
+                ],
+              ),
             ),
           ),
         ),
@@ -172,4 +200,15 @@ class GridDataSource extends DataGridSource {
       }
     }
   }
+}
+
+class _ValueKey {
+  String? address;
+  String? shortAddress;
+  String? platform;
+
+  _ValueKey({this.address, this.shortAddress, this.platform});
+
+  @override
+  String toString() => '$shortAddress $platform';
 }

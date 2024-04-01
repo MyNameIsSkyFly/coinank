@@ -109,6 +109,7 @@ class _CommonWebViewState extends State<CommonWebView>
     WidgetsBinding.instance.addObserver(this);
     _themeChangeSubscription =
         AppConst.eventBus.on<ThemeChangeEvent>().listen((event) async {
+      await InAppWebViewController.clearAllCache();
       await CommonWebView.setCookieValue();
       reload();
     });
@@ -181,83 +182,81 @@ class _CommonWebViewState extends State<CommonWebView>
 
   @override
   Widget build(BuildContext context) {
-    var scaffold = Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: title == null || !widget.enableShare
-          ? null
-          : AppTitleBar(
-              title: title ?? '',
-              onBack: () => navigator?.maybePop(),
-              actionWidget: _actionWidget),
-      body: Stack(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(
-                top: widget.safeArea ? AppConst.statusBarHeight : 0),
-            child: InAppWebView(
-              onTitleChanged: (controller, title) {
-                if (!widget.dynamicTitle) return;
-                if (this.title == title) return;
-                setState(() => this.title = title);
-              },
-              initialFile: !widget.url.startsWith('https://') &&
-                      !widget.url.startsWith('http://')
-                  ? widget.url
-                  : null,
-              initialUrlRequest: widget.url.startsWith('https://') ||
-                      widget.url.startsWith('http://')
-                  ? URLRequest(
-                      url: WebUri(widget.urlGetter?.call() ?? widget.url))
-                  : null,
+    late Widget child;
+    child = Stack(
+      children: [
+        InAppWebView(
+          onTitleChanged: (controller, title) {
+            if (!widget.dynamicTitle) return;
+            if (this.title == title) return;
+            setState(() => this.title = title);
+          },
+          initialFile: !widget.url.startsWith('https://') &&
+                  !widget.url.startsWith('http://')
+              ? widget.url
+              : null,
+          initialUrlRequest: widget.url.startsWith('https://') ||
+                  widget.url.startsWith('http://')
+              ? URLRequest(url: WebUri(widget.urlGetter?.call() ?? widget.url))
+              : null,
 
-              initialSettings: InAppWebViewSettings(
-                userAgent: Platform.isAndroid
-                    ? 'CoinsohoWeb-flutter-Android'
-                    : 'CoinsohoWeb-flutter-IOS',
-                // hardwareAcceleration: !widget.enableShare,
-                transparentBackground: true,
-                javaScriptCanOpenWindowsAutomatically: true,
-                useHybridComposition:
-                    widget.urlGetter?.call().contains('proChart') == true ||
-                        !widget.canPop,
-              ),
-              onWebViewCreated: (controller) => _onWebViewCreated(controller),
-              onLoadStop: (controller, url) => _onLoadStop(controller),
-              onConsoleMessage: (controller, consoleMessage) =>
-                  debugPrint(consoleMessage.toString()),
-              onProgressChanged: (controller, progress) {
-                _progress = progress;
-                if (progress == 100) {
-                  setState(() {});
-                }
-              },
-              // onWebContentProcessDidTerminate: (controller) => reload(),
-              onWebContentProcessDidTerminate: (controller) =>
-                  controller.reload(),
-              gestureRecognizers: widget.gestureRecognizers ??
-                  (widget.enableZoom
-                      ? {
-                          Factory<HorizontalDragGestureRecognizer>(
-                            () => HorizontalDragGestureRecognizer(),
-                          ),
-                          Factory<PanGestureRecognizer>(
-                            () => PanGestureRecognizer(),
-                          ),
-                          Factory<ForcePressGestureRecognizer>(
-                            () => ForcePressGestureRecognizer(),
-                          ),
-                          Factory<LongPressGestureRecognizer>(
-                            () => LongPressGestureRecognizer(),
-                          ),
-                        }
-                      : null),
-            ),
+          initialSettings: InAppWebViewSettings(
+            userAgent: Platform.isAndroid
+                ? 'CoinsohoWeb-flutter-Android'
+                : 'CoinsohoWeb-flutter-IOS',
+            // hardwareAcceleration: !widget.enableShare,
+            transparentBackground: true,
+            javaScriptCanOpenWindowsAutomatically: true,
+            useHybridComposition:
+                widget.urlGetter?.call().contains('proChart') == true ||
+                    !widget.canPop,
           ),
-          if (widget.showLoading && _progress != 100) const LottieIndicator(),
-        ],
-      ),
+          onWebViewCreated: (controller) => _onWebViewCreated(controller),
+          onLoadStop: (controller, url) => _onLoadStop(controller),
+          onConsoleMessage: (controller, consoleMessage) =>
+              debugPrint(consoleMessage.toString()),
+          onProgressChanged: (controller, progress) {
+            _progress = progress;
+            if (progress == 100) {
+              setState(() {});
+            }
+          },
+          // onWebContentProcessDidTerminate: (controller) => reload(),
+          onWebContentProcessDidTerminate: (controller) => controller.reload(),
+          gestureRecognizers: widget.gestureRecognizers ??
+              (widget.enableZoom
+                  ? {
+                      Factory<HorizontalDragGestureRecognizer>(
+                        () => HorizontalDragGestureRecognizer(),
+                      ),
+                      Factory<PanGestureRecognizer>(
+                        () => PanGestureRecognizer(),
+                      ),
+                      Factory<ForcePressGestureRecognizer>(
+                        () => ForcePressGestureRecognizer(),
+                      ),
+                      Factory<LongPressGestureRecognizer>(
+                        () => LongPressGestureRecognizer(),
+                      ),
+                    }
+                  : null),
+        ),
+        if (widget.showLoading && _progress != 100) const LottieIndicator(),
+      ],
     );
-    if (widget.canPop) return scaffold;
+    if (widget.safeArea) child = SafeArea(child: child);
+    if (title != null || widget.enableShare) {
+      child = Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppTitleBar(
+          title: title ?? '',
+          onBack: () => navigator?.maybePop(),
+          actionWidget: _actionWidget,
+        ),
+        body: child,
+      );
+    }
+    if (widget.canPop) return child;
     return WillPopScope(
       onWillPop: () async {
         final canGoBack = await webCtrl?.canGoBack();
@@ -268,7 +267,7 @@ class _CommonWebViewState extends State<CommonWebView>
           return true;
         }
       },
-      child: scaffold,
+      child: child,
     );
   }
 

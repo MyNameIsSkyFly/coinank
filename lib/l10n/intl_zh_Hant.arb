@@ -2,7 +2,6 @@
   "@@locale": "zh_Hant",
   "userNameNotExist": "用戶名不存在",
   "requestTimeOut": "請求逾時",
-  "networkConnectFailed": "網路連線失敗",
   "passwordError": "密碼錯誤",
   "loginSuccessfully": "登入成功",
   "plsEnterCorrectEmail": "請輸入正確的電子郵件地址",
@@ -414,5 +413,6 @@
   "errorInputMoreThanX": "錯誤, 輸入的值大於{value}",
   "errorInputRange": "錯誤, 請輸入有效的範圍.",
   "changePassword": "修改密碼",
-  "passwordChanged": "密碼已修改"
+  "passwordChanged": "密碼已修改",
+  "filter": "篩選"
 }

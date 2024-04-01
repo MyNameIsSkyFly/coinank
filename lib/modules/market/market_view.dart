@@ -26,54 +26,52 @@ class _MarketPageState extends State<MarketPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: SizedBox(
-                    height: 44,
-                    child: TabBar(
-                      isScrollable: true,
-                      tabAlignment: TabAlignment.start,
-                      dividerColor: Colors.transparent,
-                      indicatorColor: Colors.transparent,
-                      labelStyle: Styles.tsBody_18m(context),
-                      unselectedLabelStyle: Styles.tsSub_18(context).medium,
-                      controller: logic.tabCtrl,
-                      tabs: [
-                        Tab(text: S.of(context).derivatives),
-                        Tab(text: S.of(context).spot),
-                      ],
-                    ),
+    return SafeArea(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: SizedBox(
+                  height: 44,
+                  child: TabBar(
+                    isScrollable: true,
+                    tabAlignment: TabAlignment.start,
+                    dividerColor: Colors.transparent,
+                    indicatorColor: Colors.transparent,
+                    labelStyle: Styles.tsBody_18m(context),
+                    unselectedLabelStyle: Styles.tsSub_18(context).medium,
+                    controller: logic.tabCtrl,
+                    tabs: [
+                      Tab(text: S.of(context).derivatives),
+                      Tab(text: S.of(context).spot),
+                    ],
                   ),
                 ),
-                IconButton(
-                    visualDensity: VisualDensity.compact,
-                    onPressed: () => Get.toNamed(HomeSearchPage.routeName),
-                    icon: Image.asset(
-                      Assets.imagesIcSearch,
-                      height: 20,
-                      width: 20,
-                      color: Theme.of(context).iconTheme.color,
-                    )),
-                const Gap(10),
-              ],
-            ),
-            Expanded(
-                child: TabBarView(
-              physics: const NeverScrollableScrollPhysics(),
-              controller: logic.tabCtrl,
-              children: const [
-                AliveWidget(child: ContractPage()),
-                AliveWidget(child: SpotPage()),
-              ],
-            ))
-          ],
-        ),
+              ),
+              IconButton(
+                  visualDensity: VisualDensity.compact,
+                  onPressed: () => Get.toNamed(HomeSearchPage.routeName),
+                  icon: Image.asset(
+                    Assets.imagesIcSearch,
+                    height: 20,
+                    width: 20,
+                    color: Theme.of(context).iconTheme.color,
+                  )),
+              const Gap(10),
+            ],
+          ),
+          Expanded(
+              child: TabBarView(
+            physics: const NeverScrollableScrollPhysics(),
+            controller: logic.tabCtrl,
+            children: const [
+              AliveWidget(child: ContractPage()),
+              AliveWidget(child: SpotPage()),
+            ],
+          ))
+        ],
       ),
     );
   }

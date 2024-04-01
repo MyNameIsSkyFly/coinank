@@ -238,13 +238,13 @@ class _ChartView extends StatelessWidget {
             key: 'erc-20',
             path: '${Urls.h5Prefix}/${Urls.webLanguage}scriptions/erc20'),
         ChartEntity(
+            title: 'ARC-20',
+            key: 'arc-20',
+            path: '${Urls.h5Prefix}/${Urls.webLanguage}scriptions/arc20'),
+        ChartEntity(
             title: 'ETF',
             key: 'ETF',
             path: '${Urls.h5Prefix}/${Urls.webLanguage}etf/BtcEtfTable'),
-        ChartEntity(
-            title: 'ASC-20',
-            key: 'asc-20',
-            path: '${Urls.h5Prefix}/${Urls.webLanguage}scriptions/asc20'),
         ChartEntity(title: S.of(context).s_liqmap, key: 'liqMapChart'),
         ChartEntity(title: S.of(context).s_liq_hot_map, key: 'liqHeatMapChart'),
         ChartEntity(
@@ -265,9 +265,9 @@ class _ChartView extends StatelessWidget {
               allData.firstWhere((element) => element.key == 'brc-20');
           chartItems[1] =
               allData.firstWhere((element) => element.key == 'erc-20');
-          chartItems[2] = allData.firstWhere((element) => element.key == 'ETF');
-          chartItems[3] =
-              allData.firstWhere((element) => element.key == 'asc-20');
+          chartItems[2] =
+              allData.firstWhere((element) => element.key == 'arc-20');
+          chartItems[3] = allData.firstWhere((element) => element.key == 'ETF');
           chartItems[4] =
               allData.firstWhere((element) => element.key == 'liqMapChart');
           chartItems[5] =

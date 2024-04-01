@@ -106,8 +106,8 @@ class LiqMapLogic extends GetxController {
       interval: state.interval.value,
       symbol: state.symbol.value.split('/').last,
       exchange: state.symbol.value.split('/').first,
-    );
-    Loading.dismiss();
+        )
+        .whenComplete(() => Loading.dismiss());
     final json = {'code': '1', 'success': true, 'data': data};
     String jsSource = _updateChartJs(jsonEncode(json), 'liqMap');
     updateReadyStatus(dataReady: true, evJS: jsSource, isAgg: isAgg);

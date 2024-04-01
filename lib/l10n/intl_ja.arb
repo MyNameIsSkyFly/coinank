@@ -2,7 +2,6 @@
   "@@locale": "ja",
   "userNameNotExist": "ユーザー名が存在しません",
   "requestTimeOut": "要求がタイムアウトしました",
-  "networkConnectFailed": "ネットワーク接続に失敗しました",
   "passwordError": "パスワードが正しくありません",
   "loginSuccessfully": "ログインに成功しました",
   "plsEnterCorrectEmail": "正しいメールアドレスを入力してください",
@@ -415,5 +414,6 @@
   "errorInputMoreThanX": "Error, greater than than max value {value}",
   "errorInputRange": "Error, please enter a valid range from low to high.",
   "changePassword": "Change Password",
-  "passwordChanged": "Password Changed"
+  "passwordChanged": "Password Changed",
+  "filter": "Filter"
 }

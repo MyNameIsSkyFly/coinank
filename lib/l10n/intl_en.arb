@@ -2,7 +2,6 @@
   "@@locale": "en",
   "userNameNotExist": "username is not exist",
   "requestTimeOut": "Request timed out",
-  "networkConnectFailed": "Network Connection Failure",
   "passwordError": "Incorrect password",
   "loginSuccessfully": "Login successfully",
   "plsEnterCorrectEmail": "Please enter a correct email address",
@@ -417,5 +416,6 @@
   "errorInputMoreThanX": "Error, greater than than max value {value}",
   "errorInputRange": "Error, please enter a valid range from low to high.",
   "changePassword": "Change Password",
-  "passwordChanged": "Password Changed"
+  "passwordChanged": "Password Changed",
+  "filter": "Filter"
 }

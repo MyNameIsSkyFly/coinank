@@ -3,6 +3,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:ank_app/constants/app_const.dart';
 import 'package:ank_app/route/app_nav.dart';
 import 'package:ank_app/util/store.dart';
 import 'package:dio/dio.dart';
@@ -120,7 +121,7 @@ class BaseInterceptor extends Interceptor {
       }
     }
     final showToast = err.requestOptions.extra['showToast'] ?? true;
-    if (showToast) AppUtil.showToast(errorMessage);
+    if (showToast && AppConst.appVisible) AppUtil.showToast(errorMessage);
     handler.next(err);
   }
 

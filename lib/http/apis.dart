@@ -8,6 +8,7 @@ import 'package:ank_app/entity/chart_entity.dart';
 import 'package:ank_app/entity/chart_left_entity.dart';
 import 'package:ank_app/entity/coin_detail_entity.dart';
 import 'package:ank_app/entity/contract_market_entity.dart';
+import 'package:ank_app/entity/liq_all_exchange_entity.dart';
 import 'package:ank_app/entity/marker_funding_rate_entity.dart';
 import 'package:ank_app/entity/oi_entity.dart';
 import 'package:ank_app/entity/order_flow_symbol.dart';
@@ -318,10 +319,6 @@ abstract class Apis {
   Future<HoldAddressEntity?> getHoldAddress(@Query('baseCoin') String baseCoin,
       {@Query('code') String? code});
 
-  @GET('/api/liquidation/statistic')
-  Future getLiqStatistic(@Query('baseCoin') String baseCoin,
-      {@Query('interval') String? interval});
-
   @GET('/api/fundingRate/getWeiFrChart')
   Future getWeightFundingRate(@Query('baseCoin') String baseCoin,
       {@Query('interval') String? interval,
@@ -368,4 +365,29 @@ abstract class Apis {
 
   @GET('/api/instruments/categories/all')
   Future<List<CategoryInfoItemEntity>?> getAllCategories();
+
+  @GET('/api/liquidation/allExchange/intervals')
+  Future<List<LiqAllExchangeEntity>?> getLiqAllExchangeIntervals(
+      {@Query('baseCoin') String? baseCoin});
+
+  //?interval=1h
+  @GET('/api/liquidation/topCoin')
+  Future<List<LiqAllExchangeEntity>?> getLiqTopCoin(
+      {@Query('interval') String? interval});
+
+  @GET('/api/liquidation/statistic')
+  Future getLiqStatistic(@Query('baseCoin') String baseCoin,
+      {@Query('interval') String? interval});
+
+  @GET('/api/liquidation/allExchange')
+  Future<List<LiqAllExchangeEntity>?> getLiqAllExchange(
+      {@Query('baseCoin') String? baseCoin,
+      @Query('interval') String? interval});
+
+  @GET('/api/liquidation/orders')
+  Future getLiqOrders(
+      {@Query('baseCoin') String? baseCoin,
+      @Query('exchangeName') String? exchangeName,
+      @Query('side') String? side,
+      @Query('amount') String? amount});
 }

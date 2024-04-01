@@ -18,7 +18,9 @@ class _ExchangeOiViewState extends State<_ExchangeOiView> {
     type: 'USD',
     interval: '1d',
   ).obs;
+  final oiList = RxList<OIEntity>();
   String? jsonData;
+  var refreshing = false;
   ({bool dataReady, bool webReady, String evJS}) readyStatus =
       (dataReady: false, webReady: false, evJS: '');
   InAppWebViewController? webCtrl;
@@ -26,8 +28,18 @@ class _ExchangeOiViewState extends State<_ExchangeOiView> {
   @override
   void initState() {
     menuParamEntity.value.baseCoin = widget.logic.baseCoin;
+    loadOIData();
     loadData();
     super.initState();
+  }
+
+  Future<void> loadData() async {
+    final result = await Apis()
+        .getExchangeIOList(baseCoin: menuParamEntity.value.baseCoin);
+    result
+        ?.where((element) => element.exchangeName == 'Okex')
+        .forEach((e) => e.exchangeName = 'Okx');
+    oiList.assignAll(result ?? []);
   }
 
   void updateChart() {
@@ -82,7 +94,7 @@ setChartData($jsonData, "$platformString", "openInterest", ${jsonEncode(options)
     }
   }
 
-  Future<void> loadData() async {
+  Future<void> loadOIData() async {
     final result = await Apis().getChartJson(
         baseCoin: menuParamEntity.value.baseCoin,
         interval: menuParamEntity.value.interval,
@@ -146,7 +158,7 @@ setChartData($jsonData, "$platformString", "openInterest", ${jsonEncode(options)
                             result.toLowerCase() !=
                                 menuParamEntity.value.interval?.toLowerCase()) {
                           menuParamEntity.value.interval = result;
-                          loadData();
+                          loadOIData();
                           menuParamEntity.refresh();
                         }
                       }, text: menuParamEntity.value.interval),
@@ -160,7 +172,7 @@ setChartData($jsonData, "$platformString", "openInterest", ${jsonEncode(options)
                             result.toLowerCase() !=
                                 menuParamEntity.value.type?.toLowerCase()) {
                           menuParamEntity.value.type = result;
-                          loadData();
+                          loadOIData();
                           menuParamEntity.refresh();
                         }
                       }, text: menuParamEntity.value.type),

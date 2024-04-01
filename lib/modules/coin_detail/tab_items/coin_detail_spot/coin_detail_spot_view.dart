@@ -80,7 +80,7 @@ class _CoinDetailSpotViewState extends State<CoinDetailSpotView>
                               logic.detailLogic.coin.exchangeName ?? '',
                               logic.detailLogic.coin.symbol ?? '',
                               logic.baseCoin,
-                              'SWAP');
+                              'SPOT');
                         },
                         child: const ImageIcon(
                             AssetImage(Assets.commonIcCandleLine),

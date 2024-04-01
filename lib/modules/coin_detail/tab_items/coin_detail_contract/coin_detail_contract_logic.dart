@@ -6,6 +6,7 @@ import 'package:ank_app/entity/event/event_coin_marked.dart';
 import 'package:ank_app/modules/coin_detail/coin_detail_logic.dart';
 import 'package:ank_app/modules/coin_detail/tab_items/coin_detail_contract/_datagrid_source.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CoinDetailContractLogic extends GetxController {
@@ -18,6 +19,7 @@ class CoinDetailContractLogic extends GetxController {
   Timer? _timer;
   final coin24hInfo = Rxn<ContractMarketEntity>();
   final marked = RxBool(false);
+  late TabController tabCtrl;
 
   @override
   void onReady() {
@@ -28,7 +30,7 @@ class CoinDetailContractLogic extends GetxController {
     _timer = Timer.periodic(const Duration(seconds: 10), (timer) {
       if (!AppConst.canRequest ||
           Get.find<CoinDetailLogic>().tabController.index != 0) return;
-      getGridData();
+      if (tabCtrl.index == 0) getGridData();
       getCoinInfo24h();
     });
     super.onReady();

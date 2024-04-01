@@ -197,7 +197,7 @@ class AppUtil {
 
   static Future<void> checkUpdate(BuildContext context,
       {bool showLoading = false}) async {
-    if (kDebugMode) return;
+    // if (kDebugMode) return;
     final packageInfo = await PackageInfo.fromPlatform();
     if (showLoading) Loading.show();
     final res = await Dio()
