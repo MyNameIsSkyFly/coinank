@@ -85,7 +85,6 @@ flutter:
     - assets/images/bottom_bar/
     - assets/images/common/
     - assets/images/
-    - assets/images/platform/
     - assets/images/orderflow/
     - assets/images/chart_left/
     - assets/images/setting/

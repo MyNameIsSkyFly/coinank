@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:ank_app/res/export.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 
@@ -112,16 +111,13 @@ class LongShortPersonRatioLogic extends GetxController {
 
   Future<String?> openSelector(String current) async {
     final result = await Get.bottomSheet(
-      const CustomBottomSheetPage(),
+      CustomSelector(
+        title: S.current.s_choose_time,
+        dataList: const ['5m', '15m', '30m', '1h', '2h', '4h', '12h', '1d'],
+        current: current,
+      ),
       isScrollControlled: true,
       isDismissible: true,
-      settings: RouteSettings(
-        arguments: {
-          'title': S.current.s_choose_time,
-          'list': const ['5m', '15m', '30m', '1h', '2h', '4h', '12h', '1d'],
-          'current': current
-        },
-      ),
     );
     return result as String?;
   }

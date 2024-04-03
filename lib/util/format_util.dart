@@ -9,15 +9,15 @@ class FormatUtil {
   static const String yiUnit = '亿';
   static const String trillionUnit = '万亿';
 
-  static String amountConversion(double number) {
+  static String amountConversion(double number, {int precision = 1}) {
     if (number >= 1000000000000) {
-      return '${(number / 1000000000000).toStringAsFixed(2)}万亿';
+      return '${(number / 1000000000000).toStringAsFixed(precision)}万亿';
     } else if (number >= 100000000) {
-      return '${(number / 100000000).toStringAsFixed(2)}亿';
+      return '${(number / 100000000).toStringAsFixed(precision)}亿';
     } else if (number >= 10000) {
-      return '${(number / 10000).toStringAsFixed(2)}万';
+      return '${(number / 10000).toStringAsFixed(precision)}万';
     } else {
-      return number.toStringAsFixed(2);
+      return number.toStringAsFixed(precision);
     }
   }
 

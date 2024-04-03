@@ -8,6 +8,7 @@ import 'package:ank_app/entity/oi_entity.dart';
 import 'package:ank_app/modules/coin_detail/tab_items/coin_detail_contract/coin_detail_contract_logic.dart';
 import 'package:ank_app/modules/coin_detail/widgets/coin_detail_chart_kline_view.dart';
 import 'package:ank_app/modules/coin_detail/widgets/coin_detail_selector_view.dart';
+import 'package:ank_app/modules/market/contract/contract_liq/contract_liq_view.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/animated_color_text.dart';
 import 'package:ank_app/widget/common_webview.dart';
@@ -22,7 +23,6 @@ import 'package:get/get.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-part './_chart_liq_view.dart';
 part './_chart_weighted_funding_view.dart';
 part './_data_grid_view.dart';
 part './_exchange_oi_view.dart';
@@ -51,6 +51,7 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
   }
 
   final dataExpanded = false.obs;
+
   @override
   Widget build(BuildContext context) {
     return ExtendedNestedScrollView(
@@ -158,52 +159,52 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
                         '${logic.info.value?.longShortRatio4h}'
                       ),
                     ], [
-                    (
+                      (
                         S.of(context).swapOi,
                         AppUtil.getLargeFormatString(
-                          '${logic.info.value?.swapOiUSD24h}')
-                    ),
-                    (
+                            '${logic.info.value?.swapOiUSD24h}')
+                      ),
+                      (
                         '${S.of(context).swapTurnover}(24H)',
                         AppUtil.getLargeFormatString(
-                          '${logic.info.value?.swapTurnover24h}')
-                    ),
+                            '${logic.info.value?.swapTurnover24h}')
+                      ),
                       (
                         '${S.of(context).swapTradeTimes}(24H)',
                         '${logic.info.value?.swapTradeTimes24h}'
                       ),
                     ]),
-                  _rowGroup([
-                    (
+                    _rowGroup([
+                      (
                         S.of(context).futureOi,
                         AppUtil.getLargeFormatString(
-                          '${logic.info.value?.futureOiUSD24h}')
-                    ),
-                    (
+                            '${logic.info.value?.futureOiUSD24h}')
+                      ),
+                      (
                         '${S.of(context).futureTurnover}(24H)',
                         AppUtil.getLargeFormatString(
-                          '${logic.info.value?.futureTurnover24h}')
-                    ),
+                            '${logic.info.value?.futureTurnover24h}')
+                      ),
                       (
                         '${S.of(context).futureTradeTimes}(24H)',
                         '${logic.info.value?.futureTradeTimes24h}'
                       ),
                     ], [
-                    (
+                      (
                         '${S.of(context).s_rekt}(24H)',
                         AppUtil.getLargeFormatString(
-                          '${logic.info.value?.liq24h}')
-                    ),
-                    (
+                            '${logic.info.value?.liq24h}')
+                      ),
+                      (
                         S.of(context).shortLiq,
                         AppUtil.getLargeFormatString(
-                          '${logic.info.value?.shortLiq24h}')
-                    ),
-                    (
+                            '${logic.info.value?.shortLiq24h}')
+                      ),
+                      (
                         S.of(context).longLiq,
                         AppUtil.getLargeFormatString(
-                          '${logic.info.value?.longLiq24h}')
-                    ),
+                            '${logic.info.value?.longLiq24h}')
+                      ),
                     ]),
                   ],
                   Transform.scale(
@@ -278,7 +279,7 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
                 _HeatMapView(logic: logic),
                 _ExchangeOiView(logic: logic),
                 _Vol24hView(logic: logic),
-                _ChartLiqView(logic: logic),
+                ContractLiqPage(inCoinDetail: true, baseCoin: logic.baseCoin),
                 _ChartWeightedFundingView(logic: logic),
               ],
             ),

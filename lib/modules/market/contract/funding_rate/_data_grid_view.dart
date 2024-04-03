@@ -47,14 +47,16 @@ class _DataGridViewState extends State<_DataGridView> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Padding(
-              padding: const EdgeInsets.only(right: 5),
-              child: ClipOval(
-                child: Image.asset(
-                  'assets/images/platform/${list[index].toLowerCase()}.png',
-                  width: 15,
+                padding: const EdgeInsets.only(right: 5),
+                child: ImageUtil.exchangeImage(list[index],
+                    isCircle: true, size: 15)
+                // ClipOval(
+                //   child: Image.asset(
+                //     'assets/images/platform/${list[index].toLowerCase()}.png',
+                //     width: 15,
+                //   ),
+                // ),
                 ),
-              ),
-            ),
             Text(
               list[index] == 'Okex' ? 'Okx' : list[index],
               style: Styles.tsBody_12m(context),

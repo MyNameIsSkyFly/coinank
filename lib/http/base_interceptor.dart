@@ -44,7 +44,8 @@ class BaseInterceptor extends Interceptor {
       }
       if (response.requestOptions.path
           case '/api/longshort/longShortRatio' ||
-              '/api/liquidation/statistic') {
+              '/api/liquidation/statistic' ||
+              '/api/liquidation/allExchange/intervals') {
         handler.next(response);
         return;
       }

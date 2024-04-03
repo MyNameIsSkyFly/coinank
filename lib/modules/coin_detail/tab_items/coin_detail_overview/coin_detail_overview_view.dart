@@ -81,6 +81,7 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
             title: S.of(context).marketCap,
             value: detail.value?.marketData?.marketCap?.usd,
             showDollar: true,
+            largeNum: true,
             hintText: S.of(context).marketCapIntro,
           ),
           _row(
@@ -92,6 +93,7 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
             title: '24H ${S.of(context).totalVolume}',
             value: detail.value?.marketData?.totalVolume?.usd,
             showDollar: true,
+            largeNum: true,
             hintText: S.of(context).totalVolume24hIntro,
           ),
           _row(
@@ -104,6 +106,7 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
             title: S.of(context).fullyDilutedValuation,
             value: detail.value?.marketData?.fullyDilutedValuation?.usd,
             showDollar: true,
+            largeNum: true,
             hintText: S.of(context).fullyDilutedValuationIntro,
           ),
           _row(
@@ -262,6 +265,7 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
       required double? value,
       bool showDollar = false,
       bool needFormat = true,
+      bool largeNum = false,
       String? hintText}) {
     return Padding(
       padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
@@ -296,7 +300,7 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
           Expanded(
               flex: 15,
               child: Text(
-                '${showDollar ? '\$' : ''}${needFormat ? formatter.format(value ?? 0) : (Decimal.tryParse('$value') ?? 0).toString()}',
+                '${showDollar ? '\$' : ''}${largeNum ? AppUtil.getLargeFormatString(value, precision: 2) : needFormat ? formatter.format(value ?? 0) : (Decimal.tryParse('$value') ?? 0).toString()}',
                 style: Styles.tsBody_14(context),
                 textAlign: TextAlign.end,
               )),

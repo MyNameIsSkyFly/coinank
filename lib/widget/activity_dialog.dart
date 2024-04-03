@@ -13,7 +13,6 @@ class ActivityDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        constraints: const BoxConstraints(minHeight: 230, maxHeight: 490),
         decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
           borderRadius: BorderRadius.circular(12),
@@ -23,21 +22,14 @@ class ActivityDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset(
-              StoreLogic.to.isDarkMode
-                  ? Assets.commonIcActivityNight
-                  : Assets.commonIcActivityLight,
-              width: 40,
-              height: 40,
-            ),
-            const Gap(15),
             Text(
               data.title ?? '',
               style: Styles.tsBody_18m(context),
             ),
             const Gap(10),
             Container(
-              constraints: const BoxConstraints(maxHeight: 280),
+              constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.5),
               child: ListView(
                 shrinkWrap: true,
                 physics: const ClampingScrollPhysics(),

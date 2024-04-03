@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class ImageUtil {
+  ImageUtil._();
   static Widget networkImage(String url,
       {double? width, double? height, Widget? errorWidget}) {
     return CachedNetworkImage(
@@ -17,7 +18,7 @@ class ImageUtil {
             Icon(
               Icons.hourglass_empty,
               size: min(width ?? 0, height ?? 0),
-        color: Colors.grey,
+              color: Colors.grey,
             );
       },
     );
@@ -44,8 +45,10 @@ class ImageUtil {
   }
 
   static Widget exchangeImage(String exchangeName,
-      {double? size, Widget? errorWidget}) {
-    return CachedNetworkImage(
+      {double? size, Widget? errorWidget, bool isCircle = false}) {
+    late Widget child;
+
+    child = CachedNetworkImage(
       imageUrl: 'https://cdn01.coinank.com/image/exchange/64/$exchangeName.png',
       width: size,
       height: size,
@@ -59,5 +62,9 @@ class ImageUtil {
             );
       },
     );
+    if (isCircle) {
+      child = ClipOval(child: child);
+    }
+    return child;
   }
 }

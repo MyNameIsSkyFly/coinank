@@ -43,6 +43,7 @@ class MainLogic extends GetxController {
   }
 
   CancelableOperation? _cancelableOperation;
+
   void listenAppVisibility() {
     appVisibleSubscription = FGBGEvents.stream.listen((event) {
       if (event == FGBGType.background) {

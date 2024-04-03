@@ -67,7 +67,7 @@ class GridDataSource extends DataGridSource {
           child: FittedBox(
             fit: BoxFit.scaleDown,
             child: Text(
-              row.getCells()[1].value.toString(),
+              AppUtil.getLargeFormatString(row.getCells()[1].value),
               style: Styles.tsBody_14m(Get.context!),
             ),
           ),

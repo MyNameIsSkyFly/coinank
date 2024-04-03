@@ -2,15 +2,30 @@ import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'custom_bottom_sheet_logic.dart';
+class CustomSelector<T> extends StatefulWidget {
+  const CustomSelector(
+      {super.key,
+      required this.title,
+      required this.dataList,
+      this.convertor,
+      this.current});
 
-class CustomBottomSheetPage extends StatelessWidget {
-  const CustomBottomSheetPage({super.key});
+  final String title;
+  final List<T> dataList;
+  final String Function(T value)? convertor;
+  final T? current;
+
+  @override
+  State<CustomSelector> createState() => _CustomSelectorState<T>();
+}
+
+class _CustomSelectorState<T> extends State<CustomSelector<T>> {
+  void tapCell(int index) {
+    Get.back<T>(result: widget.dataList[index]);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final logic = Get.put(CustomBottomSheetLogic());
-    final state = Get.find<CustomBottomSheetLogic>().state;
     return Container(
       constraints: BoxConstraints(
           maxHeight:
@@ -34,7 +49,7 @@ class CustomBottomSheetPage extends StatelessWidget {
                 child: Row(
                   children: [
                     Text(
-                      state.title,
+                      widget.title,
                       style: Styles.tsBody_16(context),
                     ),
                     const Spacer(),
@@ -55,30 +70,29 @@ class CustomBottomSheetPage extends StatelessWidget {
           SliverList(
             delegate: SliverChildBuilderDelegate((cnt, index) {
               return InkWell(
-                onTap: () => logic.tapCell(index),
+                onTap: () => tapCell(index),
                 child: SizedBox(
                   height: 50,
                   child: Row(
                     children: [
-                      Text(state.dataList[index],
+                      Text(
+                          widget.convertor?.call(widget.dataList[index]) ??
+                              '${widget.dataList[index]}',
                           style: Styles.tsBody_14m(context)),
                       const Spacer(),
-                      Obx(() {
-                        return Offstage(
-                          offstage:
-                              state.dataList[index] != state.current.value,
-                          child: const Icon(
-                            Icons.check_sharp,
-                            size: 20,
-                            color: Styles.cMain,
-                          ),
-                        );
-                      }),
+                      Offstage(
+                        offstage: widget.dataList[index] != widget.current,
+                        child: const Icon(
+                          Icons.check_sharp,
+                          size: 20,
+                          color: Styles.cMain,
+                        ),
+                      ),
                     ],
                   ),
                 ),
               );
-            }, childCount: state.dataList.length),
+            }, childCount: widget.dataList.length),
           ),
           SliverToBoxAdapter(
             child: SizedBox(height: 15 + AppConst.bottomBarHeight),

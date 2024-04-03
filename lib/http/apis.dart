@@ -280,6 +280,7 @@ abstract class Apis {
   Future<List<String>?> getLiqHeatMapData();
 
   //活动提醒
+  @Extra({'showToast': false})
   @GET('/api/app/getAppNotice')
   Future<ActivityEntity?> getActivityData({@Query('lan') String? lan});
 
@@ -367,7 +368,7 @@ abstract class Apis {
   Future<List<CategoryInfoItemEntity>?> getAllCategories();
 
   @GET('/api/liquidation/allExchange/intervals')
-  Future<List<LiqAllExchangeEntity>?> getLiqAllExchangeIntervals(
+  Future<LiqAllExchangeFullEntity?> getLiqAllExchangeIntervals(
       {@Query('baseCoin') String? baseCoin});
 
   //?interval=1h
@@ -385,9 +386,9 @@ abstract class Apis {
       @Query('interval') String? interval});
 
   @GET('/api/liquidation/orders')
-  Future getLiqOrders(
+  Future<List<LiqOrderEntity>?> getLiqOrders(
       {@Query('baseCoin') String? baseCoin,
       @Query('exchangeName') String? exchangeName,
       @Query('side') String? side,
-      @Query('amount') String? amount});
+      @Query('amount') int? amount});
 }

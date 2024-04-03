@@ -101,17 +101,59 @@ class PriceChgGridSource extends DataGridSource {
           DataGridCell(
               columnName: logic.state.topList[3],
               value: _StringConverter(
-                entity.openInterestCh1?.let((it) => it * 100),
+                entity.openInterestChM5?.let((it) => it * 100),
                 (original) =>
                     '${original > 0 ? '+' : ''}${original.toStringAsFixed(2)}%',
               )),
           DataGridCell(
               columnName: logic.state.topList[4],
               value: _StringConverter(
+                entity.openInterestChM15?.let((it) => it * 100),
+                (original) =>
+                    '${original > 0 ? '+' : ''}${original.toStringAsFixed(2)}%',
+              )),
+          DataGridCell(
+              columnName: logic.state.topList[5],
+              value: _StringConverter(
+                entity.openInterestChM30?.let((it) => it * 100),
+                (original) =>
+                    '${original > 0 ? '+' : ''}${original.toStringAsFixed(2)}%',
+              )),
+          DataGridCell(
+              columnName: logic.state.topList[6],
+              value: _StringConverter(
+                entity.openInterestCh1?.let((it) => it * 100),
+                (original) =>
+                    '${original > 0 ? '+' : ''}${original.toStringAsFixed(2)}%',
+              )),
+          DataGridCell(
+              columnName: logic.state.topList[7],
+              value: _StringConverter(
                 entity.openInterestCh4?.let((it) => it * 100),
                 (original) =>
                     '${original > 0 ? '+' : ''}${original.toStringAsFixed(2)}%',
               )),
+          DataGridCell(
+              columnName: logic.state.topList[8],
+              value: _StringConverter(
+                entity.openInterestCh2D?.let((it) => it * 100),
+                (original) =>
+                    '${original > 0 ? '+' : ''}${original.toStringAsFixed(2)}%',
+              )),
+          DataGridCell(
+              columnName: logic.state.topList[9],
+              value: _StringConverter(
+                entity.openInterestCh3D?.let((it) => it * 100),
+                (original) =>
+                    '${original > 0 ? '+' : ''}${original.toStringAsFixed(2)}%',
+              )),
+          DataGridCell(
+              columnName: logic.state.topList[10],
+              value: _StringConverter(
+                entity.openInterestCh7D?.let((it) => it * 100),
+                (original) =>
+                    '${original > 0 ? '+' : ''}${original.toStringAsFixed(2)}%',
+              ))
         ];
       }
       return DataGridRow(cells: cells);
@@ -164,7 +206,7 @@ class PriceChgGridSource extends DataGridSource {
         DataGridNormalText((row.getCells()[3].value as _StringConverter)
             .convertedValue
             .trim()),
-        for (var i = 4; i < 6; i++)
+        for (var i = 4; i < 12; i++)
           DataGridRateText(
               (row.getCells()[i].value as _StringConverter).convertedValue,
               value: (row.getCells()[i].value as _StringConverter).value),

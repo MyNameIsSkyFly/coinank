@@ -417,5 +417,13 @@
   "errorInputRange": "Error, please enter a valid range from low to high.",
   "changePassword": "Change Password",
   "passwordChanged": "Password Changed",
-  "filter": "Filter"
+  "filter": "Filter",
+  "tradingPair": "Symbol",
+  "side": "Side",
+  "amount": "Amount",
+  "percentage": "Percentage",
+  "liqOrderList": "Historical Liquidations",
+  "xUsersLiqIn24H": "In the past 24 hours , {value} traders were liquidated.",
+  "allExchangesLiqData": "Exchange Liquidations",
+  "singleOrderLiqTop3": "Top3 Liquidation"
 }

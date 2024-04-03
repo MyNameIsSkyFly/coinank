@@ -23,6 +23,7 @@ class PriceChangeState {
   bool isRefresh = false;
   RxBool isLoading = true.obs;
   var sortByList = [];
+
   PriceChangeState() {
     final arg = Get.arguments;
     // ignore: avoid_dynamic_calls
@@ -43,8 +44,14 @@ class PriceChangeState {
         '${S.current.s_price}(\$)',
         '${S.current.s_oi_chg}(24H)',
         '${S.current.s_oi_vol}(\$)',
+        '${S.current.s_oi_chg}(5M)',
+        '${S.current.s_oi_chg}(15M)',
+        '${S.current.s_oi_chg}(30M)',
         '${S.current.s_oi_chg}(1H)',
         '${S.current.s_oi_chg}(4H)',
+        '${S.current.s_oi_chg}(2D)',
+        '${S.current.s_oi_chg}(3D)',
+        '${S.current.s_oi_chg}(7D)',
       ];
     }
     sortByList = isPrice
@@ -61,8 +68,14 @@ class PriceChangeState {
             'price',
             'openInterestCh24',
             'openInterest',
+            'openInterestChM5',
+            'openInterestChM15',
+            'openInterestChM30',
             'openInterestCh1',
             'openInterestCh4',
+            'openInterestCh2D',
+            'openInterestCh3D',
+            'openInterestCh7D',
           ];
     statusList.value =
         List.generate(topList.length, (index) => SortStatus.normal);

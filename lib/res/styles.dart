@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import 'app_theme.dart';
@@ -27,6 +26,9 @@ class Styles {
 
   static Color cScaffoldBackground(BuildContext context) =>
       Theme.of(context).scaffoldBackgroundColor;
+
+  static Color cTextFieldFill(BuildContext context) =>
+      Theme.of(context).inputDecorationTheme.fillColor!;
 
   static const fontMedium = FontWeight.w600;
 

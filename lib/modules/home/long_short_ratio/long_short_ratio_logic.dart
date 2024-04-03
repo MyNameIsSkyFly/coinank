@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/custom_bottom_sheet/custom_bottom_sheet_view.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'long_short_ratio_state.dart';
@@ -35,16 +34,13 @@ class LongShortRatioLogic extends GetxController {
 
   Future<void> chooseTime(bool isHeader) async {
     final result = await Get.bottomSheet(
-      const CustomBottomSheetPage(),
+      CustomSelector(
+        title: S.current.s_choose_time,
+        dataList: const ['5m', '15m', '30m', '1h', '2h', '4h', '12h', '1d'],
+        current: isHeader ? state.longSortTime.value : state.webTime.value,
+      ),
       isScrollControlled: true,
       isDismissible: true,
-      settings: RouteSettings(
-        arguments: {
-          'title': S.current.s_choose_time,
-          'list': const ['5m', '15m', '30m', '1h', '2h', '4h', '12h', '1d'],
-          'current': isHeader ? state.longSortTime.value : state.webTime.value,
-        },
-      ),
     );
     if (result != null) {
       final v = result as String;
@@ -176,6 +172,4 @@ setChartData(${jsonEncode(json)}, "$platformString", "realtimeLongShort", ${json
     state.pollingTimer = null;
     super.onClose();
   }
-
-
 }

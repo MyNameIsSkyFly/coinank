@@ -268,12 +268,12 @@ class _DataItem extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                ClipOval(
-                  child: Image.asset(
-                    'assets/images/platform/${item.exchangeName?.toLowerCase()}.png',
-                    width: 24,
-                  ),
-                ),
+                ImageUtil.exchangeImage(
+                    item.exchangeName == 'All'
+                        ? 'ALL'
+                        : item.exchangeName ?? '',
+                    size: 24,
+                    isCircle: true),
                 const Gap(10),
                 Text(item.exchangeName ?? '', style: Styles.tsBody_12m(context))
               ],

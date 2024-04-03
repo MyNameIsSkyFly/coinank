@@ -3,28 +3,29 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:ank_app/entity/oi_chart_menu_param_entity.dart';
-import 'package:ank_app/entity/oi_entity.dart';
 import 'package:ank_app/modules/market/contract/contract_logic.dart';
 import 'package:ank_app/res/export.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../widget/custom_bottom_sheet/custom_bottom_sheet_view.dart';
 import '../../main/main_logic.dart';
+import '_grid_source.dart';
 
 class ExchangeOiLogic extends GetxController {
+  final gridSource = ExchangeOiGridSource();
+
   ExchangeOiLogic({String? baseCoin}) {
     menuParamEntity.value.baseCoin = baseCoin ?? 'BTC';
   }
+
   final menuParamEntity = OIChartMenuParamEntity(
     baseCoin: 'BTC',
     exchange: 'ALL',
     type: 'USD',
     interval: '1d',
   ).obs;
-  final oiList = RxList<OIEntity>();
   final coinList = RxList<String>();
   var selectedCoinIndex = 0;
   String? jsonData;
@@ -37,7 +38,8 @@ class ExchangeOiLogic extends GetxController {
 
   @override
   void onInit() {
-    Future.wait([loadData(), loadOIData(), loadAllBaseCoins()]).then((value) {
+    Future.wait([gridSource.loadData(), loadOIData(), loadAllBaseCoins()])
+        .then((value) {
       loading.value = false;
     });
     startPolling();
@@ -63,7 +65,7 @@ class ExchangeOiLogic extends GetxController {
   Future onRefresh({bool isPolling = false}) async {
     if (refreshing) return;
     refreshing = true;
-    return Future.wait([loadData(), if (!isPolling) loadOIData()])
+    return Future.wait([gridSource.loadData(), if (!isPolling) loadOIData()])
         .whenComplete(() {
       refreshing = false;
     });
@@ -79,20 +81,12 @@ class ExchangeOiLogic extends GetxController {
       menuParamEntity.update((val) {
         val?.baseCoin = 'BTC';
       });
-      Future.wait([loadData(), loadOIData(), loadAllBaseCoins()]).then((value) {
+      Future.wait([gridSource.loadData(), loadOIData(), loadAllBaseCoins()])
+          .then((value) {
         loading.value = false;
       });
     }
     coinList.assignAll(list);
-  }
-
-  Future<void> loadData() async {
-    final result = await Apis()
-        .getExchangeIOList(baseCoin: menuParamEntity.value.baseCoin);
-    result
-        ?.where((element) => element.exchangeName == 'Okex')
-        .forEach((e) => e.exchangeName = 'Okx');
-    oiList.assignAll(result ?? []);
   }
 
   Future<void> loadOIData() async {
@@ -150,12 +144,9 @@ setChartData($jsonData, "$platformString", "openInterest", ${jsonEncode(options)
 
   Future<String?> openSelector(List<String> items) async {
     var result = await Get.bottomSheet(
-      const CustomBottomSheetPage(),
+      CustomSelector(title: '', dataList: items),
       isScrollControlled: true,
       isDismissible: true,
-      settings: RouteSettings(
-        arguments: {'title': '', 'list': items, 'current': ''},
-      ),
     );
     result = result == 'Okx' ? 'Okex' : result;
     return result as String?;

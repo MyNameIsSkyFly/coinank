@@ -4,10 +4,11 @@ import 'package:ank_app/entity/oi_entity.dart';
 import 'package:ank_app/modules/market/contract/contract_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/common_webview.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../constants/urls.dart';
 import 'exchange_oi_logic.dart';
@@ -57,43 +58,99 @@ class ExchangeOiPage extends StatelessWidget {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        DefaultTextStyle(
-                          style: Styles.tsSub_12(context),
-                          child: Row(
-                            children: [
-                              const Gap(15),
-                              Expanded(
-                                  flex: 10,
-                                  child: Text(S.of(context).s_exchange_name)),
-                              Expanded(
-                                  flex: 9, child: Text(S.of(context).s_oi)),
-                              Expanded(
-                                  flex: 9, child: Text(S.of(context).s_rate)),
-                              Expanded(
-                                  flex: 6,
-                                  child: Text(
-                                    S.of(context).s_24h_chg,
-                                    textAlign: TextAlign.end,
+                        SfDataGridTheme(
+                          data: const SfDataGridThemeData(
+                            frozenPaneLineColor: Colors.transparent,
+                          ),
+                          child: SfDataGrid(
+                            source: logic.gridSource,
+                            shrinkWrapRows: true,
+                            headerGridLinesVisibility: GridLinesVisibility.none,
+                            gridLinesVisibility: GridLinesVisibility.none,
+                            headerRowHeight: 15,
+                            frozenColumnsCount: 1,
+                            verticalScrollPhysics:
+                                const NeverScrollableScrollPhysics(),
+                            horizontalScrollPhysics:
+                                const ClampingScrollPhysics(),
+                            columns: [
+                              GridColumn(
+                                columnName: 'exchange',
+                                width: MediaQuery.of(context).size.width * 0.29,
+                                label: Container(
+                                  padding: const EdgeInsets.only(left: 15),
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(S.of(context).s_exchange_name,
+                                      style: Styles.tsSub_12(context)),
+                                ),
+                              ),
+                              GridColumn(
+                                columnName: 'oi',
+                                width: MediaQuery.of(context).size.width * 0.26,
+                                label: Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(S.of(context).s_oi,
+                                      style: Styles.tsSub_12(context)),
+                                ),
+                              ),
+                              GridColumn(
+                                  columnName: 'rate',
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.26,
+                                  label: Container(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(S.of(context).s_rate,
+                                        style: Styles.tsSub_12(context)),
                                   )),
-                              const Gap(15),
+                              GridColumn(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.17,
+                                  columnName: 'change1H',
+                                  label: Container(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                        S
+                                            .of(context)
+                                            .s_4h_chg
+                                            .replaceFirst('4', '1'),
+                                        style: Styles.tsSub_12(context)),
+                                  )),
+                              GridColumn(
+                                  columnName: 'change4H',
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.17,
+                                  label: Container(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(S.of(context).s_4h_chg,
+                                        style: Styles.tsSub_12(context)),
+                                  )),
+                              GridColumn(
+                                  columnName: 'change24H',
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.17,
+                                  label: Container(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(S.of(context).s_24h_chg,
+                                        style: Styles.tsSub_12(context)),
+                                  )),
                             ],
                           ),
                         ),
-                        Obx(() {
-                          return Column(
-                            children: logic.oiList.mapIndexed(
-                              (index, element) {
-                                final item = logic.oiList[index];
-                                return _OiItem(
-                                  item: item,
-                                  baseCoin:
-                                      logic.menuParamEntity.value.baseCoin ??
-                                          '',
-                                );
-                              },
-                            ).toList(),
-                          );
-                        }),
+                        // Obx(() {
+                        //   return Column(
+                        //     children: logic.oiList.mapIndexed(
+                        //       (index, element) {
+                        //         final item = logic.oiList[index];
+                        //         return _OiItem(
+                        //           item: item,
+                        //           baseCoin:
+                        //               logic.menuParamEntity.value.baseCoin ??
+                        //                   '',
+                        //         );
+                        //       },
+                        //     ).toList(),
+                        //   );
+                        // }),
                         const Gap(24),
                         Obx(() {
                           return Row(
@@ -238,6 +295,7 @@ class _CoinListView extends StatelessWidget {
             final item = logic.coinList[index];
             return GestureDetector(
               onTap: () {
+                logic.gridSource.baseCoin = item;
                 logic.selectedCoinIndex = index;
                 logic.menuParamEntity.value.baseCoin = item;
                 logic.menuParamEntity.refresh();
@@ -282,11 +340,8 @@ class _OiItem extends StatelessWidget {
             flex: 10,
             child: Row(
               children: [
-                Image.asset(
-                  'assets/images/platform/${item.exchangeName?.toLowerCase()}.png',
-                  width: 24,
-                  height: 24,
-                ),
+                ImageUtil.exchangeImage(item.exchangeName ?? '',
+                    size: 24, isCircle: true),
                 const Gap(10),
                 Expanded(
                   child: Text(
@@ -352,14 +407,14 @@ class _OiItem extends StatelessWidget {
                 ],
               )),
           Expanded(
-              flex: 6,
-              child:
-                  Text('${((item.change24H ?? 0) * 100).toStringAsFixed(2)}%',
-                      textAlign: TextAlign.end,
-                      style: TextStyle(
-                        color: (item.change24H ?? 0) > 0
-                            ? Styles.cUp(context)
-                            : Styles.cDown(context),
+            flex: 6,
+            child: Text(
+              '${((item.change24H ?? 0) * 100).toStringAsFixed(2)}%',
+              textAlign: TextAlign.end,
+              style: TextStyle(
+                color: (item.change24H ?? 0) > 0
+                    ? Styles.cUp(context)
+                    : Styles.cDown(context),
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
               ),

@@ -414,5 +414,13 @@
   "errorInputRange": "Error, please enter a valid range from low to high.",
   "changePassword": "Change Password",
   "passwordChanged": "Password Changed",
-  "filter": "Filter"
+  "filter": "Filter",
+  "tradingPair": "페어",
+  "side": "Side",
+  "amount": "수량",
+  "percentage": "Percentage",
+  "liqOrderList": "역사적 청산",
+  "xUsersLiqIn24H": "지난 24시간 동안 , {value} 명의 거래자가 청산되었습니다",
+  "allExchangesLiqData": "거래소 청산",
+  "singleOrderLiqTop3": "Top3 Liquidation"
 }

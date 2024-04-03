@@ -1,17 +1,30 @@
-part of 'coin_detail_contract_view.dart';
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 
-class _ChartLiqView extends StatefulWidget {
-  const _ChartLiqView({
-    required this.logic,
+import 'package:ank_app/constants/urls.dart';
+import 'package:ank_app/entity/oi_chart_menu_param_entity.dart';
+import 'package:ank_app/modules/coin_detail/widgets/coin_detail_selector_view.dart';
+import 'package:ank_app/res/export.dart';
+import 'package:ank_app/widget/common_webview.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:get/get.dart';
+
+class ChartLiqView extends StatefulWidget {
+  const ChartLiqView({
+    super.key,
+    required this.baseCoin,
   });
 
-  final CoinDetailContractLogic logic;
+  final String? baseCoin;
 
   @override
-  State<_ChartLiqView> createState() => _ChartLiqViewState();
+  State<ChartLiqView> createState() => _ChartLiqViewState();
 }
 
-class _ChartLiqViewState extends State<_ChartLiqView> {
+class _ChartLiqViewState extends State<ChartLiqView> {
   final menuParamEntity = OIChartMenuParamEntity(
     baseCoin: 'BTC',
     exchange: 'ALL',
@@ -24,7 +37,7 @@ class _ChartLiqViewState extends State<_ChartLiqView> {
 
   @override
   void initState() {
-    menuParamEntity.value.baseCoin = widget.logic.baseCoin;
+    menuParamEntity.value.baseCoin = widget.baseCoin;
     loadData();
     super.initState();
   }
@@ -77,31 +90,51 @@ setChartData($jsonData, "$platformString", "liqStatistic", ${jsonEncode(options)
   }
 
   final intervalItems = const ['15m', '30m', '1h', '2h', '4h', '12h', '1d'];
-  double? _height = 1000;
+
   @override
   Widget build(BuildContext context) {
-    return AliveWidget(
-      child: SingleChildScrollView(
-        child: SizedBox(
-          height: _height,
+    return Column(
+      children: [
+        const Gap(15),
+        Obx(() {
+          return Row(
+            children: [
+              const Gap(15),
+              Expanded(
+                child: Text(
+                  S.of(context).s_liquidation_data,
+                  style: Styles.tsBody_14m(context),
+                ),
+              ),
+              const Gap(10),
+              _filterChip(context, onTap: () async {
+                final result = await openSelector(intervalItems);
+                if (result != null &&
+                    result.toLowerCase() !=
+                        menuParamEntity.value.interval?.toLowerCase()) {
+                  menuParamEntity.value.interval = result;
+                  loadData();
+                  menuParamEntity.refresh();
+                }
+              }, text: menuParamEntity.value.interval),
+              const Gap(15),
+            ],
+          );
+        }),
+        Container(
+          height: 400,
+          width: double.infinity,
+          margin: const EdgeInsets.all(15),
           child: CommonWebView(
-            url: Urls.urlLiquidation,
+            url: Urls.chartUrl,
             enableZoom: true,
-            onLoadStop: (controller) {
-              updateReadyStatus(webReady: true);
-              Future.delayed(const Duration(seconds: 1)).then((value) {
-                controller.getContentHeight().then((value) => setState(() {
-                      print('value==============$value');
-                      _height = value?.toDouble();
-                    }));
-              });
-            },
+            onLoadStop: (controller) => updateReadyStatus(webReady: true),
             onWebViewCreated: (controller) {
               webCtrl = controller;
             },
           ),
         ),
-      ),
+      ],
     );
   }
 

@@ -117,7 +117,7 @@ class AppUtil {
     final locale = (Get.locale ?? Get.deviceLocale).toString();
     double amount = val is String ? double.tryParse(val) ?? 0 : val;
     if (locale.isCaseInsensitiveContains('zh')) {
-      return FormatUtil.amountConversion(amount);
+      return FormatUtil.amountConversion(amount, precision: precision);
     }
     final mFormat = NumberFormat('#,##0.${'0' * precision}', 'en_US');
     if (amount < 1000) {
