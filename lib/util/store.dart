@@ -199,6 +199,16 @@ class StoreLogic extends GetxController {
         defaultValue: 'assets/files/category-heatmap.html');
   }
 
+  //liqHeatMapUrl
+  Future<bool> saveLiqHeatMapUrl(String liqHeatMapUrl) {
+    return _SpUtil()._saveString(_SpKeys.liqHeatMapUrl, liqHeatMapUrl);
+  }
+
+  String get liqHeatMapUrl {
+    return _SpUtil()._getString(_SpKeys.liqHeatMapUrl,
+        defaultValue: 'assets/files/liqhm.html');
+  }
+
   //categoryChartUrl
   Future<bool> saveCategoryChartUrl(String? categoryChartUrl) {
     if (categoryChartUrl == null) return Future.value(false);
@@ -529,6 +539,7 @@ class _SpKeys {
   static const klineUrl = 'ank_kline_url';
   static const heatMapUrl = 'ank_heatmap_url';
   static const categoryHeatMapUrl = 'ank_category_heatmap_url';
+  static const liqHeatMapUrl = 'ank_liq_heatmap_url';
   static const categoryChartUrl = 'ank_category_chart_url';
   static const uniappDomain = 'ank_uniappDomain';
   static const domain = 'ank_domain';

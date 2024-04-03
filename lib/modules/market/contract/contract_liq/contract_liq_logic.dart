@@ -1,9 +1,16 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:ank_app/constants/app_const.dart';
 import 'package:ank_app/entity/liq_all_exchange_entity.dart';
 import 'package:ank_app/http/apis.dart';
+import 'package:ank_app/modules/coin_detail/coin_detail_logic.dart';
+import 'package:ank_app/modules/coin_detail/tab_items/coin_detail_contract/coin_detail_contract_logic.dart';
 import 'package:ank_app/modules/coin_detail/widgets/coin_detail_selector_view.dart';
+import 'package:ank_app/modules/main/main_logic.dart';
+import 'package:ank_app/modules/market/contract/contract_logic.dart';
+import 'package:ank_app/modules/market/market_logic.dart';
 import 'package:ank_app/route/router_config.dart';
 import 'package:ank_app/util/app_util.dart';
 import 'package:ank_app/util/store.dart';
@@ -15,6 +22,8 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class ContractLiqLogic extends GetxController {
   late bool canSelectCoin;
+
+  Timer? timer;
   final itemScrollController = ItemScrollController();
 
   final selectedCoin = RxnString();
@@ -32,23 +41,47 @@ class ContractLiqLogic extends GetxController {
 
   final filterOrderExchangeName = RxnString();
   final filterOrderAmount = Rxn<(int?, String?)>();
-  final filterHeatMapInterval = RxString('1d');
+  final filterLineChartInterval = RxString('1d');
+  final filterHeatMapInterval = '1h'.obs;
+  final heatMapIsExchange = false.obs;
 
   @override
   void onInit() {
+    timer = Timer.periodic(const Duration(seconds: 10), (timer) {
+      if (canSelectCoin) {
+        if (Get.currentRoute != '/') return;
+        if (Get.isBottomSheetOpen == true) return;
+        if (Get.find<MainLogic>().state.selectedIndex.value != 1) return;
+        if (Get.find<MarketLogic>().tabCtrl.index != 0) return;
+        var index = Get.find<ContractLogic>().state.tabController?.index;
+        if (index != 4) return;
+        onRefresh();
+      } else {
+        if (!AppConst.canRequest ||
+            Get.find<CoinDetailLogic>().tabController.index != 0) return;
+        if (Get.find<CoinDetailContractLogic>().tabCtrl.index != 4) return;
+        onRefresh();
+      }
+    });
     super.onInit();
   }
 
   @override
   void onReady() => onRefresh();
 
-  void onRefresh() {
-    loadAllBaseCoins();
-    loadAllExchangeInterval();
-    loadAllExchanges();
-    loadTopLiqSymbols();
-    loadLiqOrders();
-    loadHeatMapData();
+  bool _refreshing = false;
+
+  Future<void> onRefresh() async {
+    if (_refreshing) return;
+    _refreshing = true;
+    await Future.wait([
+      loadAllBaseCoins(),
+      loadAllExchangeInterval(),
+      loadAllExchanges(),
+      loadTopLiqSymbols(),
+      loadLiqOrders(),
+      loadLineChartData(),
+    ]).whenComplete(() => _refreshing = false);
   }
 
   Future<void> loadAllBaseCoins() async {
@@ -82,7 +115,9 @@ class ContractLiqLogic extends GetxController {
   Future<void> loadLiqOrders() async {
     final result = await Apis().getLiqOrders(
       baseCoin: selectedCoin.value,
-      exchangeName: filterOrderExchangeName.value,
+      exchangeName: filterOrderExchangeName.value == 'Okx'
+          ? 'Okex'
+          : filterOrderExchangeName.value,
       amount: filterOrderAmount.value?.$1,
     );
     orders.assignAll(result ?? []);
@@ -104,11 +139,11 @@ class ContractLiqLogic extends GetxController {
   ({bool dataReady, bool webReady, String evJS}) readyStatus =
       (dataReady: false, webReady: false, evJS: '');
   String? jsonData;
-  InAppWebViewController? webCtrl;
+  InAppWebViewController? lineChartWebCtrl;
 
-  void updateChart() {
+  void updateLineChart() {
     final options = {
-      'interval': filterHeatMapInterval.value,
+      'interval': filterLineChartInterval.value,
       'baseCoin': selectedCoin.value,
       'locale': AppUtil.shortLanguageName,
       'theme': StoreLogic.to.isDarkMode ? 'night' : 'light'
@@ -121,7 +156,7 @@ setChartData($jsonData, "$platformString", "liqStatistic", ${jsonEncode(options)
     // webCtrl?.evaluateJavascript(source: jsSource);
   }
 
-  Future<String?> openHeatMapSelector() async {
+  Future<String?> openSelectorWithInterceptor() async {
     final result = await showCupertinoModalPopup(
       context: Get.context!,
       builder: (context) => const SelectorSheetWithInterceptor(
@@ -140,16 +175,34 @@ setChartData($jsonData, "$platformString", "liqStatistic", ${jsonEncode(options)
       evJS: evJS ?? readyStatus.evJS
     );
     if (readyStatus.dataReady && readyStatus.webReady) {
-      webCtrl?.evaluateJavascript(source: readyStatus.evJS);
+      lineChartWebCtrl?.evaluateJavascript(source: readyStatus.evJS);
     }
   }
 
-  Future<void> loadHeatMapData() async {
+  Future<void> loadLineChartData() async {
     final result = await Apis().getLiqStatistic(
       selectedCoin.value ?? '',
-      interval: filterHeatMapInterval.value,
+      interval: filterLineChartInterval.value,
     );
     jsonData = jsonEncode(result);
-    updateChart();
+    updateLineChart();
+  }
+
+  InAppWebViewController? heatMapWebCtrl;
+
+  void updateHeatMapChart() {
+    final source = '''
+  setChartData({
+      type:"${heatMapIsExchange.value ? 'exchange' : 'baseCoin'}",
+      interval:"${filterHeatMapInterval.value}"
+  }, "${Platform.isAndroid ? "android" : "ios"}", "liqhm", {locale:"${AppUtil.shortLanguageName}"})   
+    ''';
+    heatMapWebCtrl?.evaluateJavascript(source: source);
+  }
+
+  @override
+  void onClose() {
+    timer?.cancel();
+    super.onClose();
   }
 }

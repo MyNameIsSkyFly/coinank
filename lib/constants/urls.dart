@@ -2,8 +2,11 @@ import 'package:ank_app/res/export.dart';
 
 class Urls {
   static String get strDomain => StoreLogic.to.domain;
+
   static String get h5Prefix => StoreLogic.to.h5Prefix;
+
   static String get apiPrefix => StoreLogic.to.apiPrefix;
+
   static String get chartUrl => StoreLogic.to.chartUrl;
 
   static String get heatMapUrl => StoreLogic.to.heatMapUrl;
@@ -12,10 +15,14 @@ class Urls {
 
   static String get categoryChartUrl => StoreLogic.to.categoryChartUrl;
 
+  static String get liqHeatMapUrl => StoreLogic.to.liqHeatMapUrl;
+
   static String get klineUrl => StoreLogic.to.klineUrl;
 
   static String get depthOrderDomain => StoreLogic.to.depthOrderDomain;
+
   static String get uniappDomain => StoreLogic.to.uniappDomain;
+
   static String get websocketUrl => StoreLogic.to.websocketUrl;
 
   static String get webLanguage => AppUtil.webLanguage;
@@ -30,7 +37,8 @@ class Urls {
 
   static String get urlBRC => '$h5Prefix/${webLanguage}ordinals/brc20';
 
-  static String get urlBRCHeatMap => '$h5Prefix/${webLanguage}ordinals/brc20/heatmap';
+  static String get urlBRCHeatMap =>
+      '$h5Prefix/${webLanguage}ordinals/brc20/heatmap';
 
   //爆仓数据
   static String get urlLiquidation =>

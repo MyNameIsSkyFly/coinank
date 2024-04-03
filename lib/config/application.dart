@@ -80,6 +80,7 @@ class Application {
       StoreLogic.to.saveKlineUrl(data['ank_kline_url']),
       StoreLogic.to.saveHeatMapUrl(data['ank_heatmap_url']),
       StoreLogic.to.saveCategoryHeatMapUrl(data['ank_category_heatmap_url']),
+      StoreLogic.to.saveLiqHeatMapUrl(data['ank_liq_hot_chart']),
       StoreLogic.to.saveUniappDomain(data['ank_uniappDomain']),
       StoreLogic.to.saveDomain(data['ank_domain']),
       StoreLogic.to.saveWebsocketUrl(data['ank_websocketUrl']),

@@ -19,8 +19,7 @@ class ContractState {
       keepAlivePage(const ContractCoinPage()),
       keepAlivePage(const ContractCategoryPage()),
       keepAlivePage(const ExchangeOiPage()),
-      // keepAlivePage(const ContractLiqPage()),
-      const ContractLiqPage(),
+      keepAlivePage(const ContractLiqPage()),
       keepAlivePage(const FundingRatePage()),
     ];
   }

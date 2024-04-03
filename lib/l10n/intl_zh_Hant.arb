@@ -416,11 +416,12 @@
   "passwordChanged": "密碼已修改",
   "filter": "篩選",
   "tradingPair": "交易對",
-  "side": "Side",
+  "side": "方向",
   "amount": "數量",
   "percentage": "百分比",
   "liqOrderList": "爆倉訂單清單",
   "xUsersLiqIn24H": "最近24小時,共有{value}海外用戶被爆倉",
   "allExchangesLiqData": "各交易所爆倉數據",
-  "singleOrderLiqTop3": "單筆爆倉Top3"
+  "singleOrderLiqTop3": "單筆爆倉Top3",
+  "liqHeatMap": "爆倉熱圖"
 }

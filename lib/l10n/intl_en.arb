@@ -425,5 +425,6 @@
   "liqOrderList": "Historical Liquidations",
   "xUsersLiqIn24H": "In the past 24 hours , {value} traders were liquidated.",
   "allExchangesLiqData": "Exchange Liquidations",
-  "singleOrderLiqTop3": "Top3 Liquidation"
+  "singleOrderLiqTop3": "Top3 Liquidation",
+  "liqHeatMap": "Liquidation Heatmap"
 }

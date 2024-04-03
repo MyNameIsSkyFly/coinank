@@ -279,7 +279,9 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
                 _HeatMapView(logic: logic),
                 _ExchangeOiView(logic: logic),
                 _Vol24hView(logic: logic),
-                ContractLiqPage(inCoinDetail: true, baseCoin: logic.baseCoin),
+                AliveWidget(
+                    child: ContractLiqPage(
+                        inCoinDetail: true, baseCoin: logic.baseCoin)),
                 _ChartWeightedFundingView(logic: logic),
               ],
             ),

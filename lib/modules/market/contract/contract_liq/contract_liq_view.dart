@@ -1,5 +1,6 @@
 import 'package:ank_app/constants/urls.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:ank_app/widget/app_segmented_control.dart';
 import 'package:ank_app/widget/common_webview.dart';
 import 'package:ank_app/widget/custom_bottom_sheet/custom_bottom_sheet_view.dart';
 import 'package:flutter/cupertino.dart';
@@ -28,14 +29,9 @@ class _ContractLiqPageState extends State<ContractLiqPage> {
 
   @override
   void initState() {
+    logic.canSelectCoin = !widget.inCoinDetail;
     logic.selectedCoin.value = widget.baseCoin;
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    Get.delete<ContractLiqLogic>();
-    super.dispose();
   }
 
   @override
@@ -70,32 +66,138 @@ class _ContractLiqPageState extends State<ContractLiqPage> {
             ),
           ),
         Expanded(
-            child: CustomScrollView(
-          slivers: [
-            const SliverGap(10),
-            _orderGridView(),
-            Obx(() {
-              return SliverPadding(
-                padding: const EdgeInsets.all(15),
-                sliver: SliverToBoxAdapter(
-                  child: Text(
-                      S.of(context).xUsersLiqIn24H(logic.totalLiqTraders.value),
-                      style: Styles.tsBody_14(context)),
-                ),
-              );
-            }),
-            const SliverToBoxAdapter(child: Divider(thickness: 8, height: 8)),
-            ..._top3LiqView(),
-            ..._allExchangeLiqView(),
-            _heatMapView(),
-            ..._orderListView()
-          ],
+            child: EasyRefresh(
+          onRefresh: widget.inCoinDetail ? null : () async => logic.onRefresh(),
+          child: CustomScrollView(
+            slivers: [
+              const SliverGap(10),
+              _orderGridView(),
+              _xTraderLiqView(),
+              const SliverToBoxAdapter(child: Divider(thickness: 8, height: 8)),
+              ..._top3LiqView(),
+              ...[
+                SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      const Gap(15),
+                      Row(
+                        children: [
+                          const Gap(15),
+                          Expanded(
+                            child: Text(
+                              S.of(context).liqHeatMap,
+                              style: Styles.tsBody_14m(context),
+                            ),
+                          ),
+                          Obx(() {
+                            return AppSegmentedControl<String>(
+                              onValueChanged: (String? value) {
+                                logic.filterHeatMapInterval.value =
+                                    value ?? '1h';
+                                logic.updateHeatMapChart();
+                              },
+                              groupValue: logic.filterHeatMapInterval.value,
+                              children: {
+                                '1h': Text(
+                                  '1H',
+                                  style: Styles.tsBody_12m(context),
+                                ),
+                                '4h': Text(
+                                  '4H',
+                                  style: Styles.tsBody_12m(context),
+                                ),
+                                '12h': Text(
+                                  '12H',
+                                  style: Styles.tsBody_12m(context),
+                                ),
+                                '1d': Text(
+                                  '1D',
+                                  style: Styles.tsBody_12m(context),
+                                ),
+                              },
+                            );
+                          }),
+                          const Gap(15),
+                          Obx(() {
+                            return AppSegmentedControl<bool>(
+                              onValueChanged: (bool? value) {
+                                logic.heatMapIsExchange.value = value ?? false;
+                                logic.updateHeatMapChart();
+                              },
+                              groupValue: logic.heatMapIsExchange.value,
+                              children: {
+                                false: Text(
+                                  sof.symbol,
+                                  style: Styles.tsBody_12m(context),
+                                ),
+                                true: Text(
+                                  sof.s_exchange_name,
+                                  style: Styles.tsBody_12m(context),
+                                ),
+                              },
+                            );
+                          }),
+                          const Gap(15),
+                        ],
+                      ),
+                      Container(
+                        height: 350,
+                        width: double.infinity,
+                        margin: const EdgeInsets.all(15),
+                        child: CommonWebView(
+                          url: Urls.liqHeatMapUrl,
+                          enableZoom: true,
+                          onLoadStop: (controller) =>
+                              logic.updateHeatMapChart(),
+                          onWebViewCreated: (controller) {
+                            logic.heatMapWebCtrl = controller;
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+              ..._allExchangeLiqView(),
+              _lineChartView(),
+              ..._orderListView()
+            ],
+          ),
         ))
       ],
     );
   }
 
-  SliverToBoxAdapter _heatMapView() {
+  Widget _xTraderLiqView() {
+    return SliverPadding(
+      padding: const EdgeInsets.all(15),
+      sliver: SliverToBoxAdapter(
+        child: Obx(() {
+          final text =
+              S.of(context).xUsersLiqIn24H(logic.totalLiqTraders.value);
+          final parts = text.split('${logic.totalLiqTraders.value}');
+          if (parts.length != 2 || logic.totalLiqTraders.value == 24) {
+            return Text(
+                S.of(context).xUsersLiqIn24H(logic.totalLiqTraders.value),
+                style: Styles.tsBody_14(context));
+          }
+          return RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(text: parts[0], style: Styles.tsBody_14(context)),
+                TextSpan(
+                    text: '${logic.totalLiqTraders.value}',
+                    style: Styles.tsMain_14),
+                TextSpan(text: parts[1], style: Styles.tsBody_14(context)),
+              ],
+            ),
+          );
+        }),
+      ),
+    );
+  }
+
+  SliverToBoxAdapter _lineChartView() {
     return SliverToBoxAdapter(
       child: Column(
         children: [
@@ -112,20 +214,20 @@ class _ContractLiqPageState extends State<ContractLiqPage> {
                 ),
                 const Gap(10),
                 _filterChip(context, onTap: () async {
-                  final result = await logic.openHeatMapSelector();
+                  final result = await logic.openSelectorWithInterceptor();
                   if (result != null &&
                       result.toLowerCase() !=
-                          logic.filterHeatMapInterval.value.toLowerCase()) {
-                    logic.filterHeatMapInterval.value = result;
-                    logic.loadHeatMapData();
+                          logic.filterLineChartInterval.value.toLowerCase()) {
+                    logic.filterLineChartInterval.value = result;
+                    logic.loadLineChartData();
                   }
-                }, text: logic.filterHeatMapInterval.value),
+                }, text: logic.filterLineChartInterval.value),
                 const Gap(15),
               ],
             );
           }),
           Container(
-            height: 400,
+            height: 350,
             width: double.infinity,
             margin: const EdgeInsets.all(15),
             child: CommonWebView(
@@ -134,7 +236,7 @@ class _ContractLiqPageState extends State<ContractLiqPage> {
               onLoadStop: (controller) =>
                   logic.updateReadyStatus(webReady: true),
               onWebViewCreated: (controller) {
-                logic.webCtrl = controller;
+                logic.lineChartWebCtrl = controller;
               },
             ),
           ),
@@ -207,7 +309,7 @@ class _ContractLiqPageState extends State<ContractLiqPage> {
               ),
               InkWell(
                 onTap: () async {
-                  final result = await _openSelector([
+                  var result = await _openSelector([
                     'ALL',
                     'Binance',
                     'Huobi',
@@ -219,6 +321,7 @@ class _ContractLiqPageState extends State<ContractLiqPage> {
                     'Deribit'
                   ], current: logic.filterOrderExchangeName.value);
                   if (result != null) {
+                    if (result == 'ALL') result = null;
                     logic.filterOrderExchangeName.value = result;
                     logic.loadLiqOrders();
                   }
@@ -251,7 +354,7 @@ class _ContractLiqPageState extends State<ContractLiqPage> {
                 },
                 child: btn<(int?, String?)?>(
                   logic.filterOrderAmount,
-                  convertor: (value) => value?.$2 ?? '',
+                  convertor: (value) => value?.$2 ?? sof.s_all,
                 ),
               ),
             ],
@@ -301,7 +404,10 @@ class _ContractLiqPageState extends State<ContractLiqPage> {
                             ImageUtil.exchangeImage(item.exchangeName ?? '',
                                 size: 24, isCircle: true),
                             const Gap(5),
-                            Text(item.exchangeName ?? '',
+                            Text(
+                                item.exchangeName == 'Okex'
+                                    ? 'Okx'
+                                    : (item.exchangeName ?? ''),
                                 style: Styles.tsBody_14m(context)),
                           ],
                         ),
@@ -379,7 +485,7 @@ class _ContractLiqPageState extends State<ContractLiqPage> {
                           height: 24,
                           alignment: Alignment.centerRight,
                           child: Text(
-                            '\$${AppUtil.getLargeFormatString(item.amount, precision: 0)}',
+                            '\$${AppUtil.getLargeFormatString(item.tradeTurnover, precision: 2)}',
                             style: TextStyle(
                               color: item.posSide == 'short'
                                   ? Styles.cDown(context)
@@ -390,7 +496,7 @@ class _ContractLiqPageState extends State<ContractLiqPage> {
                           ),
                         ),
                         Text(
-                          '≈${AppUtil.getLargeFormatString(item.amount, precision: 0)} ${item.baseCoin}',
+                          '≈${AppUtil.getLargeFormatString(item.amount, precision: 2)} ${item.baseCoin}',
                           style: TextStyle(
                             color: item.posSide == 'short'
                                 ? Styles.cDown(context)
@@ -524,7 +630,9 @@ class _ContractLiqPageState extends State<ContractLiqPage> {
                                 size: 24, isCircle: true),
                             const Gap(3),
                             Text(
-                              item.exchangeName ?? '',
+                              item.exchangeName == 'Okex'
+                                  ? 'Okx'
+                                  : (item.exchangeName ?? ''),
                               style: Styles.tsBody_14m(context),
                             ),
                           ],
@@ -532,7 +640,8 @@ class _ContractLiqPageState extends State<ContractLiqPage> {
                     Expanded(
                         flex: 10,
                         child: Text(
-                          AppUtil.getLargeFormatString(item.totalTurnover),
+                          AppUtil.getLargeFormatString(item.totalTurnover,
+                              precision: 2),
                           style: Styles.tsBody_14m(context),
                         )),
                     Expanded(
@@ -661,7 +770,9 @@ class _ContractLiqPageState extends State<ContractLiqPage> {
                   )),
                   Expanded(
                       child: Text(
-                    item.exchangeName ?? '',
+                    item.exchangeName == 'Okex'
+                        ? 'Okx'
+                        : (item.exchangeName ?? ''),
                     style: Styles.tsBody_14m(context),
                   )),
                   Expanded(
@@ -686,7 +797,8 @@ class _ContractLiqPageState extends State<ContractLiqPage> {
                   )),
                   Expanded(
                     child: Text(
-                      AppUtil.getLargeFormatString(item.tradeTurnover),
+                      AppUtil.getLargeFormatString(item.tradeTurnover,
+                          precision: 2),
                       textAlign: TextAlign.end,
                       style: TextStyle(
                         color: item.posSide == 'long'
@@ -735,7 +847,7 @@ class _ContractLiqPageState extends State<ContractLiqPage> {
                       ),
                       Expanded(
                           child: Text(
-                        '\$${AppUtil.getLargeFormatString(item.totalTurnover)}',
+                        '\$${AppUtil.getLargeFormatString(item.totalTurnover, precision: 2)}',
                         style: Styles.tsBody_14m(context),
                         textAlign: TextAlign.end,
                       ))
@@ -752,7 +864,7 @@ class _ContractLiqPageState extends State<ContractLiqPage> {
                       ),
                       Expanded(
                           child: Text(
-                        '\$${AppUtil.getLargeFormatString(item.longTurnover)}',
+                        '\$${AppUtil.getLargeFormatString(item.longTurnover, precision: 2)}',
                         style: TextStyle(
                             color: Styles.cUp(context),
                             fontSize: 12,
@@ -772,7 +884,7 @@ class _ContractLiqPageState extends State<ContractLiqPage> {
                       ),
                       Expanded(
                           child: Text(
-                        '\$${AppUtil.getLargeFormatString(item.shortTurnover)}',
+                        '\$${AppUtil.getLargeFormatString(item.shortTurnover, precision: 2)}',
                         style: TextStyle(
                             color: Styles.cDown(context),
                             fontSize: 12,

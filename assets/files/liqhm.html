@@ -1,0 +1,390 @@
+<!--
+	此示例下载自 https://echarts.apache.org/examples/zh/editor.html?c=line-simple
+-->
+<!DOCTYPE html>
+<html lang="zh-CN" style="height: 100%">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<head>
+    <meta charset="utf-8">
+    <style type="text/css">
+        .tooltip-box {
+            font-size: 0.6rem;
+            line-height: 0.8rem;
+            min-width: 8rem;
+        }
+    </style>
+</head>
+
+<body style="height: 100%; margin: 0">
+    <canvas id="container" style="height: 100%"></div>
+
+
+    <script type="text/javascript" src="./c.js"></script>
+    <script type="text/javascript" src="./chm.js"></script>
+    <script src="./numeral.min.js"></script>
+    <script src="./moment.min.js"></script>
+    <!-- <script src="./data.js"></script> -->
+    <script src="./api3.js"></script>
+
+
+    <script type="text/javascript">
+
+        let dom = document.getElementById('container');
+
+        let myChart;
+
+        // --text-long4-color: #addbbe;
+        // --text-long5-color: #82cfa1;
+        // --text-long6-color: #5cc389;
+        // --text-long7-color: #419c6b;
+
+
+        let locale = "en"
+        //重数据中找出最大值跟最小值
+        const longColor = ['#7dd29f', '#5dc787', '#4fa973'];
+        const shortColor = ['#ea7781', '#e45561', '#C24853'];
+
+        //重数据中找出最大值跟最小值
+        const calcColor = (data)=>{
+            let minLong;
+            let maxLong;
+            let minShort;
+            let maxShort;
+
+            for (let item of data) {
+            if (item.longVol > item.shortVol) {
+                minLong = (minLong && minLong < item.totalVol) ? minLong : item.totalVol;
+                maxLong = (maxLong && maxLong > item.totalVol) ? maxLong : item.totalVol;
+            }else{
+                minShort = (minShort && minShort < item.totalVol) ? minShort : item.totalVol;
+                maxShort = (maxShort && maxShort > item.totalVol) ? maxShort : item.totalVol;
+            }
+            }
+
+
+            for (let item of data) {
+
+            if (item.longVol > item.shortVol) {
+                let colorIndex;
+                if (maxLong - minLong == 0) {
+                colorIndex = 0;
+                }else{
+                colorIndex = Math.floor(  (item.totalVol - minLong)/((maxLong - minLong) / 3));
+                if (colorIndex === 3) {
+                    colorIndex = 2;
+                }
+                }
+
+                item.color = longColor[Number(colorIndex)];
+            }else{
+                let colorIndex;
+                if (maxShort - minShort == 0) {
+                colorIndex = 0;
+                }else {
+                colorIndex = Math.floor((item.totalVol - minShort) /  ((maxShort - minShort) / 3));
+                if (colorIndex === 3) {
+                    colorIndex = 2;
+                }
+                }
+
+                item.color = shortColor[Number(colorIndex)];
+            }
+            }
+
+
+        }
+        const formatAmount = function (value, local, format) {
+
+            if (format === undefined) {
+                format = "0,0.00";
+            }
+            if (local != undefined) {
+                local = local.toLowerCase();
+            }
+            if ("zh" == local || "zh-cn" == local) {
+                if (value >= 100000000) {
+                    return numeral((value / 100000000)).format(format) + "亿";
+                } else if (value >= 10000) {
+                    return numeral((value / 10000)).format(format) + "万";
+                } else {
+                    return numeral(value).format(format);
+                }
+            } else {//英文单位
+                return numeral(value).format(format + 'a').toLocaleUpperCase();
+            }
+
+        }
+
+        const buildConfig = (dataList, dataOptions)=>{
+            
+            calcColor(dataList);
+            dataList = dataList.map(item=>{
+                return {
+                    name: item.name === "Okex" ? "Okx" : item.name,
+                    value:item.totalVol,
+                    color:item.color,
+                    long:item.longVol,
+                    short:item.shortVol
+                }
+            })
+
+            const config = {
+            type: 'treemap',
+            data: {
+                datasets: [
+                {
+                    label: 'Fruits',
+                    tree: dataList,
+                    key: 'value',
+                    borderWidth: 0,
+                    borderRadius: 0,
+                    spacing: 1,
+                    backgroundColor(ctx) {
+                    if (ctx.type !== 'data') {
+                        return 'transparent';
+                    }
+                    return ctx.raw._data.color;
+                    },
+                    labels: {
+                    align: 'center',
+                    display: true,
+                    formatter(ctx) {
+                        if (ctx.type !== 'data') {
+                        return;
+                        }
+                        return [ctx.raw._data.name, formatAmount(ctx.raw._data.value, locale)];
+                    },
+                    color: ['white', 'whiteSmoke'],
+                    hoverColor:['white', 'whiteSmoke'],
+                    font: (ctx)=>{
+                        let {w, h} = ctx.raw
+                        let area = w * h;
+                        let size = 14;
+                        let weight = "bold"
+                        if (area > 500*250){
+                        size = 48
+                        }else if (area > 400*400) {
+                        size = 42;
+                        }else if (area > 400*200) {
+                        size = 38;
+                        }else if (area > 300*200) {
+                        size = 36;
+                        }else if (area > 300*150) {
+                        size = 32;
+                        }else if (area > 200*200) {
+                        size = 28;
+                        }else if (area > 200*100) {
+                        size = 26;
+                        }else if (area > 100*100) {
+                        size = 22;
+                        }else if (area > 100*50) {
+                        size = 18;
+                        }else if (area > 50*50) {
+                        size = 14;
+                        weight = "normal"
+                        }else{
+                        size = 10;
+                        weight = "normal";
+                        }
+                        return [{size: size, weight: weight}, {size: size-2, weight: weight}];
+                    },
+                    position: 'center'
+                    }
+                }
+                ],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                title: {
+                    display: false,
+                    text: 'Different fonts and colors on labels'
+                },
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    // Disable the on-canvas tooltip
+                    enabled: false,
+
+                    callbacks: {
+                    label(item) {
+                        let {value, long, short} = item.raw._data;
+                        return ["Total:" + value, "Long:" + long, "Short:" + short];
+                    },
+                    title(items) {
+                        return items[0].raw._data.name;
+                    }
+                    },
+                    external: function(context) {
+                    let tooltipEl = document.getElementById('chartjs-tooltip');
+
+                    if (!tooltipEl) {
+                        tooltipEl = document.createElement('div');
+                        tooltipEl.id = 'chartjs-tooltip';
+                        tooltipEl.innerHTML = '<table></table>';
+                        document.body.appendChild(tooltipEl);
+                    }
+
+                    // Hide if no tooltip
+                    const tooltipModel = context.tooltip;
+                    if (tooltipModel.opacity === 0) {
+                        tooltipEl.style.opacity = 0;
+                        return;
+                    }
+
+                    // Set caret Position
+                    tooltipEl.classList.remove('above', 'below', 'no-transform');
+                    if (tooltipModel.yAlign) {
+                        tooltipEl.classList.add(tooltipModel.yAlign);
+                    } else {
+                        tooltipEl.classList.add('no-transform');
+                    }
+
+                    function getBody(bodyItem) {
+                        return bodyItem.lines;
+                    }
+
+                    // Set Text
+                    if (tooltipModel.body) {
+                        const titleLines = tooltipModel.title || [];
+                        const bodyLines = tooltipModel.body.map(getBody);
+
+                        let innerHtml = '<thead>';
+
+                        titleLines.forEach(function(title) {
+                        innerHtml += '<tr><th>' + title + '</th></tr>';
+                        });
+                        innerHtml += '</thead><tbody>';
+
+
+                        const longStyle = "color:#37bc88"
+                        const shortStyle = "color:#e4455a"
+                        bodyLines.forEach(function(body, i) {
+
+
+
+                        const colors = tooltipModel.labelColors[i];
+                        let style = 'background:' + colors.backgroundColor;
+                        style += '; border-color:' + colors.borderColor;
+                        style += '; border-width: 2px';
+                        const span = '<span style="' + style + '"></span>';
+
+
+                        for (let ibody of body) {
+                            let [label, value] = ibody.split(":");
+                            innerHtml += `<tr><td>${span}${label}:</td><td style="${label === "Long" ? longStyle : (label === "Short" ? shortStyle:'')}; width:80px; text-align: right; font-weight: 500">${formatAmount(value, locale)}</td></tr>`;
+                        }
+
+
+                        });
+                        innerHtml += '</tbody>';
+
+                        let tableRoot = tooltipEl.querySelector('table');
+                        tableRoot.innerHTML = innerHtml;
+                    }
+
+                        const position = context.chart.canvas.getBoundingClientRect();
+
+                         
+                        let left = position.left + window.pageXOffset + tooltipModel.caretX + tooltipEl.clientWidth;
+                        let winWidth = document.body.clientWidth ;
+                        if (left  > winWidth) {
+                            tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX - tooltipEl.clientWidth + 'px';
+                        }else {
+                            tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX + 'px';
+                        }
+
+                        let winHeight = document.body.clientHeight ;
+                        let top = position.top + window.pageYOffset + tooltipModel.caretY ;
+
+                        if(top + tooltipEl.clientHeight > winHeight){
+                            tooltipEl.style.top = position.top + window.pageYOffset + tooltipModel.caretY - tooltipEl.clientHeight  + 'px';
+                        }else{
+                            tooltipEl.style.top = top + 'px';
+                        }
+
+                       
+
+                        
+                        // Display, position, and set styles for font
+                        tooltipEl.style.opacity = 1;
+                        tooltipEl.style.position = 'absolute';
+                        // tooltipEl.style.left = position.left + window.pageXOffset + tooltipModel.caretX + 'px';
+                       
+                        // tooltipEl.style.font = bodyFont.string;
+                        tooltipEl.style.padding = '4px';
+                        tooltipEl.style.color = "#fff";
+                        tooltipEl.style.pointerEvents = 'none';
+                        tooltipEl.style.backgroundColor = 'rgba(0, 0, 0, 0.8)'
+                        tooltipEl.style.borderRadius = '6px';
+                        tooltipEl.style.transition = 'top 0.2s ease 0s, left 0.2s ease 0s'
+                    }
+                }
+                }
+            }
+            };
+
+            return [config, dataList];
+
+
+        }
+
+        const getData = async (dataParams, dataOptions = {}) => {
+            
+            let {interval, type} = dataParams;
+            let resp = await fetch(`${apiHost}/api/liquidation/heatmap?by=${type}&interval=${interval}`,
+                {
+                    method: 'GET', // 请求方法
+                    headers: {
+                        'client':"ios",
+                        'Content-Type': 'application/json', // 设置Content-Type为JSON
+                    }
+                }
+            );
+         
+            //处理特别的交易对数据
+            let result = await resp.json()
+            let dataList = result.data; 
+
+            return dataList
+
+        }
+        
+        const showChart = async (dataParams, dataOptions)=>{
+
+            let sourceData = await getData(dataParams, dataOptions)
+            let [config, dataList] = buildConfig(sourceData, dataOptions);
+            if (myChart) {
+                myChart.data.datasets[0].tree = dataList;
+                myChart.update();
+            } else {
+                myChart = new Chart(
+                    dom,
+                    config
+                );
+            }
+        }
+
+
+      
+
+
+        async function setChartData(dataParams, platform, dataType, dataOptions = {}) {
+
+            locale = dataOptions['locale']
+            showChart(dataParams, dataOptions);
+
+        }
+
+        // setChartData({
+        //     type:"exchange",
+        //     interval:"12h"
+        // }, "android", "liqheatmap", {locale:"zh"})
+
+
+    </script>
+</body>
+
+</html>

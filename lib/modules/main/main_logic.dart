@@ -139,12 +139,15 @@ class MainLogic extends GetxController {
   }
 
   var lastImageId = '';
+  var _lastScreenshotTime = DateTime.now();
 
   void listenScreenshot() {
     screenshotCallback.addListener(() {
-      if (AppConst.canRequest == false) return;
+      if (!AppConst.appVisible) return;
       if (Platform.isAndroid && AppGlobal.justSavedImage) return;
+      if (DateTime.now().difference(_lastScreenshotTime).inSeconds < 1) return;
       AppUtil.shareImage();
+      _lastScreenshotTime = DateTime.now();
     });
   }
 }

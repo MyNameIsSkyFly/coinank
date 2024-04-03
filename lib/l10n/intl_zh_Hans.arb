@@ -416,11 +416,12 @@
   "passwordChanged": "密码已修改",
   "filter": "筛选",
   "tradingPair": "交易对",
-  "side": "Side",
+  "side": "方向",
   "amount": "数量",
   "percentage": "百分比",
   "liqOrderList": "爆仓订单列表",
   "xUsersLiqIn24H": "最近24小时，共有{value}海外用户被爆仓",
   "allExchangesLiqData": "各交易所爆仓数据",
-  "singleOrderLiqTop3": "单笔爆仓Top3"
+  "singleOrderLiqTop3": "单笔爆仓Top3",
+  "liqHeatMap": "爆仓热图"
 }
