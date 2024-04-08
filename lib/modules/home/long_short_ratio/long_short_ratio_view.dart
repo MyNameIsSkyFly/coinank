@@ -1,5 +1,6 @@
 import 'package:ank_app/entity/short_rate_entity.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:ank_app/widget/app_refresh.dart';
 import 'package:ank_app/widget/common_webview.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -90,7 +91,7 @@ class LongShortRatioPage extends StatelessWidget {
                 ),
               ),
             Expanded(
-              child: EasyRefresh(
+              child: AppRefresh(
                 onRefresh: () => logic.onRefresh(false),
                 child: SingleChildScrollView(
                   physics: state.isLoading.value

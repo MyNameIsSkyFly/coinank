@@ -4,6 +4,7 @@ import 'package:ank_app/modules/market/contract/contract_coin/widgets/contract_c
 import 'package:ank_app/modules/market/contract/contract_coin/widgets/customize_filter_header_view.dart';
 import 'package:ank_app/modules/market/utils/text_maps.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:ank_app/widget/app_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
@@ -88,8 +89,7 @@ class _CategoryDetailContractViewState extends State<CategoryDetailContractView>
             controller: tabController,
             children: [
               AliveWidget(
-                child: EasyRefresh(
-                  footer: const MaterialFooter(),
+                child: AppRefresh(
                   onRefresh: logic.onRefresh,
                   child: ContractCoinGridView(logic: logic),
                 ),

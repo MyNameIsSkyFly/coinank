@@ -6,6 +6,7 @@ import 'package:ank_app/modules/main/main_logic.dart';
 import 'package:ank_app/modules/market/spot/spot_logic.dart';
 import 'package:ank_app/modules/market/utils/text_maps.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:ank_app/widget/app_refresh.dart';
 import 'package:ank_app/widget/data_grid_widgets.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +45,7 @@ class _ContractCategoryPageState extends State<ContractCategoryPage>
 
   @override
   Widget build(BuildContext context) {
-    return EasyRefresh(
+    return AppRefresh(
       onRefresh: () async => initData(),
       child: Obx(() {
         return SfTheme(

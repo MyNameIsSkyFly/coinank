@@ -41,8 +41,8 @@ class Urls {
       '$h5Prefix/${webLanguage}ordinals/brc20/heatmap';
 
   //爆仓数据
-  static String get urlLiquidation =>
-      '$uniappDomain/index.html#/pages/liquidation/index';
+  // static String get urlLiquidation =>
+  //     '$uniappDomain/index.html#/pages/liquidation/index';
 
   //投资组合
   static String get urlPortfolio => '$h5Prefix/${webLanguage}users/portfolio';

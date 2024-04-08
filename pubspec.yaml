@@ -70,12 +70,16 @@ dependencies:
   screenshot_ntv: ^1.0.2
   extended_nested_scroll_view: ^6.2.1
   native_device_orientation: ^2.0.3
+  sentry_flutter: ^7.18.0
 
 dev_dependencies:
   build_runner: ^2.4.9
   flutter_lints: ^3.0.2
   retrofit_generator: ^8.1.0
-  pigeon: ^17.3.0
+  pigeon: ^18.0.0
+
+dependency_overrides:
+  package_info_plus: ^6.0.0
 
 flutter:
 

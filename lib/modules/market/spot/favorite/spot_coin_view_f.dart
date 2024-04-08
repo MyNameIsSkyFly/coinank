@@ -1,6 +1,7 @@
 import 'package:ank_app/modules/market/contract/contract_coin/widgets/customize_filter_header_view.dart';
 import 'package:ank_app/modules/market/spot/widgets/spot_coin_data_grid_view.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:ank_app/widget/app_refresh.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -41,7 +42,7 @@ class _SpotCoinViewFState extends State<SpotCoinViewF> {
                       onFinishFilter: () => logic.onRefresh(showLoading: true),
                       isSpot: true),
                   Expanded(
-                      child: EasyRefresh(
+                      child: AppRefresh(
                           onRefresh: () async => logic.onRefresh(),
                           child: SpotCoinGridView(logic: logic))),
                 ],
@@ -67,7 +68,7 @@ class _EmptyView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return EasyRefresh(
+    return AppRefresh(
       onRefresh: () async => logic.onRefresh(),
       child: SingleChildScrollView(
         child: Column(

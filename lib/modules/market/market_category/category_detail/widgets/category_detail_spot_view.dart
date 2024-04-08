@@ -5,6 +5,7 @@ import 'package:ank_app/modules/market/spot/spot_coin/spot_coin_logic.dart';
 import 'package:ank_app/modules/market/spot/widgets/spot_coin_data_grid_view.dart';
 import 'package:ank_app/modules/market/utils/text_maps.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:ank_app/widget/app_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
@@ -88,8 +89,7 @@ class _CategoryDetailSpotViewState extends State<CategoryDetailSpotView>
             physics: const NeverScrollableScrollPhysics(),
             children: [
               AliveWidget(
-                child: EasyRefresh(
-                  footer: const MaterialFooter(),
+                child: AppRefresh(
                   onRefresh: logic.onRefresh,
                   child: SpotCoinGridView(logic: logic),
                 ),

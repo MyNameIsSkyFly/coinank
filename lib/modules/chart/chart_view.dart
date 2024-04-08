@@ -5,6 +5,7 @@ import 'package:ank_app/modules/chart/chart_state.dart';
 import 'package:ank_app/modules/home/home_search/home_search_view.dart';
 import 'package:ank_app/modules/home/liq_main/liq_main_view.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:ank_app/widget/app_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -49,7 +50,7 @@ class ChartPage extends StatelessWidget {
       body: Obx(() {
         return state.isLoading.value
             ? const LottieIndicator()
-            : EasyRefresh(
+            : AppRefresh(
                 onRefresh: logic.onRefresh,
                 child: Obx(() {
                   return CustomScrollView(
@@ -105,50 +106,48 @@ class _TopDataView extends StatelessWidget {
       child: SizedBox(
         height: 79,
         child: Obx(() {
-          return EasyRefresh(
-            child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              scrollDirection: Axis.horizontal,
-              itemCount: state.topDataList.length,
-              itemBuilder: (context, index) {
-                final item = state.topDataList.toList()[index];
-                String icon = '';
-                if (index > state.icoList.length - 1) {
-                  icon = state.icoList.last;
-                } else {
-                  icon = state.icoList[index];
-                }
-                return GestureDetector(
-                  onTap: () {
-                    Get.to(() => TopItemDetailPage(
-                        title: item.title ?? '', subs: item.subs ?? []));
-                  },
-                  child: Container(
-                    height: 79,
-                    width: (MediaQuery.of(context).size.width + 15) / 4 - 10,
-                    decoration: BoxDecoration(
-                        color: state.topColorList[index],
-                        borderRadius: BorderRadius.circular(8)),
-                    margin: const EdgeInsets.only(right: 10),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          icon,
-                          width: 30,
-                          height: 30,
-                        ),
-                        const Gap(5),
-                        Text(
-                          item.title ?? '',
-                          style: Styles.tsBody_12(context).medium,
-                        ),
-                      ],
-                    ),
+          return ListView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            scrollDirection: Axis.horizontal,
+            itemCount: state.topDataList.length,
+            itemBuilder: (context, index) {
+              final item = state.topDataList.toList()[index];
+              String icon = '';
+              if (index > state.icoList.length - 1) {
+                icon = state.icoList.last;
+              } else {
+                icon = state.icoList[index];
+              }
+              return GestureDetector(
+                onTap: () {
+                  Get.to(() => TopItemDetailPage(
+                      title: item.title ?? '', subs: item.subs ?? []));
+                },
+                child: Container(
+                  height: 79,
+                  width: (MediaQuery.of(context).size.width + 15) / 4 - 10,
+                  decoration: BoxDecoration(
+                      color: state.topColorList[index],
+                      borderRadius: BorderRadius.circular(8)),
+                  margin: const EdgeInsets.only(right: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        icon,
+                        width: 30,
+                        height: 30,
+                      ),
+                      const Gap(5),
+                      Text(
+                        item.title ?? '',
+                        style: Styles.tsBody_12(context).medium,
+                      ),
+                    ],
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            },
           );
         }),
       ),

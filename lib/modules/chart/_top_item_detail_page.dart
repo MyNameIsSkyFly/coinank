@@ -55,7 +55,6 @@ class TopItemDetailPage extends StatelessWidget {
                             style: Styles.tsBody_14(context))),
                     const Icon(
                       Icons.chevron_right,
-                      color: Colors.black87,
                       size: 18,
                     )
                   ],

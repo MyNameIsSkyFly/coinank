@@ -1,4 +1,5 @@
 import 'package:ank_app/res/export.dart';
+import 'package:ank_app/widget/app_refresh.dart';
 import 'package:ank_app/widget/common_webview.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -32,67 +33,65 @@ class _LongShortPersonRatioPageState extends State<LongShortPersonRatioPage> {
         if (logic.loading.value) {
           return const LottieIndicator();
         } else {
-          return EasyRefresh(
+          return AppRefresh(
             onRefresh: () async => logic.onRefresh(),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Obx(() {
-                    return _PickerBar(
-                      title: 'Binance BTC ${S.of(context).s_longshort_person}',
-                      onTap: () async {
-                        final result =
-                            await logic.openSelector(logic.interval1.value);
-                        if (result == null) return;
-                        logic.interval1.value = result;
-                        logic.loadChartData01();
-                      },
-                      logic: logic,
-                      interval: logic.interval1.value,
-                    );
-                  }),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 15),
-                    width: double.infinity,
-                    height: 280,
-                    child: CommonWebView(
-                      url: Urls.chartUrl,
-                      onWebViewCreated: (controller) {
-                        logic.webCtrl1 = controller;
-                      },
-                      onLoadStop: (controller) =>
-                          logic.updateReadyStatus1(webReady: true),
-                    ),
+            child: ListView(
+              children: [
+                Obx(() {
+                  return _PickerBar(
+                    title: 'Binance BTC ${S.of(context).s_longshort_person}',
+                    onTap: () async {
+                      final result =
+                          await logic.openSelector(logic.interval1.value);
+                      if (result == null) return;
+                      logic.interval1.value = result;
+                      logic.loadChartData01();
+                    },
+                    logic: logic,
+                    interval: logic.interval1.value,
+                  );
+                }),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 15),
+                  width: double.infinity,
+                  height: 280,
+                  child: CommonWebView(
+                    url: Urls.chartUrl,
+                    onWebViewCreated: (controller) {
+                      logic.webCtrl1 = controller;
+                    },
+                    onLoadStop: (controller) =>
+                        logic.updateReadyStatus1(webReady: true),
                   ),
-                  Obx(() {
-                    return _PickerBar(
-                      title: 'Binance BTC ${S.of(context).s_longshort_person}',
-                      onTap: () async {
-                        final result =
-                            await logic.openSelector(logic.interval2.value);
-                        if (result == null) return;
-                        logic.interval2.value = result;
-                        logic.loadChartData02();
-                      },
-                      logic: logic,
-                      interval: logic.interval2.value,
-                    );
-                  }),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 15),
-                    width: double.infinity,
-                    height: 280,
-                    child: CommonWebView(
-                      url: Urls.chartUrl,
-                      onWebViewCreated: (controller) {
-                        logic.webCtrl2 = controller;
-                      },
-                      onLoadStop: (controller) =>
-                          logic.updateReadyStatus2(webReady: true),
-                    ),
+                ),
+                Obx(() {
+                  return _PickerBar(
+                    title: 'Binance BTC ${S.of(context).s_longshort_person}',
+                    onTap: () async {
+                      final result =
+                          await logic.openSelector(logic.interval2.value);
+                      if (result == null) return;
+                      logic.interval2.value = result;
+                      logic.loadChartData02();
+                    },
+                    logic: logic,
+                    interval: logic.interval2.value,
+                  );
+                }),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 15),
+                  width: double.infinity,
+                  height: 280,
+                  child: CommonWebView(
+                    url: Urls.chartUrl,
+                    onWebViewCreated: (controller) {
+                      logic.webCtrl2 = controller;
+                    },
+                    onLoadStop: (controller) =>
+                        logic.updateReadyStatus2(webReady: true),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           );
         }

@@ -1,5 +1,6 @@
 import 'package:ank_app/constants/urls.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:ank_app/widget/app_refresh.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -141,7 +142,7 @@ class FundingRatePage extends StatelessWidget {
                   margin: EdgeInsets.only(top: 150),
                 )
               : Expanded(
-                  child: EasyRefresh(
+                  child: AppRefresh(
                     onRefresh: () => logic.onRefresh(),
                     child: _DataGridView(logic: logic),
                   ),

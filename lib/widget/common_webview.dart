@@ -109,13 +109,11 @@ class _CommonWebViewState extends State<CommonWebView>
     WidgetsBinding.instance.addObserver(this);
     _themeChangeSubscription =
         AppConst.eventBus.on<ThemeChangeEvent>().listen((event) async {
-      await InAppWebViewController.clearAllCache();
       await CommonWebView.setCookieValue();
       reload();
     });
     _loginStatusSubscription =
         AppConst.eventBus.on<LoginStatusChangeEvent>().listen((event) async {
-      await InAppWebViewController.clearAllCache();
       await CommonWebView.setCookieValue();
       reload();
     });
@@ -145,18 +143,11 @@ class _CommonWebViewState extends State<CommonWebView>
         widget.urlGetter?.call().contains('proChart') == true)) return;
     _fgbgSubscription = FGBGEvents.stream.listen((event) {
       if (event == FGBGType.foreground) {
-        // if (lastLeftTime != null &&
-        //     DateTime.now().difference(lastLeftTime!) >
-        //         const Duration(seconds: 15)) {
-        //   reload();
-        // }
         webCtrl?.getTitle().then((value) {
-          if (value?.isEmpty != false) {
+          if (value?.isEmpty case true || null) {
             reload();
           }
         });
-      } else if (event == FGBGType.background) {
-        // lastLeftTime = DateTime.now();
       }
     });
   }
@@ -390,11 +381,11 @@ class _CommonWebViewState extends State<CommonWebView>
           case 'LIQDATA':
             mainLogic.selectTab(1);
             marketLogic.selectIndex(0);
-            Future.delayed(const Duration(milliseconds: 100)).then((value) {
-              AppConst.eventBus.fire(WebJSEvent(
-                  evJS: uri.queryParameters['jsSource'] ?? '',
-                  url: Urls.urlLiquidation));
-            });
+            // Future.delayed(const Duration(milliseconds: 100)).then((value) {
+            //   AppConst.eventBus.fire(WebJSEvent(
+            //       evJS: uri.queryParameters['jsSource'] ?? '',
+            //       url: Urls.urlLiquidation));
+            // });
             contractLogic.selectIndex(3);
           case 'EXCHANGEOI':
             mainLogic.selectTab(1);

@@ -1,5 +1,6 @@
 import 'package:ank_app/modules/market/contract/contract_coin/widgets/customize_filter_header_view.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:ank_app/widget/app_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -27,8 +28,7 @@ class _ContractCoinPageState extends State<ContractCoinPage> {
           child: Obx(() {
             return Stack(
               children: [
-                EasyRefresh(
-                  footer: const MaterialFooter(),
+                AppRefresh(
                   onRefresh: () async => logic.onRefresh(),
                   child: ContractCoinGridView(logic: logic),
                 ),

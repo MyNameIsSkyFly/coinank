@@ -62,7 +62,6 @@ class _ContractCoinGridViewState extends State<ContractCoinGridView> {
           columnWidthMode: ColumnWidthMode.auto,
           headerRowHeight: 32,
           frozenColumnsCount: 1,
-          horizontalScrollPhysics: const ClampingScrollPhysics(),
           source: widget.logic.dataSource,
           columns: widget.logic.dataSource.columns.value,
           columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,

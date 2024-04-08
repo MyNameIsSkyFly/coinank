@@ -1,5 +1,6 @@
 import 'package:ank_app/constants/urls.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:ank_app/widget/app_refresh.dart';
 import 'package:ank_app/widget/app_segmented_control.dart';
 import 'package:ank_app/widget/common_webview.dart';
 import 'package:ank_app/widget/custom_bottom_sheet/custom_bottom_sheet_view.dart';
@@ -66,8 +67,9 @@ class _ContractLiqPageState extends State<ContractLiqPage> {
             ),
           ),
         Expanded(
-            child: EasyRefresh(
-          onRefresh: widget.inCoinDetail ? null : () async => logic.onRefresh(),
+            child: AppRefresh(
+          notificationPredicate: (notification) => !widget.inCoinDetail,
+          onRefresh: logic.onRefresh,
           child: CustomScrollView(
             slivers: [
               const SliverGap(10),

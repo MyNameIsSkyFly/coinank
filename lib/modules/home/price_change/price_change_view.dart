@@ -1,4 +1,5 @@
 import 'package:ank_app/res/export.dart';
+import 'package:ank_app/widget/app_refresh.dart';
 import 'package:ank_app/widget/market_datagrid_sizer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,7 +24,7 @@ class PriceChangePage extends StatelessWidget {
       appBar: AppTitleBar(
         title: state.isPrice ? S.current.s_price_chg : S.current.s_oi_chg,
       ),
-      body: EasyRefresh(
+      body: AppRefresh(
         onRefresh: () => logic.onRefresh(false),
         child: _GridView(),
       ),

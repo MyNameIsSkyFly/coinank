@@ -9,6 +9,7 @@ import 'package:ank_app/modules/home/widgets/dash_board_painter.dart';
 import 'package:ank_app/modules/home/widgets/trapezium_painter.dart';
 import 'package:ank_app/modules/main/main_logic.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:ank_app/widget/app_refresh.dart';
 import 'package:ank_app/widget/rate_with_sign.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final logic = Get.put(HomeLogic());
   var canQuit = false;
+
   @override
   Widget build(BuildContext context) {
     var child = Scaffold(
@@ -90,30 +92,27 @@ class _HomePageState extends State<HomePage> {
           const Gap(10),
         ],
       ),
-      body: EasyRefresh(
+      body: AppRefresh(
         onRefresh: logic.onRefresh,
-        child: SingleChildScrollView(
+        child: ListView(
           padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _TotalOiAndFuturesVol(logic: logic),
-              const _ChartView(),
-              _BtcReduceView(logic: logic),
-              _HotMarket(logic: logic),
-              _OiDistribution(logic: logic),
-              _FearGreedInfo(logic: logic),
+          children: [
+            _TotalOiAndFuturesVol(logic: logic),
+            const _ChartView(),
+            _BtcReduceView(logic: logic),
+            _HotMarket(logic: logic),
+            _OiDistribution(logic: logic),
+            _FearGreedInfo(logic: logic),
 
-              //灰度数据
-              // _CheckDetailRow(
-              //   title: S.of(context).s_grayscale_data,
-              //   onTap: () => AppNav.openWebUrl(
-              //       title: S.of(context).s_grayscale_data,
-              //       url: Urls.urlGrayscale,
-              //       showLoading: true),
-              // )
-            ],
-          ),
+            //灰度数据
+            // _CheckDetailRow(
+            //   title: S.of(context).s_grayscale_data,
+            //   onTap: () => AppNav.openWebUrl(
+            //       title: S.of(context).s_grayscale_data,
+            //       url: Urls.urlGrayscale,
+            //       showLoading: true),
+            // )
+          ],
         ),
       ),
     );
