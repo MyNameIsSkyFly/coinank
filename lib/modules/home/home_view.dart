@@ -143,25 +143,24 @@ class _BtcReduceView extends StatelessWidget {
   final HomeLogic logic;
 
   Widget _box(BuildContext context, {required String text}) {
-    return logic.hideBtcReduce
-        ? const SizedBox()
-        : Container(
-            height: 30,
-            width: 30,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(4),
-                color: Theme.of(context).scaffoldBackgroundColor),
-            margin: const EdgeInsets.only(left: 8, right: 4),
-            child: Text(
-              text,
-              style: Styles.tsBody_14m(context),
-            ),
-          );
+    return Container(
+      height: 30,
+      width: 30,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4),
+          color: Theme.of(context).scaffoldBackgroundColor),
+      margin: const EdgeInsets.only(left: 8, right: 4),
+      child: Text(
+        text,
+        style: Styles.tsBody_14m(context),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    if (logic.hideBtcReduce) return const SizedBox();
     return GestureDetector(
       onTap: () => showCupertinoDialog(
           barrierDismissible: true,

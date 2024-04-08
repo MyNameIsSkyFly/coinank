@@ -36,6 +36,7 @@ class HomeLogic extends GetxController {
               (double.tryParse(homeInfoData.value?.shortRatio ?? '1') ?? 1))
           .toStringAsFixed(2);
   bool hideBtcReduce = DateTime.now().isAfter(DateTime(2024, 4, 21));
+
   @override
   void onReady() {
     onRefresh();
