@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-
 class ContractCoinFilterPage extends StatefulWidget {
   const ContractCoinFilterPage(
       {super.key, this.isSpot = false, this.isCategory = false});
 
   final bool isSpot;
   final bool isCategory;
+
   @override
   State<ContractCoinFilterPage> createState() => _ContractCoinFilterPageState();
 }
@@ -37,8 +37,12 @@ class _ContractCoinFilterPageState extends State<ContractCoinFilterPage>
       });
     }
     filterKeys.addAll((widget.isSpot
-            ? StoreLogic().spotCoinFilter
-            : StoreLogic().contractCoinFilter) ??
+            ? (widget.isCategory
+                ? StoreLogic().spotCoinFilterCategory
+                : StoreLogic().spotCoinFilter)
+            : (widget.isCategory
+                ? StoreLogic().contractCoinFilterCategory
+                : StoreLogic().contractCoinFilter)) ??
         {});
     filterKeys.forEach((key, value) {
       if (value == null) return;
@@ -147,11 +151,22 @@ class _ContractCoinFilterPageState extends State<ContractCoinFilterPage>
                           filterKeys[key] = value.convertedValue;
                         });
                         if (widget.isSpot) {
-                          StoreLogic().saveSpotCoinFilter(filterKeys
-                            ..removeWhere((key, value) => value == null));
+                          if (widget.isCategory) {
+                            StoreLogic().saveSpotCoinFilterCategory(filterKeys
+                              ..removeWhere((key, value) => value == null));
+                          } else {
+                            StoreLogic().saveSpotCoinFilter(filterKeys
+                              ..removeWhere((key, value) => value == null));
+                          }
                         } else {
-                          StoreLogic().saveContractCoinFilter(filterKeys
-                            ..removeWhere((key, value) => value == null));
+                          if (widget.isCategory) {
+                            StoreLogic().saveContractCoinFilterCategory(
+                                filterKeys
+                                  ..removeWhere((key, value) => value == null));
+                          } else {
+                            StoreLogic().saveContractCoinFilter(filterKeys
+                              ..removeWhere((key, value) => value == null));
+                          }
                         }
                         Get.back(result: true);
                       },

@@ -75,8 +75,14 @@ class SpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
     _fetching = true;
     if (showLoading) Loading.show();
     final result = await Apis()
-        .postSpotAgg(StoreLogic().spotCoinFilter ?? {},
-            page: 1, size: 500, tag: tag.value)
+        .postSpotAgg(
+            (isCategory
+                    ? StoreLogic().spotCoinFilterCategory
+                    : StoreLogic().spotCoinFilter) ??
+                {},
+            page: 1,
+            size: 500,
+            tag: tag.value)
         .whenComplete(() {
       if (showLoading) Loading.dismiss();
     }).whenComplete(() => _fetching = false);

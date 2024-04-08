@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:ank_app/entity/event/event_filter_changed.dart';
 import 'package:ank_app/modules/market/spot/customize/reorder_spot_view.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +9,7 @@ import 'package:get/get.dart';
 import '../customize/reorder_view.dart';
 import '../filter/contract_coin_filter_view.dart';
 
-class CustomizeFilterHeaderView extends StatelessWidget {
+class CustomizeFilterHeaderView extends StatefulWidget {
   const CustomizeFilterHeaderView(
       {super.key,
       this.onFinishFilter,
@@ -16,6 +19,62 @@ class CustomizeFilterHeaderView extends StatelessWidget {
   final bool isSpot;
   final bool isCategory;
   final VoidCallback? onFinishFilter;
+
+  @override
+  State<CustomizeFilterHeaderView> createState() =>
+      _CustomizeFilterHeaderViewState();
+}
+
+class _CustomizeFilterHeaderViewState extends State<CustomizeFilterHeaderView> {
+  StreamSubscription? _subscription;
+
+  @override
+  void initState() {
+    _subscription = AppConst.eventBus.on<EventFilterChanged>().listen((event) {
+      if (event.isSpot != widget.isSpot ||
+          event.isCategory != widget.isCategory) return;
+      setState(() {});
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _subscription?.cancel();
+    super.dispose();
+  }
+
+  Color? get _filterColor {
+    if (widget.isSpot) {
+      if (widget.isCategory) {
+        if (StoreLogic().spotCoinFilterCategory == null) {
+          return null;
+        } else {
+          return Styles.cMain;
+        }
+      } else {
+        if (StoreLogic().spotCoinFilter == null) {
+          return null;
+        } else {
+          return Styles.cMain;
+        }
+      }
+    } else {
+      if (widget.isCategory) {
+        if (StoreLogic().contractCoinFilterCategory == null) {
+          return null;
+        } else {
+          return Styles.cMain;
+        }
+      } else {
+        if (StoreLogic().contractCoinFilter == null) {
+          return null;
+        } else {
+          return Styles.cMain;
+        }
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +88,10 @@ class CustomizeFilterHeaderView extends StatelessWidget {
           Expanded(
             child: InkWell(
               onTap: () => Get.toNamed(
-                  isSpot ? ReorderSpotPage.routeName : ReorderPage.routeName,
-                  arguments: {'isCategory': isCategory}),
+                  widget.isSpot
+                      ? ReorderSpotPage.routeName
+                      : ReorderPage.routeName,
+                  arguments: {'isCategory': widget.isCategory}),
               child: Row(
                 children: [
                   Image.asset(
@@ -53,16 +114,22 @@ class CustomizeFilterHeaderView extends StatelessWidget {
           GestureDetector(
               onTap: () {
                 Get.bottomSheet(
-                  ContractCoinFilterPage(isSpot: isSpot),
+                  ContractCoinFilterPage(
+                      isSpot: widget.isSpot, isCategory: widget.isCategory),
                   backgroundColor: Colors.transparent,
                   isScrollControlled: true,
                   ignoreSafeArea: false,
                 ).then((value) {
-                  if (value == true) onFinishFilter?.call();
+                  if (value == true) widget.onFinishFilter?.call();
+                  AppConst.eventBus.fire(EventFilterChanged(
+                      isCategory: widget.isCategory, isSpot: widget.isSpot));
                 });
               },
-              child:
-                  const ImageIcon(AssetImage(Assets.commonIcFilter), size: 20))
+              child: ImageIcon(
+                const AssetImage(Assets.commonIcFilter),
+                size: 20,
+                color: _filterColor,
+              ))
         ],
       ),
     );

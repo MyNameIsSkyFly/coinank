@@ -454,10 +454,6 @@ class StoreLogic extends GetxController {
     return jsonDecode(result).cast<String, String>();
   }
 
-  Future<bool> removeContractCoinFilter() {
-    return _SpUtil()._remove(_SpKeys.contractCoinFilter);
-  }
-
 //spotCoinFilter
   Future<bool> saveSpotCoinFilter(Map<String, String?> filter) {
     return _SpUtil()._saveString(_SpKeys.spotCoinFilter, jsonEncode(filter));
@@ -470,8 +466,30 @@ class StoreLogic extends GetxController {
     return jsonDecode(result).cast<String, String>();
   }
 
-  Future<bool> removeSpotCoinFilter() {
-    return _SpUtil()._remove(_SpKeys.spotCoinFilter);
+  //contractCoinFilterCategory
+  Future<bool> saveContractCoinFilterCategory(Map<String, String?> filter) {
+    return _SpUtil()
+        ._saveString(_SpKeys.contractCoinFilterCategory, jsonEncode(filter));
+  }
+
+  Map<String, String>? get contractCoinFilterCategory {
+    final result = _SpUtil()._getString(_SpKeys.contractCoinFilterCategory);
+    if (result.isEmpty || result == '{}') return null;
+    // ignore: avoid_dynamic_calls
+    return jsonDecode(result).cast<String, String>();
+  }
+
+//spotCoinFilterCategory
+  Future<bool> saveSpotCoinFilterCategory(Map<String, String?> filter) {
+    return _SpUtil()
+        ._saveString(_SpKeys.spotCoinFilterCategory, jsonEncode(filter));
+  }
+
+  Map<String, String>? get spotCoinFilterCategory {
+    final result = _SpUtil()._getString(_SpKeys.spotCoinFilterCategory);
+    if (result.isEmpty || result == '{}') return null;
+    // ignore: avoid_dynamic_calls
+    return jsonDecode(result).cast<String, String>();
   }
 
   Future<bool> saveCategoryContractOrder(Map<String, bool> sortOrder) {
@@ -557,6 +575,8 @@ class _SpKeys {
   static const spotSortOrder = 'spotCoinSortOrder';
   static const contractCoinFilter = 'contractCoinFilter';
   static const spotCoinFilter = 'spotCoinFilter';
+  static const contractCoinFilterCategory = 'contractCoinFilterCategory';
+  static const spotCoinFilterCategory = 'spotCoinFilterCategory';
   static const categoryContractOrder = 'categoryContractOrder';
   static const categorySpotOrder = 'categorySpotOrder';
   static const orderflowCoinSelectorIndex = 'orderflowCoinSelectorIndex';

@@ -74,7 +74,10 @@ class ContractCoinLogic extends GetxController
     if (showLoading) Loading.show();
     final result = await Apis()
         .postFuturesBigData(
-      StoreLogic().contractCoinFilter ?? {},
+      (isCategory
+              ? StoreLogic().contractCoinFilterCategory
+              : StoreLogic().contractCoinFilter) ??
+          {},
       page: 1,
       size: 500,
       tag: tag.value,

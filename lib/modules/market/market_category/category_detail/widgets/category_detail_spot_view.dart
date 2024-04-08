@@ -68,7 +68,8 @@ class _CategoryDetailSpotViewState extends State<CategoryDetailSpotView>
               Expanded(
                 child: CustomizeFilterHeaderView(
                     onFinishFilter: () => logic.onRefresh(showLoading: true),
-                    isCategory: true),
+                    isCategory: true,
+                    isSpot: true),
               ),
               CategoryTypeSelector(
                   leftSelected: selectedIndex.value == 0,
