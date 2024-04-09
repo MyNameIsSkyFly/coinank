@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:ank_app/entity/oi_entity.dart';
+import 'package:ank_app/modules/coin_detail/coin_detail_logic.dart';
 import 'package:ank_app/modules/market/contract/contract_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/app_refresh.dart';
@@ -15,12 +16,17 @@ import '../../../constants/urls.dart';
 import 'exchange_oi_logic.dart';
 
 class ExchangeOiPage extends StatelessWidget {
-  const ExchangeOiPage({super.key});
+  const ExchangeOiPage({super.key, this.inCoinDetail = false});
+
+  final bool inCoinDetail;
 
   @override
   Widget build(BuildContext context) {
     final logic = Get.put(ExchangeOiLogic(
-        baseCoin: Get.find<ContractLogic>().state.exchangeOIBaseCoin));
+        inCoinDetail: inCoinDetail,
+        baseCoin: inCoinDetail
+            ? Get.find<CoinDetailLogic>().coin.baseCoin
+            : Get.find<ContractLogic>().state.exchangeOIBaseCoin));
     return Scaffold(
       body: Obx(() {
         if (logic.loading.value) {
@@ -28,35 +34,37 @@ class ExchangeOiPage extends StatelessWidget {
         } else {
           return Column(
             children: [
-              SizedBox(
-                width: double.infinity,
-                height: 44,
-                child: Row(
-                  children: [
-                    Expanded(child: _CoinListView(logic: logic)),
-                    InkWell(
-                      onTap: () => logic.toSearch(),
-                      child: Container(
-                        padding: const EdgeInsets.only(left: 8),
-                        color: Theme.of(context).colorScheme.tertiary,
-                        width: 39,
-                        height: 24,
-                        alignment: Alignment.centerLeft,
-                        child: Image.asset(
-                          Assets.commonIcLinesSearch,
-                          width: 16,
-                          height: 16,
-                          color: Theme.of(context).iconTheme.color,
+              if (!inCoinDetail)
+                SizedBox(
+                  width: double.infinity,
+                  height: 44,
+                  child: Row(
+                    children: [
+                      Expanded(child: _CoinListView(logic: logic)),
+                      InkWell(
+                        onTap: () => logic.toSearch(),
+                        child: Container(
+                          padding: const EdgeInsets.only(left: 8),
+                          color: Theme.of(context).colorScheme.tertiary,
+                          width: 39,
+                          height: 24,
+                          alignment: Alignment.centerLeft,
+                          child: Image.asset(
+                            Assets.commonIcLinesSearch,
+                            width: 16,
+                            height: 16,
+                            color: Theme.of(context).iconTheme.color,
+                          ),
                         ),
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
-              ),
               Expanded(
                 child: AppRefresh(
                   onRefresh: () async => logic.onRefresh(),
                   child: ListView(
+                    padding: EdgeInsets.only(top: inCoinDetail ? 10 : 0),
                     children: [
                       SfDataGridTheme(
                         data: const SfDataGridThemeData(
@@ -211,18 +219,20 @@ class ExchangeOiPage extends StatelessWidget {
                           ],
                         );
                       }),
-                      Container(
-                        height: 400,
-                        width: double.infinity,
-                        margin: const EdgeInsets.all(15),
-                        child: CommonWebView(
-                          url: Urls.chartUrl,
-                          enableZoom: Platform.isAndroid, //? true : false
-                          onLoadStop: (controller) =>
-                              logic.updateReadyStatus(webReady: true),
-                          onWebViewCreated: (controller) {
-                            logic.webCtrl = controller;
-                          },
+                      AliveWidget(
+                        child: Container(
+                          height: 400,
+                          width: double.infinity,
+                          margin: const EdgeInsets.all(15),
+                          child: CommonWebView(
+                            url: Urls.chartUrl,
+                            enableZoom: Platform.isAndroid, //? true : false
+                            onLoadStop: (controller) =>
+                                logic.updateReadyStatus(webReady: true),
+                            onWebViewCreated: (controller) {
+                              logic.webCtrl = controller;
+                            },
+                          ),
                         ),
                       ),
                     ],

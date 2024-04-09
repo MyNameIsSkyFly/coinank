@@ -15,8 +15,9 @@ import '_grid_source.dart';
 
 class ExchangeOiLogic extends GetxController {
   final gridSource = ExchangeOiGridSource();
+  final bool inCoinDetail;
 
-  ExchangeOiLogic({String? baseCoin}) {
+  ExchangeOiLogic({this.inCoinDetail = false, String? baseCoin}) {
     menuParamEntity.value.baseCoin = baseCoin ?? 'BTC';
   }
 

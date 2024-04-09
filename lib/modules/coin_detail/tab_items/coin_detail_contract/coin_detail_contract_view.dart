@@ -4,10 +4,10 @@ import 'dart:io';
 
 import 'package:ank_app/constants/urls.dart';
 import 'package:ank_app/entity/oi_chart_menu_param_entity.dart';
-import 'package:ank_app/entity/oi_entity.dart';
 import 'package:ank_app/modules/coin_detail/tab_items/coin_detail_contract/coin_detail_contract_logic.dart';
 import 'package:ank_app/modules/coin_detail/widgets/coin_detail_chart_kline_view.dart';
 import 'package:ank_app/modules/coin_detail/widgets/coin_detail_selector_view.dart';
+import 'package:ank_app/modules/home/exchange_oi/exchange_oi_view.dart';
 import 'package:ank_app/modules/market/contract/contract_liq/contract_liq_view.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/animated_color_text.dart';
@@ -25,7 +25,6 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 part './_chart_weighted_funding_view.dart';
 part './_data_grid_view.dart';
-part './_exchange_oi_view.dart';
 part './_heat_map_view.dart';
 part './_vol_24h_view.dart';
 
@@ -277,7 +276,8 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
               children: [
                 _DataGridView(logic: logic),
                 _HeatMapView(logic: logic),
-                _ExchangeOiView(logic: logic),
+                // _ExchangeOiView(logic: logic),
+                const ExchangeOiPage(inCoinDetail: true),
                 _Vol24hView(logic: logic),
                 AliveWidget(
                     child: ContractLiqPage(
