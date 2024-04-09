@@ -22,11 +22,13 @@ class ExchangeOiPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final logic = Get.put(ExchangeOiLogic(
-        inCoinDetail: inCoinDetail,
-        baseCoin: inCoinDetail
-            ? Get.find<CoinDetailLogic>().coin.baseCoin
-            : Get.find<ContractLogic>().state.exchangeOIBaseCoin));
+    final logic = Get.put(
+        ExchangeOiLogic(
+            inCoinDetail: inCoinDetail,
+            baseCoin: inCoinDetail
+                ? Get.find<CoinDetailLogic>().coin.baseCoin
+                : Get.find<ContractLogic>().state.exchangeOIBaseCoin),
+        tag: inCoinDetail ? 'coinDetail' : null);
     return Scaffold(
       body: Obx(() {
         if (logic.loading.value) {

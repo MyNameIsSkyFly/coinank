@@ -2,7 +2,8 @@ name: ank_app
 description: ank-app
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 3.0.2+312
+version: 3.0.3+315 #store
+#version: 3.5.3+353 #tf
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -39,24 +40,24 @@ dependencies:
   scrollable_positioned_list: 0.3.8
   expandable: 5.0.1
   flutter_inappwebview: ^6.0.0
-  package_info_plus: ^6.0.0
+  package_info_plus: ^7.0.0
   event_bus: ^2.0.0
   jpush_google_flutter: ^1.0.8
   flutter_fgbg: ^0.3.0
   #cell 侧滑按钮
   flutter_slidable: ^3.1.0
   lottie: ^3.1.0
-  connectivity_plus: ^6.0.1
+  connectivity_plus: ^6.0.2
   #应用角标设置
   flutter_app_badger: ^1.5.0
   screenshot: ^2.3.0
   pointer_interceptor: ^0.10.1
   ff_native_screenshot: ^1.0.0
-  share_plus: ^8.0.2
+  share_plus: ^8.0.3
   image_gallery_saver: ^2.0.3
   path_provider: ^2.1.2
   equatable: ^2.0.5
-  device_info_plus: ^10.0.1
+  device_info_plus: ^10.1.0
   syncfusion_flutter_core: ^25.1.35
   syncfusion_flutter_datagrid: ^25.1.35
   expandable_text: ^2.3.0
@@ -66,11 +67,11 @@ dependencies:
       url: https://github.com/elliotkhd/flutter_screenshot_callback.git
       ref: d49ac805
   awesome_dio_interceptor: ^1.2.0
-  flutter_native_splash: ^2.3.10
+  flutter_native_splash: ^2.4.0
   screenshot_ntv: ^1.0.2
   extended_nested_scroll_view: ^6.2.1
   native_device_orientation: ^2.0.3
-  sentry_flutter: ^7.18.0
+#  sentry_flutter: ^7.18.0
 
 dev_dependencies:
   build_runner: ^2.4.9
@@ -78,8 +79,8 @@ dev_dependencies:
   retrofit_generator: ^8.1.0
   pigeon: ^18.0.0
 
-dependency_overrides:
-  package_info_plus: ^6.0.0
+#dependency_overrides:
+#  package_info_plus: ^7.0.0
 
 flutter:
 

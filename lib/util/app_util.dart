@@ -113,6 +113,7 @@ class AppUtil {
   }
 
   static String getLargeFormatString(dynamic val, {int precision = 1}) {
+    if (val == null) return '0.${'0' * precision}';
     assert(val is String || val is double);
     final locale = (Get.locale ?? Get.deviceLocale).toString();
     double amount = val is String ? double.tryParse(val) ?? 0 : val;
