@@ -158,13 +158,41 @@ class StoreLogic extends GetxController {
     return _SpUtil()._getString(_SpKeys.deviceId);
   }
 
+  static const _chartVersionInDevice = {
+    'chart': 2,
+    'liqHot': 1,
+    'kline': 1,
+    'heatmap': 1,
+    'cateHeatmap': 1,
+    'cateChart': 1
+  };
+
+  Future<bool> saveChartVersion(String chartUrl) {
+    return _SpUtil()._saveString(_SpKeys.chartVersion, chartUrl);
+  }
+
+  bool _chartUseCDN(String type) {
+    try {
+      var version = _SpUtil()._getString(_SpKeys.chartVersion);
+      final chartVersionRemote = {
+        for (var e in version.split('/'))
+          e.split(':')[0]: int.parse(e.split(':')[1])
+      };
+      return chartVersionRemote[type]! > _chartVersionInDevice[type]!;
+    } catch (e) {
+      return true;
+    }
+  }
+
   Future<bool> saveChartUrl(String chartUrl) {
     return _SpUtil()._saveString(_SpKeys.chartUrl, chartUrl);
   }
 
   String get chartUrl {
-    return _SpUtil()
-        ._getString(_SpKeys.chartUrl, defaultValue: 'assets/files/t20.html');
+    return _chartUseCDN('chart')
+        ? _SpUtil()
+            ._getString(_SpKeys.chartUrl, defaultValue: 'assets/files/t23.html')
+        : 'assets/files/t23.html';
   }
 
   //klineUrl
@@ -173,8 +201,10 @@ class StoreLogic extends GetxController {
   }
 
   String get klineUrl {
-    return _SpUtil()
-        ._getString(_SpKeys.klineUrl, defaultValue: 'assets/files/kline.html');
+    return _chartUseCDN('kline')
+        ? _SpUtil()
+            ._getString(_SpKeys.klineUrl, defaultValue: 'assets/files/k5.html')
+        : 'assets/files/k5.html';
   }
 
   //heatMapUrl
@@ -183,8 +213,10 @@ class StoreLogic extends GetxController {
   }
 
   String get heatMapUrl {
-    return _SpUtil()._getString(_SpKeys.heatMapUrl,
-        defaultValue: 'assets/files/heatmap.html');
+    return _chartUseCDN('heatmap')
+        ? _SpUtil()
+            ._getString(_SpKeys.heatMapUrl, defaultValue: 'assets/files/h.html')
+        : 'assets/files/h.html';
   }
 
   //categoryHeatMapUrl
@@ -195,8 +227,10 @@ class StoreLogic extends GetxController {
   }
 
   String get categoryHeatMapUrl {
-    return _SpUtil()._getString(_SpKeys.categoryHeatMapUrl,
-        defaultValue: 'assets/files/category-heatmap.html');
+    return _chartUseCDN('cateHeatmap')
+        ? _SpUtil()._getString(_SpKeys.categoryHeatMapUrl,
+            defaultValue: 'assets/files/category-heatmap.html')
+        : 'assets/files/category-heatmap.html';
   }
 
   //liqHeatMapUrl
@@ -205,8 +239,10 @@ class StoreLogic extends GetxController {
   }
 
   String get liqHeatMapUrl {
-    return _SpUtil()._getString(_SpKeys.liqHeatMapUrl,
-        defaultValue: 'assets/files/liqhm.html');
+    return _chartUseCDN('liqHot')
+        ? _SpUtil()._getString(_SpKeys.liqHeatMapUrl,
+            defaultValue: 'assets/files/liqhm.html')
+        : 'assets/files/liqhm.html';
   }
 
   //categoryChartUrl
@@ -216,8 +252,10 @@ class StoreLogic extends GetxController {
   }
 
   String get categoryChartUrl {
-    return _SpUtil()._getString(_SpKeys.categoryChartUrl,
-        defaultValue: 'assets/files/category-chart.html');
+    return _chartUseCDN('cateChart')
+        ? _SpUtil()._getString(_SpKeys.categoryChartUrl,
+            defaultValue: 'assets/files/category-chart.html')
+        : 'assets/files/category-chart.html';
   }
 
   Future<bool> saveUniappDomain(String uniappDomain) {
@@ -275,14 +313,6 @@ class StoreLogic extends GetxController {
         defaultValue: 'cdn01.coinank.com');
   }
 
-  //isFirst
-  Future<bool> saveIsFirst(bool isFirst) {
-    return _SpUtil()._saveBool(_SpKeys.isFirst, isFirst);
-  }
-
-  bool get isFirst {
-    return _SpUtil()._getBool(_SpKeys.isFirst, defaultValue: true);
-  }
 
   Future<bool> saveRecentChart(ChartEntity recentChart) {
     final original = recentCharts;
@@ -553,6 +583,7 @@ class _SpKeys {
   static const lastSendCodeTime = 'lastSendCodeTime';
 
   static const deviceId = 'deviceId';
+  static const chartVersion = 'ank_chart_version';
   static const chartUrl = 'ank_charturl';
   static const klineUrl = 'ank_kline_url';
   static const heatMapUrl = 'ank_heatmap_url';

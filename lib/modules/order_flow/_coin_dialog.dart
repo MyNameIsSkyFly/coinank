@@ -240,21 +240,24 @@ class _CoinDialogWithInterceptorState extends State<_CoinDialogWithInterceptor>
                           ),
                         ),
                         Expanded(
-                          child: Obx(() {
-                            return ListView.builder(
-                              itemCount: list.length,
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 15),
-                              itemBuilder: (context, index) {
-                                final item = list[index];
+                          child: AppRefresh(
+                            onRefresh: getData,
+                            child: Obx(() {
+                              return ListView.builder(
+                                itemCount: list.length,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 15),
+                                itemBuilder: (context, index) {
+                                  final item = list[index];
 
-                                return _Item(
-                                  item: item,
-                                  onTapMark: () => list.refresh(),
-                                );
-                              },
-                            );
-                          }),
+                                  return _Item(
+                                    item: item,
+                                    onTapMark: () => list.refresh(),
+                                  );
+                                },
+                              );
+                            }),
+                          ),
                         )
                       ],
                     ))
@@ -380,7 +383,6 @@ class _CoinDialogWithInterceptorState extends State<_CoinDialogWithInterceptor>
     );
   }
 }
-
 
 class _Item extends StatelessWidget {
   const _Item({

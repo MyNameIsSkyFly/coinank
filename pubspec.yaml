@@ -2,8 +2,8 @@ name: ank_app
 description: ank-app
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 3.0.3+315 #store
-#version: 3.5.3+353 #tf
+#version: 3.0.3+315 #store
+version: 3.5.0+354 #tf
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -58,8 +58,8 @@ dependencies:
   path_provider: ^2.1.2
   equatable: ^2.0.5
   device_info_plus: ^10.1.0
-  syncfusion_flutter_core: ^25.1.35
-  syncfusion_flutter_datagrid: ^25.1.35
+  syncfusion_flutter_core: ^25.1.39
+  syncfusion_flutter_datagrid: ^25.1.39
   expandable_text: ^2.3.0
   dart_scope_functions: ^0.1.6
   screenshot_callback:

@@ -1,7 +1,6 @@
 // ignore_for_file: avoid_dynamic_calls
 
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/export.dart';
@@ -32,11 +31,7 @@ class Application {
     EasyRefresh.defaultHeaderBuilder = () => const MaterialHeader();
     initLoading();
     await CommonWebView.setCookieValue();
-    if (Platform.isAndroid) {
-      initConfig();
-    } else {
-      await initConfig();
-    }
+    initConfig();
   }
 
   void initLoading() {
@@ -59,11 +54,7 @@ class Application {
   }
 
   Future initConfig() async {
-    if (!StoreLogic.to.isFirst) {
-      await getConfig();
-    } else {
-      StoreLogic.to.saveIsFirst(false);
-    }
+    await getConfig();
   }
 
   Future<bool> getConfig() async {
@@ -76,10 +67,12 @@ class Application {
     final data = jsonDecode(result.data)['data'];
 
     await Future.wait([
+      StoreLogic.to.saveChartVersion(data['ank_chart_version']),
       StoreLogic.to.saveChartUrl(data['ank_charturl']),
       StoreLogic.to.saveKlineUrl(data['ank_kline_url']),
       StoreLogic.to.saveHeatMapUrl(data['ank_heatmap_url']),
       StoreLogic.to.saveCategoryHeatMapUrl(data['ank_category_heatmap_url']),
+      StoreLogic.to.saveCategoryChartUrl(data['ank_category_chart_url']),
       StoreLogic.to.saveLiqHeatMapUrl(data['ank_liq_hot_chart']),
       StoreLogic.to.saveUniappDomain(data['ank_uniappDomain']),
       StoreLogic.to.saveDomain(data['ank_domain']),

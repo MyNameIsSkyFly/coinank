@@ -5,7 +5,7 @@ const getLiqHeatMap = (params)=>{
         {
             method: 'GET', // 请求方法
             headers: {
-                'client':"web",
+                'client':"ios",
                 'Content-Type': 'application/json', // 设置Content-Type为JSON
             }
         }
@@ -20,7 +20,7 @@ const fetchKline = (params)=>{
         {
             method: 'GET', // 请求方法
             headers: {
-                'client':"web",
+                'client':"ios",
                 'Content-Type': 'application/json', // 设置Content-Type为JSON
             }
         }

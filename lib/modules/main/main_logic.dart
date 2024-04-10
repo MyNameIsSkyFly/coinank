@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:ank_app/config/application.dart';
 import 'package:ank_app/constants/app_global.dart';
 import 'package:ank_app/entity/event/logged_event.dart';
 import 'package:ank_app/entity/event/theme_event.dart';
@@ -69,14 +70,16 @@ class MainLogic extends GetxController {
     }
     _connectivitySubscription =
         connectivity.onConnectivityChanged.listen((result) {
+      print(result);
       if (AppConst.networkConnected == true) return;
       AppConst.networkConnected = result.contains(ConnectivityResult.wifi) ||
           result.contains(ConnectivityResult.mobile) ||
           result.contains(ConnectivityResult.other);
       if (AppConst.networkConnected) {
+        Application.instance.getConfig();
         getActivity();
         Get.find<HomeLogic>().onRefresh();
-        if (StoreLogic.isLogin) Get.find<ContractCoinLogicF>().onRefresh();
+        Get.find<ContractCoinLogicF>().onRefresh();
         AppConst.eventBus.fire(ThemeChangeEvent(type: ThemeChangeType.locale));
         tryLogin();
         Get.find<ChartLogic>().onRefresh();

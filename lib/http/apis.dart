@@ -97,7 +97,7 @@ abstract class Apis {
   Future<List<ContractMarketEntity>?> getContractMarketData(
       {@Query('baseCoin') required String baseCoin,
       @Query('sortBy') String? sortBy,
-      @Query('sortType') required String sortType});
+      @Query('sortType') String? sortType});
 
   @GET('/api/fundingRate/current')
   Future<List<MarkerFundingRateEntity>?> getMarketFundingRateData(

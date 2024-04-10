@@ -52,3 +52,4 @@ app.*.map.json
 /ios/Runner/Messages.g.swift
 /.fvm/
 /.vscode/
+/evn_config/ExportOptions.plist

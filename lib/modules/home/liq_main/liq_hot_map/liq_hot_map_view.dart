@@ -107,11 +107,12 @@ class LiqHotMapPage extends StatelessWidget {
                   ),
                 ),
               Container(
-                height: 600,
+                height: MediaQuery.of(context).size.height * 0.7,
                 width: double.infinity,
                 margin: const EdgeInsets.symmetric(horizontal: 5),
                 child: CommonWebView(
                   url: Urls.chartUrl,
+                  safeArea: true,
                   onWebViewCreated: (controller) => state.webCtrl = controller,
                   enableZoom: Platform.isAndroid, //? true : false
                   onLoadStop: (controller) =>
