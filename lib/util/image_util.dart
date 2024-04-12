@@ -6,13 +6,34 @@ import 'package:flutter/material.dart';
 
 class ImageUtil {
   ImageUtil._();
-  static Widget networkImage(String url,
-      {double? width, double? height, Widget? errorWidget}) {
+
+  static Widget networkImage(
+    String url, {
+    Key? key,
+    double? width,
+    double? height,
+    Widget? errorWidget,
+    Duration? fadeInDuration,
+    ValueChanged<Object>? errorListener,
+    bool progressUseErrorWidget = false,
+  }) {
     return CachedNetworkImage(
+      key: key,
       imageUrl: url,
       width: width,
       height: height,
-      fadeInDuration: const Duration(milliseconds: 100),
+      fadeInDuration: fadeInDuration ?? const Duration(milliseconds: 100),
+      errorListener: errorListener,
+      progressIndicatorBuilder: progressUseErrorWidget
+          ? (context, url, progress) {
+              return errorWidget ??
+                  Icon(
+                    Icons.hourglass_empty,
+                    size: min(width ?? 0, height ?? 0),
+                    color: Colors.grey,
+                  );
+            }
+          : null,
       errorWidget: (context, url, error) {
         return errorWidget ??
             Icon(

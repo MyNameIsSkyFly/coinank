@@ -1211,10 +1211,24 @@ class _ChartItem extends StatelessWidget {
                     height: 30,
                     width: 30,
                   )
-                : ImageUtil.networkImage(
-                    'https://cdn01.coinank.com/appicons/${item.key}.png',
-                    height: 30,
-                    width: 30,
+                : ValueBuilder<int?>(
+                    initialValue: 0,
+                    builder: (value, updater) {
+                      return ImageUtil.networkImage(
+                        key: ValueKey('${item.key}$value'),
+                        'https://cdn01.coinank.com/appicons/${item.key}.png',
+                        height: 30,
+                        width: 30,
+                        fadeInDuration: Duration.zero,
+                        progressUseErrorWidget: true,
+                        errorListener: (_) {
+                          Future.delayed(
+                            const Duration(seconds: 5),
+                            () => updater.call((value ?? 0) + 1),
+                          );
+                        },
+                      );
+                    },
                   ),
             const Gap(2),
             Expanded(
