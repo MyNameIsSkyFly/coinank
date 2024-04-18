@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:ank_app/entity/event/event_fullscreen.dart';
 import 'package:ank_app/entity/order_flow_symbol.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/app_refresh.dart';
@@ -37,27 +38,53 @@ class _OrderFlowPageState extends State<OrderFlowPage> {
     super.initState();
   }
 
+// Obx(() {
+//             return Switch(
+//               value: mainLogic.fullscreen.value,
+//               onChanged: (value) {
+//                 AppConst.eventBus.fire(EventFullscreen(value));
+//               },
+//             );
+//           }),
+//           FilledButton(
+//               onPressed: () => Get.to(() => Scaffold()),
+//               child: Text('new page')),
   @override
   Widget build(BuildContext context) {
-    return CommonWebView(
-      showLoading: true,
-      safeArea: true,
-      url: Urls.urlProChart,
-      urlGetter: () => Urls.urlProChart,
-      onWebViewCreated: (controller) {
-        mainLogic.state.webViewController = controller;
-        controller.addJavaScriptHandler(
-          handlerName: 'openSymbolDialog',
-          callback: (arguments) {
-            showCupertinoModalPopup(
-              context: context,
-              builder: (context) {
-                return const _CoinDialogWithInterceptor();
+    return SafeArea(
+      child: CommonWebView(
+        showLoading: true,
+        url: Urls.urlProChart,
+        urlGetter: () => Urls.urlProChart,
+        onWebViewCreated: (controller) {
+          mainLogic.webViewController = controller;
+          controller
+            ..addJavaScriptHandler(
+              handlerName: 'openSymbolDialog',
+              callback: (arguments) {
+                showCupertinoModalPopup(
+                  context: context,
+                  builder: (context) {
+                    return const _CoinDialogWithInterceptor();
+                  },
+                );
+              },
+            )
+            //enableFullscreen(bool enable)
+            ..addJavaScriptHandler(
+              handlerName: 'enableFullscreen',
+              callback: (arguments) {
+                late bool enable;
+                try {
+                  enable = arguments.firstOrNull ?? true;
+                } catch (e) {
+                  enable = true;
+                }
+                AppConst.eventBus.fire(EventFullscreen(enable));
               },
             );
-          },
-        );
-      },
+        },
+      ),
     );
   }
 }

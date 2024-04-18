@@ -48,7 +48,7 @@ class HomeLogic extends GetxController {
       const Duration(seconds: 5),
       (timer) {
         if (!AppConst.canRequest ||
-            mainLogic.state.selectedIndex.value != 0 ||
+            mainLogic.selectedIndex.value != 0 ||
             isRefreshing ||
             Get.currentRoute != RouteConfig.main) return;
         onRefresh();

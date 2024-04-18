@@ -29,7 +29,6 @@ class CommonWebView extends StatefulWidget {
     this.urlGetter,
     this.onWebViewCreated,
     this.showLoading = false,
-    this.safeArea = false,
     this.onLoadStop,
     this.dynamicTitle = false,
     this.enableShare = false,
@@ -44,7 +43,6 @@ class CommonWebView extends StatefulWidget {
   final void Function(InAppWebViewController controller)? onWebViewCreated;
   final void Function(InAppWebViewController controller)? onLoadStop;
   final bool showLoading;
-  final bool safeArea;
   final bool dynamicTitle;
   final bool enableShare;
   final bool enableZoom;
@@ -52,6 +50,8 @@ class CommonWebView extends StatefulWidget {
   final Set<Factory<OneSequenceGestureRecognizer>>? gestureRecognizers;
 
   static Future<void> setCookieValue() async {
+    final cookieManager = CookieManager.instance();
+
     final cookieList = <(String, String)>[];
     cookieList.addAll([
       ('theme', StoreLogic.to.isDarkMode ? 'night' : 'light'),
@@ -62,9 +62,9 @@ class CommonWebView extends StatefulWidget {
             : (StoreLogic.to.loginUserInfo!.token ?? ' ')
       ),
       ('green-up', StoreLogic.to.isUpGreen ? 'true' : 'false'),
+      ('i18n_redirected', AppUtil.shortLanguageName),
     ]);
-    cookieList.add(('i18n_redirected', AppUtil.shortLanguageName));
-
+    await cookieManager.deleteAllCookies();
     await _syncCookie(domain: Urls.h5Prefix, cookies: cookieList);
     //实时挂单数据url cookie
     await _syncCookie(domain: Urls.depthOrderDomain, cookies: cookieList);
@@ -72,18 +72,16 @@ class CommonWebView extends StatefulWidget {
   }
 
   static Future<void> _syncCookie(
-      {String? domain, List<(String, String)>? cookies}) async {
+      {String? domain, required List<(String, String)> cookies}) async {
     if (domain == null) return;
     final cookieManager = CookieManager.instance();
-    if (cookies != null && cookies.isNotEmpty) {
-      for (final cookie in cookies) {
-        await cookieManager.setCookie(
-            url: WebUri(domain), name: cookie.$1, value: cookie.$2);
-      }
-    }
-
-    cookieManager.setCookie(url: WebUri(domain), name: 'Domain', value: domain);
-    cookieManager.setCookie(url: WebUri(domain), name: 'Path', value: '/');
+    await Future.wait([
+      ...cookies.map((e) => cookieManager.setCookie(
+          url: WebUri(domain), name: e.$1, value: e.$2)),
+      cookieManager.setCookie(
+          url: WebUri(domain), name: 'Domain', value: domain),
+      cookieManager.setCookie(url: WebUri(domain), name: 'Path', value: '/'),
+    ]);
   }
 
   @override
@@ -192,6 +190,7 @@ class _CommonWebViewState extends State<CommonWebView>
               : null,
 
           initialSettings: InAppWebViewSettings(
+            isInspectable: true,
             userAgent: Platform.isAndroid
                 ? 'CoinsohoWeb-flutter-Android'
                 : 'CoinsohoWeb-flutter-IOS',
@@ -213,7 +212,7 @@ class _CommonWebViewState extends State<CommonWebView>
             }
           },
           // onWebContentProcessDidTerminate: (controller) => reload(),
-          onWebContentProcessDidTerminate: (controller) => controller.reload(),
+          onWebContentProcessDidTerminate: (controller) => reload(),
           gestureRecognizers: widget.gestureRecognizers ??
               (widget.enableZoom
                   ? {
@@ -235,7 +234,6 @@ class _CommonWebViewState extends State<CommonWebView>
         if (widget.showLoading && _progress != 100) const LottieIndicator(),
       ],
     );
-    if (widget.safeArea) child = SafeArea(child: child);
     if (title != null || widget.enableShare) {
       child = Scaffold(
         resizeToAvoidBottomInset: false,

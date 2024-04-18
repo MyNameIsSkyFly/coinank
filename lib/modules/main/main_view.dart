@@ -1,55 +1,92 @@
+import 'package:ank_app/config/application.dart';
+import 'package:ank_app/constants/app_const.dart';
 import 'package:ank_app/generated/assets.dart';
 import 'package:ank_app/generated/l10n.dart';
-import 'package:ank_app/modules/main/main_state.dart';
 import 'package:ank_app/res/light_colors.dart';
 import 'package:ank_app/res/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 import 'main_logic.dart';
 
-class MainPage extends StatelessWidget {
-  MainPage({super.key});
+class MainPage extends StatefulWidget {
+  const MainPage({super.key});
 
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> with RouteAware {
   final logic = Get.find<MainLogic>();
-  final state = Get.find<MainLogic>().state;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    AppConst.routeObserver
+        .subscribe(this, ModalRoute.of(context)! as PageRoute);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    AppConst.routeObserver.unsubscribe(this);
+  }
+
+  @override
+  void didPopNext() {
+    logic.selectTab(logic.selectedIndex.value);
+    super.didPopNext();
+  }
+
+  @override
+  void didPushNext() {
+    Application.setSystemUiMode();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: state.scaffoldKey,
+      key: logic.scaffoldKey,
       resizeToAvoidBottomInset: false,
       body: Obx(() {
-        return IndexedStack(index: logic.state.selectedIndex.value, children: state.tabPage);
+        return IndexedStack(
+            index: logic.selectedIndex.value, children: logic.tabPage);
       }),
       drawerEnableOpenDragGesture: false,
       bottomNavigationBar: Obx(() {
-        return MyBottomBar(
-          items: [
-            BottomBarItem(
-              Assets.bottomBarHome,
-              S.current.s_home,
-            ),
-            BottomBarItem(
-              Assets.bottomBarMarket,
-              S.current.s_tickers,
-            ),
-            BottomBarItem(
-              Assets.bottomBarBooks,
-              S.current.s_order_flow,
-            ),
-            BottomBarItem(
-              Assets.bottomBarChart,
-              S.current.s_chart,
-            ),
-            BottomBarItem(
-              Assets.bottomBarSet,
-              S.current.s_setting,
-            ),
-          ],
-          currentIndex: state.selectedIndex.value,
-          onTap: (int index) => logic.selectTab(index),
+        return Offstage(
+          offstage: logic.fullscreen.value,
+          child: MyBottomBar(
+            items: [
+              BottomBarItem(
+                Assets.bottomBarHome,
+                S.current.s_home,
+              ),
+              BottomBarItem(
+                Assets.bottomBarMarket,
+                S.current.s_tickers,
+              ),
+              BottomBarItem(
+                Assets.bottomBarBooks,
+                S.current.s_order_flow,
+              ),
+              BottomBarItem(
+                Assets.bottomBarChart,
+                S.current.s_chart,
+              ),
+              BottomBarItem(
+                Assets.bottomBarSet,
+                S.current.s_setting,
+              ),
+            ],
+            currentIndex: logic.selectedIndex.value,
+            onTap: (int index) => logic.selectTab(index),
+          ),
         );
       }),
     );

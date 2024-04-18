@@ -3,11 +3,14 @@ import 'dart:io';
 
 import 'package:ank_app/config/application.dart';
 import 'package:ank_app/constants/app_global.dart';
+import 'package:ank_app/entity/event/event_fullscreen.dart';
 import 'package:ank_app/entity/event/logged_event.dart';
 import 'package:ank_app/entity/event/theme_event.dart';
 import 'package:ank_app/modules/chart/chart_logic.dart';
 import 'package:ank_app/modules/home/home_logic.dart';
 import 'package:ank_app/modules/market/contract/contract_coin/favorite/contract_coin_logic_f.dart';
+import 'package:ank_app/modules/market/market_view.dart';
+import 'package:ank_app/modules/order_flow/order_flow_view.dart';
 import 'package:ank_app/modules/setting/setting_logic.dart';
 import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/export.dart';
@@ -15,18 +18,44 @@ import 'package:ank_app/widget/activity_dialog.dart';
 import 'package:async/async.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_fgbg/flutter_fgbg.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:screenshot_callback/screenshot_callback.dart';
 
-import 'main_state.dart';
+import '../chart/chart_view.dart';
+import '../home/home_view.dart';
+import '../setting/setting_view.dart';
 
 class MainLogic extends GetxController {
-  final MainState state = MainState();
+  RxInt selectedIndex = 0.obs;
+  List<Widget> tabPage = [
+    const HomePage(),
+    const MarketPage(),
+    const OrderFlowPage(),
+    const ChartPage(),
+    const SettingPage(),
+  ];
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+  InAppWebViewController? webViewController;
+  bool isFirstKLine = true;
+  final fullscreen = false.obs;
+
   StreamSubscription? _connectivitySubscription;
   StreamSubscription? appVisibleSubscription;
   final screenshotCallback = ScreenshotCallback();
+  StreamSubscription? _fullscreenSubscription;
+
+  @override
+  void onInit() {
+    super.onInit();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+  }
 
   @override
   void onReady() {
@@ -39,8 +68,16 @@ class MainLogic extends GetxController {
     initPackageInfo();
     listenAppVisibility();
     listenScreenshot();
-
+    _listenFullscreenEvent();
     super.onReady();
+  }
+
+  void _listenFullscreenEvent() {
+    _fullscreenSubscription =
+        AppConst.eventBus.on<EventFullscreen>().listen((event) {
+      fullscreen.value = event.enable;
+      Application.setSystemUiMode(fullscreen: event.enable);
+    });
   }
 
   CancelableOperation? _cancelableOperation;
@@ -70,7 +107,6 @@ class MainLogic extends GetxController {
     }
     _connectivitySubscription =
         connectivity.onConnectivityChanged.listen((result) {
-      print(result);
       if (AppConst.networkConnected == true) return;
       AppConst.networkConnected = result.contains(ConnectivityResult.wifi) ||
           result.contains(ConnectivityResult.mobile) ||
@@ -90,11 +126,21 @@ class MainLogic extends GetxController {
   }
 
   void selectTab(int currentIndex) {
-    // if (state.isFirstKLine && currentIndex == 2) {
-    //   state.isFirstKLine = false;
-    // }
-    if (state.selectedIndex.value != currentIndex) {
-      state.selectedIndex.value = currentIndex;
+    if (currentIndex == 2) {
+      Application.setSystemUiMode(fullscreen: fullscreen.value);
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.landscapeRight,
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.portraitUp,
+      ]);
+    } else {
+      Application.setSystemUiMode();
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+      ]);
+    }
+    if (selectedIndex.value != currentIndex) {
+      selectedIndex.value = currentIndex;
     }
   }
 
@@ -121,6 +167,7 @@ class MainLogic extends GetxController {
   @override
   void onClose() {
     _connectivitySubscription?.cancel();
+    _fullscreenSubscription?.cancel();
     appVisibleSubscription?.cancel();
     super.onClose();
   }
@@ -153,4 +200,16 @@ class MainLogic extends GetxController {
       _lastScreenshotTime = DateTime.now();
     });
   }
+}
+
+class BottomBarItem {
+  final String icon; //未选中状态图标
+  // final String activeIcon; //选中状态图标
+  final String title; //文字
+
+  BottomBarItem(
+    this.icon,
+    //this.activeIcon,
+    this.title,
+  );
 }

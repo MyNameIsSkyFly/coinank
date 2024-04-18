@@ -208,7 +208,9 @@ class _SettingPageState extends State<SettingPage> {
           ),
           if (!StoreLogic.isLogin)
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 44),
+              padding: EdgeInsets.symmetric(
+                  horizontal: 15,
+                  vertical: MediaQuery.of(context).size.height * 0.03),
               child: StoreLogic.isLogin
                   ? FilledButton(
                       style: FilledButton.styleFrom(
@@ -275,8 +277,9 @@ class _SettingLine extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+      child: Container(
+        height: 62,
+        padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Row(
           children: [
             Expanded(child: Text(title, style: Styles.tsBody_16(context))),
@@ -302,8 +305,9 @@ class _ThemeChangeLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      height: 62,
       child: Row(
         children: [
           Expanded(
@@ -311,50 +315,39 @@ class _ThemeChangeLine extends StatelessWidget {
             S.of(context).s_themesetting,
             style: Styles.tsBody_16(context),
           )),
-          GestureDetector(
-            onTap: () => AppUtil.changeTheme(!StoreLogic.to.isDarkMode),
-            child: Stack(
-              children: [
-                AnimatedContainer(
-                  width: 40,
-                  height: 20,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: StoreLogic.to.isDarkMode
-                          ? const Color(0xffA1A7BB)
-                          : Styles.cMain),
-                  duration: const Duration(milliseconds: 200),
-                ),
-                AnimatedPositioned(
-                    left: StoreLogic.to.isDarkMode ? 0 : 20,
-                    duration: const Duration(milliseconds: 200),
-                    child: Container(
-                      width: 20,
-                      height: 20,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                      ),
-                      child: AnimatedSwitcher(
-                          key: const ValueKey('DarkBtnAnimatedSwitcher'),
-                          duration: const Duration(milliseconds: 200),
-                          child: StoreLogic.to.isDarkMode
-                              ? const Icon(
-                                  key: ValueKey('iconMoon'),
-                                  CupertinoIcons.moon_fill,
-                                  color: Colors.black,
-                                  size: 15,
-                                )
-                              : const Icon(
-                                  key: ValueKey('iconSun'),
-                                  CupertinoIcons.sun_max_fill,
-                                  color: Styles.cMain,
-                                  size: 15,
-                                )),
-                    )),
-              ],
-            ),
-          )
+          Switch(
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            trackOutlineWidth: MaterialStateProperty.all(5),
+            trackOutlineColor:
+                MaterialStateProperty.all(Styles.cScaffoldBackground(context)),
+            splashRadius: 0,
+            trackColor: MaterialStateProperty.resolveWith((states) {
+              if (states.contains(MaterialState.selected)) {
+                return Styles.cMain;
+              }
+              return const Color(0xffA1A7BB);
+            }),
+            value: !StoreLogic().isDarkMode,
+            thumbColor: MaterialStateProperty.all(Colors.white),
+            thumbIcon: MaterialStateProperty.resolveWith((states) {
+              if (states.contains(MaterialState.selected)) {
+                return const Icon(
+                  key: ValueKey('iconMoon'),
+                  CupertinoIcons.sun_max_fill,
+                  color: Styles.cMain,
+                  size: 15,
+                );
+              }
+              return const Icon(
+                key: ValueKey('iconSun'),
+                CupertinoIcons.moon_fill,
+                color: Colors.black,
+                size: 15,
+              );
+            }),
+            onChanged: (value) =>
+                AppUtil.changeTheme(!StoreLogic.to.isDarkMode),
+          ),
         ],
       ),
     );

@@ -5,13 +5,13 @@ import 'package:ank_app/res/app_theme.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/util/jpush_util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
+// import 'package:sentry_flutter/sentry_flutter.dart';
 
 Future<void> main() async {
   /// 确保初始化完成
@@ -20,11 +20,8 @@ Future<void> main() async {
   Future.delayed(const Duration(milliseconds: 2000))
       .then((value) => FlutterNativeSplash.remove());
 
-  /// getx初始化
-  // StoreBinding().dependencies();
   await Application.instance.init();
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge,
-      overlays: [SystemUiOverlay.top]);
+  Application.setSystemUiMode();
   runApp(const MyApp());
   // await Sentry.init(
   //   (options) {
@@ -53,6 +50,7 @@ class _MyAppState extends State<MyApp> {
         GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate
       ],
+      navigatorObservers: [AppConst.routeObserver],
       supportedLocales: S.delegate.supportedLocales,
       localeResolutionCallback: (locale, supportedLocales) {
         if (StoreLogic.to.locale != null) {

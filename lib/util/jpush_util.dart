@@ -9,10 +9,10 @@ import 'package:flutter/services.dart';
 import 'package:jpush_google_flutter/jpush_google_flutter.dart';
 
 class JPushUtil {
-
   factory JPushUtil() => _instance;
 
   JPushUtil._();
+
   static final _instance = JPushUtil._();
   final JPush _jpush = JPush();
 

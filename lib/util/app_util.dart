@@ -274,9 +274,9 @@ class AppUtil {
   static Future<void> toKLine(String exchangeName, String symbol,
       String baseCoin, String? productType) async {
     Get.until((route) => route.settings.name == '/');
-    if (Get.find<MainLogic>().state.isFirstKLine) {
+    if (Get.find<MainLogic>().isFirstKLine) {
       Get.find<MainLogic>().selectTab(2);
-      Get.find<MainLogic>().state.isFirstKLine = false;
+      Get.find<MainLogic>().isFirstKLine = false;
       await Future.delayed(const Duration(milliseconds: 100));
     }
     Map<String, dynamic> map = {
@@ -288,7 +288,6 @@ class AppUtil {
     String js = "flutterOpenKline('${jsonEncode(map)}');";
     AppConst.eventBus.fire(WebJSEvent(evJS: js));
     Get.find<MainLogic>()
-        .state
         .webViewController
         ?.evaluateJavascript(source: js);
     // if (Get.find<MainLogic>().state.isFirstKLine) {

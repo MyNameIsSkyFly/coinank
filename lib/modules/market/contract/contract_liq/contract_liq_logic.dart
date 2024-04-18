@@ -51,7 +51,7 @@ class ContractLiqLogic extends GetxController {
       if (canSelectCoin) {
         if (Get.currentRoute != '/') return;
         if (Get.isBottomSheetOpen == true) return;
-        if (Get.find<MainLogic>().state.selectedIndex.value != 1) return;
+        if (Get.find<MainLogic>().selectedIndex.value != 1) return;
         if (Get.find<MarketLogic>().tabCtrl.index != 0) return;
         var index = Get.find<ContractLogic>().state.tabController?.index;
         if (index != 4) return;

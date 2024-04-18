@@ -16,7 +16,7 @@ mixin ContractCategoryLogic {
       if (!AppConst.canRequest) return;
       if (Get.currentRoute != '/') return;
       if (Get.isBottomSheetOpen == true) return;
-      if (Get.find<MainLogic>().state.selectedIndex.value != 1) return;
+      if (Get.find<MainLogic>().selectedIndex.value != 1) return;
       if (!isSpot) {
         if (Get.find<MarketLogic>().tabCtrl.index != 0) return;
         var index = Get.find<ContractLogic>().state.tabController?.index;

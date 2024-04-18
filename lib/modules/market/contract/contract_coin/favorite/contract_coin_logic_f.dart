@@ -167,7 +167,7 @@ class ContractCoinLogicF extends GetxController
   bool get pageVisible {
     if (Get.isBottomSheetOpen == true) return false;
     if (Get.currentRoute != '/') return false;
-    if (Get.find<MainLogic>().state.selectedIndex.value != 1) return false;
+    if (Get.find<MainLogic>().selectedIndex.value != 1) return false;
     if (Get.find<MarketLogic>().tabCtrl.index != 0) return false;
     var index = Get.find<ContractLogic>().state.tabController?.index;
     if (index != 0) return false;

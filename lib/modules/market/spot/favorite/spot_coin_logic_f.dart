@@ -111,7 +111,7 @@ class SpotCoinLogicF extends GetxController implements SpotCoinBaseLogic {
   bool get pageVisible {
     if (Get.isBottomSheetOpen == true) return false;
     if (Get.currentRoute != '/') return false;
-    if (Get.find<MainLogic>().state.selectedIndex.value != 1) return false;
+    if (Get.find<MainLogic>().selectedIndex.value != 1) return false;
     if (Get.find<MarketLogic>().tabCtrl.index != 1) return false;
     if (Get.find<SpotLogic>().tabCtrl.index != 0) return false;
     return true;

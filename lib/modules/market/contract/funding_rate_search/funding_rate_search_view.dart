@@ -38,7 +38,6 @@ class _FundingRateSearchPageState extends State<FundingRateSearchPage> {
                     //     const TextInputType.numberWithOptions(signed: true),
                     style: Styles.tsBody_16(context),
                     inputFormatters: [
-                      RegexFormatter(regex: RegexExpression.regexOnlyLetter),
                       LengthLimitingTextInputFormatter(10),
                       UpperCaseTextFormatter(),
                     ],

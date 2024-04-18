@@ -122,7 +122,7 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin {
     state.pollingTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
       if (!AppConst.canRequest) return;
       if (Get.find<MarketLogic>().tabCtrl.index != 0) return;
-      if (Get.find<MainLogic>().state.selectedIndex.value == 1 &&
+      if (Get.find<MainLogic>().selectedIndex.value == 1 &&
           !state.isRefresh &&
           Get.find<ContractLogic>().state.tabController?.index == 5 &&
           state.appVisible) {

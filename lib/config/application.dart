@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_dynamic_calls
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/export.dart';
@@ -8,7 +9,9 @@ import 'package:ank_app/widget/common_webview.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:lottie/lottie.dart';
 
 import '../constants/urls.dart';
@@ -31,6 +34,9 @@ class Application {
     EasyRefresh.defaultHeaderBuilder = () => const MaterialHeader();
     initLoading();
     await CommonWebView.setCookieValue();
+    if (Platform.isAndroid) {
+      await InAppWebViewController.setWebContentsDebuggingEnabled(true);
+    }
     initConfig();
   }
 
@@ -91,6 +97,15 @@ class Application {
     AppConst.networkConnected = result.contains(ConnectivityResult.wifi) ||
         result.contains(ConnectivityResult.mobile) ||
         result.contains(ConnectivityResult.other);
+  }
+
+  static void setSystemUiMode({bool fullscreen = false}) {
+    if (fullscreen) {
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+          overlays: [SystemUiOverlay.top]);
+    } else {
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    }
   }
 }
 
