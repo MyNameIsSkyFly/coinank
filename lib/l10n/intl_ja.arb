@@ -424,5 +424,7 @@
   "xUsersLiqIn24H": "過去24時間で, {value}人が清算されました",
   "allExchangesLiqData": "取引所別清算データ",
   "singleOrderLiqTop3": "Top3 Liquidation",
-  "liqHeatMap": "Liquidation Heatmap"
+  "liqHeatMap": "Liquidation Heatmap",
+  "funds": "Funds",
+  "time": "時間"
 }

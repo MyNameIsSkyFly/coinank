@@ -310,7 +310,7 @@ class _ContractCoinFilterPageState extends State<ContractCoinFilterPage>
         hintText: hint,
         hintStyle: Styles.tsSub_14(context),
         errorMaxLines: 2,
-        contentPadding: EdgeInsets.all(10),
+        contentPadding: const EdgeInsets.all(10),
         prefixIcon: isPercent
             ? null
             : Center(child: Text('\$', style: Styles.tsBody_14(context))),

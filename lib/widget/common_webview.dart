@@ -74,13 +74,15 @@ class CommonWebView extends StatefulWidget {
   static Future<void> _syncCookie(
       {String? domain, required List<(String, String)> cookies}) async {
     if (domain == null) return;
+    final expireDate = DateTime.now()..add(const Duration(days: 365));
     final cookieManager = CookieManager.instance();
     await Future.wait([
       ...cookies.map((e) => cookieManager.setCookie(
-          url: WebUri(domain), name: e.$1, value: e.$2)),
+          url: WebUri(domain), name: e.$1, value: e.$2, maxAge: 31536000)),
       cookieManager.setCookie(
-          url: WebUri(domain), name: 'Domain', value: domain),
-      cookieManager.setCookie(url: WebUri(domain), name: 'Path', value: '/'),
+          url: WebUri(domain), name: 'Domain', value: domain, maxAge: 31536000),
+      cookieManager.setCookie(
+          url: WebUri(domain), name: 'Path', value: '/', maxAge: 31536000),
     ]);
   }
 
@@ -360,7 +362,10 @@ class _CommonWebViewState extends State<CommonWebView>
         handlerName: 'getAppVersion',
         callback: (arguments) =>
             '${AppConst.packageInfo?.version}+${AppConst.packageInfo?.buildNumber}',
-      );
+      )
+      ..addJavaScriptHandler(
+          handlerName: 'isDarkMode',
+          callback: (arguments) => StoreLogic().isDarkMode);
   }
 
   void _handleOpenPage(Uri uri) {

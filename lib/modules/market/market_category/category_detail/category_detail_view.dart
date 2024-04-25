@@ -65,4 +65,3 @@ class _CategoryDetailPageState extends State<CategoryDetailPage>
     );
   }
 }
-

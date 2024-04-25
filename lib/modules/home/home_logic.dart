@@ -23,7 +23,7 @@ class HomeLogic extends GetxController {
   final btcReduceData = Rxn<BtcReduceEntity>();
   final hostApi = MessageHostApi();
 
-  Timer? pollingTimer;
+  Timer? _pollingTimer;
   Timer? btcReduceTimer;
   bool isRefreshing = false;
 
@@ -40,11 +40,11 @@ class HomeLogic extends GetxController {
   @override
   void onReady() {
     onRefresh();
-    startPolling();
+    startTimer();
   }
 
-  void startPolling() {
-    pollingTimer = Timer.periodic(
+  void startTimer() {
+    _pollingTimer = Timer.periodic(
       const Duration(seconds: 5),
       (timer) {
         if (!AppConst.canRequest ||
@@ -54,6 +54,11 @@ class HomeLogic extends GetxController {
         onRefresh();
       },
     );
+  }
+
+  void stopTimer() {
+    _pollingTimer?.cancel();
+    _pollingTimer = null;
   }
 
   Future<void> onRefresh() async {
@@ -109,7 +114,7 @@ class HomeLogic extends GetxController {
   @override
   void onClose() {
     btcReduceTimer?.cancel();
-    pollingTimer?.cancel();
+    _pollingTimer?.cancel();
     btcReduceTimer = null;
     super.onClose();
   }

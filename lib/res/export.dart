@@ -16,5 +16,4 @@ export 'package:ank_app/widget/loading.dart';
 export 'package:ank_app/widget/lottie_indicator.dart';
 export 'package:ank_app/widget/sliver_app_bar_delegate.dart';
 export 'package:ank_app/widget/sort_with_arrow.dart';
-export 'package:easy_refresh/easy_refresh.dart';
 export 'package:gap/gap.dart';

@@ -31,7 +31,6 @@ class Application {
     // material_indicator.dart 中修改以解决rebuild的问题
     // double? get _value 中添加:
     // if (_mode == IndicatorMode.inactive) return 0;
-    EasyRefresh.defaultHeaderBuilder = () => const MaterialHeader();
     initLoading();
     await CommonWebView.setCookieValue();
     if (Platform.isAndroid) {

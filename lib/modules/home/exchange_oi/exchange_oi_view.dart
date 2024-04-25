@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:ank_app/entity/oi_entity.dart';
 import 'package:ank_app/modules/coin_detail/coin_detail_logic.dart';
 import 'package:ank_app/modules/market/contract/contract_logic.dart';
 import 'package:ank_app/res/export.dart';
@@ -142,21 +141,6 @@ class ExchangeOiPage extends StatelessWidget {
                           ],
                         ),
                       ),
-                      // Obx(() {
-                      //   return Column(
-                      //     children: logic.oiList.mapIndexed(
-                      //       (index, element) {
-                      //         final item = logic.oiList[index];
-                      //         return _OiItem(
-                      //           item: item,
-                      //           baseCoin:
-                      //               logic.menuParamEntity.value.baseCoin ??
-                      //                   '',
-                      //         );
-                      //       },
-                      //     ).toList(),
-                      //   );
-                      // }),
                       const Gap(24),
                       Obx(() {
                         return Row(
@@ -324,110 +308,5 @@ class _CoinListView extends StatelessWidget {
           },
           scrollDirection: Axis.horizontal);
     });
-  }
-}
-
-class _OiItem extends StatelessWidget {
-  const _OiItem({
-    required this.item,
-    required this.baseCoin,
-  });
-
-  final OIEntity item;
-  final String baseCoin;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 10,
-            child: Row(
-              children: [
-                ImageUtil.exchangeImage(item.exchangeName ?? '',
-                    size: 24, isCircle: true),
-                const Gap(10),
-                Expanded(
-                  child: Text(
-                    item.exchangeName ?? '',
-                    style: Styles.tsBody_14m(context),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-              flex: 9,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '\$${AppUtil.getLargeFormatString('${item.coinValue}')}',
-                      style: Styles.tsBody_14m(context),
-                    ),
-                    FittedBox(
-                      child: Text(
-                        '≈${AppUtil.getLargeFormatString('${item.coinCount}')} $baseCoin',
-                        style: Styles.tsSub_12(context),
-                      ),
-                    ),
-                  ],
-                ),
-              )),
-          Expanded(
-              flex: 9,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${((item.rate ?? 0) * 100).toStringAsFixed(2)}%',
-                    textAlign: TextAlign.center,
-                    style: Styles.tsBody_12(context),
-                  ),
-                  const Gap(6),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Styles.cMain.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    clipBehavior: Clip.hardEdge,
-                    alignment: Alignment.centerLeft,
-                    height: 7,
-                    width: double.infinity,
-                    child: FractionallySizedBox(
-                      widthFactor: item.rate?.toDouble(),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Styles.cMain.withOpacity(0.4),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        height: 7,
-                        alignment: Alignment.centerLeft,
-                      ),
-                    ),
-                  ),
-                ],
-              )),
-          Expanded(
-            flex: 6,
-            child: Text(
-              '${((item.change24H ?? 0) * 100).toStringAsFixed(2)}%',
-              textAlign: TextAlign.end,
-              style: TextStyle(
-                color: (item.change24H ?? 0) > 0
-                    ? Styles.cUp(context)
-                    : Styles.cDown(context),
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }

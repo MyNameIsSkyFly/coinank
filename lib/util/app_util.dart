@@ -121,17 +121,25 @@ class AppUtil {
       return FormatUtil.amountConversion(amount, precision: precision);
     }
     final mFormat = NumberFormat('#,##0.${'0' * precision}', 'en_US');
+    bool isNegative = amount < 0;
+    amount = amount.abs();
+    late String result;
     if (amount < 1000) {
       if (amount == 0) return '0.${'0' * precision}';
-      return amount.toStringAsFixed(precision);
+      result = amount.toStringAsFixed(precision);
     } else if (amount < 1000000) {
-      return '${mFormat.format(amount / 1000)}K';
+      result = '${mFormat.format(amount / 1000)}K';
     } else if (amount < 1000000000) {
-      return '${mFormat.format(amount / 1000000)}M';
+      result = '${mFormat.format(amount / 1000000)}M';
     } else if (amount < 1000000000000) {
-      return '${mFormat.format(amount / 1000000000)}B';
+      result = '${mFormat.format(amount / 1000000000)}B';
     } else {
-      return '${mFormat.format(amount / 1000000000000)}T';
+      result = '${mFormat.format(amount / 1000000000000)}T';
+    }
+    if (isNegative) {
+      return '-$result';
+    } else {
+      return result;
     }
   }
 
@@ -287,9 +295,7 @@ class AppUtil {
     };
     String js = "flutterOpenKline('${jsonEncode(map)}');";
     AppConst.eventBus.fire(WebJSEvent(evJS: js));
-    Get.find<MainLogic>()
-        .webViewController
-        ?.evaluateJavascript(source: js);
+    Get.find<MainLogic>().webViewController?.evaluateJavascript(source: js);
     // if (Get.find<MainLogic>().state.isFirstKLine) {
     //   Get.find<MainLogic>().state.isFirstKLine = false;
     // await Future.delayed(Duration(milliseconds: 100));

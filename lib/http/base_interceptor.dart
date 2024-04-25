@@ -45,12 +45,12 @@ class BaseInterceptor extends Interceptor {
       if (response.requestOptions.path
           case '/api/longshort/longShortRatio' ||
               '/api/liquidation/statistic' ||
-              '/api/liquidation/allExchange/intervals') {
-        handler.next(response);
-        return;
+              '/api/liquidation/allExchange/intervals' ||
+              '/api/kline/list') {
+      } else {
+        final data = response.data?['data'];
+        response.data = data;
       }
-      final data = response.data?['data'];
-      response.data = data;
     } else if (response.requestOptions.path.startsWith('/indicatorapi')) {
       final code = response.data?['code'];
       if ('$code' != '200') {

@@ -112,7 +112,7 @@ class ContractCoinLogic extends GetxController
     return true;
   }
 
-  void _startTimer() {
+  void startTimer() {
     _pollingTimer = Timer.periodic(const Duration(seconds: 7), (timer) async {
       if (!AppConst.canRequest) return;
       if (isCategory) {
@@ -124,12 +124,17 @@ class ContractCoinLogic extends GetxController
     });
   }
 
+  void stopTimer() {
+    _pollingTimer?.cancel();
+    _pollingTimer = null;
+  }
+
   bool firstLoginEvent = true;
 
   @override
   void onInit() {
     super.onInit();
-    _startTimer();
+    startTimer();
     dataSource.isCategory = isCategory;
     dataSource.getColumns(Get.context!);
     _favoriteChangedSubscription =

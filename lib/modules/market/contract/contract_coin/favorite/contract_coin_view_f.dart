@@ -1,5 +1,6 @@
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/app_refresh.dart';
+import 'package:ank_app/widget/visibility_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,11 +16,11 @@ class ContractCoinPageF extends StatefulWidget {
   State<ContractCoinPageF> createState() => _ContractCoinPageFState();
 }
 
-class _ContractCoinPageFState extends State<ContractCoinPageF> {
+class _ContractCoinPageFState extends VisibilityState<ContractCoinPageF> {
   final logic = Get.put(ContractCoinLogicF());
 
   @override
-  Widget build(BuildContext context) {
+  Widget builder(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -64,6 +65,12 @@ class _ContractCoinPageFState extends State<ContractCoinPageF> {
         })),
       ],
     );
+  }
+
+  @override
+  void onVisibleAgain() {
+    logic.stopTimer();
+    logic.onRefresh().then((value) => logic.startTimer());
   }
 }
 

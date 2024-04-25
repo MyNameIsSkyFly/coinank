@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:ank_app/constants/urls.dart';
 import 'package:ank_app/entity/oi_chart_menu_param_entity.dart';
 import 'package:ank_app/modules/coin_detail/widgets/coin_detail_chart_kline_view.dart';
+import 'package:ank_app/modules/coin_detail/widgets/coin_detail_fund_flow_view.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/animated_color_text.dart';
 import 'package:ank_app/widget/common_webview.dart';
@@ -39,7 +40,7 @@ class _CoinDetailSpotViewState extends State<CoinDetailSpotView>
   @override
   void initState() {
     tabCtrl =
-        TabController(length: 3, vsync: this, animationDuration: Duration.zero);
+        TabController(length: 4, vsync: this, animationDuration: Duration.zero);
 
     super.initState();
   }
@@ -177,6 +178,7 @@ class _CoinDetailSpotViewState extends State<CoinDetailSpotView>
             tabs: [
               Tab(text: S.of(context).s_tickers),
               Tab(text: S.of(context).heat_map),
+              Tab(text: S.of(context).funds),
               Tab(text: S.of(context).s_24h_turnover),
             ],
           ),
@@ -187,6 +189,10 @@ class _CoinDetailSpotViewState extends State<CoinDetailSpotView>
               children: [
                 _DataGridView(logic: logic),
                 _HeatMapView(logic: logic),
+                CoinDetailFundFlowView(
+                    isSpot: true,
+                    baseCoin: logic.baseCoin,
+                    exchangeName: logic.detailLogic.coin.exchangeName),
                 _Vol24hView(logic: logic),
               ],
             ),

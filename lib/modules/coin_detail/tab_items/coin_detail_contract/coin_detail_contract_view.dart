@@ -6,6 +6,7 @@ import 'package:ank_app/constants/urls.dart';
 import 'package:ank_app/entity/oi_chart_menu_param_entity.dart';
 import 'package:ank_app/modules/coin_detail/tab_items/coin_detail_contract/coin_detail_contract_logic.dart';
 import 'package:ank_app/modules/coin_detail/widgets/coin_detail_chart_kline_view.dart';
+import 'package:ank_app/modules/coin_detail/widgets/coin_detail_fund_flow_view.dart';
 import 'package:ank_app/modules/coin_detail/widgets/coin_detail_selector_view.dart';
 import 'package:ank_app/modules/home/exchange_oi/exchange_oi_view.dart';
 import 'package:ank_app/modules/market/contract/contract_liq/contract_liq_view.dart';
@@ -44,7 +45,7 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
   @override
   void initState() {
     logic.tabCtrl =
-        TabController(length: 6, vsync: this, animationDuration: Duration.zero);
+        TabController(length: 7, vsync: this, animationDuration: Duration.zero);
 
     super.initState();
   }
@@ -263,6 +264,7 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
             tabs: [
               Tab(text: S.of(context).s_tickers),
               Tab(text: S.of(context).heat_map),
+              Tab(text: S.of(context).funds),
               Tab(text: S.of(context).tradingPosition),
               Tab(text: S.of(context).s_24h_turnover),
               Tab(text: S.of(context).s_liquidation_data),
@@ -276,6 +278,11 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
               children: [
                 _DataGridView(logic: logic),
                 _HeatMapView(logic: logic),
+                CoinDetailFundFlowView(
+                  isSpot: false,
+                  baseCoin: logic.baseCoin,
+                  exchangeName: logic.detailLogic.coin.exchangeName,
+                ),
                 // _ExchangeOiView(logic: logic),
                 const ExchangeOiPage(inCoinDetail: true),
                 _Vol24hView(logic: logic),

@@ -87,8 +87,8 @@ class DataGridView extends StatelessWidget {
           GridDataSource(list.value, showChange: showChange);
       return SfTheme(
         data: SfThemeData(
-            dataGridThemeData:
-                SfDataGridThemeData(frozenPaneLineColor: Colors.transparent)),
+            dataGridThemeData: const SfDataGridThemeData(
+                frozenPaneLineColor: Colors.transparent)),
         child: SfDataGrid(
             showHorizontalScrollbar: false,
             showVerticalScrollbar: false,

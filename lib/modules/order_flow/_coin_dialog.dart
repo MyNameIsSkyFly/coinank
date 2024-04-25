@@ -330,7 +330,11 @@ class _CoinDialogWithInterceptorState extends State<_CoinDialogWithInterceptor>
             },
             child: Row(
               children: [
-                Text(currentExchange.value ?? S.of(context).s_all),
+                Text(currentExchange.value == null
+                    ? S.of(context).s_all
+                    : currentExchange.value == 'Okex'
+                        ? 'Okx'
+                        : currentExchange.value!),
                 Icon(
                     isOpen.value
                         ? CupertinoIcons.chevron_up
@@ -376,7 +380,11 @@ class _CoinDialogWithInterceptorState extends State<_CoinDialogWithInterceptor>
               currentExchange.value = exchanges.toList()[index];
               list.assignAll(filteredList);
             },
-            child: Text(exchanges.toList()[index]),
+            child: Text(
+              exchanges.toList()[index] == 'Okex'
+                  ? 'Okx'
+                  : exchanges.toList()[index],
+            ),
           ),
         ),
       ),
@@ -486,7 +494,10 @@ class _Item extends StatelessWidget {
                     ],
                   ),
                   const Gap(4),
-                  Text(item.exchangeName ?? '',
+                  Text(
+                      item.exchangeName == 'Okex'
+                          ? 'Okx'
+                          : item.exchangeName ?? '',
                       style: Styles.tsSub_12(context)),
                 ],
               ),

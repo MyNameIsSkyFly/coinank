@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:ank_app/constants/urls.dart';
 import 'package:ank_app/modules/home/home_search/home_search_view.dart';
@@ -207,11 +208,13 @@ class _BtcReduceView extends StatelessWidget {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  _box(context, text: '${duration.inDays}'),
+                  _box(context, text: '${max(duration.inDays, 0)}'),
                   Text(S.of(context).days, style: style1),
-                  _box(context, text: '${duration.inHours % 24}'),
+                  _box(context,
+                      text: '${max(duration.inHours.remainder(24), 0)}'),
                   Text(S.of(context).hours, style: style1),
-                  _box(context, text: '${duration.inMinutes % 60}'),
+                  _box(context,
+                      text: '${max(duration.inMinutes.remainder(60), 0)}'),
                   Text(S.of(context).minutes, style: style1),
                 ],
               );

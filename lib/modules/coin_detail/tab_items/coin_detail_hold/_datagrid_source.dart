@@ -122,7 +122,7 @@ class GridDataSource extends DataGridSource {
                       true) ...[
                     const Gap(5),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 5),
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
                         color: Styles.cSub(Get.context!).withOpacity(0.2),

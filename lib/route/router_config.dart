@@ -28,7 +28,7 @@ class RouteConfig {
   static const String contractMarketSearch = '/marker/contractMarket/search';
 
   static final List<GetPage> getPages = [
-    GetPage(name: main, page: () => MainPage(), binding: MainBinding()),
+    GetPage(name: main, page: () => const MainPage(), binding: MainBinding()),
     GetPage(
         name: contractMarketSearch,
         page: () => ContractMarketSearchPage(),

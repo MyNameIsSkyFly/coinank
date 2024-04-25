@@ -423,5 +423,7 @@
   "xUsersLiqIn24H": "지난 24시간 동안 , {value} 명의 거래자가 청산되었습니다",
   "allExchangesLiqData": "거래소 청산",
   "singleOrderLiqTop3": "Top3 Liquidation",
-  "liqHeatMap": "Liquidation Heatmap"
+  "liqHeatMap": "Liquidation Heatmap",
+  "funds": "Funds",
+  "time": "시간"
 }

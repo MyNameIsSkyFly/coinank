@@ -32,7 +32,7 @@ class SpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
   @override
   void onInit() {
     dataSource.getColumns(Get.context!);
-    _startTimer();
+    startTimer();
     _favoriteChangedSubscription =
         AppConst.eventBus.on<EventCoinMarked>().listen(
       (event) {
@@ -106,7 +106,7 @@ class SpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
     return true;
   }
 
-  Future<void> _startTimer() async {
+  Future<void> startTimer() async {
     _pollingTimer = Timer.periodic(const Duration(seconds: 7), (timer) async {
       if (!AppConst.canRequest) return;
       if (isCategory) {
@@ -116,6 +116,11 @@ class SpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
       if (!pageVisible) return;
       await onRefresh();
     });
+  }
+
+  void stopTimer() {
+    _pollingTimer?.cancel();
+    _pollingTimer = null;
   }
 
   @override

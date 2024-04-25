@@ -8,6 +8,8 @@ import 'package:ank_app/entity/chart_entity.dart';
 import 'package:ank_app/entity/chart_left_entity.dart';
 import 'package:ank_app/entity/coin_detail_entity.dart';
 import 'package:ank_app/entity/contract_market_entity.dart';
+import 'package:ank_app/entity/fund_his_list_entity.dart';
+import 'package:ank_app/entity/kline_entity.dart';
 import 'package:ank_app/entity/liq_all_exchange_entity.dart';
 import 'package:ank_app/entity/marker_funding_rate_entity.dart';
 import 'package:ank_app/entity/oi_entity.dart';
@@ -391,4 +393,27 @@ abstract class Apis {
       @Query('exchangeName') String? exchangeName,
       @Query('side') String? side,
       @Query('amount') int? amount});
+
+  //api/kline/list?exchange=Binance&symbol=BTCUSDT&interval=1h&side=to&ts=1713425037000&size=500&exchangeType=SWAP
+  @GET('/api/kline/list')
+  Future<KlineEntity?> getKlineList({
+    @Query('exchange') String? exchange,
+    @Query('symbol') String? symbol,
+    @Query('interval') String? interval,
+    @Query('side') String? side,
+    @Query('ts') int? ts,
+    @Query('size') int? size,
+    @Query('exchangeType') String? exchangeType,
+  });
+
+  //api/fund/getFundHisList?baseCoin=BTC&exchangeName=Binance&interval=15m&endTime=1713514573070&size=100&productType=SWAP
+  @GET('/api/fund/getFundHisList')
+  Future<List<FundHisListEntity>?> getFundHisList({
+    @Query('baseCoin') String? baseCoin,
+    @Query('exchangeName') String? exchangeName,
+    @Query('interval') String? interval,
+    @Query('endTime') int? endTime,
+    @Query('size') int? size,
+    @Query('productType') String? productType,
+  });
 }

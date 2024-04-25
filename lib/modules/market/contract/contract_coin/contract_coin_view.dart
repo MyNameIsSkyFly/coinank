@@ -1,6 +1,7 @@
 import 'package:ank_app/modules/market/contract/contract_coin/widgets/customize_filter_header_view.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/app_refresh.dart';
+import 'package:ank_app/widget/visibility_state.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,11 +16,11 @@ class ContractCoinPage extends StatefulWidget {
   State<ContractCoinPage> createState() => _ContractCoinPageState();
 }
 
-class _ContractCoinPageState extends State<ContractCoinPage> {
+class _ContractCoinPageState extends VisibilityState<ContractCoinPage> {
   final logic = Get.put(ContractCoinLogic(isCategory: false));
 
   @override
-  Widget build(BuildContext context) {
+  Widget builder(BuildContext context) {
     return Column(
       children: [
         CustomizeFilterHeaderView(
@@ -42,5 +43,11 @@ class _ContractCoinPageState extends State<ContractCoinPage> {
         ),
       ],
     );
+  }
+
+  @override
+  void onVisibleAgain() {
+    logic.stopTimer();
+    logic.onRefresh().then((value) => logic.startTimer());
   }
 }

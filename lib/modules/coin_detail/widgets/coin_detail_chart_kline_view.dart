@@ -1,13 +1,8 @@
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:ank_app/constants/urls.dart';
 import 'package:ank_app/res/export.dart';
-import 'package:ank_app/widget/common_webview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
+import 'package:k_chart/flutter_k_chart.dart' hide S;
 
 import 'coin_detail_selector_view.dart';
 
@@ -30,29 +25,38 @@ class ChartKlineView extends StatefulWidget {
 }
 
 class _ChartKlineViewState extends State<ChartKlineView> {
-  InAppWebViewController? webCtrl;
+  // InAppWebViewController? webCtrl;
+  final _klineDataList = RxList<KLineEntity>();
+
+  @override
+  void initState() {
+    initKlineDataList();
+    super.initState();
+  }
 
   Widget _timeItem(String text, String? value) {
     return Expanded(
-        child: Center(
-            child: GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: value == null
-          ? null
-          : () {
-              interval.value = value;
-              _evaluate();
-            },
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Text(
-          text,
-          style: interval.value == value
-              ? Styles.tsMain_12
-              : Styles.tsSub_12(context),
+      child: Center(
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: value == null
+              ? null
+              : () {
+                  interval.value = value;
+                  _evaluate();
+                },
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Text(
+              text,
+              style: interval.value == value
+                  ? Styles.tsMain_12
+                  : Styles.tsSub_12(context),
+            ),
+          ),
         ),
       ),
-    )));
+    );
   }
 
   final timeItems = ['1m', '3m', '5m', '30m', '2H', '6H', '12H'];
@@ -127,12 +131,37 @@ class _ChartKlineViewState extends State<ChartKlineView> {
         SizedBox(
           height: 250,
           width: double.infinity,
-          child: CommonWebView(
-            onWebViewCreated: (controller) => webCtrl = controller,
-            onLoadStop: (controller) async => _evaluate(),
-            url: Urls.klineUrl,
-            enableZoom: true,
-          ),
+          child: Obx(() {
+            return KChartWidget(
+              _klineDataList.value,
+              ChartStyle()..topPadding = 0,
+              ChartColors()
+                // ..selectFillColor = Styles.cSub(context).withOpacity(0.4)
+                ..volColor = Styles.cMain
+                ..vCrossColor = Styles.cSub(context).withOpacity(0.2)
+                ..hCrossColor = Styles.cSub(context).withOpacity(0.2)
+                ..lineFillColor = Styles.cUp(context)
+                ..kLineColor = Styles.cUp(context)
+                ..lineFillInsideColor = Styles.cScaffoldBackground(context)
+                ..gridColor = Styles.cScaffoldBackground(context)
+                ..upColor = Styles.cSub(context).withOpacity(0.4)
+                ..dnColor = Styles.cSub(context).withOpacity(0.4)
+                ..nowPriceTextColor = Colors.white
+                ..nowPriceUpColor = Styles.cMain
+                ..nowPriceDnColor = Styles.cMain
+                ..defaultTextColor = Styles.cSub(context)
+                ..bgColor = [
+                  Styles.cScaffoldBackground(context),
+                  Styles.cScaffoldBackground(context)
+                ],
+              xFrontPadding: 0,
+              secondaryState: SecondaryState.NONE,
+              isTrendLine: false,
+              isLine: true,
+              isTapShowInfoDialog: true,
+              showNowPrice: false,
+            );
+          }),
         ),
       ],
     );
@@ -140,36 +169,28 @@ class _ChartKlineViewState extends State<ChartKlineView> {
 
   final interval = '15m'.obs;
 
+  Future<void> initKlineDataList() async {
+    final data = await Apis().getKlineList(
+      size: 500,
+      exchange: widget.exchangeName,
+      symbol: widget.symbol,
+      exchangeType: widget.isSpot ? 'SPOT' : 'SWAP',
+      interval: interval.value,
+      side: 'to',
+    );
+    _klineDataList.assignAll((data?.data ?? [])
+        .map((e) => KLineEntity.fromCustom(
+              time: e[0]?.toInt(),
+              open: e[2] ?? 0,
+              close: e[3] ?? 0,
+              high: e[4] ?? 0,
+              low: e[5] ?? 0,
+              vol: e[6] ?? 0,
+            ))
+        .toList());
+  }
+
   void _evaluate() {
-    final dataParams = {
-      'baseCoin': widget.baseCoin,
-      'exchange': widget.exchangeName,
-      'symbol': widget.symbol,
-      'interval': interval.value,
-      'exchangeType': widget.isSpot ? 'SPOT' : 'SWAP',
-      // 'baseCoin': widget.logic.baseCoin,
-      //币
-      // 'productType': 'CONTRACT',
-      // "SPOT"现货, "CONTRACT":合约
-      // 'type': isOi.value ? 'oi' : 'vol'
-      // vol: 成交量, oi: 持仓
-    };
-    // setChartData({exchange: "Okex",//交易所
-    //   symbol: "BTC-USDT",//交易对
-    //   interval: "30m",//时间级别
-    //   exchangeType: "SPOT"}, //交易对类型 SPOT 现货, SWAP,永续
-    //     "android",
-    //     "kline",
-    //     {
-    //       theme: "light",//主题
-    //       locale:"zh"//语言
-    //     })
-    var platformString = Platform.isAndroid ? 'android' : 'ios';
-    var dataParamsString = jsonEncode(dataParams);
-    var localeString = jsonEncode({'locale': AppUtil.shortLanguageName});
-    var jsSource = '''
-        setChartData($dataParamsString, "$platformString", "kline", $localeString);    
-                ''';
-    webCtrl?.evaluateJavascript(source: jsSource);
+    initKlineDataList();
   }
 }

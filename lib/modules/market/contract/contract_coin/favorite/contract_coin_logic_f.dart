@@ -35,7 +35,7 @@ class ContractCoinLogicF extends GetxController
     super.onReady();
     if (!StoreLogic.isLogin) {
       onRefresh();
-      _startTimer();
+      startTimer();
     }
   }
 
@@ -47,7 +47,7 @@ class ContractCoinLogicF extends GetxController
     _loginSubscription =
         AppConst.eventBus.on<LoginStatusChangeEvent>().listen((event) {
       onRefresh();
-      _startTimer();
+      startTimer();
     });
     _favoriteChangedSubscription =
         AppConst.eventBus.on<EventCoinMarked>().listen((event) {
@@ -126,10 +126,10 @@ class ContractCoinLogicF extends GetxController
     if (StoreLogic.isLogin) {
       result = await Apis()
           .postFuturesBigData(
-        StoreLogic().contractCoinFilter ?? {},
-        page: 1,
-        size: 500,
-        isFollow: true,
+            StoreLogic().contractCoinFilter ?? {},
+            page: 1,
+            size: 500,
+            isFollow: true,
           )
           .whenComplete(() => _fetching = false);
     } else {
@@ -174,7 +174,7 @@ class ContractCoinLogicF extends GetxController
     return true;
   }
 
-  void _startTimer() {
+  void startTimer() {
     if (_pollingTimer != null) return;
     _pollingTimer = Timer.periodic(const Duration(seconds: 7), (timer) async {
       if (!AppConst.canRequest) return;
@@ -201,6 +201,10 @@ class ContractCoinLogicF extends GetxController
     selectedFixedCoin.clear();
   }
 
+  void stopTimer() {
+    _pollingTimer?.cancel();
+    _pollingTimer = null;
+  }
 
   @override
   void onClose() {

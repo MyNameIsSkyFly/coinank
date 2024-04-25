@@ -15,6 +15,7 @@ class CoinDetailContractLogic extends GetxController {
   final info = Rxn<CoinDetailContractInfoEntity>();
   final typeIndex = 0.obs;
   late final gridSource = GridDataSource([], baseCoin);
+
   String get baseCoin => detailLogic.coin.baseCoin ?? '';
   Timer? _timer;
   final coin24hInfo = Rxn<ContractMarketEntity>();
@@ -90,5 +91,4 @@ class CoinDetailContractLogic extends GetxController {
     final result = await Apis().getCoinDetailContractInfo(baseCoin);
     info.value = result;
   }
-
 }

@@ -38,7 +38,7 @@ class SpotCoinLogicF extends GetxController implements SpotCoinBaseLogic {
     _loginSubscription =
         AppConst.eventBus.on<LoginStatusChangeEvent>().listen((event) {
       onRefresh();
-      _startTimer();
+      startTimer();
     });
     _favoriteChangedSubscription =
         AppConst.eventBus.on<EventCoinMarked>().listen((event) {
@@ -64,7 +64,7 @@ class SpotCoinLogicF extends GetxController implements SpotCoinBaseLogic {
   void onReady() {
     if (!StoreLogic.isLogin) {
       onRefresh();
-      _startTimer();
+      startTimer();
     }
     super.onReady();
   }
@@ -117,13 +117,18 @@ class SpotCoinLogicF extends GetxController implements SpotCoinBaseLogic {
     return true;
   }
 
-  Future<void> _startTimer() async {
+  Future<void> startTimer() async {
     _pollingTimer = Timer.periodic(const Duration(seconds: 7), (timer) async {
       if (!AppConst.canRequest) return;
       if (!pageVisible) return;
 
       await onRefresh();
     });
+  }
+
+  void stopTimer() {
+    _pollingTimer?.cancel();
+    _pollingTimer = null;
   }
 
   @override

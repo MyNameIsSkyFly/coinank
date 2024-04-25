@@ -423,5 +423,7 @@
   "xUsersLiqIn24H": "最近24小時,共有{value}海外用戶被爆倉",
   "allExchangesLiqData": "各交易所爆倉數據",
   "singleOrderLiqTop3": "單筆爆倉Top3",
-  "liqHeatMap": "爆倉熱圖"
+  "liqHeatMap": "爆倉熱圖",
+  "funds": "資金",
+  "time": "時間"
 }

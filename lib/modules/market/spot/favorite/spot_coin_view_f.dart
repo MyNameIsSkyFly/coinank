@@ -2,6 +2,7 @@ import 'package:ank_app/modules/market/contract/contract_coin/widgets/customize_
 import 'package:ank_app/modules/market/spot/widgets/spot_coin_data_grid_view.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/app_refresh.dart';
+import 'package:ank_app/widget/visibility_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,11 +16,11 @@ class SpotCoinViewF extends StatefulWidget {
   State<SpotCoinViewF> createState() => _SpotCoinViewFState();
 }
 
-class _SpotCoinViewFState extends State<SpotCoinViewF> {
+class _SpotCoinViewFState extends VisibilityState<SpotCoinViewF> {
   final logic = Get.find<SpotCoinLogicF>();
 
   @override
-  Widget build(BuildContext context) {
+  Widget builder(BuildContext context) {
     return Obx(() {
       return IndexedStack(
         index: logic.isLoading.value
@@ -56,6 +57,12 @@ class _SpotCoinViewFState extends State<SpotCoinViewF> {
         ],
       );
     });
+  }
+
+  @override
+  void onVisibleAgain() {
+    logic.stopTimer();
+    logic.onRefresh().then((value) => logic.startTimer());
   }
 }
 
