@@ -36,6 +36,8 @@ class Application {
     if (Platform.isAndroid) {
       await InAppWebViewController.setWebContentsDebuggingEnabled(true);
     }
+    PlatformInAppWebViewController.debugLoggingSettings =
+        DebugLoggingSettings(enabled: false);
     initConfig();
   }
 

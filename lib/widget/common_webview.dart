@@ -137,17 +137,24 @@ class _CommonWebViewState extends State<CommonWebView>
     CommonWebView.setCookieValue().then((value) => reload());
   }
 
+  Timer? _titleTimer;
+
   void startWebRefreshCounter() {
     if (!Platform.isIOS) return;
     if (!(widget.url.contains('proChart') == true ||
         widget.urlGetter?.call().contains('proChart') == true)) return;
     _fgbgSubscription = FGBGEvents.stream.listen((event) {
       if (event == FGBGType.foreground) {
-        webCtrl?.getTitle().then((value) {
-          if (value?.isEmpty case true || null) {
-            reload();
-          }
+        _titleTimer = Timer(const Duration(seconds: 3), () {
+          webCtrl?.getTitle().then((value) {
+            if (value?.isEmpty case true || null) {
+              reload();
+            }
+          });
         });
+      } else {
+        _titleTimer?.cancel();
+        _titleTimer = null;
       }
     });
   }
@@ -190,7 +197,6 @@ class _CommonWebViewState extends State<CommonWebView>
                   widget.url.startsWith('http://')
               ? URLRequest(url: WebUri(widget.urlGetter?.call() ?? widget.url))
               : null,
-
           initialSettings: InAppWebViewSettings(
             isInspectable: true,
             userAgent: Platform.isAndroid
@@ -213,7 +219,6 @@ class _CommonWebViewState extends State<CommonWebView>
               setState(() {});
             }
           },
-          // onWebContentProcessDidTerminate: (controller) => reload(),
           onWebContentProcessDidTerminate: (controller) => reload(),
           gestureRecognizers: widget.gestureRecognizers ??
               (widget.enableZoom

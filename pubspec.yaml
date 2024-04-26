@@ -2,8 +2,8 @@ name: ank_app
 description: ank-app
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-#version: 3.0.5+320 #store
-version: 3.5.0+363 #tf
+version: 3.0.5+321 #store
+#version: 3.5.0+364 #tf
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -131,12 +131,13 @@ scripts:
   build:
     apk:
       flutter build apk --release --dart-define-from-file=evn_config/soto.json --obfuscate --split-debug-info=./symbols
-    abb:
+    aab:
       flutter build appbundle --release --dart-define-from-file=evn_config/soto_play.json --obfuscate --split-debug-info=./symbols
     xc:
       flutter build xcarchive --release --obfuscate --split-debug-info=./symbols
   locate:
     apk: open -R build/app/outputs/flutter-apk/app-release.apk
+    aab: open -R build/app/outputs/bundle/release/app-release.aab
     xc: open -R build/ios/archive/Runner.xcarchive
   open:
     xc: open build/ios/archive/Runner.xcarchive
