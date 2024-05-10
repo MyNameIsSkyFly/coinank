@@ -30,13 +30,9 @@ class SearchV2ItemEntity extends Equatable {
   final String? baseCoin;
   final String? exchangeName;
   final String? symbol;
-  @JsonKey(includeToJson: false)
   final double? oi;
-  @JsonKey(includeToJson: false)
   final double? oiChg;
-  @JsonKey(includeToJson: false)
   final double? price;
-  @JsonKey(includeToJson: false)
   final double? priceChg;
   final bool? supportSpot;
   final bool? supportContract;

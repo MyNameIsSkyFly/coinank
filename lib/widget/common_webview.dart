@@ -206,8 +206,7 @@ class _CommonWebViewState extends State<CommonWebView>
             transparentBackground: true,
             javaScriptCanOpenWindowsAutomatically: true,
             useHybridComposition:
-                widget.urlGetter?.call().contains('proChart') == true ||
-                    !widget.canPop,
+                widget.urlGetter?.call().contains('proChart') == true,
           ),
           onWebViewCreated: (controller) => _onWebViewCreated(controller),
           onLoadStop: (controller, url) => _onLoadStop(controller),
