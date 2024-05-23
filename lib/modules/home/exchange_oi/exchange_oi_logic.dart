@@ -147,7 +147,6 @@ setChartData($jsonData, "$platformString", "openInterest", ${jsonEncode(options)
     var result = await Get.bottomSheet(
       CustomSelector(title: '', dataList: items),
       isScrollControlled: true,
-      isDismissible: true,
     );
     result = result == 'Okx' ? 'Okex' : result;
     return result as String?;

@@ -40,7 +40,6 @@ class LongShortRatioLogic extends GetxController {
         current: isHeader ? state.longSortTime.value : state.webTime.value,
       ),
       isScrollControlled: true,
-      isDismissible: true,
     );
     if (result != null) {
       final v = result as String;

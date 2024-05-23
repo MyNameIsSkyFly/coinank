@@ -6,7 +6,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 3.5.0+365 #tf
 
 environment:
-  sdk: '>=3.3.0 <4.0.0'
+  sdk: '^3.4.0'
 
 dependencies:
   flutter:
@@ -22,7 +22,7 @@ dependencies:
   #缓存
   shared_preferences: ^2.2.3
   flutter_easyloading: 3.0.5
-  intl: ^0.18.1
+  intl: ^0.19.0
   retrofit: ^4.1.0
   cached_network_image: ^3.3.1
   collection: ^1.18.0
@@ -44,11 +44,11 @@ dependencies:
   flutter_fgbg: ^0.3.0
   #cell 侧滑按钮
   flutter_slidable: ^3.1.0
-  lottie: ^3.1.0
+  lottie: ^3.1.1
   connectivity_plus: ^6.0.3
   #应用角标设置
   flutter_app_badger: ^1.5.0
-  screenshot: ^2.3.0
+  screenshot: ^3.0.0
   pointer_interceptor: ^0.10.1+1
   ff_native_screenshot: ^1.0.0
   share_plus: ^9.0.0
@@ -60,7 +60,7 @@ dependencies:
   syncfusion_flutter_datagrid: ^25.2.3
   syncfusion_flutter_charts: ^25.2.3+1
   expandable_text: ^2.3.0
-  dart_scope_functions: ^0.1.6
+  dart_scope_functions: ^0.1.7
   screenshot_callback:
     git:
       url: https://github.com/elliotkhd/flutter_screenshot_callback.git
@@ -77,10 +77,10 @@ dependencies:
 
 
 dev_dependencies:
-  build_runner: ^2.4.9
+  build_runner: ^2.4.10
   flutter_lints: ^4.0.0
   retrofit_generator: ^8.1.0
-  pigeon: ^18.0.1
+  pigeon: ^19.0.0
   json_serializable: ^6.8.0
 
 #dependency_overrides:

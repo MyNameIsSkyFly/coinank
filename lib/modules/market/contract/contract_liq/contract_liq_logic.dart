@@ -161,7 +161,6 @@ setChartData($jsonData, "$platformString", "liqStatistic", ${jsonEncode(options)
       context: Get.context!,
       builder: (context) => const SelectorSheetWithInterceptor(
           title: '', dataList: ['15m', '30m', '1h', '2h', '4h', '12h', '1d']),
-      barrierDismissible: true,
       barrierColor: Colors.black26,
     );
 

@@ -74,7 +74,6 @@ class CommonWebView extends StatefulWidget {
   static Future<void> _syncCookie(
       {String? domain, required List<(String, String)> cookies}) async {
     if (domain == null) return;
-    final expireDate = DateTime.now()..add(const Duration(days: 365));
     final cookieManager = CookieManager.instance();
     await Future.wait([
       ...cookies.map((e) => cookieManager.setCookie(

@@ -10,7 +10,7 @@ class _GridView extends StatelessWidget {
     return Obx(() {
       return SfTheme(
         data: SfThemeData(
-            dataGridThemeData: SfDataGridThemeData(
+            dataGridThemeData: const SfDataGridThemeData(
           frozenPaneLineColor: Colors.transparent,
         )),
         child: SfDataGrid(

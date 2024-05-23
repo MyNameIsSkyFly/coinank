@@ -7,7 +7,7 @@ class AppThemes {
   static ThemeData get lightTheme => baseTheme.copyWith(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Styles.cMain,
-          onBackground: Colors.black,
+          onSurface: Colors.black,
           tertiary: Colors.white,
         ),
         progressIndicatorTheme: const ProgressIndicatorThemeData(
@@ -64,7 +64,7 @@ class AppThemes {
         colorScheme: ColorScheme.fromSeed(
           seedColor: Styles.cMain,
           brightness: Brightness.dark,
-          onBackground: Colors.white,
+          onSurface: Colors.white,
           tertiary: Styles.cTextBlack,
         ),
         progressIndicatorTheme: const ProgressIndicatorThemeData(

@@ -53,7 +53,6 @@ setChartData($jsonData, "$platformString", "volChart", ${jsonEncode(options)});
       context: context,
       builder: (context) =>
           SelectorSheetWithInterceptor(title: '', dataList: items),
-      barrierDismissible: true,
       barrierColor: Colors.black26,
     );
     result = result == 'Okx' ? 'Okex' : result;

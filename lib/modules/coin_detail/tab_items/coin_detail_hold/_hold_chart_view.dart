@@ -71,7 +71,6 @@ setChartData($jsonData, "$platformString", "holderAddress", ${jsonEncode(options
       context: context,
       builder: (context) =>
           SelectorSheetWithInterceptor(title: '', dataList: items),
-      barrierDismissible: true,
       barrierColor: Colors.black26,
     );
 

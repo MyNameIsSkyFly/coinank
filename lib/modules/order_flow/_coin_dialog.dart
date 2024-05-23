@@ -347,12 +347,12 @@ class _CoinDialogWithInterceptorState extends State<_CoinDialogWithInterceptor>
       },
       // clipBehavior: Clip.none,
       style: MenuStyle(
-          shape: MaterialStatePropertyAll(
+          shape: WidgetStatePropertyAll(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
-          elevation: const MaterialStatePropertyAll(10),
-          padding: const MaterialStatePropertyAll(EdgeInsets.zero),
+          elevation: const WidgetStatePropertyAll(10),
+          padding: const WidgetStatePropertyAll(EdgeInsets.zero),
           shadowColor:
-              MaterialStatePropertyAll(Styles.cBody(context).withOpacity(0.1))),
+              WidgetStatePropertyAll(Styles.cBody(context).withOpacity(0.1))),
       menuChildren: List.generate(
         exchanges.length,
         (int index) => SizedBox(

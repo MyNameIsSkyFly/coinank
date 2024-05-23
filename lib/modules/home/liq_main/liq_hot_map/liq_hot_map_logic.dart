@@ -24,7 +24,6 @@ class LiqHotMapLogic extends GetxController {
         }
       },
       isScrollControlled: true,
-      isDismissible: true,
       routeSettings: RouteSettings(
         arguments: {
           'list': state.symbolList.toList(),
@@ -52,7 +51,6 @@ class LiqHotMapLogic extends GetxController {
         }
       },
       isScrollControlled: true,
-      isDismissible: true,
       routeSettings: RouteSettings(
         arguments: {
           'title': S.current.s_choose_time,

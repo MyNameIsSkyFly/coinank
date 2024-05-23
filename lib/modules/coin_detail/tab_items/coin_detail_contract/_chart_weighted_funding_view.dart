@@ -52,7 +52,6 @@ setChartData($jsonData, "$platformString", "weightFundingRate", ${jsonEncode(opt
       context: context,
       builder: (context) =>
           SelectorSheetWithInterceptor(title: '', dataList: items),
-      barrierDismissible: true,
       barrierColor: Colors.black26,
     );
 

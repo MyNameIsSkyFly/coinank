@@ -317,20 +317,20 @@ class _ThemeChangeLine extends StatelessWidget {
           )),
           Switch(
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            trackOutlineWidth: MaterialStateProperty.all(5),
+            trackOutlineWidth: WidgetStateProperty.all(5),
             trackOutlineColor:
-                MaterialStateProperty.all(Styles.cScaffoldBackground(context)),
+                WidgetStateProperty.all(Styles.cScaffoldBackground(context)),
             splashRadius: 0,
-            trackColor: MaterialStateProperty.resolveWith((states) {
-              if (states.contains(MaterialState.selected)) {
+            trackColor: WidgetStateProperty.resolveWith((states) {
+              if (states.contains(WidgetState.selected)) {
                 return Styles.cMain;
               }
               return const Color(0xffA1A7BB);
             }),
             value: !StoreLogic().isDarkMode,
-            thumbColor: MaterialStateProperty.all(Colors.white),
-            thumbIcon: MaterialStateProperty.resolveWith((states) {
-              if (states.contains(MaterialState.selected)) {
+            thumbColor: WidgetStateProperty.all(Colors.white),
+            thumbIcon: WidgetStateProperty.resolveWith((states) {
+              if (states.contains(WidgetState.selected)) {
                 return const Icon(
                   key: ValueKey('iconMoon'),
                   CupertinoIcons.sun_max_fill,

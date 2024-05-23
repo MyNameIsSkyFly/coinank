@@ -531,7 +531,6 @@ class _ContractLiqPageState extends State<ContractLiqPage> {
         current: current,
         convertor: convertor,
       ),
-      barrierDismissible: true,
       barrierColor: Colors.black26,
     );
 

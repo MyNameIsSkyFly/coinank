@@ -51,7 +51,6 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin {
         current: time,
       ),
       isScrollControlled: true,
-      isDismissible: true,
     );
     if (result != null) {
       if (time == result) return;
@@ -65,7 +64,6 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin {
     final result = await showModalBottomSheet(
       isScrollControlled: true,
       context: Get.context!,
-      isDismissible: true,
       backgroundColor: Colors.transparent,
       builder: (cnt) {
         return const FundingRateSearchPage();

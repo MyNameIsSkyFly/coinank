@@ -117,7 +117,6 @@ class LongShortPersonRatioLogic extends GetxController {
         current: current,
       ),
       isScrollControlled: true,
-      isDismissible: true,
     );
     return result as String?;
   }

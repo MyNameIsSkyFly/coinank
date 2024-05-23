@@ -66,7 +66,6 @@ class _ChartKlineViewState extends State<ChartKlineView> {
       context: context,
       builder: (context) =>
           SelectorSheetWithInterceptor(title: '', dataList: items),
-      barrierDismissible: true,
       barrierColor: Colors.black26,
     );
 
