@@ -246,5 +246,19 @@
   "singleOrderLiqTop3": "Top3 Liquidation",
   "liqHeatMap": "Liquidation Heatmap",
   "funds": "Funds",
-  "time": "時間"
+  "time": "時間",
+  "news": "ニュース",
+  "recommend": "Recommended",
+  "fastNews": "速報",
+  "xMinutesAgo": "{value}分前",
+  "xHoursAgp": "{value}時間前",
+  "xDaysAgo": "{value}日前",
+  "fundFlow": "Fund Flow",
+  "aggregatedOrderbookDiff": "Aggregated Orderbook Difference",
+  "visualScreener": "Visual Screener",
+  "pagingRetryHint": "問題が発生しました。タップしてもう一度お試しください。",
+  "pagingErrorHint": "問題が発生しました",
+  "pagingErrorMessage": "アプリケーションで不明なエラーが発生しました。\nしばらくしてからもう一度お試しください。",
+  "tryAgain": "Try Again",
+  "market": "Market"
 }

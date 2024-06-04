@@ -2,7 +2,6 @@ import 'package:ank_app/constants/urls.dart';
 import 'package:ank_app/entity/chart_entity.dart';
 import 'package:ank_app/modules/chart/_top_item_detail_page.dart';
 import 'package:ank_app/modules/chart/chart_state.dart';
-import 'package:ank_app/modules/home/home_search/home_search_view.dart';
 import 'package:ank_app/modules/home/liq_main/liq_main_view.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/app_refresh.dart';
@@ -19,34 +18,6 @@ class ChartPage extends StatelessWidget {
     final logic = Get.put(ChartLogic());
     final state = Get.find<ChartLogic>().state;
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 44,
-        leadingWidth: 150,
-        centerTitle: false,
-        leading: Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 15),
-            child: Text(
-              S.of(context).s_chart,
-              style: Styles.tsBody_18(context)
-                  .copyWith(fontWeight: FontWeight.w700),
-            ),
-          ),
-        ),
-        actions: [
-          IconButton(
-              visualDensity: VisualDensity.compact,
-              onPressed: () => Get.toNamed(HomeSearchPage.routeName),
-              icon: Image.asset(
-                Assets.imagesIcSearch,
-                height: 20,
-                width: 20,
-                color: Theme.of(context).iconTheme.color,
-              )),
-          const Gap(10),
-        ],
-      ),
       body: Obx(() {
         return state.isLoading.value
             ? const LottieIndicator()

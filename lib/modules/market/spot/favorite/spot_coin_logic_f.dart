@@ -8,9 +8,9 @@ import 'package:ank_app/modules/main/main_logic.dart';
 import 'package:ank_app/modules/market/market_logic.dart';
 import 'package:ank_app/modules/market/spot/widgets/spot_coin_base_logic.dart';
 import 'package:ank_app/res/export.dart';
-import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:get/get.dart';
 
+import '../../../../entity/event/fgbg_type.dart';
 import '../spot_logic.dart';
 import '../widgets/spot_coin_datagrid_source.dart';
 
@@ -52,10 +52,12 @@ class SpotCoinLogicF extends GetxController implements SpotCoinBaseLogic {
       dataSource.buildDataGridRows();
     });
 
-    FGBGEvents.stream.listen((event) async {
+    AppConst.eventBus.on<FGBGType>().listen((event) async {
       if (event == FGBGType.foreground &&
           pageVisible &&
-          AppConst.backgroundForAWhile) onRefresh();
+          AppConst.backgroundForAWhile) {
+        Future.delayed(const Duration(milliseconds: 100), onRefresh);
+      }
     });
     super.onInit();
   }

@@ -10,6 +10,7 @@ import 'package:ank_app/modules/chart/chart_logic.dart';
 import 'package:ank_app/modules/home/home_logic.dart';
 import 'package:ank_app/modules/market/contract/contract_coin/favorite/contract_coin_logic_f.dart';
 import 'package:ank_app/modules/market/market_view.dart';
+import 'package:ank_app/modules/news/news_view.dart';
 import 'package:ank_app/modules/order_flow/order_flow_view.dart';
 import 'package:ank_app/modules/setting/setting_logic.dart';
 import 'package:ank_app/pigeon/host_api.g.dart';
@@ -20,13 +21,12 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:screenshot_callback/screenshot_callback.dart';
 
-import '../chart/chart_view.dart';
+import '../../entity/event/fgbg_type.dart';
 import '../home/home_view.dart';
 import '../setting/setting_view.dart';
 
@@ -36,7 +36,7 @@ class MainLogic extends GetxController {
     const HomePage(),
     const MarketPage(),
     const OrderFlowPage(),
-    const ChartPage(),
+    const NewsPage(),
     const SettingPage(),
   ];
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -80,19 +80,31 @@ class MainLogic extends GetxController {
     });
   }
 
-  CancelableOperation? _cancelableOperation;
+  CancelableOperation? _cancelableOperationFg;
+  CancelableOperation? _cancelableOperationBg;
 
   void listenAppVisibility() {
-    appVisibleSubscription = FGBGEvents.stream.listen((event) {
+    appVisibleSubscription = AppConst.eventBus.on<FGBGType>().listen((event) {
       if (event == FGBGType.background) {
-        _cancelableOperation = CancelableOperation.fromFuture(
+        _cancelableOperationBg = CancelableOperation.fromFuture(
           Future.delayed(const Duration(seconds: 10), () => true),
         );
-        _cancelableOperation?.value
+        _cancelableOperationBg?.value
             .then((value) => AppConst.backgroundForAWhile = true);
+
+        _cancelableOperationFg?.cancel();
+        _cancelableOperationFg = null;
+        Future.delayed(const Duration(milliseconds: 500),
+            () => AppConst.foregroundForAWhile = false);
       } else {
-        _cancelableOperation?.cancel();
-        _cancelableOperation = null;
+        _cancelableOperationFg = CancelableOperation.fromFuture(
+          Future.delayed(const Duration(seconds: 5), () => true),
+        );
+        _cancelableOperationFg?.value
+            .then((value) => AppConst.foregroundForAWhile = true);
+
+        _cancelableOperationBg?.cancel();
+        _cancelableOperationBg = null;
         Future.delayed(const Duration(milliseconds: 500),
             () => AppConst.backgroundForAWhile = false);
       }

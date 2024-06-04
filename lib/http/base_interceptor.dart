@@ -26,6 +26,7 @@ class BaseInterceptor extends Interceptor {
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     if (response.requestOptions.path.startsWith('/api')) {
       final code = response.data?['code'];
+      final dataKey = response.requestOptions.extra['dataKey'] as String?;
       if ('$code' != '1') {
         if (!_handleCode('$code')) {
           final showToast = response.requestOptions.extra['showToast'] ?? true;
@@ -42,13 +43,10 @@ class BaseInterceptor extends Interceptor {
         );
         return;
       }
-      if (response.requestOptions.path
-          case '/api/longshort/longShortRatio' ||
-              '/api/liquidation/statistic' ||
-              '/api/liquidation/allExchange/intervals' ||
-              '/api/kline/list') {
-      } else {
-        final data = response.data?['data'];
+      if (dataKey != 'original') {
+        final data = dataKey == null
+            ? (response.data?['data'])
+            : response.data?['data']?[dataKey];
         response.data = data;
       }
     } else if (response.requestOptions.path.startsWith('/indicatorapi')) {
@@ -112,7 +110,7 @@ class BaseInterceptor extends Interceptor {
           case DioExceptionType.connectionError:
             errorMessage = S.current.error_network;
           case DioExceptionType.unknown:
-            errorMessage = 'Something went wrong';
+            errorMessage = err.error.toString();
         }
     }
 
@@ -122,7 +120,9 @@ class BaseInterceptor extends Interceptor {
       }
     }
     final showToast = err.requestOptions.extra['showToast'] ?? true;
-    if (showToast && AppConst.appVisible) AppUtil.showToast(errorMessage);
+    if (showToast && AppConst.appVisible && AppConst.foregroundForAWhile) {
+      AppUtil.showToast(errorMessage);
+    }
     handler.next(err);
   }
 

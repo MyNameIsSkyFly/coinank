@@ -4,14 +4,14 @@ import 'package:ank_app/entity/btc_reduce_entity.dart';
 import 'package:ank_app/entity/futures_big_data_entity.dart';
 import 'package:ank_app/entity/head_statistics_entity.dart';
 import 'package:ank_app/entity/home_fund_rate_entity.dart';
-import 'package:ank_app/http/apis.dart';
 import 'package:ank_app/modules/market/contract/contract_logic.dart';
 import 'package:ank_app/modules/market/market_logic.dart';
 import 'package:ank_app/pigeon/host_api.g.dart';
+import 'package:ank_app/res/export.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../constants/app_const.dart';
-import '../../route/router_config.dart';
+import '../../entity/news_entity.dart';
 import '../main/main_logic.dart';
 
 class HomeLogic extends GetxController {
@@ -22,6 +22,8 @@ class HomeLogic extends GetxController {
   final fundRateList = RxList<HomeFundRateEntity>();
   final btcReduceData = Rxn<BtcReduceEntity>();
   final hostApi = MessageHostApi();
+  final newsList = RxList<NewsEntity>();
+  late TabController tabCtrl;
 
   Timer? _pollingTimer;
   Timer? btcReduceTimer;
@@ -48,6 +50,7 @@ class HomeLogic extends GetxController {
       const Duration(seconds: 5),
       (timer) {
         if (!AppConst.canRequest ||
+            tabCtrl.index != 0 ||
             mainLogic.selectedIndex.value != 0 ||
             isRefreshing ||
             Get.currentRoute != RouteConfig.main) return;
@@ -70,6 +73,7 @@ class HomeLogic extends GetxController {
       loadHomeData(),
       loadFundRateData(),
       loadBtcReduce(),
+      loadNews(),
     ]).whenComplete(() {
       isRefreshing = false;
     });
@@ -109,6 +113,17 @@ class HomeLogic extends GetxController {
     btcReduceTimer ??= Timer.periodic(const Duration(minutes: 1), (timer) {
       btcReduceData.refresh();
     });
+  }
+
+  Future<void> loadNews() async {
+    final data = await Apis().getNewsList(
+      page: 1,
+      pageSize: 5,
+      type: 2,
+      isPopular: true,
+      lang: AppUtil.shortLanguageName,
+    );
+    newsList.assignAll(data ?? []);
   }
 
   @override

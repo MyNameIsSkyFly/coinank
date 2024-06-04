@@ -10,12 +10,12 @@ import 'package:ank_app/res/export.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../constants/urls.dart';
+import '../entity/event/fgbg_type.dart';
 import '../entity/event/logged_event.dart';
 import '../modules/main/main_logic.dart';
 import '../modules/market/contract/contract_logic.dart';
@@ -142,7 +142,7 @@ class _CommonWebViewState extends State<CommonWebView>
     if (!Platform.isIOS) return;
     if (!(widget.url.contains('proChart') == true ||
         widget.urlGetter?.call().contains('proChart') == true)) return;
-    _fgbgSubscription = FGBGEvents.stream.listen((event) {
+    _fgbgSubscription = AppConst.eventBus.on<FGBGType>().listen((event) {
       if (event == FGBGType.foreground) {
         _titleTimer = Timer(const Duration(seconds: 3), () {
           webCtrl?.getTitle().then((value) {

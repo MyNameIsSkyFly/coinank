@@ -246,5 +246,19 @@
   "singleOrderLiqTop3": "单笔爆仓Top3",
   "liqHeatMap": "爆仓热图",
   "funds": "资金",
-  "time": "时间"
+  "time": "时间",
+  "news": "新闻",
+  "recommend": "推荐",
+  "fastNews": "快讯",
+  "xMinutesAgo": "{value}分钟前",
+  "xHoursAgp": "{value}小时前",
+  "xDaysAgo": "{value}天前",
+  "fundFlow": "资金净流入流出",
+  "aggregatedOrderbookDiff": "聚合订单本差值",
+  "visualScreener": "视觉筛选器",
+  "pagingRetryHint": "出了点问题。点击重试",
+  "pagingErrorHint": "出了点问题",
+  "pagingErrorMessage": "应用程序遇到未知错误。\n请稍后重试。",
+  "tryAgain": "再试一次",
+  "market": "市场"
 }

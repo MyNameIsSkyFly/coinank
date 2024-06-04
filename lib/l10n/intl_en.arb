@@ -246,5 +246,19 @@
   "singleOrderLiqTop3": "Top3 Liquidation",
   "liqHeatMap": "Liquidation Heatmap",
   "funds": "Funds",
-  "time": "Time"
+  "time": "Time",
+  "news": "News",
+  "recommend": "Recommended",
+  "fastNews": "News flash",
+  "xMinutesAgo": "{value} minutes ago",
+  "xHoursAgp": "{value} hours ago",
+  "xDaysAgo": "{value} days ago",
+  "fundFlow": "Fund Flow",
+  "aggregatedOrderbookDiff": "Aggregated Orderbook Difference",
+  "visualScreener": "Visual Screener",
+  "pagingRetryHint": "Something went wrong. Tap to try again.",
+  "pagingErrorHint": "Something went wrong",
+  "pagingErrorMessage": "The application has encountered an unknown error.\nPlease try again later.",
+  "tryAgain": "Try Again",
+  "market": "Market"
 }

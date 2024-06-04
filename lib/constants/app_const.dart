@@ -29,5 +29,6 @@ class AppConst {
 
   static bool get canRequest => appVisible && networkConnected;
   static bool backgroundForAWhile = false;
+  static bool foregroundForAWhile = true;
   static final routeObserver = RouteObserver<PageRoute>();
 }

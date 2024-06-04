@@ -12,6 +12,7 @@ import 'package:ank_app/entity/fund_his_list_entity.dart';
 import 'package:ank_app/entity/kline_entity.dart';
 import 'package:ank_app/entity/liq_all_exchange_entity.dart';
 import 'package:ank_app/entity/marker_funding_rate_entity.dart';
+import 'package:ank_app/entity/news_entity.dart';
 import 'package:ank_app/entity/oi_entity.dart';
 import 'package:ank_app/entity/order_flow_symbol.dart';
 import 'package:ank_app/entity/search_v2_entity.dart';
@@ -267,6 +268,7 @@ abstract class Apis {
   });
 
   //多空持仓人数比
+  @Extra({'dataKey': 'original'})
   @GET('/api/longshort/longShortRatio')
   Future getLongShortPersonRatio({
     @Query('baseCoin') String? baseCoin,
@@ -369,6 +371,7 @@ abstract class Apis {
   @GET('/api/instruments/categories/all')
   Future<List<CategoryInfoItemEntity>?> getAllCategories();
 
+  @Extra({'dataKey': 'original'})
   @GET('/api/liquidation/allExchange/intervals')
   Future<LiqAllExchangeFullEntity?> getLiqAllExchangeIntervals(
       {@Query('baseCoin') String? baseCoin});
@@ -378,6 +381,7 @@ abstract class Apis {
   Future<List<LiqAllExchangeEntity>?> getLiqTopCoin(
       {@Query('interval') String? interval});
 
+  @Extra({'dataKey': 'original'})
   @GET('/api/liquidation/statistic')
   Future getLiqStatistic(@Query('baseCoin') String baseCoin,
       {@Query('interval') String? interval});
@@ -394,11 +398,22 @@ abstract class Apis {
       @Query('side') String? side,
       @Query('amount') int? amount});
 
-  //api/kline/list?exchange=Binance&symbol=BTCUSDT&interval=1h&side=to&ts=1713425037000&size=500&exchangeType=SWAP
+  @Extra({'dataKey': 'original'})
   @GET('/api/kline/list')
   Future<KlineEntity?> getKlineList({
     @Query('exchange') String? exchange,
     @Query('symbol') String? symbol,
+    @Query('interval') String? interval,
+    @Query('side') String? side,
+    @Query('ts') int? ts,
+    @Query('size') int? size,
+    @Query('exchangeType') String? exchangeType,
+  });
+
+  @Extra({'dataKey': 'original'})
+  @GET('/api/kline/listByCoin')
+  Future<KlineEntity?> getKlineListByCoin({
+    @Query('baseCoin') String? baseCoin,
     @Query('interval') String? interval,
     @Query('side') String? side,
     @Query('ts') int? ts,
@@ -416,4 +431,18 @@ abstract class Apis {
     @Query('size') int? size,
     @Query('productType') String? productType,
   });
+
+  @Extra({'dataKey': 'list'})
+  @GET('/api/news/getNewsList')
+  Future<List<NewsEntity>?> getNewsList({
+    /// 1:快讯 2:新闻
+    @Query('lang') required String lang,
+    @Query('type') int? type,
+    @Query('page') int? page,
+    @Query('pageSize') int? pageSize,
+    @Query('isPopular') bool? isPopular,
+  });
+
+  @GET('/api/news/getNewsDetail')
+  Future<NewsEntity?> getNewsDetail({@Query('id') required String id});
 }

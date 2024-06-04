@@ -7,9 +7,9 @@ import 'package:ank_app/modules/main/main_logic.dart';
 import 'package:ank_app/modules/market/contract/contract_coin/widgets/contract_coin_base_logic.dart';
 import 'package:ank_app/modules/market/contract/contract_logic.dart';
 import 'package:ank_app/res/export.dart';
-import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:get/get.dart';
 
+import '../../../../entity/event/fgbg_type.dart';
 import '../../market_logic.dart';
 import 'widgets/contract_coin_datagrid_source.dart';
 
@@ -157,10 +157,12 @@ class ContractCoinLogic extends GetxController
       dataSource.buildDataGridRows();
     });
 
-    FGBGEvents.stream.listen((event) async {
+    AppConst.eventBus.on<FGBGType>().listen((event) async {
       if (event == FGBGType.foreground &&
           pageVisible &&
-          AppConst.backgroundForAWhile) onRefresh();
+          AppConst.backgroundForAWhile) {
+        Future.delayed(const Duration(milliseconds: 100), onRefresh);
+      }
     });
   }
 

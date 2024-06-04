@@ -7,10 +7,11 @@ import 'package:ank_app/util/jpush_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_fgbg/flutter_fgbg.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
+
+import 'entity/event/fgbg_type.dart';
 // import 'package:sentry_flutter/sentry_flutter.dart';
 
 Future<void> main() async {
@@ -98,7 +99,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     JPushUtil().initPlatformState();
-    FGBGEvents.stream.listen((event) async {
+    AppConst.eventBus.on<FGBGType>().listen((event) async {
       if (event == FGBGType.foreground) {
         bool isSupported = await FlutterAppBadger.isAppBadgeSupported();
         if (isSupported) {

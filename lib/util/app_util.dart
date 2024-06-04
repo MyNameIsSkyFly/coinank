@@ -143,20 +143,7 @@ class AppUtil {
     }
   }
 
-  static String get webLanguage {
-    final locale = StoreLogic.to.locale ?? Get.deviceLocale;
-    if (locale?.languageCode == 'zh' && locale?.scriptCode == 'Hans') {
-      return 'zh/';
-    } else if (locale?.languageCode == 'zh' && locale?.scriptCode == 'Hant') {
-      return 'zh-tw/';
-    } else if (locale?.languageCode == 'ja') {
-      return 'ja/';
-    } else if (locale?.languageCode == 'ko') {
-      return 'ko/';
-    } else {
-      return 'en/';
-    }
-  }
+  static String get webLanguage => '$shortLanguageName/';
 
   static String get shortLanguageName {
     final locale = StoreLogic.to.locale ?? Get.deviceLocale;

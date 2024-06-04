@@ -1,0 +1,1 @@
+enum FGBGType { foreground, background }

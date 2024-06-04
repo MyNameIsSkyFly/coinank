@@ -246,5 +246,19 @@
   "singleOrderLiqTop3": "單筆爆倉Top3",
   "liqHeatMap": "爆倉熱圖",
   "funds": "資金",
-  "time": "時間"
+  "time": "時間",
+  "news": "新聞",
+  "recommend": "推薦",
+  "fastNews": "快訊",
+  "xMinutesAgo": "{value}分钟前",
+  "xHoursAgp": "{value}小时前",
+  "xDaysAgo": "{value}天前",
+  "fundFlow": "資金流數據統計",
+  "aggregatedOrderbookDiff": "聚合訂單簿差值",
+  "visualScreener": "視覺篩選器",
+  "pagingRetryHint": "出了些問題。點擊重試",
+  "pagingErrorHint": "出了些問題",
+  "pagingErrorMessage": "應用程式遇到未知錯誤。\n請稍後再試。",
+  "tryAgain": "再試一次",
+  "market": "市場"
 }

@@ -6,7 +6,9 @@ import 'package:ank_app/modules/setting/about/about_view.dart';
 import 'package:ank_app/modules/setting/contact_us/contact_us_view.dart';
 import 'package:get/get.dart';
 
+import '../entity/news_entity.dart';
 import '../modules/login/login_view.dart';
+import '../modules/news/news_detail/news_detail_view.dart';
 import '../widget/common_webview.dart';
 
 class AppNav {
@@ -63,6 +65,14 @@ class AppNav {
     Get.toNamed(
       CategoryDetailPage.routeName,
       arguments: {'tag': tag, 'isSpot': isSpot},
+    );
+  }
+
+  static Future? toNewsDetail({required String id, required NewsType type}) {
+    return Get.toNamed(
+      NewsDetailPage.routeName,
+      preventDuplicates: false,
+      arguments: {'id': id, 'type': type},
     );
   }
 }

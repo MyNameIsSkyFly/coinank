@@ -2,13 +2,15 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:ank_app/constants/urls.dart';
+import 'package:ank_app/entity/news_entity.dart';
+import 'package:ank_app/modules/chart/chart_view.dart';
 import 'package:ank_app/modules/home/home_search/home_search_view.dart';
 import 'package:ank_app/modules/home/liq_main/liq_main_view.dart';
 import 'package:ank_app/modules/home/price_change/price_change_view.dart';
 import 'package:ank_app/modules/home/widgets/btc_reduce_dialog.dart';
 import 'package:ank_app/modules/home/widgets/dash_board_painter.dart';
 import 'package:ank_app/modules/home/widgets/trapezium_painter.dart';
-import 'package:ank_app/modules/main/main_logic.dart';
+import 'package:ank_app/modules/news/widget/news_item.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/app_refresh.dart';
 import 'package:ank_app/widget/rate_with_sign.dart';
@@ -30,28 +32,42 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
   final logic = Get.put(HomeLogic());
   var canQuit = false;
+
+  @override
+  void initState() {
+    logic.tabCtrl = TabController(length: 2, vsync: this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    logic.tabCtrl.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     var child = Scaffold(
       appBar: AppBar(
         toolbarHeight: 44,
-        leadingWidth: 150,
+        leadingWidth: double.infinity,
         centerTitle: false,
-        leading: Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 15),
-            child: Text(
-              'CoinAnk',
-              style: Styles.tsBody_18(context)
-                  .copyWith(fontWeight: FontWeight.w700),
-            ),
-          ),
-        ),
+        leading: TabBar(
+            isScrollable: true,
+            tabAlignment: TabAlignment.start,
+            labelStyle: Styles.tsBody_18m(context),
+            unselectedLabelStyle: Styles.tsSub_18(context).medium,
+            indicatorColor: Colors.transparent,
+            dividerColor: Colors.transparent,
+            tabs: [
+              Tab(text: S.of(context).market),
+              Tab(text: S.of(context).s_chart)
+            ],
+            controller: logic.tabCtrl),
         actions: [
           IconButton(
               visualDensity: VisualDensity.compact,
@@ -93,28 +109,9 @@ class _HomePageState extends State<HomePage> {
           const Gap(10),
         ],
       ),
-      body: AppRefresh(
-        onRefresh: logic.onRefresh,
-        child: ListView(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          children: [
-            _TotalOiAndFuturesVol(logic: logic),
-            const _ChartView(),
-            _BtcReduceView(logic: logic),
-            _HotMarket(logic: logic),
-            _OiDistribution(logic: logic),
-            _FearGreedInfo(logic: logic),
-
-            //灰度数据
-            // _CheckDetailRow(
-            //   title: S.of(context).s_grayscale_data,
-            //   onTap: () => AppNav.openWebUrl(
-            //       title: S.of(context).s_grayscale_data,
-            //       url: Urls.urlGrayscale,
-            //       showLoading: true),
-            // )
-          ],
-        ),
+      body: TabBarView(
+        controller: logic.tabCtrl,
+        children: [_tabMarket(), _tabChart()],
       ),
     );
     return WillPopScope(
@@ -133,6 +130,86 @@ class _HomePageState extends State<HomePage> {
       },
       child: child,
     );
+  }
+
+  Widget _tabMarket() {
+    return AliveWidget(
+      child: AppRefresh(
+        onRefresh: logic.onRefresh,
+        child: ListView(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          children: [
+            _TotalOiAndFuturesVol(logic: logic),
+            const _ChartView(),
+            _BtcReduceView(logic: logic),
+            _HotMarket(logic: logic),
+            _OiDistribution(logic: logic),
+            _FearGreedInfo(logic: logic),
+            _News(logic: logic),
+
+            //灰度数据
+            // _CheckDetailRow(
+            //   title: S.of(context).s_grayscale_data,
+            //   onTap: () => AppNav.openWebUrl(
+            //       title: S.of(context).s_grayscale_data,
+            //       url: Urls.urlGrayscale,
+            //       showLoading: true),
+            // )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _tabChart() => const AliveWidget(child: ChartPage());
+}
+
+class _News extends StatelessWidget {
+  const _News({
+    required this.logic,
+  });
+
+  final HomeLogic logic;
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      return Column(
+        children: [
+          if (logic.newsList.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(15, 20, 15, 10),
+              child: Row(
+                children: [
+                  Text(
+                    S.of(context).recommend,
+                    style: Styles.tsBody_16m(context),
+                  ),
+                  if (AppUtil.shortLanguageName == 'en') const Gap(3),
+                  Text(
+                    S.of(context).news,
+                    style: Styles.tsBody_16m(context)
+                        .copyWith(color: const Color(0xffEF424A)),
+                  ),
+                ],
+              ),
+            ),
+          ...logic.newsList.map((e) => NewsItem(e, type: NewsType.recommend)),
+          if (logic.newsList.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: FilledButton(
+                style: FilledButton.styleFrom(
+                    backgroundColor:
+                        Theme.of(context).inputDecorationTheme.fillColor),
+                onPressed: () => logic.mainLogic.selectedIndex.value = 3,
+                child: Text(S.of(context).viewMore,
+                    style: Styles.tsBody_16(context)),
+              ),
+            )
+        ],
+      );
+    });
   }
 }
 
@@ -233,25 +310,28 @@ class _ChartView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       final chartItems = [
-        ChartEntity(title: 'BRC-20', key: 'brc-20', path: Urls.urlBRC),
         ChartEntity(
-            title: 'ERC-20',
+            title: S.of(context).fundFlow,
+            key: 'brc-20',
+            path: '/${Urls.webLanguage}fund/fundSwap?productType=SWAP'),
+        ChartEntity(
+            title: S.of(context).aggregatedOrderbookDiff,
             key: 'erc-20',
-            path: '${Urls.h5Prefix}/${Urls.webLanguage}scriptions/erc20'),
+            path: '/${Urls.webLanguage}indexdata/exchangeAggDepth'),
         ChartEntity(
-            title: 'ARC-20',
+            title: S.of(context).visualScreener,
             key: 'arc-20',
-            path: '${Urls.h5Prefix}/${Urls.webLanguage}scriptions/arc20'),
+            path: '/${Urls.webLanguage}indexdata/VisualMap'),
         ChartEntity(
             title: 'ETF',
             key: 'ETF',
-            path: '${Urls.h5Prefix}/${Urls.webLanguage}etf/BtcEtfTable'),
+            path: '/${Urls.webLanguage}etf/BtcEtfTable'),
         ChartEntity(title: S.of(context).s_liqmap, key: 'liqMapChart'),
         ChartEntity(title: S.of(context).s_liq_hot_map, key: 'liqHeatMapChart'),
         ChartEntity(
             title: S.of(context).fundingRateHeatMap,
             key: 'frHeapMap',
-            path: '${Urls.h5Prefix}/${Urls.webLanguage}fundingRate/frHeatMap'),
+            path: '/${Urls.webLanguage}fundingRate/frHeatMap'),
         ChartEntity(title: S.of(context).more, key: 'more'),
       ];
       final chartLogic = Get.put(ChartLogic());
@@ -262,12 +342,6 @@ class _ChartView extends StatelessWidget {
       ];
       if (allData.isNotEmpty) {
         try {
-          chartItems[0] =
-              allData.firstWhere((element) => element.key == 'brc-20');
-          chartItems[1] =
-              allData.firstWhere((element) => element.key == 'erc-20');
-          chartItems[2] =
-              allData.firstWhere((element) => element.key == 'arc-20');
           chartItems[3] = allData.firstWhere((element) => element.key == 'ETF');
           chartItems[4] =
               allData.firstWhere((element) => element.key == 'liqMapChart');
@@ -1193,7 +1267,7 @@ class _ChartItem extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           if (item.key == 'more') {
-            Get.find<MainLogic>().selectTab(3);
+            Get.find<HomeLogic>().tabCtrl.animateTo(1);
             return;
           }
           ['liqMapChart', 'liqHeatMapChart'].contains(item.key)

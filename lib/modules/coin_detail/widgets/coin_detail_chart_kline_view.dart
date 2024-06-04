@@ -169,10 +169,9 @@ class _ChartKlineViewState extends State<ChartKlineView> {
   final interval = '15m'.obs;
 
   Future<void> initKlineDataList() async {
-    final data = await Apis().getKlineList(
+    final data = await Apis().getKlineListByCoin(
       size: 500,
-      exchange: widget.exchangeName,
-      symbol: widget.symbol,
+      baseCoin: widget.baseCoin,
       exchangeType: widget.isSpot ? 'SPOT' : 'SWAP',
       interval: interval.value,
       side: 'to',

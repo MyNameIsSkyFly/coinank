@@ -12,6 +12,7 @@ class ImageUtil {
     Key? key,
     double? width,
     double? height,
+    BoxFit? fit,
     Widget? errorWidget,
     Duration? fadeInDuration,
     ValueChanged<Object>? errorListener,
@@ -22,6 +23,7 @@ class ImageUtil {
       imageUrl: url,
       width: width,
       height: height,
+      fit: fit,
       fadeInDuration: fadeInDuration ?? const Duration(milliseconds: 100),
       errorListener: errorListener,
       progressIndicatorBuilder: progressUseErrorWidget

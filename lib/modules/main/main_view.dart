@@ -1,5 +1,6 @@
 import 'package:ank_app/config/application.dart';
 import 'package:ank_app/constants/app_const.dart';
+import 'package:ank_app/entity/event/fgbg_type.dart';
 import 'package:ank_app/generated/assets.dart';
 import 'package:ank_app/generated/l10n.dart';
 import 'package:ank_app/res/light_colors.dart';
@@ -18,8 +19,15 @@ class MainPage extends StatefulWidget {
   State<MainPage> createState() => _MainPageState();
 }
 
-class _MainPageState extends State<MainPage> with RouteAware {
+class _MainPageState extends State<MainPage>
+    with RouteAware, WidgetsBindingObserver {
   final logic = Get.find<MainLogic>();
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addObserver(this);
+    super.initState();
+  }
 
   @override
   void didChangeDependencies() {
@@ -38,6 +46,15 @@ class _MainPageState extends State<MainPage> with RouteAware {
   void didPopNext() {
     logic.selectTab(logic.selectedIndex.value);
     super.didPopNext();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      AppConst.eventBus.fire(FGBGType.foreground);
+    } else if (state == AppLifecycleState.inactive) {
+      AppConst.eventBus.fire(FGBGType.background);
+    }
   }
 
   @override
@@ -77,7 +94,7 @@ class _MainPageState extends State<MainPage> with RouteAware {
               ),
               BottomBarItem(
                 Assets.bottomBarChart,
-                S.current.s_chart,
+                S.current.news,
               ),
               BottomBarItem(
                 Assets.bottomBarSet,
