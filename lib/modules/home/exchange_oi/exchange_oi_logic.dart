@@ -39,6 +39,7 @@ class ExchangeOiLogic extends GetxController {
 
   @override
   void onInit() {
+    gridSource.initBaseCoin(menuParamEntity.value.baseCoin);
     Future.wait([gridSource.loadData(), loadOIData(), loadAllBaseCoins()])
         .then((value) {
       loading.value = false;

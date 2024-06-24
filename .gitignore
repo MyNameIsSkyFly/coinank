@@ -43,7 +43,6 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 .metadata
-/ios/Podfile.lock
 **.g.dart
 /lib/generated/
 /android/app/src/main/java/com/ank/ankapp/pigeon_plugin/

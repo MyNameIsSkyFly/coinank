@@ -30,6 +30,8 @@ class _NewsListViewState extends State<NewsListView>
   final list = RxList<NewsEntity>();
   StreamSubscription? _localeChangeSub;
 
+  Completer<void>? _refreshCompleter;
+
   @override
   void initState() {
     _pagingCtrl.addPageRequestListener(_getNews);
@@ -41,6 +43,7 @@ class _NewsListViewState extends State<NewsListView>
   }
 
   Future<void> _getNews(int pageKey) async {
+    if (pageKey == 1) _refreshCompleter = Completer();
     try {
       final newItems = (await Apis().getNewsList(
               page: pageKey,
@@ -58,6 +61,7 @@ class _NewsListViewState extends State<NewsListView>
     } catch (e) {
       _pagingCtrl.error = e;
     }
+    _refreshCompleter?.complete();
   }
 
   @override
@@ -65,8 +69,9 @@ class _NewsListViewState extends State<NewsListView>
     super.build(context);
     return AppRefresh(
       onRefresh: () async {
-        // final list = List<NewsEntity>.from(_pagingCtrl.itemList ?? []);
         _pagingCtrl.refresh();
+        await _refreshCompleter?.future;
+        _refreshCompleter = null;
       },
       child: AppPagedListView<int, NewsEntity>(
         pagingController: _pagingCtrl,

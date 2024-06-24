@@ -28,12 +28,11 @@ class AppPagedListView<PageKeyType, ItemType> extends StatelessWidget {
         noItemsFoundIndicatorBuilder: (context) =>
             const EmptyView(padding: EdgeInsets.only(top: 100)),
         firstPageProgressIndicatorBuilder: (context) => const LottieIndicator(),
-        newPageProgressIndicatorBuilder: (context) => const Padding(
-            padding: EdgeInsets.only(top: 16, bottom: 16),
-            child: Center(child: LottieIndicator())),
+        newPageProgressIndicatorBuilder: (context) => const Center(
+            child: LottieIndicator(
+                margin: EdgeInsets.symmetric(vertical: 16), height: 60)),
         noMoreItemsIndicatorBuilder: (context) => Center(
-            child:
-                Image.asset(Assets.commonIcEmptyBox, height: 150, width: 150)),
+            child: Image.asset(Assets.commonIcEmptyBox, height: 80, width: 80)),
         newPageErrorIndicatorBuilder: (context) => InkWell(
           onTap: pagingController.retryLastFailedRequest,
           child: Padding(

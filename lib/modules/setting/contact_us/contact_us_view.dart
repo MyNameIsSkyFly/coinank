@@ -1,15 +1,11 @@
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import 'contact_us_logic.dart';
 
 class ContactUsPage extends StatelessWidget {
   ContactUsPage({super.key});
 
   static const String routeName = '/contact_us';
-  final logic = Get.put(ContactUsLogic());
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +101,8 @@ class ContactUsPage extends StatelessWidget {
 }
 
 class _LinkItem extends StatelessWidget {
-  const _LinkItem({required this.asset,
+  const _LinkItem(
+      {required this.asset,
       required this.title,
       required this.linkUrl,
       required this.linkText});
@@ -138,9 +135,8 @@ class _LinkItem extends StatelessWidget {
 }
 
 class _CopyItem extends StatelessWidget {
-  const _CopyItem({required this.asset,
-      required this.title,
-      required this.text});
+  const _CopyItem(
+      {required this.asset, required this.title, required this.text});
 
   final String asset;
   final String title;

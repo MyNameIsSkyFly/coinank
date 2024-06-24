@@ -80,21 +80,16 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Row(
                 children: [
-                  if (detail.sourceWebPic?.isNotEmpty == true)
+                  if (detail.sourceWeb != null)
                     Padding(
                       padding: const EdgeInsets.only(right: 5),
-                      child: ImageUtil.networkImage(
-                        detail.sourceWebPic ?? '',
-                        width: 15,
-                        height: 15,
-                      ),
+                      child: ImageUtil.newsLogo(detail.sourceWeb ?? '',
+                          size: 15, isCircle: true),
                     ),
                   Text(detail.sourceWeb ?? '', style: Styles.tsSub_12(context)),
                   const Gap(20),
                   Expanded(child: Builder(builder: (context) {
-                    if (detail.ts == null) {
-                      return const SizedBox();
-                    }
+                    if (detail.ts == null) return const SizedBox();
                     late String dateStr;
                     final date =
                         DateTime.fromMillisecondsSinceEpoch(detail.ts ?? 0);

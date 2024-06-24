@@ -52,15 +52,11 @@ class NewsItem extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 9),
                 child: Row(
                   children: [
-                    if (item.sourceWebPic?.isNotEmpty == true)
-                      Padding(
-                        padding: const EdgeInsets.only(right: 5),
-                        child: ImageUtil.networkImage(
-                          item.sourceWebPic ?? '',
-                          width: 15,
-                          height: 15,
-                        ),
-                      ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 5),
+                      child: ImageUtil.newsLogo(item.sourceWeb ?? '',
+                          isCircle: true, size: 15),
+                    ),
                     Expanded(
                       child: Text(
                         item.sourceWeb ?? '',

@@ -30,6 +30,10 @@ class ExchangeOiGridSource extends DataGridSource {
     loadData();
   }
 
+  void initBaseCoin(String? value) {
+    baseCoin = value ?? 'BTC';
+  }
+
   String get baseCoin => _baseCoin;
 
   @override

@@ -414,7 +414,7 @@ class _ContractLiqPageState extends State<ContractLiqPage> {
                           ],
                         ),
                         Text(
-                          DateFormat('MM-yy HH:mm:ss').format(
+                          DateFormat('MM-dd HH:mm:ss').format(
                             DateTime.fromMillisecondsSinceEpoch(item.ts ?? 0),
                           ),
                           style: Styles.tsSub_12(context),

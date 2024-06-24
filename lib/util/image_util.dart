@@ -90,4 +90,29 @@ class ImageUtil {
     }
     return child;
   }
+
+  static Widget newsLogo(String sourceName,
+      {double? size, Widget? errorWidget, bool isCircle = false}) {
+    late Widget child;
+
+    child = CachedNetworkImage(
+      imageUrl: 'https://cdn01.coinank.com/image/news/$sourceName.png',
+      width: size,
+      fit: BoxFit.cover,
+      height: size,
+      fadeInDuration: const Duration(milliseconds: 100),
+      errorWidget: (context, url, error) {
+        return errorWidget ??
+            Icon(
+              Icons.hourglass_empty,
+              size: size,
+              color: Colors.grey,
+            );
+      },
+    );
+    if (isCircle) {
+      child = ClipOval(child: child);
+    }
+    return child;
+  }
 }
