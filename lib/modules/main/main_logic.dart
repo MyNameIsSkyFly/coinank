@@ -207,7 +207,7 @@ class MainLogic extends GetxController {
     screenshotCallback.addListener(() {
       if (!AppConst.appVisible) return;
       if (Platform.isAndroid && AppGlobal.justSavedImage) return;
-      if (DateTime.now().difference(_lastScreenshotTime).inSeconds < 1) return;
+      if (DateTime.now().difference(_lastScreenshotTime).inSeconds < 6) return;
       AppUtil.shareImage();
       _lastScreenshotTime = DateTime.now();
     });

@@ -66,7 +66,7 @@ class _LongShortPersonRatioPageState extends State<LongShortPersonRatioPage> {
                 ),
                 Obx(() {
                   return _PickerBar(
-                    title: 'Binance BTC ${S.of(context).s_longshort_person}',
+                    title: 'OKX BTC ${S.of(context).s_longshort_person}',
                     onTap: () async {
                       final result =
                           await logic.openSelector(logic.interval2.value);

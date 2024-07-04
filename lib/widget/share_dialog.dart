@@ -194,16 +194,16 @@ class _ShareDialogState extends State<ShareDialog> {
                                   style: IconButton.styleFrom(
                                       backgroundColor:
                                           Theme.of(context).dividerTheme.color),
-                                padding: const EdgeInsets.all(10),
-                                onPressed: _saveImage,
-                                icon: Image.asset(
-                                  Assets.commonIcShareSave,
-                                  width: 25,
-                                  height: 25,
-                                )),
-                            Text(S.of(context).saveImage,
-                                style: Styles.tsBody_12(context))
-                          ],
+                                  padding: const EdgeInsets.all(10),
+                                  onPressed: _saveImage,
+                                  icon: Image.asset(
+                                    Assets.commonIcShareSave,
+                                    width: 25,
+                                    height: 25,
+                                  )),
+                              Text(S.of(context).saveImage,
+                                  style: Styles.tsBody_12(context))
+                            ],
                           ),
                           const Gap(40),
                         ],

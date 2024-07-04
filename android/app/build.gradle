@@ -21,17 +21,26 @@ def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
-def dartEnvVar = [
-        APP_NAME      : project.hasProperty('APP_NAME') ? APP_NAME : "CoinAnk",
-        APPLICATION_ID: project.hasProperty('APPLICATION_ID') ? APPLICATION_ID : "com.coinsoho.app",
-        JPUSH_KEY     : project.hasProperty('JPUSH_KEY') ? JPUSH_KEY : "4c89cdc630a1fe6ac9a05f56",
-        KEY_ALIAS     : project.hasProperty('KEY_ALIAS') ? KEY_ALIAS : "uukr",
-        KEY_PASSWORD  : project.hasProperty('KEY_PASSWORD') ? KEY_PASSWORD : "uukr.com",
-        STORE_FILE    : project.hasProperty('STORE_FILE') ? STORE_FILE : "keystore/uukr.key",
-        STORE_PASSWORD: project.hasProperty('STORE_PASSWORD') ? STORE_PASSWORD : "uukr.com",
-        VERSION_NAME  : project.hasProperty('VERSION_NAME') ? VERSION_NAME : "2.0.0",
-        VERSION_CODE  : project.hasProperty('VERSION_CODE') ? VERSION_CODE : "200",
-]
+def dartEnvVar = [];
+if (project.hasProperty('dart-defines')) {
+    dartEnvVar = project.property('dart-defines')
+            .split(',')
+            .collectEntries { entry ->
+                def pair = new String(entry.decodeBase64(), 'UTF-8').split('=')
+                [(pair.first()): pair.last()]
+            }
+}
+//def dartEnvVar = [
+//        APP_NAME      : project.hasProperty('APP_NAME') ? APP_NAME : "CoinAnk",
+//        APPLICATION_ID: project.hasProperty('APPLICATION_ID') ? APPLICATION_ID : "com.coinsoho.app",
+//        JPUSH_KEY     : project.hasProperty('JPUSH_KEY') ? JPUSH_KEY : "4c89cdc630a1fe6ac9a05f56",
+//        KEY_ALIAS     : project.hasProperty('KEY_ALIAS') ? KEY_ALIAS : "uukr",
+//        KEY_PASSWORD  : project.hasProperty('KEY_PASSWORD') ? KEY_PASSWORD : "uukr.com",
+//        STORE_FILE    : project.hasProperty('STORE_FILE') ? STORE_FILE : "keystore/uukr.key",
+//        STORE_PASSWORD: project.hasProperty('STORE_PASSWORD') ? STORE_PASSWORD : "uukr.com",
+//        VERSION_NAME  : project.hasProperty('VERSION_NAME') ? VERSION_NAME : "2.0.0",
+//        VERSION_CODE  : project.hasProperty('VERSION_CODE') ? VERSION_CODE : "200",
+//]
 
 android {
     namespace 'com.ank.ankapp'
@@ -54,6 +63,7 @@ android {
         versionName dartEnvVar.VERSION_NAME ?: "2.0.0"
         ndk {
             abiFilters 'arm64-v8a', 'armeabi', 'x86', 'armeabi-v7a', 'x86_64'
+//            abiFilters 'arm64-v8a'
         }
         manifestPlaceholders = [
                 JPUSH_PKGNAME: dartEnvVar.APPLICATION_ID ?: "com.coinsoho.app",
