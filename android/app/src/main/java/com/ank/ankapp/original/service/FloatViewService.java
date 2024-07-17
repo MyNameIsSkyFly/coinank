@@ -666,7 +666,11 @@ public class FloatViewService extends Service implements View.OnClickListener {
         filter.addAction(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         filter.addAction(Intent.ACTION_USER_PRESENT);
-        registerReceiver(myBroadcast, filter);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(myBroadcast, filter, Context.RECEIVER_EXPORTED);
+        } else{
+            registerReceiver(myBroadcast, filter);
+        }
     }
 
     private void unregisterBroadcast() {

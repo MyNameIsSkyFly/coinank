@@ -238,6 +238,9 @@
 
 -keep class com.hjq.permissions.** {*;}
 
+-keep class com.google.gson.reflect.TypeToken { *; }
+-keep class * extends com.google.gson.reflect.TypeToken
 
-
+# Optional. For using GSON @Expose annotation
+-keepattributes AnnotationDefault,RuntimeVisibleAnnotations
 
