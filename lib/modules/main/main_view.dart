@@ -102,7 +102,7 @@ class _MainPageState extends State<MainPage>
               ),
             ],
             currentIndex: logic.selectedIndex.value,
-            onTap: (int index) => logic.selectTab(index),
+            onTap: logic.selectTab,
           ),
         );
       }),
@@ -146,8 +146,8 @@ class MyBottomBar extends StatelessWidget {
   }
 
   Widget _createItem(int i, double itemWidth, BuildContext context) {
-    BottomBarItem item = items[i];
-    bool selected = i == currentIndex;
+    final item = items[i];
+    final selected = i == currentIndex;
     return InkWell(
       onTap: onTap != null
           ? () {
@@ -168,7 +168,7 @@ class MyBottomBar extends StatelessWidget {
                 item.icon,
                 width: 25,
                 height: 25,
-                color: Theme.of(context).colorScheme.onBackground,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
             Offstage(

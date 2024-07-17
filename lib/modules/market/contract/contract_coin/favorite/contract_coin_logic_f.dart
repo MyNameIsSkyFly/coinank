@@ -57,8 +57,9 @@ class ContractCoinLogicF extends GetxController
     _orderChangedSubscription =
         AppConst.eventBus.on<EventCoinOrderChanged>().listen((event) {
       if (event.isSpot || event.isCategory) return;
-      dataSource.getColumns(Get.context!);
-      dataSource.buildDataGridRows();
+      dataSource
+        ..getColumns(Get.context!)
+        ..buildDataGridRows();
     });
     dataSource.getColumns(Get.context!);
     AppConst.eventBus.on<FGBGType>().listen((event) async {
@@ -171,7 +172,7 @@ class ContractCoinLogicF extends GetxController
     if (Get.currentRoute != '/') return false;
     if (Get.find<MainLogic>().selectedIndex.value != 1) return false;
     if (Get.find<MarketLogic>().tabCtrl.index != 0) return false;
-    var index = Get.find<ContractLogic>().state.tabController?.index;
+    final index = Get.find<ContractLogic>().state.tabController?.index;
     if (index != 0) return false;
     return true;
   }

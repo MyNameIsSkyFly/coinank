@@ -8,12 +8,12 @@ class TrapeziumPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final path = Path();
-    path.moveTo(0, 0);
-    path.lineTo(width, 0);
-    path.lineTo(0, size.height);
-    path.lineTo(-width, size.height);
-    path.close();
+    final path = Path()
+      ..moveTo(0, 0)
+      ..lineTo(width, 0)
+      ..lineTo(0, size.height)
+      ..lineTo(-width, size.height)
+      ..close();
     canvas.drawPath(path, Paint()..color = color);
   }
 

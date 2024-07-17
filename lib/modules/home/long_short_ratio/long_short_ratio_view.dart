@@ -43,7 +43,7 @@ class LongShortRatioPage extends StatelessWidget {
                             padding: const EdgeInsets.only(left: 15),
                             itemCount: state.headerTitles.length,
                             itemBuilder: (cnt, idx) {
-                              String type = state.headerTitles.toList()[idx];
+                              final type = state.headerTitles.toList()[idx];
                               return InkWell(
                                 onTap: () => logic.tapHeader(type),
                                 child: Container(
@@ -71,7 +71,7 @@ class LongShortRatioPage extends StatelessWidget {
                         }),
                       ),
                       InkWell(
-                        onTap: () => logic.toSearch(),
+                        onTap: logic.toSearch,
                         child: Container(
                           padding: const EdgeInsets.only(left: 8),
                           color: Theme.of(context).colorScheme.tertiary,
@@ -174,8 +174,7 @@ class LongShortRatioPage extends StatelessWidget {
                               physics: const NeverScrollableScrollPhysics(),
                               itemCount: state.dataList.length,
                               itemBuilder: (cnt, idx) {
-                                ShortRateEntity item =
-                                    state.dataList.toList()[idx];
+                                final item = state.dataList.toList()[idx];
                                 return _DataItem(item: item);
                               },
                             ),

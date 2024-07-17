@@ -89,7 +89,7 @@ class _CoinDetailSpotViewState extends State<CoinDetailSpotView>
                     const Gap(20),
                     Obx(() {
                       return GestureDetector(
-                        onTap: () => logic.toggleMarked(),
+                        onTap: logic.toggleMarked,
                         child: ImageIcon(
                             AssetImage(logic.marked.value
                                 ? Assets.commonIconStarFill

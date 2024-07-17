@@ -26,7 +26,7 @@ class _EditCustomizePageState extends State<EditCustomizePage> {
 
   @override
   Widget build(BuildContext context) {
-    var sof = S.of(context);
+    final sof = S.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(sof.edit),
@@ -163,14 +163,14 @@ class _EditCustomizePageState extends State<EditCustomizePage> {
                           await StoreLogic.to.removeContractCoinSortOrder();
                           logic.initData();
                           if (Get.isRegistered<ContractCoinLogic>()) {
-                            var contractCoinLogic =
+                            final contractCoinLogic =
                                 Get.find<ContractCoinLogic>();
                             contractCoinLogic.dataSource
                                 .getColumns(Get.context!);
                             contractCoinLogic.dataSource.buildDataGridRows();
                           }
                           if (Get.isRegistered<ContractCoinLogicF>()) {
-                            var fLogic = Get.find<ContractCoinLogicF>();
+                            final fLogic = Get.find<ContractCoinLogicF>();
                             fLogic.dataSource.getColumns(Get.context!);
                             fLogic.dataSource.buildDataGridRows();
                           }
@@ -187,12 +187,13 @@ class _EditCustomizePageState extends State<EditCustomizePage> {
                         await StoreLogic.to.saveContractCoinSortOrder(map);
                         logic.initData();
                         if (Get.isRegistered<ContractCoinLogic>()) {
-                          var contractCoinLogic = Get.find<ContractCoinLogic>();
+                          final contractCoinLogic =
+                              Get.find<ContractCoinLogic>();
                           contractCoinLogic.dataSource.getColumns(Get.context!);
                           contractCoinLogic.dataSource.buildDataGridRows();
                         }
                         if (Get.isRegistered<ContractCoinLogicF>()) {
-                          var fLogic = Get.find<ContractCoinLogicF>();
+                          final fLogic = Get.find<ContractCoinLogicF>();
                           fLogic.dataSource.getColumns(Get.context!);
                           fLogic.dataSource.buildDataGridRows();
                         }

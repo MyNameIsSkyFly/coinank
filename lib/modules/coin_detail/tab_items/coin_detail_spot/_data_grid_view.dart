@@ -14,7 +14,7 @@ class _DataGridView extends StatelessWidget {
           width: 110,
           label: Container(
             alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8),
             child: Text(
               S.of(context).s_exchange_name,
               overflow: TextOverflow.ellipsis,
@@ -27,7 +27,7 @@ class _DataGridView extends StatelessWidget {
           width: 150,
           label: Container(
             alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8),
             child: Text(
               S.of(context).symbol,
               overflow: TextOverflow.ellipsis,
@@ -39,7 +39,7 @@ class _DataGridView extends StatelessWidget {
           width: 100,
           label: Container(
             alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8),
             child: Text(
               '${S.of(context).s_price}(\$)',
               overflow: TextOverflow.ellipsis,
@@ -51,7 +51,7 @@ class _DataGridView extends StatelessWidget {
           width: 100,
           label: Container(
             alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8),
             child: Text(
               '${S.of(context).s_24h_chg}(%)',
               overflow: TextOverflow.ellipsis,
@@ -63,7 +63,7 @@ class _DataGridView extends StatelessWidget {
           width: 110,
           label: Container(
             alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8),
             child: Text(
               S.of(context).s_24h_turnover,
               overflow: TextOverflow.ellipsis,
@@ -85,14 +85,14 @@ class _DataGridView extends StatelessWidget {
                   sortIcon: Builder(
                     builder: (context) {
                       Widget? icon;
-                      String columnName = '';
+                      var columnName = '';
                       context.visitAncestorElements((element) {
                         if (element is GridHeaderCellElement) {
                           columnName = element.column.columnName;
                         }
                         return true;
                       });
-                      var column = logic.gridSource.sortedColumns
+                      final column = logic.gridSource.sortedColumns
                           .where((element) => element.name == columnName)
                           .firstOrNull;
                       if (column != null) {

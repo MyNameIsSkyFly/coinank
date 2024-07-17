@@ -21,7 +21,7 @@ class _CoinDialogWithInterceptorState extends State<_CoinDialogWithInterceptor>
   @override
   void initState() {
     super.initState();
-    var orderflowCoinSelectorIndex = StoreLogic().orderflowCoinSelectorIndex;
+    final orderflowCoinSelectorIndex = StoreLogic().orderflowCoinSelectorIndex;
     if (orderflowCoinSelectorIndex == 0) {
       currentProductType = null;
       isFavorite = true;
@@ -47,7 +47,7 @@ class _CoinDialogWithInterceptorState extends State<_CoinDialogWithInterceptor>
   var isFavorite = false;
 
   Iterable<OrderFlowSymbolEntity> get filteredList {
-    List<OrderFlowSymbolEntity> tmpList = originalList.toList();
+    final tmpList = originalList.toList();
     if (priceChgAsc.value != null) {
       tmpList.sort((a, b) =>
           (priceChgAsc.value == true
@@ -80,8 +80,8 @@ class _CoinDialogWithInterceptorState extends State<_CoinDialogWithInterceptor>
   void getDataFromLastFetch() {
     originalList.assignAll(StoreLogic.to.orderFlowSymbolsJson);
     list.assignAll(filteredList);
-    for (var o in originalList) {
-      o.exchangeName?.let((it) => exchanges.add(it));
+    for (final o in originalList) {
+      o.exchangeName?.let(exchanges.add);
     }
   }
 
@@ -93,10 +93,10 @@ class _CoinDialogWithInterceptorState extends State<_CoinDialogWithInterceptor>
           ...value[0] ?? <OrderFlowSymbolEntity>[],
           ...value[1] ?? <OrderFlowSymbolEntity>[]
         ]);
-    var tmp =
+    final tmp =
         result.where((e) => productTypes.any((e2) => e.productType == e2));
-    for (var o in tmp) {
-      o.exchangeName?.let((it) => exchanges.add(it));
+    for (final o in tmp) {
+      o.exchangeName?.let(exchanges.add);
     }
     originalList.assignAll(tmp);
     list.assignAll(filteredList);
@@ -120,7 +120,7 @@ class _CoinDialogWithInterceptorState extends State<_CoinDialogWithInterceptor>
             child: PointerInterceptor(
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
-                onTap: () => Get.back(),
+                onTap: Get.back,
                 child: Container(),
               ),
             ),
@@ -252,7 +252,7 @@ class _CoinDialogWithInterceptorState extends State<_CoinDialogWithInterceptor>
 
                                   return _Item(
                                     item: item,
-                                    onTapMark: () => list.refresh(),
+                                    onTapMark: list.refresh,
                                   );
                                 },
                               );

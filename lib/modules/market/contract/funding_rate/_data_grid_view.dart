@@ -23,7 +23,7 @@ class _DataGridViewState extends State<_DataGridView> {
           allowSorting: false,
           label: Container(
             alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.all(8.0).copyWith(left: 15),
+            padding: const EdgeInsets.all(8).copyWith(left: 15),
             child: Text(
               'Coin',
               overflow: TextOverflow.ellipsis,
@@ -75,14 +75,14 @@ class _DataGridViewState extends State<_DataGridView> {
                 sortIcon: Builder(
                   builder: (context) {
                     Widget? icon;
-                    String columnName = '';
+                    var columnName = '';
                     context.visitAncestorElements((element) {
                       if (element is GridHeaderCellElement) {
                         columnName = element.column.columnName;
                       }
                       return true;
                     });
-                    var column = widget.logic.gridSource.sortedColumns
+                    final column = widget.logic.gridSource.sortedColumns
                         .where((element) => element.name == columnName)
                         .firstOrNull;
                     if (column != null) {
@@ -116,7 +116,7 @@ class _DataGridViewState extends State<_DataGridView> {
           columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
           onCellTap: (details) {
             if (details.rowColumnIndex.rowIndex == 0) return;
-            var baseCoin = widget.logic.gridSource
+            final baseCoin = widget.logic.gridSource
                 .effectiveRows[details.rowColumnIndex.rowIndex - 1]
                 .getCells()[0]
                 .value;
@@ -133,7 +133,7 @@ class _DataGridViewState extends State<_DataGridView> {
           },
           onCellLongPress: (details) {
             if (details.rowColumnIndex.rowIndex == 0) return;
-            var baseCoin = widget.logic.gridSource
+            final baseCoin = widget.logic.gridSource
                 .effectiveRows[details.rowColumnIndex.rowIndex - 1]
                 .getCells()[0]
                 .value;
@@ -172,7 +172,7 @@ class _DataGridViewState extends State<_DataGridView> {
   }
 
   void showOverlayAt(Offset tapPosition, bool marked, {AsyncCallback? onTap}) {
-    OverlayState overlayState = Overlay.of(context);
+    final overlayState = Overlay.of(context);
     OverlayEntry? overlayEntry;
     overlayEntry = OverlayEntry(
       builder: (context) => SizedBox.expand(

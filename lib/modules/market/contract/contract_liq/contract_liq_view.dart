@@ -336,11 +336,11 @@ class _ContractLiqPageState extends State<ContractLiqPage> {
                   final result = await _openSelector<(int?, String?)>(
                     [
                       (0, sof.s_all),
-                      (1000, '>\$1K'),
-                      (10000, '>\$10K'),
-                      (100000, '>\$100K'),
-                      (1000000, '>\$1M'),
-                      (10000000, '>\$10M'),
+                      (1000, r'>$1K'),
+                      (10000, r'>$10K'),
+                      (100000, r'>$100K'),
+                      (1000000, r'>$1M'),
+                      (10000000, r'>$10M'),
                     ],
                     current: logic.filterOrderAmount.value,
                     convertor: (value) => value.$2 ?? sof.s_all,
@@ -719,8 +719,8 @@ class _ContractLiqPageState extends State<ContractLiqPage> {
       return value.toStringAsFixed(4);
     } else {
       final sb = StringBuffer('0.');
-      int count = 0;
-      for (int i = 0; i < parts[1].length; i++) {
+      var count = 0;
+      for (var i = 0; i < parts[1].length; i++) {
         final c = parts[1][i];
         sb.write(c);
         if (c != '0') count++;

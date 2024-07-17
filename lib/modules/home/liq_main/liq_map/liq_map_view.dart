@@ -90,7 +90,7 @@ class LiqMapPage extends StatelessWidget {
                         ),
                         const Gap(20),
                         InkWell(
-                          onTap: () => logic.onRefresh(),
+                          onTap: logic.onRefresh,
                           child: Container(
                             width: 30,
                             height: 30,
@@ -179,7 +179,7 @@ class LiqMapPage extends StatelessWidget {
                         ),
                         const Gap(20),
                         InkWell(
-                          onTap: () => logic.onAggRefresh(),
+                          onTap: logic.onAggRefresh,
                           child: Container(
                             width: 30,
                             height: 30,

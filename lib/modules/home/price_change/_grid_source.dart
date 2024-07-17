@@ -31,7 +31,7 @@ class PriceChgGridSource extends DataGridSource {
               columnName: logic.state.topList[0],
               value: _StringConverter(
                 entity.price,
-                (original) => AppUtil.compressNumberWithLotsOfZeros(original),
+                AppUtil.compressNumberWithLotsOfZeros,
               )),
           DataGridCell(
               columnName: logic.state.topList[1],
@@ -83,7 +83,7 @@ class PriceChgGridSource extends DataGridSource {
               columnName: logic.state.topList[0],
               value: _StringConverter(
                 entity.price,
-                (original) => AppUtil.compressNumberWithLotsOfZeros(original),
+                AppUtil.compressNumberWithLotsOfZeros,
               )),
           DataGridCell(
               columnName: logic.state.topList[1],

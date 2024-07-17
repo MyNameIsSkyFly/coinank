@@ -10,7 +10,7 @@ class AdaptiveDialogAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+    final theme = Theme.of(context);
     switch (theme.platform) {
       case TargetPlatform.android:
       case TargetPlatform.fuchsia:

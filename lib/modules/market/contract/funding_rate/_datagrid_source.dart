@@ -28,7 +28,7 @@ class GridDataSource extends DataGridSource {
       if (state.searchList.isEmpty) return true;
       return state.searchList.contains(element.symbol);
     }).mapIndexed<DataGridRow>((index, entity) {
-      var dataMap = state.isCmap.value ? entity.cmap : entity.umap;
+      final dataMap = state.isCmap.value ? entity.cmap : entity.umap;
       return DataGridRow(cells: <DataGridCell<dynamic>>[
         DataGridCell<String>(columnName: '1', value: entity.symbol),
         DataGridCell<_DataClass>(
@@ -174,7 +174,7 @@ class GridDataSource extends DataGridSource {
 
   @override
   int compare(DataGridRow? a, DataGridRow? b, SortColumnDetails sortColumn) {
-    final double valueA = (a
+    final valueA = (a
                 ?.getCells()
                 .firstWhereOrNull(
                     (element) => element.columnName == sortColumn.name)
@@ -183,7 +183,7 @@ class GridDataSource extends DataGridSource {
         (sortColumn.sortDirection == DataGridSortDirection.ascending
             ? 10
             : -10);
-    final double valueB = (b
+    final valueB = (b
                 ?.getCells()
                 .firstWhereOrNull(
                     (element) => element.columnName == sortColumn.name)

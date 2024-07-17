@@ -60,7 +60,7 @@ class FundingRatePage extends StatelessWidget {
                 return _Segment(
                   titles: [S.current.s_show_pre_fr, S.current.s_hide],
                   isFirst: !state.isHide.value,
-                  onTap: (v) => logic.tapHide(v),
+                  onTap: logic.tapHide,
                 );
               }),
               const Gap(10),
@@ -68,12 +68,12 @@ class FundingRatePage extends StatelessWidget {
                 return _Segment(
                   titles: [S.current.s_u_fr, S.current.s_coin_fr],
                   isFirst: !state.isCmap.value,
-                  onTap: (v) => logic.tapCmap(v),
+                  onTap: logic.tapCmap,
                 );
               }),
               const Gap(10),
               InkWell(
-                onTap: () => logic.tapTime(),
+                onTap: logic.tapTime,
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   height: 32,
@@ -109,7 +109,7 @@ class FundingRatePage extends StatelessWidget {
             duration: const Duration(milliseconds: 100),
             alignment: Alignment.topCenter,
             child: InkWell(
-              onTap: () => logic.tapSearch(),
+              onTap: logic.tapSearch,
               child: Container(
                 margin: const EdgeInsets.fromLTRB(15, 15, 15, 0),
                 height: state.isScrollDown.value ? 32 : 0,
@@ -143,7 +143,7 @@ class FundingRatePage extends StatelessWidget {
                 )
               : Expanded(
                   child: AppRefresh(
-                    onRefresh: () => logic.onRefresh(),
+                    onRefresh: logic.onRefresh,
                     child: _DataGridView(logic: logic),
                   ),
                 );

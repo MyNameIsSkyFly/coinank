@@ -48,8 +48,9 @@ class SpotCoinLogicF extends GetxController implements SpotCoinBaseLogic {
     _orderChangedSubscription =
         AppConst.eventBus.on<EventCoinOrderChanged>().listen((event) {
       if (!event.isSpot) return;
-      dataSource.getColumns(Get.context!);
-      dataSource.buildDataGridRows();
+      dataSource
+        ..getColumns(Get.context!)
+        ..buildDataGridRows();
     });
 
     AppConst.eventBus.on<FGBGType>().listen((event) async {
@@ -82,9 +83,9 @@ class SpotCoinLogicF extends GetxController implements SpotCoinBaseLogic {
     _fetching = true;
     TickersDataEntity? result;
     if (StoreLogic.isLogin) {
-      result = await Apis().postSpotAgg(StoreLogic().spotCoinFilter ?? {},
-          page: 1,
-          size: 500, isFollow: true, extras: {'showToast': false})
+      result = await Apis()
+          .postSpotAgg(StoreLogic().spotCoinFilter ?? {},
+              page: 1, size: 500, isFollow: true, extras: {'showToast': false})
           .catchError((e) => TickersDataEntity(list: []))
           .whenComplete(() => _fetching = false);
     } else {
@@ -92,10 +93,11 @@ class SpotCoinLogicF extends GetxController implements SpotCoinBaseLogic {
         result = TickersDataEntity(list: []);
         _fetching = false;
       } else {
-        result = await Apis().getSpotAgg(
-          page: 1,
-          size: 500,
-          baseCoins: StoreLogic.to.favoriteSpot.join(','),
+        result = await Apis()
+            .getSpotAgg(
+              page: 1,
+              size: 500,
+              baseCoins: StoreLogic.to.favoriteSpot.join(','),
             )
             .whenComplete(() => _fetching = false);
       }
@@ -103,8 +105,9 @@ class SpotCoinLogicF extends GetxController implements SpotCoinBaseLogic {
     if (isLoading.value) isLoading.value = false;
     data.assignAll(result?.list ?? []);
     dataSource.items.assignAll(result?.list ?? []);
-    dataSource.buildDataGridRows();
-    dataSource.getColumns(Get.context!);
+    dataSource
+      ..buildDataGridRows()
+      ..getColumns(Get.context!);
   }
 
   Timer? _pollingTimer;

@@ -9,7 +9,7 @@ class FormatUtil {
   static const String trillionUnit = '万亿';
 
   static String amountConversion(double number, {int precision = 1}) {
-    bool isNegative = number < 0;
+    final isNegative = number < 0;
     final numberAbs = number.abs();
     late String result;
     if (numberAbs >= 1000000000000) {

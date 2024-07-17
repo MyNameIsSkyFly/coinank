@@ -87,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
                   )),
               const Gap(15),
               GestureDetector(
-                  onTap: () => AppNav.toFindPwd(),
+                  onTap: AppNav.toFindPwd,
                   child: Text(
                     S.of(context).s_forget_passwd,
                     style: Styles.tsMain_12,

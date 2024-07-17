@@ -73,8 +73,8 @@ class LongShortPersonRatioLogic extends GetxController {
       'seriesShortName': S.current.s_shorts,
       'ratioName': S.current.s_longshort_ratio,
     };
-    var platformString = Platform.isAndroid ? 'android' : 'ios';
-    var jsSource = '''
+    final platformString = Platform.isAndroid ? 'android' : 'ios';
+    final jsSource = '''
     setChartData($jsonData1, "$platformString", "longShortChart", ${jsonEncode(options)});    
     ''';
     updateReadyStatus1(dataReady: true, evJS: jsSource);
@@ -102,8 +102,8 @@ class LongShortPersonRatioLogic extends GetxController {
       'seriesShortName': S.current.s_shorts,
       'ratioName': S.current.s_longshort_ratio,
     };
-    var platformString = Platform.isAndroid ? 'android' : 'ios';
-    var jsSource = '''
+    final platformString = Platform.isAndroid ? 'android' : 'ios';
+    final jsSource = '''
     setChartData($jsonData2, "$platformString", "longShortChart", ${jsonEncode(options)});    
     ''';
     updateReadyStatus2(dataReady: true, evJS: jsSource);

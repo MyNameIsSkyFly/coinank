@@ -58,8 +58,8 @@ class _HoldChartViewState extends State<HoldChartView> {
       'locale': AppUtil.shortLanguageName,
       'theme': StoreLogic.to.isDarkMode ? 'night' : 'light'
     };
-    var platformString = Platform.isAndroid ? 'android' : 'ios';
-    var jsSource = '''
+    final platformString = Platform.isAndroid ? 'android' : 'ios';
+    final jsSource = '''
 setChartData($jsonData, "$platformString", "holderAddress", ${jsonEncode(options)});    
     ''';
     updateReadyStatus(dataReady: true, evJS: jsSource);

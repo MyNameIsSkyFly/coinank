@@ -147,8 +147,8 @@ class GridDataSource extends DataGridSource {
     if (input.length <= prefixLength + suffixLength) {
       return input;
     } else {
-      String prefix = input.substring(0, prefixLength);
-      String suffix = input.substring(input.length - suffixLength);
+      final prefix = input.substring(0, prefixLength);
+      final suffix = input.substring(input.length - suffixLength);
       return '$prefix...$suffix';
     }
   }
@@ -161,12 +161,12 @@ class GridDataSource extends DataGridSource {
   @override
   int compare(DataGridRow? a, DataGridRow? b, SortColumnDetails sortColumn) {
     if (sortColumn.name == '1') {
-      final String? valueA = a
+      final valueA = a
           ?.getCells()
           .firstWhereOrNull((element) => element.columnName == sortColumn.name)
           ?.value
           ?.toString();
-      final String? valueB = b
+      final valueB = b
           ?.getCells()
           .firstWhereOrNull((element) => element.columnName == sortColumn.name)
           ?.value

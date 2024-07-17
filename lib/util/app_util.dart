@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'dart:ui' as ui;
 
 import 'package:ank_app/config/application.dart';
 import 'package:ank_app/entity/event/theme_event.dart';
@@ -55,7 +56,7 @@ class AppUtil {
       webBgColor: 'linear-gradient(to right, #000000, #000000)',
       gravity: ToastGravity.BOTTOM,
       webPosition: 'center',
-      fontSize: 16.0,
+      fontSize: 16,
     );
   }
 
@@ -121,7 +122,7 @@ class AppUtil {
       return FormatUtil.amountConversion(amount, precision: precision);
     }
     final mFormat = NumberFormat('#,##0.${'0' * precision}', 'en_US');
-    bool isNegative = amount < 0;
+    final isNegative = amount < 0;
     amount = amount.abs();
     late String result;
     if (amount < 1000) {
@@ -166,7 +167,7 @@ class AppUtil {
       bool mul = true,
       bool showAdd = true}) {
     if (rate != null) {
-      String s = '';
+      var s = '';
       if (mul) {
         s = '${(rate * 100).toStringAsFixed(precision)}%';
       } else {
@@ -199,9 +200,9 @@ class AppUtil {
     final res = await Dio()
         .get(
             'https://coinsoho.s3.us-east-2.amazonaws.com/app/androidwebversion.txt')
-        .whenComplete(() => Loading.dismiss());
+        .whenComplete(Loading.dismiss);
     final data = jsonDecode(res.data as String? ?? '{}');
-    bool isNeed = false;
+    var isNeed = false;
     if (Platform.isIOS) {
       isNeed = (int.tryParse(packageInfo.buildNumber) ?? 100) <
           (int.tryParse('${data['data']['iosVersionCode']}') ?? 0);
@@ -231,10 +232,7 @@ class AppUtil {
             backgroundColor: Theme.of(context).cardColor,
             actions: [
               AdaptiveDialogAction(
-                  child: Text(S.of(context).s_cancel),
-                  onPressed: () {
-                    Get.back();
-                  }),
+                  onPressed: Get.back, child: Text(S.of(context).s_cancel)),
               AdaptiveDialogAction(
                   child: Text(S.of(context).s_ok),
                   onPressed: () async {
@@ -274,13 +272,13 @@ class AppUtil {
       Get.find<MainLogic>().isFirstKLine = false;
       await Future.delayed(const Duration(milliseconds: 100));
     }
-    Map<String, dynamic> map = {
+    final map = <String, dynamic>{
       'symbol': symbol,
       'baseCoin': baseCoin,
       'exchangeName': exchangeName,
       'productType': productType ?? 'SWAP',
     };
-    String js = "flutterOpenKline('${jsonEncode(map)}');";
+    final js = "flutterOpenKline('${jsonEncode(map)}');";
     AppConst.eventBus.fire(WebJSEvent(evJS: js));
     Get.find<MainLogic>().webViewController?.evaluateJavascript(source: js);
     // if (Get.find<MainLogic>().state.isFirstKLine) {
@@ -298,21 +296,63 @@ class AppUtil {
     MessageHostApi().changeUpColor(StoreLogic.to.isUpGreen);
   }
 
-  static Future<void> shareImage({Uint8List? image}) async {
-    if (Platform.isIOS) {
-      image ??= await FfNativeScreenshot().takeScreenshot();
-    } else {
-      // ignore: parameter_assignments
-      image ??= await ScreenshotNtv.takeScreenshot();
-    }
-    if (image == null) return;
-    Get.dialog(ShareDialog(image: image), useSafeArea: false);
+  static Future<Uint8List> _removeTopWhiteSpace(
+      Uint8List inputBytes, int topSpaceHeight) async {
+    // Decode the image
+    final codec = await ui.instantiateImageCodec(inputBytes);
+    final frameInfo = await codec.getNextFrame();
+    final originalImage = frameInfo.image;
+
+    // Get image dimensions
+    final width = originalImage.width;
+    final height = originalImage.height;
+
+    // Create a new image excluding the top white space
+    final recorder = ui.PictureRecorder();
+    final canvas = Canvas(recorder);
+    final srcRect = Rect.fromLTWH(0, topSpaceHeight.toDouble(),
+        width.toDouble(), (height - topSpaceHeight).toDouble());
+    final dstRect = Rect.fromLTWH(
+        0, 0, width.toDouble(), (height - topSpaceHeight).toDouble());
+    final paint = Paint();
+    canvas.drawImageRect(originalImage, srcRect, dstRect, paint);
+    final croppedImage =
+        await recorder.endRecording().toImage(width, height - topSpaceHeight);
+
+    // Convert the cropped image to Uint8List
+    final byteData =
+        await croppedImage.toByteData(format: ui.ImageByteFormat.png);
+    final outputBytes = byteData!.buffer.asUint8List();
+
+    return outputBytes;
+  }
+
+  static Future<void> shareImage() async {
+    late Uint8List clippedImage;
+    await Loading.wrap(
+      () async {
+        Uint8List? image;
+        if (Platform.isIOS) {
+          image ??= await FfNativeScreenshot().takeScreenshot();
+        } else {
+          // ignore: parameter_assignments
+          image ??= await ScreenshotNtv.takeScreenshot();
+        }
+        if (image == null) return;
+
+        clippedImage = await _removeTopWhiteSpace(image,
+            ui.PlatformDispatcher.instance.views.first.padding.top.toInt());
+      },
+    ).catchError((e) {
+      AppUtil.showToast('error: $e');
+    });
+    Get.dialog(ShareDialog(image: clippedImage), useSafeArea: false);
   }
 
   static String compressNumberWithLotsOfZeros(double original) {
     int countLeadingZeros(String str) {
-      int count = 0;
-      for (int i = 0; i < str.length; i++) {
+      var count = 0;
+      for (var i = 0; i < str.length; i++) {
         if (str[i] != '0') {
           break;
         }
@@ -322,14 +362,14 @@ class AppUtil {
     }
 
     final number = Decimal.parse('$original');
-    var split = number.toString().split('.');
+    final split = number.toString().split('.');
     final integerPart = split[0];
     final decimalPart = split.elementAtOrNull(1);
     if (decimalPart == null) return number.toString();
     if (integerPart != '0') {
       return number.toString();
     } else {
-      var count = countLeadingZeros(decimalPart);
+      final count = countLeadingZeros(decimalPart);
       if (count >= 4) {
         return '$integerPart.{$count}${decimalPart.substring(count)}';
       } else {

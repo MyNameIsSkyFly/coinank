@@ -101,7 +101,7 @@ class _MyAppState extends State<MyApp> {
     JPushUtil().initPlatformState();
     AppConst.eventBus.on<FGBGType>().listen((event) async {
       if (event == FGBGType.foreground) {
-        bool isSupported = await FlutterAppBadger.isAppBadgeSupported();
+        final isSupported = await FlutterAppBadger.isAppBadgeSupported();
         if (isSupported) {
           if (Platform.isAndroid) {
             FlutterAppBadger.removeBadge();

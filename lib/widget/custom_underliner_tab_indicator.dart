@@ -56,12 +56,12 @@ class CustomUnderlineTabIndicator extends Decoration {
   }
 
   Rect _indicatorRectFor(Rect rect, TextDirection textDirection) {
-    final Rect indicator = insets.resolve(textDirection).deflateRect(rect);
+    final indicator = insets.resolve(textDirection).deflateRect(rect);
 
     // 希望的宽度
-    double wantWidth = width;
+    final wantWidth = width;
     // 取中间坐标
-    double cw = (indicator.left + indicator.right) / 2;
+    final cw = (indicator.left + indicator.right) / 2;
     // 这里是核心代码
     return Rect.fromLTWH(cw - wantWidth / 2,
         indicator.bottom - borderSide.width, wantWidth, borderSide.width);
@@ -76,12 +76,12 @@ class _UnderlinePainter extends BoxPainter {
 
   @override
   void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
-    final Rect rect = offset & configuration.size!;
-    final TextDirection textDirection = configuration.textDirection!;
-    final Rect indicator = decoration
+    final rect = offset & configuration.size!;
+    final textDirection = configuration.textDirection!;
+    final indicator = decoration
         ._indicatorRectFor(rect, textDirection)
         .deflate(decoration.borderSide.width / 2);
-    final Paint paint = decoration.borderSide.toPaint()
+    final paint = decoration.borderSide.toPaint()
       ..strokeCap = decoration.strokeCap; // 这里修改控制器边角的形状
     canvas.drawLine(indicator.bottomLeft, indicator.bottomRight, paint);
   }

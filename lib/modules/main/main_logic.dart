@@ -113,7 +113,7 @@ class MainLogic extends GetxController {
   }
 
   Future<void> handleNetwork() async {
-    var connectivity = Connectivity();
+    final connectivity = Connectivity();
     if (!AppConst.networkConnected) {
       AppUtil.showToast(S.current.error_network);
     }

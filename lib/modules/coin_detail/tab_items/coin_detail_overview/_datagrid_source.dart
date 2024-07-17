@@ -117,12 +117,12 @@ class GridDataSource extends DataGridSource {
   @override
   int compare(DataGridRow? a, DataGridRow? b, SortColumnDetails sortColumn) {
     if (sortColumn.name == '1') {
-      final String? valueA = a
+      final valueA = a
           ?.getCells()
           .firstWhereOrNull((element) => element.columnName == sortColumn.name)
           ?.value
           ?.toString();
-      final String? valueB = b
+      final valueB = b
           ?.getCells()
           .firstWhereOrNull((element) => element.columnName == sortColumn.name)
           ?.value

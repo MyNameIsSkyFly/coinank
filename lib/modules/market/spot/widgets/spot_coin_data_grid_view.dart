@@ -67,7 +67,7 @@ class _SpotCoinGridViewState extends State<SpotCoinGridView> {
             columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
             onCellTap: (details) {
               if (details.rowColumnIndex.rowIndex == 0) return;
-              var baseCoin = widget.logic.dataSource
+              final baseCoin = widget.logic.dataSource
                   .effectiveRows[details.rowColumnIndex.rowIndex - 1]
                   .getCells()[0]
                   .value;
@@ -78,7 +78,7 @@ class _SpotCoinGridViewState extends State<SpotCoinGridView> {
             },
             onCellLongPress: (details) {
               if (details.rowColumnIndex.rowIndex == 0) return;
-              var baseCoin = widget.logic.dataSource
+              final baseCoin = widget.logic.dataSource
                   .effectiveRows[details.rowColumnIndex.rowIndex - 1]
                   .getCells()[0]
                   .value;
@@ -100,7 +100,7 @@ class _SpotCoinGridViewState extends State<SpotCoinGridView> {
   }
 
   void showOverlayAt(Offset tapPosition, bool marked, {VoidCallback? onTap}) {
-    OverlayState overlayState = Overlay.of(context);
+    final overlayState = Overlay.of(context);
     OverlayEntry? overlayEntry;
     overlayEntry = OverlayEntry(
       builder: (context) => SizedBox.expand(
@@ -153,14 +153,14 @@ class _SortIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget? icon;
-    String columnName = '';
+    var columnName = '';
     context.visitAncestorElements((element) {
       if (element is GridHeaderCellElement) {
         columnName = element.column.columnName;
       }
       return true;
     });
-    var column = logic.dataSource.sortedColumns
+    final column = logic.dataSource.sortedColumns
         .where((element) => element.name == columnName)
         .firstOrNull;
     if (column != null) {

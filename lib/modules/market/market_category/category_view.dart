@@ -68,13 +68,13 @@ class _ContractCategoryPageState extends State<ContractCategoryPage>
             headerGridLinesVisibility: GridLinesVisibility.none,
             onCellTap: (details) {
               if (details.rowColumnIndex.rowIndex == 0) return;
-              String? tagText = (gridSource
+              final tagText = (gridSource
                       .effectiveRows[details.rowColumnIndex.rowIndex - 1]
                       .getCells()[0]
                       .value as _TextValue)
                   .text;
               String? tag;
-              for (int i = 0; i < categoryTags.length; i++) {
+              for (var i = 0; i < categoryTags.length; i++) {
                 if (MarketMaps.categoryTextMap(categoryTags[i]) == tagText) {
                   tag = categoryTags[i];
                   break;
@@ -102,49 +102,50 @@ class _DataGridSource extends DataGridSource {
           columnName: columnName, value: _TextValue(text, value ?? 0));
     }
 
-    _dataGridRows.clear();
-    _dataGridRows.addAll(list.mapIndexed((index, e) {
-      final item = list[index];
-      return DataGridRow(cells: [
-        cell(MarketMaps.categoryTextMap(item.tag),
-            columnName: S.current.category, value: null),
-        cell('\$${AppUtil.getLargeFormatString('${item.turnover}')}',
-            columnName: '${S.current.s_24h_turnover}(\$)',
-            value: item.turnover),
-        cell(
-            '${(item.turnoverChg ?? 0) >= 0 ? '+' : ''}${item.turnoverChg?.toStringAsFixed(2)}%',
-            columnName: '${S.current.s_24h_turnover}(%)',
-            value: item.turnoverChg),
-        if (!isSpot) ...[
-          cell('\$${AppUtil.getLargeFormatString('${item.openInterest}')}',
-              columnName: '${S.current.s_oi}(\$)', value: item.openInterest),
+    _dataGridRows
+      ..clear()
+      ..addAll(list.mapIndexed((index, e) {
+        final item = list[index];
+        return DataGridRow(cells: [
+          cell(MarketMaps.categoryTextMap(item.tag),
+              columnName: S.current.category, value: null),
+          cell('\$${AppUtil.getLargeFormatString('${item.turnover}')}',
+              columnName: '${S.current.s_24h_turnover}(\$)',
+              value: item.turnover),
           cell(
-              '${(item.openInterestCh1 ?? 0) >= 0 ? '+' : ''}${((item.openInterestCh1 ?? 0) * 100).toStringAsFixed(2)}%',
-              columnName: '${S.current.s_oi}(1H%)',
-              value: (item.openInterestCh1 ?? 0) * 100),
-          cell(
-              '${(item.openInterestCh24 ?? 0) >= 0 ? '+' : ''}${((item.openInterestCh24 ?? 0) * 100).toStringAsFixed(2)}%',
-              columnName: '${S.current.s_oi}(24H%)',
-              value: (item.openInterestCh24 ?? 0) * 100)
-        ],
-        cell('\$${AppUtil.getLargeFormatString('${item.marketCap}')}',
-            columnName: '${S.current.marketCap}(\$)', value: item.marketCap),
-        DataGridCell(
-            columnName: S.current.topMarketCoin,
-            value: _TextValue(
-                '${item.topMarketCoin} ${AppUtil.getLargeFormatString('${item.topMarket}')}',
-                item.topMarket ?? 0,
-                lengthHelper: '       ${item.topMarketCoin} ${AppUtil.getLargeFormatString('${item.topMarket}')}',
-                extras: {'coin': item.topMarketCoin})),
-        DataGridCell(
-            columnName: S.current.topGainerCoin,
-            value: _TextValue('${item.bestChg}', item.bestChg ?? 0,
-                lengthHelper: '       ${item.bestCoin} ${item.bestChg}%',
-                extras: {'coin': item.bestCoin, 'chg': item.bestChg})),
-        // cell('${item.bestChg}',
-        //     columnName: S.current.topGainerCoin, value: item.bestChg),
-      ]);
-    }));
+              '${(item.turnoverChg ?? 0) >= 0 ? '+' : ''}${item.turnoverChg?.toStringAsFixed(2)}%',
+              columnName: '${S.current.s_24h_turnover}(%)',
+              value: item.turnoverChg),
+          if (!isSpot) ...[
+            cell('\$${AppUtil.getLargeFormatString('${item.openInterest}')}',
+                columnName: '${S.current.s_oi}(\$)', value: item.openInterest),
+            cell(
+                '${(item.openInterestCh1 ?? 0) >= 0 ? '+' : ''}${((item.openInterestCh1 ?? 0) * 100).toStringAsFixed(2)}%',
+                columnName: '${S.current.s_oi}(1H%)',
+                value: (item.openInterestCh1 ?? 0) * 100),
+            cell(
+                '${(item.openInterestCh24 ?? 0) >= 0 ? '+' : ''}${((item.openInterestCh24 ?? 0) * 100).toStringAsFixed(2)}%',
+                columnName: '${S.current.s_oi}(24H%)',
+                value: (item.openInterestCh24 ?? 0) * 100)
+          ],
+          cell('\$${AppUtil.getLargeFormatString('${item.marketCap}')}',
+              columnName: '${S.current.marketCap}(\$)', value: item.marketCap),
+          DataGridCell(
+              columnName: S.current.topMarketCoin,
+              value: _TextValue(
+                  '${item.topMarketCoin} ${AppUtil.getLargeFormatString('${item.topMarket}')}',
+                  item.topMarket ?? 0,
+                  lengthHelper: '       ${item.topMarketCoin} ${AppUtil.getLargeFormatString('${item.topMarket}')}',
+                  extras: {'coin': item.topMarketCoin})),
+          DataGridCell(
+              columnName: S.current.topGainerCoin,
+              value: _TextValue('${item.bestChg}', item.bestChg ?? 0,
+                  lengthHelper: '       ${item.bestCoin} ${item.bestChg}%',
+                  extras: {'coin': item.bestCoin, 'chg': item.bestChg})),
+          // cell('${item.bestChg}',
+          //     columnName: S.current.topGainerCoin, value: item.bestChg),
+        ]);
+      }));
   }
 
   void refresh() {
@@ -175,7 +176,7 @@ class _DataGridSource extends DataGridSource {
       ],
       DataGridNormalText(row.getCells()[isSpot ? 3 : 6].value.toString()),
       Builder(builder: (context) {
-        var value = row.getCells()[isSpot ? 4 : 7].value as _TextValue;
+        final value = row.getCells()[isSpot ? 4 : 7].value as _TextValue;
         return Row(
           children: [
             ImageUtil.coinImage(value.extras?['coin'] ?? '', size: 24),
@@ -190,9 +191,9 @@ class _DataGridSource extends DataGridSource {
         );
       }),
       Builder(builder: (context) {
-        var value = row.getCells()[isSpot ? 5 : 8].value as _TextValue;
-        var chg = (value.extras?['chg'] as double?) ?? 0;
-        var coin = (value.extras?['coin'] as String?) ?? '';
+        final value = row.getCells()[isSpot ? 5 : 8].value as _TextValue;
+        final chg = (value.extras?['chg'] as double?) ?? 0;
+        final coin = (value.extras?['coin'] as String?) ?? '';
         return Row(
           children: [
             ImageUtil.coinImage(value.extras?['coin'] ?? '', size: 24),
@@ -223,7 +224,7 @@ class _DataGridSource extends DataGridSource {
 
   @override
   int compare(DataGridRow? a, DataGridRow? b, SortColumnDetails sortColumn) {
-    final double valueA = (a
+    final valueA = (a
                 ?.getCells()
                 .firstWhereOrNull(
                     (element) => element.columnName == sortColumn.name)
@@ -232,7 +233,7 @@ class _DataGridSource extends DataGridSource {
         (sortColumn.sortDirection == DataGridSortDirection.ascending
             ? 10
             : -10);
-    final double valueB = (b
+    final valueB = (b
                 ?.getCells()
                 .firstWhereOrNull(
                     (element) => element.columnName == sortColumn.name)
@@ -272,14 +273,14 @@ class _SortIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget? icon;
-    String columnName = '';
+    var columnName = '';
     context.visitAncestorElements((element) {
       if (element is GridHeaderCellElement) {
         columnName = element.column.columnName;
       }
       return true;
     });
-    var column = dataSource.sortedColumns
+    final column = dataSource.sortedColumns
         .where((element) => element.name == columnName)
         .firstOrNull;
     if (column != null) {

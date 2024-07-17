@@ -90,7 +90,7 @@ class _CustomSearchBottomSheetPageState
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                               ),
-                              onChanged: (v) => logic.search(v),
+                              onChanged: logic.search,
                             ),
                           ),
                           SizedBox(

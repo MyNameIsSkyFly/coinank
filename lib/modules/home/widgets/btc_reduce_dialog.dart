@@ -132,8 +132,7 @@ class BtcReduceDialog extends StatelessWidget {
                     ),
                     const Gap(20),
                     FilledButton(
-                        onPressed: () => Get.back(),
-                        child: Text(S.of(context).s_ok))
+                        onPressed: Get.back, child: Text(S.of(context).s_ok))
                   ],
                 ),
               );

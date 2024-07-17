@@ -74,7 +74,7 @@ class _ContractCoinGridViewState extends State<ContractCoinGridView> {
 
   void _handleCellLongPress(DataGridCellLongPressDetails details) {
     if (details.rowColumnIndex.rowIndex == 0) return;
-    var baseCoin = widget
+    final baseCoin = widget
         .logic.dataSource.effectiveRows[details.rowColumnIndex.rowIndex - 1]
         .getCells()[0]
         .value;
@@ -94,7 +94,7 @@ class _ContractCoinGridViewState extends State<ContractCoinGridView> {
 
   void _handleCellTap(DataGridCellTapDetails details) {
     if (details.rowColumnIndex.rowIndex == 0) return;
-    var baseCoin = widget
+    final baseCoin = widget
         .logic.dataSource.effectiveRows[details.rowColumnIndex.rowIndex - 1]
         .getCells()[0]
         .value;
@@ -105,7 +105,7 @@ class _ContractCoinGridViewState extends State<ContractCoinGridView> {
   }
 
   void showOverlayAt(Offset tapPosition, bool marked, {VoidCallback? onTap}) {
-    OverlayState overlayState = Overlay.of(context);
+    final overlayState = Overlay.of(context);
     OverlayEntry? overlayEntry;
     overlayEntry = OverlayEntry(
       builder: (context) => SizedBox.expand(
@@ -160,14 +160,14 @@ class _SortIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget? icon;
-    String columnName = '';
+    var columnName = '';
     context.visitAncestorElements((element) {
       if (element is GridHeaderCellElement) {
         columnName = element.column.columnName;
       }
       return true;
     });
-    var column = widget.logic.dataSource.sortedColumns
+    final column = widget.logic.dataSource.sortedColumns
         .where((element) => element.name == columnName)
         .firstOrNull;
     if (column != null) {

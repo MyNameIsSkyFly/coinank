@@ -36,7 +36,7 @@ class _CategoryDetailContractViewState extends State<CategoryDetailContractView>
     tabController =
         TabController(length: 2, vsync: this, animationDuration: Duration.zero);
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      var indexOfTag = MarketMaps.allCategories
+      final indexOfTag = MarketMaps.allCategories
           .map((e) => e.type)
           .toList()
           .indexOf(widget.tag);
@@ -56,7 +56,7 @@ class _CategoryDetailContractViewState extends State<CategoryDetailContractView>
                   itemScrollController: itemScrollController,
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   itemBuilder: (context, index) => Builder(builder: (context) {
-                        var item = MarketMaps.allCategories[index];
+                        final item = MarketMaps.allCategories[index];
                         return _tagItem(item, context, setState);
                       }),
                   itemCount: MarketMaps.allCategories.length,

@@ -34,9 +34,7 @@ class HomeSearchLogic extends GetxController {
   }
 
   void initDebounce() {
-    debounce(textTrigger, (callback) {
-      search(callback);
-    });
+    debounce(textTrigger, search);
   }
 
   void pollingHot() {
@@ -54,29 +52,30 @@ class HomeSearchLogic extends GetxController {
     if (result == null) return;
 
     final list = <SearchV2ItemEntity>[];
-    for (var e in result.arc20 ?? <SearchV2ItemEntity>[]) {
+    for (final e in result.arc20 ?? <SearchV2ItemEntity>[]) {
       list.add(e);
     }
-    for (var e in result.asc20 ?? <SearchV2ItemEntity>[]) {
+    for (final e in result.asc20 ?? <SearchV2ItemEntity>[]) {
       list.add(e);
     }
-    for (var e in result.brc20 ?? <SearchV2ItemEntity>[]) {
+    for (final e in result.brc20 ?? <SearchV2ItemEntity>[]) {
       list.add(e);
     }
-    for (var e in result.erc20 ?? <SearchV2ItemEntity>[]) {
+    for (final e in result.erc20 ?? <SearchV2ItemEntity>[]) {
       list.add(e);
     }
-    for (var e in result.baseCoin ?? <SearchV2ItemEntity>[]) {
+    for (final e in result.baseCoin ?? <SearchV2ItemEntity>[]) {
       list.add(e);
     }
-    list.removeWhere((element) => element.oi == null);
-    list.sort((e1, e2) => (e2.oi ?? 0).compareTo(e1.oi ?? 0));
+    list
+      ..removeWhere((element) => element.oi == null)
+      ..sort((e1, e2) => (e2.oi ?? 0).compareTo(e1.oi ?? 0));
     hot.assignAll(list.sublist(0, 20));
   }
 
   //init history
   Future<void> initHistory() async {
-    var tapped = StoreLogic.to.tappedSearchResult;
+    final tapped = StoreLogic.to.tappedSearchResult;
     await Future.wait(tapped.map((item) async {
       if (item.tag == SearchEntityType.BASECOIN &&
           (item.exchangeName == null ||
@@ -87,8 +86,7 @@ class HomeSearchLogic extends GetxController {
         final baseCoinList = value?.baseCoin;
         final tmp = baseCoinList
             ?.firstWhereOrNull((element) => element.baseCoin == item.baseCoin);
-        await tmp
-            ?.let((it) async => await StoreLogic.to.saveTappedSearchResult(it));
+        await tmp?.let((it) async => StoreLogic.to.saveTappedSearchResult(it));
       }
     }));
     history.assignAll(StoreLogic.to.tappedSearchResult);
@@ -169,16 +167,16 @@ class HomeSearchLogic extends GetxController {
   }
 
   Future<void> search(String keyword) async {
-    final requestQueue = <Future>[];
-    requestQueue.add(Apis().searchV2(keyword: keyword));
+    final requestQueue = <Future>[Apis().searchV2(keyword: keyword)];
     final results = await Future.wait(requestQueue);
     if (StoreLogic.isLogin) {
-      results.insert(
-          1,
-          TickersDataEntity(
-              list: Get.find<ContractCoinLogicF>().data.toList()));
-      results.add(
-          TickersDataEntity(list: Get.find<SpotCoinLogicF>().data.toList()));
+      results
+        ..insert(
+            1,
+            TickersDataEntity(
+                list: Get.find<ContractCoinLogicF>().data.toList()))
+        ..add(
+            TickersDataEntity(list: Get.find<SpotCoinLogicF>().data.toList()));
     }
     final result = results[0] as SearchV2Entity?;
     this.keyword.value = keyword;
@@ -187,12 +185,12 @@ class HomeSearchLogic extends GetxController {
     brcList.assignAll(result.brc20 ?? <SearchV2ItemEntity>[]);
     arcList.assignAll(result.arc20 ?? <SearchV2ItemEntity>[]);
     ercList.assignAll(result.erc20 ?? <SearchV2ItemEntity>[]);
-    var contractItems = result.baseCoin
+    final contractItems = result.baseCoin
             ?.where((element) => element.supportContract == true)
             .map((e) => SearchV2ItemEntity.fromJson(e.toJson()))
             .toList() ??
         <SearchV2ItemEntity>[];
-    var spotItems = result.baseCoin
+    final spotItems = result.baseCoin
             ?.where((element) => element.supportSpot == true)
             .map((e) => SearchV2ItemEntity.fromJson(e.toJson())..isSpot = true)
             .toList() ??
@@ -200,22 +198,22 @@ class HomeSearchLogic extends GetxController {
     if (StoreLogic.isLogin) {
       final favoriteContracts = (results[1] as TickersDataEntity?)?.list;
       final favoriteSpots = (results[2] as TickersDataEntity?)?.list;
-      for (var element in contractItems) {
+      for (final element in contractItems) {
         element.isFollow =
             favoriteContracts?.any((e) => e.baseCoin == element.baseCoin) ??
                 false;
       }
-      for (var element in spotItems) {
+      for (final element in spotItems) {
         element.isFollow =
             favoriteSpots?.any((e) => e.baseCoin == element.baseCoin) ?? false;
       }
     } else {
       final favoriteContracts = StoreLogic().favoriteContract;
       final favoriteSpot = StoreLogic().favoriteSpot;
-      for (var element in contractItems) {
+      for (final element in contractItems) {
         element.isFollow = favoriteContracts.contains(element.baseCoin);
       }
-      for (var element in spotItems) {
+      for (final element in spotItems) {
         element.isFollow = favoriteSpot.contains(element.baseCoin);
       }
     }

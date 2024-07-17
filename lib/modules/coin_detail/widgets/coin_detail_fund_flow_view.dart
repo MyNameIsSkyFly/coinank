@@ -114,8 +114,9 @@ class _CoinDetailFundFlowViewState extends State<CoinDetailFundFlowView> {
                         );
 
                         if (result != null) {
-                          source.interval = result;
-                          source.initData();
+                          source
+                            ..interval = result
+                            ..initData();
                           setState(() {});
                         }
                       },
@@ -207,9 +208,9 @@ class _FundFlowGridSource extends DataGridSource {
 
   @override
   DataGridRowAdapter? buildRow(DataGridRow row) {
-    var cells = row.getCells();
+    final cells = row.getCells();
 
-    var sublist = cells.sublist(1);
+    final sublist = cells.sublist(1);
     final maxValue = sublist.map((e) => e.value as double).reduce(max);
     final minValue = sublist.map((e) => e.value as double).reduce(min);
 
@@ -218,7 +219,7 @@ class _FundFlowGridSource extends DataGridSource {
       if (index == 0) {
         return Container(
           alignment: Alignment.center,
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           child: Builder(builder: (context) {
             return Text(
                 DateFormat('MM-dd HH:mm')
@@ -228,7 +229,7 @@ class _FundFlowGridSource extends DataGridSource {
         );
       }
       return Builder(builder: (context) {
-        var value = e.value as double;
+        final value = e.value as double;
         return Container(
           alignment: Alignment.center,
           margin: const EdgeInsets.all(1),

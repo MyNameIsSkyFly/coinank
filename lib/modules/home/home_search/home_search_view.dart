@@ -306,8 +306,9 @@ class _TabItemViewState extends State<_TabItemView>
 
   @override
   void didUpdateWidget(covariant _TabItemView oldWidget) {
-    list.clear();
-    list.addAll(widget.list);
+    list
+      ..clear()
+      ..addAll(widget.list);
     favoriteOiSort.value = SortStatus.down;
     favoritePriceSort.value = SortStatus.normal;
     favoritePriceChangeSort.value = SortStatus.normal;
@@ -325,7 +326,7 @@ class _TabItemViewState extends State<_TabItemView>
           if (favoriteOiChangeSort.value == SortStatus.normal) {
             return (b.oi ?? 0).compareTo(a.oi ?? 0);
           }
-          var result = (b.oiChg ?? 0).compareTo(a.oiChg ?? 0);
+          final result = (b.oiChg ?? 0).compareTo(a.oiChg ?? 0);
           return favoriteOiChangeSort.value != SortStatus.down
               ? -result
               : result;
@@ -333,18 +334,18 @@ class _TabItemViewState extends State<_TabItemView>
           if (favoritePriceSort.value == SortStatus.normal) {
             return (b.oi ?? 0).compareTo(a.oi ?? 0);
           }
-          var result = (b.price ?? 0).compareTo(a.price ?? 0);
+          final result = (b.price ?? 0).compareTo(a.price ?? 0);
           return favoritePriceSort.value != SortStatus.down ? -result : result;
         } else if (favoriteSortBy == 'priceChangeH24') {
           if (favoritePriceChangeSort.value == SortStatus.normal) {
             return (b.oi ?? 0).compareTo(a.oi ?? 0);
           }
-          var result = (b.priceChg ?? 0).compareTo(a.priceChg ?? 0);
+          final result = (b.priceChg ?? 0).compareTo(a.priceChg ?? 0);
           return favoritePriceChangeSort.value != SortStatus.down
               ? -result
               : result;
         }
-        var result = (b.oi ?? 0).compareTo(a.oi ?? 0);
+        final result = (b.oi ?? 0).compareTo(a.oi ?? 0);
         return favoriteOiSort.value != SortStatus.down ? -result : result;
       },
     );
@@ -506,7 +507,7 @@ class _DefaultView extends StatelessWidget {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () => logic.clearHistory(),
+                        onTap: logic.clearHistory,
                         child: ImageIcon(const AssetImage(Assets.commonIcClear),
                             color: Styles.cSub(context), size: 16),
                       ),
@@ -631,7 +632,8 @@ class _Item extends StatelessWidget {
                           fontSize: 12,
                           fontWeight: FontWeight.w800),
                     )),
-                width: 24, height: 24),
+                width: 24,
+                height: 24),
             const Gap(10),
             Expanded(
               child: Column(

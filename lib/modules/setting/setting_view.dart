@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:math';
 
-import 'package:ank_app/entity/app_setting_entity.dart';
 import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/adaptive_dialog_action.dart';
@@ -133,7 +132,7 @@ class _SettingPageState extends State<SettingPage> {
                   )
                 ],
                 Obx(() {
-                  var settingList = state.settingList.where((e) =>
+                  final settingList = state.settingList.where((e) =>
                       e.isShow == true &&
                       e.url?.contains('noticeRecords') != true);
                   return ListView.builder(
@@ -142,7 +141,7 @@ class _SettingPageState extends State<SettingPage> {
                     shrinkWrap: true,
                     itemCount: settingList.length,
                     itemBuilder: (cnt, index) {
-                      AppSettingEntity item = settingList.toList()[index];
+                      final item = settingList.toList()[index];
                       return _SettingLine(
                         onTap: () {
                           if (item.openType == '1') {
@@ -192,7 +191,7 @@ class _SettingPageState extends State<SettingPage> {
                   title: S.of(context).shareApp,
                 ),
                 _SettingLine(
-                  onTap: () => AppNav.toContactUs(),
+                  onTap: AppNav.toContactUs,
                   title: S.of(context).contactUs,
                 ),
                 Obx(() {
@@ -232,10 +231,8 @@ class _SettingPageState extends State<SettingPage> {
                               backgroundColor: Theme.of(context).cardColor,
                               actions: [
                                 AdaptiveDialogAction(
-                                    child: Text(S.of(context).s_cancel),
-                                    onPressed: () {
-                                      Get.back();
-                                    }),
+                                    onPressed: Get.back,
+                                    child: Text(S.of(context).s_cancel)),
                                 AdaptiveDialogAction(
                                     child: Text(S.of(context).s_ok),
                                     onPressed: () async {
@@ -652,7 +649,7 @@ class _DeleteAccountInputDialogState extends State<_DeleteAccountInputDialog> {
                   children: [
                     TextFormField(
                       controller: verifyCodeCtrl,
-                      validator: (value) => validVerifyCode(value),
+                      validator: validVerifyCode,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                         filled: true,

@@ -51,9 +51,9 @@ abstract class Apis {
     ])
     ..options.headers.addAll({'client': Platform.isAndroid ? 'android' : 'ios'})
     ..options.baseUrl = Urls.apiPrefix
-    ..options.connectTimeout = const Duration(seconds: 15)
-    ..options.receiveTimeout = const Duration(seconds: 15)
-    ..options.sendTimeout = const Duration(seconds: 15);
+    ..options.connectTimeout = const Duration(seconds: 10)
+    ..options.receiveTimeout = const Duration(seconds: 30)
+    ..options.sendTimeout = const Duration(seconds: 30);
 
   factory Apis() => _instance;
 

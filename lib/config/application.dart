@@ -60,7 +60,7 @@ class Application {
       ..userInteractions = false;
   }
 
-  Future initConfig() async {
+  Future<void> initConfig() async {
     await getConfig();
   }
 
@@ -93,7 +93,7 @@ class Application {
   }
 
   static Future<void> checkNetwork() async {
-    var connectivity = Connectivity();
+    final connectivity = Connectivity();
     final result = await connectivity.checkConnectivity();
     AppConst.networkConnected = result.contains(ConnectivityResult.wifi) ||
         result.contains(ConnectivityResult.mobile) ||

@@ -107,9 +107,9 @@ class LiqMapLogic extends GetxController {
       symbol: state.symbol.value.split('/').last,
       exchange: state.symbol.value.split('/').first,
         )
-        .whenComplete(() => Loading.dismiss());
+        .whenComplete(Loading.dismiss);
     final json = {'code': '1', 'success': true, 'data': data};
-    String jsSource = _updateChartJs(jsonEncode(json), 'liqMap');
+    final jsSource = _updateChartJs(jsonEncode(json), 'liqMap');
     updateReadyStatus(dataReady: true, evJS: jsSource, isAgg: isAgg);
   }
 
@@ -123,8 +123,8 @@ class LiqMapLogic extends GetxController {
       'mid': S.current.s_liq_map_mid,
       'high': S.current.s_liq_map_high,
     };
-    var platformString = Platform.isAndroid ? 'android' : 'ios';
-    var jsSource = '''
+    final platformString = Platform.isAndroid ? 'android' : 'ios';
+    final jsSource = '''
 setChartData($jsData, "$platformString", "$type", ${jsonEncode(options)});    
     ''';
     return jsSource;
@@ -185,7 +185,7 @@ setChartData($jsData, "$platformString", "$type", ${jsonEncode(options)});
     );
     Loading.dismiss();
     final json = {'code': '1', 'success': true, 'data': data};
-    String jsSource = _updateChartJs(jsonEncode(json), 'aggLiqMap');
+    final jsSource = _updateChartJs(jsonEncode(json), 'aggLiqMap');
     updateReadyStatus(aggDataReady: true, aggEvJS: jsSource, isAgg: isAgg);
   }
 

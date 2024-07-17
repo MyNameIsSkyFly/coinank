@@ -97,8 +97,8 @@ class LiqHotMapLogic extends GetxController {
       'liqHeat': S.current.liqHeat,
       'liqHeatMap': S.current.s_liq_hot_map,
     };
-    var platformString = Platform.isAndroid ? 'android' : 'ios';
-    var jsSource = '''
+    final platformString = Platform.isAndroid ? 'android' : 'ios';
+    final jsSource = '''
 setChartData(${jsonEncode(dataParams)}, "$platformString", "liqHeatMap", ${jsonEncode(options)});    
     ''';
     state.isLoading.value = false;

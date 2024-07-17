@@ -35,7 +35,7 @@ class _CategoryDetailSpotViewState extends State<CategoryDetailSpotView>
     tabController =
         TabController(length: 2, vsync: this, animationDuration: Duration.zero);
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      var indexOfTag = MarketMaps.allCategories
+      final indexOfTag = MarketMaps.allCategories
           .map((e) => e.type)
           .toList()
           .indexOf(widget.tag);
@@ -55,7 +55,7 @@ class _CategoryDetailSpotViewState extends State<CategoryDetailSpotView>
                   itemScrollController: itemScrollController,
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   itemBuilder: (context, index) => Builder(builder: (context) {
-                        var item = MarketMaps.allCategories[index];
+                        final item = MarketMaps.allCategories[index];
                         return _tagItem(item, context, setState);
                       }),
                   itemCount: MarketMaps.allCategories.length,

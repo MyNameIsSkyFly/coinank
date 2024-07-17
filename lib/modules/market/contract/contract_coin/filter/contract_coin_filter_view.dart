@@ -26,30 +26,32 @@ class _ContractCoinFilterPageState extends State<ContractCoinFilterPage>
   @override
   void initState() {
     if (widget.isSpot) {
-      filterKeys.clear();
-      filterKeys.addAll({
-        'price': null,
-        'priceChangeH24': null,
-        'priceChangeH1': null,
-        'turnover24h': null,
-        'marketCap': null,
-        'circulatingSupply': null
-      });
+      filterKeys
+        ..clear()
+        ..addAll({
+          'price': null,
+          'priceChangeH24': null,
+          'priceChangeH1': null,
+          'turnover24h': null,
+          'marketCap': null,
+          'circulatingSupply': null
+        });
     }
-    filterKeys.addAll((widget.isSpot
-            ? (widget.isCategory
-                ? StoreLogic().spotCoinFilterCategory
-                : StoreLogic().spotCoinFilter)
-            : (widget.isCategory
-                ? StoreLogic().contractCoinFilterCategory
-                : StoreLogic().contractCoinFilter)) ??
-        {});
-    filterKeys.forEach((key, value) {
-      if (value == null) return;
-      final valueList = value.split('~');
-      filterKeyCache[key]?.ctrl1.text = '${num.tryParse(valueList[0]) ?? ''}';
-      filterKeyCache[key]?.ctrl2.text = '${num.tryParse(valueList[1]) ?? ''}';
-    });
+    filterKeys
+      ..addAll((widget.isSpot
+              ? (widget.isCategory
+                  ? StoreLogic().spotCoinFilterCategory
+                  : StoreLogic().spotCoinFilter)
+              : (widget.isCategory
+                  ? StoreLogic().contractCoinFilterCategory
+                  : StoreLogic().contractCoinFilter)) ??
+          {})
+      ..forEach((key, value) {
+        if (value == null) return;
+        final valueList = value.split('~');
+        filterKeyCache[key]?.ctrl1.text = '${num.tryParse(valueList[0]) ?? ''}';
+        filterKeyCache[key]?.ctrl2.text = '${num.tryParse(valueList[1]) ?? ''}';
+      });
     super.initState();
   }
 
@@ -88,7 +90,7 @@ class _ContractCoinFilterPageState extends State<ContractCoinFilterPage>
               //close button
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
-                onTap: () => Get.back(),
+                onTap: Get.back,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Icon(
@@ -104,7 +106,7 @@ class _ContractCoinFilterPageState extends State<ContractCoinFilterPage>
               key: formKey,
               child: ListView(
                 padding: const EdgeInsets.only(top: 20),
-                children: [...filterKeys.keys.map((e) => _item(e))],
+                children: [...filterKeys.keys.map(_item)],
               ),
             ),
           ),
@@ -289,7 +291,7 @@ class _ContractCoinFilterPageState extends State<ContractCoinFilterPage>
 
   Widget _textField(TextEditingController? controller,
       {bool isPercent = false, _FilterValidator? validator, String? hint}) {
-    var boxConstraints = const BoxConstraints.tightFor(width: 30, height: 20);
+    const boxConstraints = BoxConstraints.tightFor(width: 30, height: 20);
     return TextFormField(
       controller: controller,
       validator: (value) {
@@ -313,7 +315,7 @@ class _ContractCoinFilterPageState extends State<ContractCoinFilterPage>
         contentPadding: const EdgeInsets.all(10),
         prefixIcon: isPercent
             ? null
-            : Center(child: Text('\$', style: Styles.tsBody_14(context))),
+            : Center(child: Text(r'$', style: Styles.tsBody_14(context))),
         prefixIconConstraints: isPercent ? null : boxConstraints,
         suffixIcon: isPercent
             ? Center(child: Text('%', style: Styles.tsBody_14(context)))
@@ -471,12 +473,12 @@ mixin _Data {
             '1.5~2': '1.5 - 2'
           },
         'price' => {
-            '0~1': '\$0 - \$1',
-            '1~10': '\$1 - \$10',
-            '10~100': '\$10 - \$100',
-            '100~1000': '\$100 - \$1000',
-            '1000~10000': '\$1000 - \$10000',
-            '10000~': '\$10000'
+            '0~1': r'$0 - $1',
+            '1~10': r'$1 - $10',
+            '10~100': r'$10 - $100',
+            '100~1000': r'$100 - $1000',
+            '1000~10000': r'$1000 - $10000',
+            '10000~': r'$10000'
           },
         'openInterest' => {
             '~1000000': '< \$${_format(1000000)}',

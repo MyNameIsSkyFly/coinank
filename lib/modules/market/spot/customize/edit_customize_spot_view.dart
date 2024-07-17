@@ -27,7 +27,7 @@ class _EditCustomizeSpotPageState extends State<EditCustomizeSpotPage> {
 
   @override
   Widget build(BuildContext context) {
-    var sof = S.of(context);
+    final sof = S.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(sof.edit),
@@ -92,12 +92,12 @@ class _EditCustomizeSpotPageState extends State<EditCustomizeSpotPage> {
                           await StoreLogic.to.removeSpotSortOrder();
                           logic.initData();
                           if (Get.isRegistered<SpotLogic>()) {
-                            var logic = Get.find<SpotCoinLogic>();
+                            final logic = Get.find<SpotCoinLogic>();
                             logic.dataSource.getColumns(Get.context!);
                             logic.dataSource.buildDataGridRows();
                           }
                           if (Get.isRegistered<SpotCoinLogicF>()) {
-                            var logic = Get.find<SpotCoinLogicF>();
+                            final logic = Get.find<SpotCoinLogicF>();
                             logic.dataSource.getColumns(Get.context!);
                             logic.dataSource.buildDataGridRows();
                           }
@@ -114,12 +114,12 @@ class _EditCustomizeSpotPageState extends State<EditCustomizeSpotPage> {
                         await StoreLogic.to.saveSpotSortOrder(map);
                         logic.initData();
                         if (Get.isRegistered<SpotLogic>()) {
-                          var logic = Get.find<SpotCoinLogic>();
+                          final logic = Get.find<SpotCoinLogic>();
                           logic.dataSource.getColumns(Get.context!);
                           logic.dataSource.buildDataGridRows();
                         }
                         if (Get.isRegistered<SpotCoinLogicF>()) {
-                          var logic = Get.find<SpotCoinLogicF>();
+                          final logic = Get.find<SpotCoinLogicF>();
                           logic.dataSource.getColumns(Get.context!);
                           logic.dataSource.buildDataGridRows();
                         }

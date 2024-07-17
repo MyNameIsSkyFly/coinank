@@ -55,7 +55,7 @@ class ContractMarketSearchPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    onChanged: (v) => logic.search(v),
+                    onChanged: logic.search,
                   ),
                 ),
                 InkWell(
@@ -79,7 +79,7 @@ class ContractMarketSearchPage extends StatelessWidget {
             padding: EdgeInsets.zero,
             itemExtent: 50,
             itemBuilder: (cnt, idx) {
-              String item = state.list[idx];
+              final item = state.list[idx];
               return InkWell(
                 onTap: () => Get.back(result: item),
                 child: ListTile(

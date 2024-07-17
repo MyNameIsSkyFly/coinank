@@ -16,7 +16,7 @@ class ContractCoinKeyValue {
   String get convertedValue => handleValue(key, value);
 
   bool get isRate {
-    var tmp = convertedValue.trim();
+    final tmp = convertedValue.trim();
     return ['+', '-'].any((element) =>
         (tmp.startsWith(element)) && tmp.endsWith('%') ||
         tmp == '0.00%' ||

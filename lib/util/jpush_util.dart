@@ -18,44 +18,46 @@ class JPushUtil {
 
   Future<void> initPlatformState() async {
     try {
-      _jpush.requestRequiredPermission();
-      _jpush.addEventHandler(
-          onReceiveNotification: (Map<String, dynamic> message) async {
-        print('flutter onReceiveNotification: $message');
-      }, onOpenNotification: (Map<String, dynamic> message) async {
-        print('flutter onOpenNotification: $message');
-        _handeData(message);
-      }, onReceiveMessage: (Map<String, dynamic> message) async {
-        print('flutter onReceiveMessage: $message');
-      }, onReceiveNotificationAuthorization:
-              (Map<String, dynamic> message) async {
-        print('flutter onReceiveNotificationAuthorization: $message');
-      }, onNotifyMessageUnShow: (Map<String, dynamic> message) async {
-        print('flutter onNotifyMessageUnShow: $message');
-      }, onInAppMessageShow: (Map<String, dynamic> message) async {
-        print('flutter onInAppMessageShow: $message');
-      }, onInAppMessageClick: (Map<String, dynamic> message) async {
-        print('flutter onInAppMessageClick: $message');
-      }, onConnected: (Map<String, dynamic> message) async {
-        print('flutter onConnected: $message');
-        _jpush.getRegistrationID().then((rid) async {
-          print('getRegistrationID:$rid');
-          if (rid.isNotEmpty) {
-            await StoreLogic.to.saveDeviceId(rid);
-            await AppUtil.updateAppInfo();
-          }
+      _jpush
+        ..requestRequiredPermission()
+        ..addEventHandler(
+            onReceiveNotification: (Map<String, dynamic> message) async {
+          print('flutter onReceiveNotification: $message');
+        }, onOpenNotification: (Map<String, dynamic> message) async {
+          print('flutter onOpenNotification: $message');
+          _handeData(message);
+        }, onReceiveMessage: (Map<String, dynamic> message) async {
+          print('flutter onReceiveMessage: $message');
+        }, onReceiveNotificationAuthorization:
+                (Map<String, dynamic> message) async {
+          print('flutter onReceiveNotificationAuthorization: $message');
+        }, onNotifyMessageUnShow: (Map<String, dynamic> message) async {
+          print('flutter onNotifyMessageUnShow: $message');
+        }, onInAppMessageShow: (Map<String, dynamic> message) async {
+          print('flutter onInAppMessageShow: $message');
+        }, onInAppMessageClick: (Map<String, dynamic> message) async {
+          print('flutter onInAppMessageClick: $message');
+        }, onConnected: (Map<String, dynamic> message) async {
+          print('flutter onConnected: $message');
+          _jpush.getRegistrationID().then((rid) async {
+            print('getRegistrationID:$rid');
+            if (rid.isNotEmpty) {
+              await StoreLogic.to.saveDeviceId(rid);
+              await AppUtil.updateAppInfo();
+            }
+          });
         });
-      });
     } on PlatformException {
       print('Failed to get platform version.');
     }
 
-    _jpush.setAuth();
-    _jpush.setup(
-      appKey: '8de9d5e306e08c49a078ab5f',
-      channel: 'developer-default',
-      debug: kDebugMode,
-    );
+    _jpush
+      ..setAuth()
+      ..setup(
+        appKey: '8de9d5e306e08c49a078ab5f',
+        channel: 'developer-default',
+        debug: kDebugMode,
+      );
 
     _jpush.getRegistrationID().then((rid) async {
       print('getRegistrationID:$rid');

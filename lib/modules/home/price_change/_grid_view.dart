@@ -29,7 +29,7 @@ class _GridView extends StatelessWidget {
               logic.tapSort(columnIndex - 1);
               return;
             }
-            var baseCoin = logic
+            final baseCoin = logic
                 .gridSource.effectiveRows[details.rowColumnIndex.rowIndex - 1]
                 .getCells()[0]
                 .value;

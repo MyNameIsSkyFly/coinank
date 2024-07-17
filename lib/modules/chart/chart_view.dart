@@ -83,7 +83,7 @@ class _TopDataView extends StatelessWidget {
             itemCount: state.topDataList.length,
             itemBuilder: (context, index) {
               final item = state.topDataList.toList()[index];
-              String icon = '';
+              var icon = '';
               if (index > state.icoList.length - 1) {
                 icon = state.icoList.last;
               } else {

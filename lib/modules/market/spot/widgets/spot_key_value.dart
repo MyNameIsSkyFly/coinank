@@ -14,7 +14,7 @@ class SpotKeyValue {
   String get convertedValue => handleValue(key, value);
 
   bool get isRate {
-    var tmp = convertedValue;
+    final tmp = convertedValue;
     return ['+', '-'].any((element) =>
         (tmp.startsWith(element)) && tmp.endsWith('%') ||
         tmp == '0.00%' ||

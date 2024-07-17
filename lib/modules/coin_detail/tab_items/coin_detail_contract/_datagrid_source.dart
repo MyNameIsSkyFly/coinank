@@ -99,7 +99,7 @@ class GridDataSource extends DataGridSource {
       ),
       Builder(builder: (context) {
         final item = row.getCells()[1].value as (String?, String?, String?);
-        var clickable = isClickable(item.$2);
+        final clickable = isClickable(item.$2);
         return GestureDetector(
           onTap: () {
             if (!clickable) return;
@@ -181,12 +181,12 @@ class GridDataSource extends DataGridSource {
   @override
   int compare(DataGridRow? a, DataGridRow? b, SortColumnDetails sortColumn) {
     if (sortColumn.name == '1') {
-      final String? valueA = a
+      final valueA = a
           ?.getCells()
           .firstWhereOrNull((element) => element.columnName == sortColumn.name)
           ?.value
           ?.toString();
-      final String? valueB = b
+      final valueB = b
           ?.getCells()
           .firstWhereOrNull((element) => element.columnName == sortColumn.name)
           ?.value

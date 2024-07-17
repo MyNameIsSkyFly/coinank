@@ -76,9 +76,9 @@ class AppRefreshState extends State<AppRefresh>
   double? _dragOffset;
 
   static final Animatable<double> _kDragSizeFactorLimitTween =
-      Tween<double>(begin: 0.0, end: _kDragSizeFactorLimit);
+      Tween<double>(begin: 0, end: _kDragSizeFactorLimit);
   static final Animatable<double> _oneToZeroTween =
-      Tween<double>(begin: 1.0, end: 0.0);
+      Tween<double>(begin: 1, end: 0);
 
   @override
   void initState() {
@@ -216,12 +216,12 @@ class AppRefreshState extends State<AppRefresh>
 
   void _checkDragOffset(double containerExtent) {
     assert(_mode == _AppRefreshMode.drag || _mode == _AppRefreshMode.armed);
-    double newValue =
+    var newValue =
         _dragOffset! / (containerExtent * _kDragContainerExtentPercentage);
     if (_mode == _AppRefreshMode.armed) {
       newValue = math.max(newValue, 1.0 / _kDragSizeFactorLimit);
     }
-    _positionController.value = clampDouble(newValue, 0.0, _kFullPercentage);
+    _positionController.value = clampDouble(newValue, 0, _kFullPercentage);
     if (_mode == _AppRefreshMode.drag &&
         _positionController.value >= _kFullPercentage) {
       _mode = _AppRefreshMode.armed;
@@ -241,10 +241,9 @@ class AppRefreshState extends State<AppRefresh>
     });
     switch (_mode!) {
       case _AppRefreshMode.done:
-        await _scaleController.animateTo(1.0,
-            duration: _kIndicatorScaleDuration);
+        await _scaleController.animateTo(1, duration: _kIndicatorScaleDuration);
       case _AppRefreshMode.canceled:
-        await _positionController.animateTo(0.0,
+        await _positionController.animateTo(0,
             duration: _kIndicatorScaleDuration);
       case _AppRefreshMode.armed:
       case _AppRefreshMode.drag:
@@ -265,7 +264,7 @@ class AppRefreshState extends State<AppRefresh>
     assert(_mode != _AppRefreshMode.refresh);
     assert(_mode != _AppRefreshMode.snap);
     if (widget.onRefresh == null) return;
-    final Completer<void> completer = Completer<void>();
+    final completer = Completer<void>();
     _pendingRefreshFuture = completer.future;
     _mode = _AppRefreshMode.snap;
     _positionController
@@ -278,8 +277,7 @@ class AppRefreshState extends State<AppRefresh>
           _mode = _AppRefreshMode.refresh;
         });
 
-        final Future<void> refreshResult = widget.onRefresh!();
-        refreshResult.whenComplete(() {
+        widget.onRefresh!().whenComplete(() {
           if (mounted && _mode == _AppRefreshMode.refresh) {
             completer.complete();
             _dismiss(_AppRefreshMode.done);
@@ -326,8 +324,8 @@ class AppRefreshState extends State<AppRefresh>
           Positioned(
             top: _isIndicatorAtTop! ? widget.edgeOffset : null,
             bottom: !_isIndicatorAtTop! ? widget.edgeOffset : null,
-            left: 0.0,
-            right: 0.0,
+            left: 0,
+            right: 0,
             child: SizeTransition(
               axisAlignment: _isIndicatorAtTop! ? 1.0 : -1.0,
               sizeFactor: _positionFactor, // this is what brings it down

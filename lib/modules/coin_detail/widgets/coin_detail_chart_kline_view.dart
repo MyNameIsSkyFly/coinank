@@ -105,7 +105,7 @@ class _ChartKlineViewState extends State<ChartKlineView> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Obx(() {
-                            var contains = timeItems.contains(interval.value);
+                            final contains = timeItems.contains(interval.value);
                             return Text(
                               contains ? interval.value : S.of(context).more,
                               style: contains

@@ -21,7 +21,7 @@ class LongShortRatioLogic extends GetxController {
     final result = await Get.toNamed(RouteConfig.contractMarketSearch,
         arguments: state.headerTitles);
     if (result != null) {
-      String type = result as String;
+      final type = result as String;
       state.type.value = type;
       state.itemScrollController.scrollTo(
         index: state.headerTitles.indexOf(type),
@@ -126,8 +126,8 @@ class LongShortRatioLogic extends GetxController {
       'seriesShortName': S.current.s_shorts,
       'ratioName': S.current.s_longshort_ratio,
     };
-    var platformString = Platform.isAndroid ? 'android' : 'ios';
-    var jsSource = '''
+    final platformString = Platform.isAndroid ? 'android' : 'ios';
+    final jsSource = '''
 setChartData(${jsonEncode(json)}, "$platformString", "realtimeLongShort", ${jsonEncode(options)});    
     ''';
     updateReadyStatus(dataReady: true, evJS: jsSource);

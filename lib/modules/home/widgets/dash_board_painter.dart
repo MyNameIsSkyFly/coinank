@@ -34,47 +34,49 @@ class DashBoardPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth;
     final linePaint = Paint()..color = Colors.red;
-    canvas.save();
-    canvas.translate(size.width / 2, size.height - circlePointRadius / 2);
-    canvas.drawArc(
-        Rect.fromCenter(
-            center: Offset.zero, width: radius * 2, height: radius * 2),
-        -pi,
-        pi / 2,
-        false,
-        downPaint);
-    canvas.drawArc(
-        Rect.fromCenter(
-            center: Offset.zero, width: radius * 2, height: radius * 2),
-        -pi / 2,
-        pi / 2,
-        false,
-        upPaint);
-    canvas.restore();
-    canvas.save();
-    canvas.translate(size.width / 2, size.height - circlePointRadius / 2);
+    canvas
+      ..save()
+      ..translate(size.width / 2, size.height - circlePointRadius / 2)
+      ..drawArc(
+          Rect.fromCenter(
+              center: Offset.zero, width: radius * 2, height: radius * 2),
+          -pi,
+          pi / 2,
+          false,
+          downPaint)
+      ..drawArc(
+          Rect.fromCenter(
+              center: Offset.zero, width: radius * 2, height: radius * 2),
+          -pi / 2,
+          pi / 2,
+          false,
+          upPaint)
+      ..restore()
+      ..save()
+      ..translate(size.width / 2, size.height - circlePointRadius / 2);
 
-    var y = 0.0;
+    const y = 0.0;
     var x1 = 0.0;
     var x2 = 0.0;
     final pointPaint = Paint()..color = pointerColor;
     linePaint.shader = null;
     canvas.rotate(pi);
-    for (int i = 0; i < 60; i++) {
+    for (var i = 0; i < 60; i++) {
       x1 = radius + strokeWidth;
       x2 = radius + unit + strokeWidth;
-      linePaint.strokeWidth = 0.25 * unit;
-      linePaint.color = (i % 10 == 0 && i != 0) ? colorDeep : colorLight;
-      canvas.drawLine(Offset(x1, y), Offset(x2, y), linePaint);
-      canvas.rotate(2 * pi / 120);
+      linePaint
+        ..strokeWidth = 0.25 * unit
+        ..color = (i % 10 == 0 && i != 0) ? colorDeep : colorLight;
+      canvas
+        ..drawLine(Offset(x1, y), Offset(x2, y), linePaint)
+        ..rotate(2 * pi / 120);
     }
-    canvas.restore();
-    canvas.drawCircle(
-        Offset(size.width / 2, size.height - circlePointRadius / 2),
-        circlePointRadius,
-        pointPaint);
-    canvas.save();
-    canvas.translate(size.width / 2, size.height - circlePointRadius / 2);
+    canvas
+      ..restore()
+      ..drawCircle(Offset(size.width / 2, size.height - circlePointRadius / 2),
+          circlePointRadius, pointPaint)
+      ..save()
+      ..translate(size.width / 2, size.height - circlePointRadius / 2);
     // var radians = (rate - 1) * pi / 2;
     var resultRadians = radians * pi;
     if (resultRadians > pi / 2) {
@@ -83,14 +85,15 @@ class DashBoardPainter extends CustomPainter {
       resultRadians = -pi / 2;
     }
     canvas.rotate(resultRadians);
-    final path = Path();
-    path.moveTo(-unit * 0.4, 0);
-    path.lineTo(-unit * 0.12, -radius + unit * 4);
-    path.lineTo(unit * 0.12, -radius + unit * 4);
-    path.lineTo(unit * 0.4, 0);
-    path.close();
-    canvas.drawPath(path, pointPaint);
-    canvas.restore();
+    final path = Path()
+      ..moveTo(-unit * 0.4, 0)
+      ..lineTo(-unit * 0.12, -radius + unit * 4)
+      ..lineTo(unit * 0.12, -radius + unit * 4)
+      ..lineTo(unit * 0.4, 0)
+      ..close();
+    canvas
+      ..drawPath(path, pointPaint)
+      ..restore();
   }
 
   @override

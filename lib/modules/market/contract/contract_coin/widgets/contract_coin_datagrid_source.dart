@@ -101,7 +101,7 @@ class ContractCoinGridSource extends DataGridSource {
 
   @override
   int compare(DataGridRow? a, DataGridRow? b, SortColumnDetails sortColumn) {
-    final double valueA = (a
+    final valueA = (a
                 ?.getCells()
                 .firstWhereOrNull(
                     (element) => element.columnName == sortColumn.name)
@@ -110,7 +110,7 @@ class ContractCoinGridSource extends DataGridSource {
         (sortColumn.sortDirection == DataGridSortDirection.ascending
             ? 10
             : -10);
-    final double valueB = (b
+    final valueB = (b
                 ?.getCells()
                 .firstWhereOrNull(
                     (element) => element.columnName == sortColumn.name)

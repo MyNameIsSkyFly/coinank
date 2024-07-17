@@ -71,11 +71,12 @@ class PriceChangeLogic extends GetxController {
       state.sortType = 'ascend';
     } else {
       state.statusList[idx] = SortStatus.normal;
-      state.sortType = 'descend';
-      state.sortBy = '';
+      state
+        ..sortType = 'descend'
+        ..sortBy = '';
     }
-    List<SortStatus> statusList =
-        List.generate(state.topList.length, (index) => SortStatus.normal);
+    final statusList = List<SortStatus>.generate(
+        state.topList.length, (index) => SortStatus.normal);
     statusList[idx] = state.statusList[idx];
     state.statusList.value = List.from(statusList);
     await onRefresh(true);
@@ -90,9 +91,9 @@ class PriceChangeLogic extends GetxController {
     state.isRefresh = true;
     if (showLoading) Loading.show();
     if (state.isPrice) {
-      await getBigData().whenComplete(() => Loading.dismiss());
+      await getBigData().whenComplete(Loading.dismiss);
     } else {
-      await getOiData().whenComplete(() => Loading.dismiss());
+      await getOiData().whenComplete(Loading.dismiss);
     }
     state.isLoading.value = false;
     Loading.dismiss();

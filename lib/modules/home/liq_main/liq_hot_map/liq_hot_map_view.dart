@@ -27,7 +27,7 @@ class LiqHotMapPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       InkWell(
-                        onTap: () => logic.chooseSymbol(),
+                        onTap: logic.chooseSymbol,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -56,7 +56,7 @@ class LiqHotMapPage extends StatelessWidget {
                       ),
                       const Spacer(),
                       InkWell(
-                        onTap: () => logic.chooseTime(),
+                        onTap: logic.chooseTime,
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           height: 30,
@@ -86,7 +86,7 @@ class LiqHotMapPage extends StatelessWidget {
                       ),
                       const Gap(20),
                       InkWell(
-                        onTap: () => logic.onRefresh(),
+                        onTap: logic.onRefresh,
                         child: Container(
                           width: 30,
                           height: 30,

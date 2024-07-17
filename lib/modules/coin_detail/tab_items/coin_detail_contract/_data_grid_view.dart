@@ -13,13 +13,13 @@ class _DataGridView extends StatefulWidget {
 
 class _DataGridViewState extends State<_DataGridView> {
   List<GridColumn> getColumns(BuildContext context) {
-    List<GridColumn> columns = <GridColumn>[
+    final columns = <GridColumn>[
       GridColumn(
           columnName: '1',
           width: 120,
           label: Container(
             alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.all(8.0).copyWith(left: 15),
+            padding: const EdgeInsets.all(8).copyWith(left: 15),
             child: Text(
               S.of(context).s_exchange_name,
               overflow: TextOverflow.ellipsis,
@@ -32,7 +32,7 @@ class _DataGridViewState extends State<_DataGridView> {
           width: 150,
           label: Container(
             alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8),
             child: Text(
               S.of(context).symbol,
               overflow: TextOverflow.ellipsis,
@@ -44,7 +44,7 @@ class _DataGridViewState extends State<_DataGridView> {
           width: 100,
           label: Container(
             alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8),
             child: Text(
               '${S.of(context).s_price}(\$)',
               overflow: TextOverflow.ellipsis,
@@ -56,7 +56,7 @@ class _DataGridViewState extends State<_DataGridView> {
           width: 100,
           label: Container(
             alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8),
             child: Text(
               '${S.of(context).s_24h_chg}(%)',
               style: Styles.tsSub_12(context),
@@ -67,7 +67,7 @@ class _DataGridViewState extends State<_DataGridView> {
           width: 110,
           label: Container(
             alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8),
             child: FittedBox(
               fit: BoxFit.scaleDown,
               child: Text(
@@ -81,7 +81,7 @@ class _DataGridViewState extends State<_DataGridView> {
           width: 90,
           label: Container(
             alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8),
             child: Text(
               '${S.of(context).s_oi}(\$)',
               style: Styles.tsSub_12(context),
@@ -92,7 +92,7 @@ class _DataGridViewState extends State<_DataGridView> {
           width: 100,
           label: Container(
             alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8),
             child: Text(
               '24H(%)',
               style: Styles.tsSub_12(context),
@@ -103,7 +103,7 @@ class _DataGridViewState extends State<_DataGridView> {
           width: 100,
           label: Container(
             alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8),
             child: Text(
               S.of(context).s_funding_rate,
               style: Styles.tsSub_12(context),
@@ -156,14 +156,14 @@ class _DataGridViewState extends State<_DataGridView> {
                       sortIcon: Builder(
                         builder: (context) {
                           Widget? icon;
-                          String columnName = '';
+                          var columnName = '';
                           context.visitAncestorElements((element) {
                             if (element is GridHeaderCellElement) {
                               columnName = element.column.columnName;
                             }
                             return true;
                           });
-                          var column = widget.logic.gridSource.sortedColumns
+                          final column = widget.logic.gridSource.sortedColumns
                               .where((element) => element.name == columnName)
                               .firstOrNull;
                           if (column != null) {

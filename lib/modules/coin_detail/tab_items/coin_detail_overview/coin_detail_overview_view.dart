@@ -35,7 +35,7 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
               children: [
                 Expanded(
                   child: Obx(() {
-                    var coinInfo = logic.coin24hInfo.value;
+                    final coinInfo = logic.coin24hInfo.value;
                     return Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -177,11 +177,11 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Builder(builder: (context) {
-              var description = detail.value?.description
+              final description = detail.value?.description
                       ?.toJson()[AppUtil.shortLanguageName]
                       .toString() ??
                   '';
-              var en =
+              final en =
                   detail.value?.description?.toJson()['en']?.toString() ?? '';
               return ExpandableText(
                 (description.isEmpty ? en : description)
@@ -214,7 +214,7 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
       bool isTag = false}) {
     final uris = (sites ?? [])
         .where((element) => element.isNotEmpty)
-        .map((e) => Uri.parse(e))
+        .map(Uri.parse)
         .toList();
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -236,7 +236,7 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
                   onTap: () =>
                       launchUrl(e, mode: LaunchMode.externalApplication),
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -300,7 +300,7 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
           Expanded(
               flex: 15,
               child: Text(
-                '${showDollar ? '\$' : ''}${largeNum ? AppUtil.getLargeFormatString(value, precision: 2) : needFormat ? formatter.format(value ?? 0) : (Decimal.tryParse('$value') ?? 0).toString()}',
+                '${showDollar ? r'$' : ''}${largeNum ? AppUtil.getLargeFormatString(value, precision: 2) : needFormat ? formatter.format(value ?? 0) : (Decimal.tryParse('$value') ?? 0).toString()}',
                 style: Styles.tsBody_14(context),
                 textAlign: TextAlign.end,
               )),

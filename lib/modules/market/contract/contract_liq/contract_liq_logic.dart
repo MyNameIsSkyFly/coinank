@@ -53,7 +53,7 @@ class ContractLiqLogic extends GetxController {
         if (Get.isBottomSheetOpen == true) return;
         if (Get.find<MainLogic>().selectedIndex.value != 1) return;
         if (Get.find<MarketLogic>().tabCtrl.index != 0) return;
-        var index = Get.find<ContractLogic>().state.tabController?.index;
+        final index = Get.find<ContractLogic>().state.tabController?.index;
         if (index != 4) return;
         onRefresh();
       } else {
@@ -87,7 +87,7 @@ class ContractLiqLogic extends GetxController {
   Future<void> loadAllBaseCoins() async {
     final result = await Apis().getMarketAllCurrencyData();
     result?.insert(0, 'ALL');
-    var list = result ?? [];
+    final list = result ?? [];
     coinList.assignAll(list);
   }
 
@@ -129,7 +129,7 @@ class ContractLiqLogic extends GetxController {
     if (result != null) {
       final type = result as String;
       selectedCoin.value = type;
-      int selectedCoinIndex = coinList.indexOf(type);
+      final selectedCoinIndex = coinList.indexOf(type);
       coinList.refresh();
       itemScrollController.jumpTo(index: selectedCoinIndex, alignment: 0.2);
       onRefresh();
@@ -148,8 +148,8 @@ class ContractLiqLogic extends GetxController {
       'locale': AppUtil.shortLanguageName,
       'theme': StoreLogic.to.isDarkMode ? 'night' : 'light'
     };
-    var platformString = Platform.isAndroid ? 'android' : 'ios';
-    var jsSource = '''
+    final platformString = Platform.isAndroid ? 'android' : 'ios';
+    final jsSource = '''
 setChartData($jsonData, "$platformString", "liqStatistic", ${jsonEncode(options)});    
     ''';
     updateReadyStatus(dataReady: true, evJS: jsSource);

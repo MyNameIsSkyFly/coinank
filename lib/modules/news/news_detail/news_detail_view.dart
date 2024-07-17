@@ -24,7 +24,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
 
   @override
   void initState() {
-    var arguments = Get.arguments as Map<String, dynamic>;
+    final arguments = Get.arguments as Map<String, dynamic>;
     id = arguments['id'];
     type = arguments['type'];
     _getNewsDetail();
@@ -60,10 +60,10 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
           NewsType.fast => S.of(context).fastNews,
           NewsType.normal => S.of(context).news,
         }),
-        actions: [
+        actions: const [
           IconButton(
-              onPressed: () => AppUtil.shareImage(),
-              icon: const ImageIcon(AssetImage(Assets.commonIcShare)))
+              onPressed: AppUtil.shareImage,
+              icon: ImageIcon(AssetImage(Assets.commonIcShare)))
         ],
       ),
       body: CustomScrollView(

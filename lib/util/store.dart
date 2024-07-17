@@ -72,7 +72,7 @@ class StoreLogic extends GetxController {
   }
 
   Future<bool?> saveDarkMode(bool? isDarkMode) async {
-    return await _SpUtil()._saveInt(
+    return _SpUtil()._saveInt(
         _SpKeys.darkMode,
         isDarkMode == null
             ? -1
@@ -94,7 +94,7 @@ class StoreLogic extends GetxController {
   }
 
   bool get isUpGreen {
-    var isGreen = _SpUtil()._getBool(_SpKeys.upGreen, defaultValue: true);
+    final isGreen = _SpUtil()._getBool(_SpKeys.upGreen, defaultValue: true);
     return isGreen;
   }
 
@@ -132,7 +132,7 @@ class StoreLogic extends GetxController {
   }
 
   UserInfoEntity? get loginUserInfo {
-    var userInfo = _SpUtil()._getString(_SpKeys.loginUserInfo);
+    final userInfo = _SpUtil()._getString(_SpKeys.loginUserInfo);
     if (userInfo.isEmpty) return null;
     return UserInfoEntity.fromJson(
         jsonDecode(userInfo) as Map<String, dynamic>);
@@ -173,9 +173,9 @@ class StoreLogic extends GetxController {
 
   bool _chartUseCDN(String type) {
     try {
-      var version = _SpUtil()._getString(_SpKeys.chartVersion);
+      final version = _SpUtil()._getString(_SpKeys.chartVersion);
       final chartVersionRemote = {
-        for (var e in version.split('/'))
+        for (final e in version.split('/'))
           e.split(':')[0]: int.parse(e.split(':')[1])
       };
       return chartVersionRemote[type]! > _chartVersionInDevice[type]!;
@@ -263,7 +263,7 @@ class StoreLogic extends GetxController {
   }
 
   String get uniappDomain {
-    var withoutHttps = _SpUtil()._getString(_SpKeys.uniappDomain,
+    final withoutHttps = _SpUtil()._getString(_SpKeys.uniappDomain,
         defaultValue: 'coinsoto-h5.s3.ap-northeast-1.amazonaws.com');
     return 'https://$withoutHttps';
   }
@@ -313,12 +313,12 @@ class StoreLogic extends GetxController {
         defaultValue: 'cdn01.coinank.com');
   }
 
-
   Future<bool> saveRecentChart(ChartEntity recentChart) {
     final original = recentCharts;
     if (original.map((e) => e.key).contains(recentChart.key)) {
-      original.removeWhere((element) => element.key == recentChart.key);
-      original.insert(0, recentChart);
+      original
+        ..removeWhere((element) => element.key == recentChart.key)
+        ..insert(0, recentChart);
     } else {
       original.insert(0, recentChart);
     }
@@ -332,7 +332,7 @@ class StoreLogic extends GetxController {
   }
 
   List<ChartEntity> get recentCharts {
-    var recentChart =
+    final recentChart =
         _SpUtil()._getStringList(_SpKeys.recentChart, defaultValue: []);
     return recentChart.map((e) => ChartEntity.fromJson(jsonDecode(e))).toList();
   }
@@ -397,8 +397,9 @@ class StoreLogic extends GetxController {
   Future<bool> saveTappedSearchResult(SearchV2ItemEntity entity) {
     final original = tappedSearchResult;
     if (original.contains(entity)) {
-      original.remove(entity);
-      original.insert(0, entity);
+      original
+        ..remove(entity)
+        ..insert(0, entity);
     } else {
       original.insert(0, entity);
     }

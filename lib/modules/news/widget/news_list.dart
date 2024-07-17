@@ -62,6 +62,7 @@ class _NewsListViewState extends State<NewsListView>
       _pagingCtrl.error = e;
     }
     _refreshCompleter?.complete();
+    _refreshCompleter = null;
   }
 
   @override

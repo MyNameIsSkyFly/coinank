@@ -34,9 +34,9 @@ class SettingLogic extends GetxController {
   String? mosaicEmail(String? name) {
     if (name == null) return null;
     if (name.contains('@')) {
-      final List<String> parts = name.split('@');
-      final String username = parts[0];
-      final String domain = parts[1];
+      final parts = name.split('@');
+      final username = parts[0];
+      final domain = parts[1];
       if (username.isEmpty) {
         return name;
       } else if (username.length == 1) {

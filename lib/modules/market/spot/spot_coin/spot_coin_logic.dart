@@ -37,7 +37,7 @@ class SpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
         AppConst.eventBus.on<EventCoinMarked>().listen(
       (event) {
         if (!event.isSpot) return;
-        for (var e in event.baseCoin) {
+        for (final e in event.baseCoin) {
           final item =
               data.firstWhereOrNull((element) => element.baseCoin == e);
           if (item == null) continue;
@@ -49,8 +49,9 @@ class SpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
         AppConst.eventBus.on<EventCoinOrderChanged>().listen((event) {
       if (!event.isSpot) return;
       if (isCategory != event.isCategory) return;
-      dataSource.getColumns(Get.context!);
-      dataSource.buildDataGridRows();
+      dataSource
+        ..getColumns(Get.context!)
+        ..buildDataGridRows();
     });
 
     AppConst.eventBus.on<FGBGType>().listen((event) async {
@@ -92,8 +93,9 @@ class SpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
     data.assignAll(result?.list ?? []);
     if (isInitializing.value) isInitializing.value = false;
     dataSource.items.assignAll(data);
-    dataSource.buildDataGridRows();
-    dataSource.getColumns(Get.context!);
+    dataSource
+      ..buildDataGridRows()
+      ..getColumns(Get.context!);
   }
 
   Timer? _pollingTimer;

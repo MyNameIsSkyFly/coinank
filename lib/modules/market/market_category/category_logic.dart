@@ -19,11 +19,11 @@ mixin ContractCategoryLogic {
       if (Get.find<MainLogic>().selectedIndex.value != 1) return;
       if (!isSpot) {
         if (Get.find<MarketLogic>().tabCtrl.index != 0) return;
-        var index = Get.find<ContractLogic>().state.tabController?.index;
+        final index = Get.find<ContractLogic>().state.tabController?.index;
         if (index != 2) return;
       } else {
         if (Get.find<MarketLogic>().tabCtrl.index != 1) return;
-        var index = Get.find<SpotLogic>().tabCtrl.index;
+        final index = Get.find<SpotLogic>().tabCtrl.index;
         if (index != 2) return;
       }
       initData();
@@ -43,7 +43,7 @@ mixin ContractCategoryLogic {
     final data = await Apis().getContractCategories(
       productType: isSpot ? 'SPOT' : 'SWAP',
         )
-        .whenComplete(() => Loading.dismiss());
+        .whenComplete(Loading.dismiss);
     MarketMaps.allCategories.assignAll(await Apis().getAllCategories() ?? []);
     gridSource.list.assignAll(data ?? []);
     gridSource.refresh();

@@ -52,8 +52,7 @@ class CommonWebView extends StatefulWidget {
   static Future<void> setCookieValue() async {
     final cookieManager = CookieManager.instance();
 
-    final cookieList = <(String, String)>[];
-    cookieList.addAll([
+    final cookieList = <(String, String)>[
       ('theme', StoreLogic.to.isDarkMode ? 'night' : 'light'),
       (
         'COINSOHO_KEY',
@@ -63,7 +62,7 @@ class CommonWebView extends StatefulWidget {
       ),
       ('green-up', StoreLogic.to.isUpGreen ? 'true' : 'false'),
       ('i18n_redirected', AppUtil.shortLanguageName),
-    ]);
+    ];
     await cookieManager.deleteAllCookies();
     await _syncCookie(domain: Urls.h5Prefix, cookies: cookieList);
     //实时挂单数据url cookie
@@ -96,6 +95,7 @@ class _CommonWebViewState extends State<CommonWebView>
   StreamSubscription? _themeChangeSubscription;
   StreamSubscription? _loginStatusSubscription;
   StreamSubscription? _evJsSubscription;
+  var terminated = false;
 
   // DateTime? lastLeftTime;
   StreamSubscription<FGBGType>? _fgbgSubscription;
@@ -204,39 +204,42 @@ class _CommonWebViewState extends State<CommonWebView>
             // hardwareAcceleration: !widget.enableShare,
             transparentBackground: true,
             javaScriptCanOpenWindowsAutomatically: true,
-            useHybridComposition:
-                widget.urlGetter?.call().contains('proChart') == true,
+            useHybridComposition: false,
           ),
-          onWebViewCreated: (controller) => _onWebViewCreated(controller),
+          onWebViewCreated: _onWebViewCreated,
           onLoadStop: (controller, url) => _onLoadStop(controller),
           onConsoleMessage: (controller, consoleMessage) =>
               debugPrint(consoleMessage.toString()),
           onProgressChanged: (controller, progress) {
             _progress = progress;
             if (progress == 100) {
-              setState(() {});
+              setState(() => terminated = false);
             }
           },
-          onWebContentProcessDidTerminate: (controller) => reload(),
+          onWebContentProcessDidTerminate: (controller) {
+            setState(() => terminated = true);
+            reload();
+          },
           gestureRecognizers: widget.gestureRecognizers ??
               (widget.enableZoom
-                  ? {
+                  ? const {
                       Factory<HorizontalDragGestureRecognizer>(
-                        () => HorizontalDragGestureRecognizer(),
+                        HorizontalDragGestureRecognizer.new,
                       ),
                       Factory<PanGestureRecognizer>(
-                        () => PanGestureRecognizer(),
+                        PanGestureRecognizer.new,
                       ),
                       Factory<ForcePressGestureRecognizer>(
-                        () => ForcePressGestureRecognizer(),
+                        ForcePressGestureRecognizer.new,
                       ),
                       Factory<LongPressGestureRecognizer>(
-                        () => LongPressGestureRecognizer(),
+                        LongPressGestureRecognizer.new,
                       ),
                     }
                   : null),
         ),
-        if (widget.showLoading && _progress != 100) const LottieIndicator(),
+        if ((widget.showLoading && _progress != 100) || terminated)
+          const LottieIndicator(),
       ],
     );
     if (title != null || widget.enableShare) {
@@ -268,9 +271,9 @@ class _CommonWebViewState extends State<CommonWebView>
   Widget? get _actionWidget => widget.enableShare
       ? Row(
           children: [
-            IconButton(
-                onPressed: () => AppUtil.shareImage(),
-                icon: const ImageIcon(AssetImage(Assets.commonIcShare))),
+            const IconButton(
+                onPressed: AppUtil.shareImage,
+                icon: ImageIcon(AssetImage(Assets.commonIcShare))),
             if (widget.url.contains('users/noticeConfig') ||
                 widget.urlGetter?.call().contains('users/noticeConfig') == true)
               IconButton(
@@ -375,9 +378,9 @@ class _CommonWebViewState extends State<CommonWebView>
     if (uri.path == '/') {
       Get.until((route) => route.settings.name == '/');
       final pageType = uri.queryParameters['pageType'];
-      var mainLogic = Get.find<MainLogic>();
-      var marketLogic = Get.find<MarketLogic>();
-      var contractLogic = Get.find<ContractLogic>();
+      final mainLogic = Get.find<MainLogic>();
+      final marketLogic = Get.find<MarketLogic>();
+      final contractLogic = Get.find<ContractLogic>();
       if (pageType != null) {
         switch (pageType.toUpperCase()) {
           case 'FUNDINGRATE':
@@ -397,7 +400,7 @@ class _CommonWebViewState extends State<CommonWebView>
             mainLogic.selectTab(1);
             marketLogic.selectIndex(0);
             if (Get.isRegistered<ExchangeOiLogic>()) {
-              var exchangeOiLogic = Get.find<ExchangeOiLogic>();
+              final exchangeOiLogic = Get.find<ExchangeOiLogic>();
               exchangeOiLogic.menuParamEntity.value.baseCoin =
                   uri.queryParameters['baseCoin'];
               exchangeOiLogic.menuParamEntity.refresh();
@@ -411,18 +414,19 @@ class _CommonWebViewState extends State<CommonWebView>
             }
             contractLogic.selectIndex(2);
           case 'ORDERFLOW':
-            var symbol = uri.queryParameters['symbol'] ?? '';
-            var baseCoin = uri.queryParameters['baseCoin'] ?? '';
-            var exchangeName = uri.queryParameters['exchangeName'] ?? '';
-            var productType = uri.queryParameters['productType'];
+            final symbol = uri.queryParameters['symbol'] ?? '';
+            final baseCoin = uri.queryParameters['baseCoin'] ?? '';
+            final exchangeName = uri.queryParameters['exchangeName'] ?? '';
+            final productType = uri.queryParameters['productType'];
             AppUtil.toKLine(exchangeName, symbol, baseCoin, productType);
         }
       } else {
-        var tabIndex = int.tryParse(uri.queryParameters['tabIndex'] ?? '') ?? 0;
+        final tabIndex =
+            int.tryParse(uri.queryParameters['tabIndex'] ?? '') ?? 0;
         mainLogic.selectTab(tabIndex);
         marketLogic.selectIndex(0);
         if (tabIndex == 1) {
-          var subTabIndex =
+          final subTabIndex =
               int.tryParse(uri.queryParameters['subTabIndex'] ?? '') ?? 0;
           contractLogic.selectIndex(subTabIndex);
         }

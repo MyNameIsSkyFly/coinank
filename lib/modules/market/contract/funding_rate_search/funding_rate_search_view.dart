@@ -68,7 +68,7 @@ class _FundingRateSearchPageState extends State<FundingRateSearchPage> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    onChanged: (v) => logic.search(v),
+                    onChanged: logic.search,
                   ),
                 ),
                 SizedBox(
@@ -94,7 +94,7 @@ class _FundingRateSearchPageState extends State<FundingRateSearchPage> {
                 shrinkWrap: true,
                 itemExtent: 50,
                 itemBuilder: (cnt, idx) {
-                  String item = state.data.toList()[idx];
+                  final item = state.data.toList()[idx];
                   return InkWell(
                     onTap: () => logic.tapItem(item),
                     child: Row(

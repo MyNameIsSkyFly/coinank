@@ -27,6 +27,7 @@ class BaseInterceptor extends Interceptor {
     if (response.requestOptions.path.startsWith('/api')) {
       final code = response.data?['code'];
       final dataKey = response.requestOptions.extra['dataKey'] as String?;
+      // ignore: literal_only_boolean_expressions
       if ('$code' != '1') {
         if (!_handleCode('$code')) {
           final showToast = response.requestOptions.extra['showToast'] ?? true;
@@ -51,6 +52,7 @@ class BaseInterceptor extends Interceptor {
       }
     } else if (response.requestOptions.path.startsWith('/indicatorapi')) {
       final code = response.data?['code'];
+      // ignore: literal_only_boolean_expressions
       if ('$code' != '200') {
         if (!_handleCode('$code')) {
           AppUtil.showToast((response.data?['msg'] ?? '').toString());

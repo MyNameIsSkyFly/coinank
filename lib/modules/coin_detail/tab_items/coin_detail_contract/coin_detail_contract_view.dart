@@ -97,7 +97,7 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
                     const Gap(20),
                     Obx(() {
                       return GestureDetector(
-                        onTap: () => logic.toggleMarked(),
+                        onTap: logic.toggleMarked,
                         child: ImageIcon(
                             AssetImage(logic.marked.value
                                 ? Assets.commonIconStarFill
@@ -211,7 +211,7 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
                     scaleY: 0.6,
                     child: GestureDetector(
                       behavior: HitTestBehavior.opaque,
-                      onTap: () => dataExpanded.toggle(),
+                      onTap: dataExpanded.toggle,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

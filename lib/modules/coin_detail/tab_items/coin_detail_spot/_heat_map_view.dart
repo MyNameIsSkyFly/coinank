@@ -83,10 +83,10 @@ class _HeatMapViewState extends State<_HeatMapView> {
       'type': 'vol'
       // vol: 成交量, oi: 持仓
     };
-    var platformString = Platform.isAndroid ? 'android' : 'ios';
-    var dataParamsString = jsonEncode(dataParams);
-    var localeString = jsonEncode({'locale': AppUtil.shortLanguageName});
-    var jsSource = '''
+    final platformString = Platform.isAndroid ? 'android' : 'ios';
+    final dataParamsString = jsonEncode(dataParams);
+    final localeString = jsonEncode({'locale': AppUtil.shortLanguageName});
+    final jsSource = '''
         setChartData($dataParamsString, "$platformString", "tickerHeatMap", $localeString);    
                 ''';
     webCtrl?.evaluateJavascript(source: jsSource);

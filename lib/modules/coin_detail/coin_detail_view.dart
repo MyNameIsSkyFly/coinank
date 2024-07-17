@@ -60,7 +60,7 @@ class _CoinDetailPageState extends State<CoinDetailPage>
             style: IconButton.styleFrom(visualDensity: VisualDensity.compact),
             icon: ImageIcon(const AssetImage(Assets.commonIcShare),
                 size: 20, color: Styles.cBody(context)),
-            onPressed: () => AppUtil.shareImage(),
+            onPressed: AppUtil.shareImage,
           ),
         ],
       ),

@@ -92,7 +92,7 @@ class ContactUsPage extends StatelessWidget {
           _ArrowItem(
             asset: Assets.settingIcAbout,
             title: S.of(context).aboutCoinank,
-            onTap: () => AppNav.toAbout(),
+            onTap: AppNav.toAbout,
           ),
         ],
       ),

@@ -63,7 +63,7 @@ class RegisterLogic extends GetxController {
   }
 
   Future<void> sendCode() async {
-    var mail = mailCtrl.text.trim();
+    final mail = mailCtrl.text.trim();
     if (!AppUtil.isEmailValid(mail)) {
       AppUtil.showToast(S.current.s_valid_emailaddress);
       return;

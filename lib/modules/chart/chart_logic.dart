@@ -13,7 +13,7 @@ class ChartLogic extends GetxController {
 
   Future<void> onRefresh() async {
     if (AppConst.networkConnected == false) return;
-    Map<String, List<ChartEntity>> dataMap = {
+    final dataMap = <String, List<ChartEntity>>{
       'hotData': [],
       'btcData': [],
       'otherData': [],
@@ -36,7 +36,7 @@ class ChartLogic extends GetxController {
       ...state.dataMap['otherData'] ?? [],
     ];
     final keys = allData.map((e) => e.key).toList();
-    for (var element in list) {
+    for (final element in list) {
       if (keys.contains(element.key)) {
         element.title = allData.firstWhere((e) => e.key == element.key).title;
         result.add(element);

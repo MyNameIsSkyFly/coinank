@@ -54,7 +54,7 @@ class _CustomSelectorState<T> extends State<CustomSelector<T>> {
                     ),
                     const Spacer(),
                     IconButton(
-                      onPressed: () => Get.back(),
+                      onPressed: Get.back,
                       icon: Text(
                         S.current.s_cancel,
                         style: Styles.tsSub_16(context),

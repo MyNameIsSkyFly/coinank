@@ -36,8 +36,8 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin {
   }
 
   Future<void> tapTime() async {
-    String time = state.time.isEmpty ? S.current.s_current : state.time.value;
-    Map<String, String> timeMap = {
+    final time = state.time.isEmpty ? S.current.s_current : state.time.value;
+    final timeMap = <String, String>{
       S.current.s_current: 'current',
       S.current.s_day: 'day',
       S.current.s_week: 'week',
@@ -101,7 +101,7 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin {
     final data = await Apis()
         .getMarketFundingRateData(
             type: state.timeType, isFollow: isFavorite.value)
-        .whenComplete(() => Loading.dismiss());
+        .whenComplete(Loading.dismiss);
 
     if (state.isLoading.value) {
       state.isLoading.value = false;
@@ -130,7 +130,7 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin {
   }
 
   void _scrollListener() {
-    double offset = state.scrollController.offset;
+    final offset = state.scrollController.offset;
     state.isScrollDown.value = offset <= 0 || state.offset - offset > 0;
     state.offset = offset;
   }

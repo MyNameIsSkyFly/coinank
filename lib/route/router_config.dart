@@ -32,7 +32,7 @@ class RouteConfig {
     GetPage(name: main, page: () => const MainPage(), binding: MainBinding()),
     GetPage(
         name: contractMarketSearch,
-        page: () => ContractMarketSearchPage(),
+        page: ContractMarketSearchPage.new,
         binding: ContractMarketSearchBinding()),
     GetPage(
       name: LoginPage.routeName,
@@ -44,15 +44,15 @@ class RouteConfig {
     ),
     GetPage(
         name: PriceChangePage.priceChange,
-        page: () => PriceChangePage(),
+        page: PriceChangePage.new,
         binding: PriceChangeBinding()),
     GetPage(
         name: LongShortRatioPage.routeName,
-        page: () => LongShortRatioPage(),
+        page: LongShortRatioPage.new,
         binding: LongShortRatioBinding()),
     GetPage(
         name: LiqMainPage.routeName,
-        page: () => LiqMainPage(),
+        page: LiqMainPage.new,
         binding: LiqMainBinding()),
     GetPage(
       name: LongShortPersonRatioPage.routeName,
@@ -60,15 +60,15 @@ class RouteConfig {
     ),
     GetPage(
       name: HomeSearchPage.routeName,
-      page: () => HomeSearchPage(),
+      page: HomeSearchPage.new,
     ),
     GetPage(
       name: ContactUsPage.routeName,
-      page: () => ContactUsPage(),
+      page: ContactUsPage.new,
     ),
     GetPage(
       name: AboutPage.routeName,
-      page: () => AboutPage(),
+      page: AboutPage.new,
     ),
     GetPage(
       name: CoinDetailPage.routeName,
@@ -76,7 +76,7 @@ class RouteConfig {
     ),
     GetPage(
       name: ReorderPage.routeName,
-      page: () => ReorderPage(),
+      page: ReorderPage.new,
     ),
     GetPage(
       name: EditCustomizePage.routeName,
@@ -84,7 +84,7 @@ class RouteConfig {
     ),
     GetPage(
       name: ReorderSpotPage.routeName,
-      page: () => ReorderSpotPage(),
+      page: ReorderSpotPage.new,
     ),
     GetPage(
       name: EditCustomizeSpotPage.routeName,

@@ -7,7 +7,7 @@ class CustomSearchBottomSheetState {
   RxString current = ''.obs;
 
   CustomSearchBottomSheetState() {
-    Map<String, dynamic> arg = Get.arguments as Map<String, dynamic>;
+    final arg = Get.arguments as Map<String, dynamic>;
     originalDataList = arg['list'] as List<String>;
     dataList.value = List.from(originalDataList);
     current.value = arg['current'] as String;

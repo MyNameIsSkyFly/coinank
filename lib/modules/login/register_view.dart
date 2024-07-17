@@ -68,7 +68,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       const Gap(15),
                       TextFormField(
                         controller: logic.verifyCodeCtrl,
-                        validator: (value) => logic.validVerifyCode(value),
+                        validator: logic.validVerifyCode,
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                             hintText: S.of(context).s_verify_code,
@@ -94,9 +94,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                           ?.color),
                                   onPressed: logic.sendBtnCounter.value > 0
                                       ? null
-                                      : () {
-                                          logic.sendCode();
-                                        },
+                                      : logic.sendCode,
                                   child: Text(logic.sendBtnCounter.value == 0
                                       ? S.of(context).s_send_verify_code
                                       : '${logic.sendBtnCounter.value}s'));

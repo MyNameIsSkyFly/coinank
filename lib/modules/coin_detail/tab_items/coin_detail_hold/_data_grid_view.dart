@@ -18,7 +18,7 @@ class DataGridView extends StatelessWidget {
           width: 40,
           label: Container(
             alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8),
             child: Text(
               '#',
               overflow: TextOverflow.ellipsis,
@@ -31,7 +31,7 @@ class DataGridView extends StatelessWidget {
           width: 100,
           label: Container(
             alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8),
             child: Text(
               S.of(context).heldCoinNumber,
               overflow: TextOverflow.ellipsis,
@@ -43,7 +43,7 @@ class DataGridView extends StatelessWidget {
           width: 80,
           label: Container(
             alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8),
             child: FittedBox(
               child: Text(
                 S.of(context).ratio,
@@ -58,7 +58,7 @@ class DataGridView extends StatelessWidget {
             width: 100,
             label: Container(
               alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8),
               child: Text(
                 '${S.of(context).s_home_chg} (7D)',
                 overflow: TextOverflow.ellipsis,
@@ -70,7 +70,7 @@ class DataGridView extends StatelessWidget {
           width: 220,
           label: Container(
             alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8),
             child: Text(
               S.of(context).address,
               overflow: TextOverflow.ellipsis,
@@ -83,7 +83,7 @@ class DataGridView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      var productDataGridSource =
+      final productDataGridSource =
           GridDataSource(list.value, showChange: showChange);
       return SfTheme(
         data: SfThemeData(

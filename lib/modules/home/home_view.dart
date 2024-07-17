@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    var child = Scaffold(
+    final child = Scaffold(
       appBar: AppBar(
         toolbarHeight: 44,
         leadingWidth: double.infinity,
@@ -392,7 +392,7 @@ class _FearGreedInfo extends StatelessWidget {
                 url: Urls.urlGreedIndex,
                 showLoading: true),
             child: Obx(() {
-              var degree =
+              final degree =
                   double.tryParse(logic.homeInfoData.value?.cnnValue ?? '') ??
                       -1;
               return Container(
@@ -846,7 +846,7 @@ class _HotMarket extends StatelessWidget {
                               return const _DataWithoutIcon(
                                   title: '', value: 0);
                             }
-                            var item = logic.fundRateList[index];
+                            final item = logic.fundRateList[index];
                             return _DataWithoutIcon(
                                 title: item.symbol ?? '',
                                 value: item.fundingRate ?? 0);
@@ -1282,31 +1282,32 @@ class _ChartItem extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            item.key == 'more'
-                ? Image.asset(
-                    Assets.chartLeftIcMore,
+            if (item.key == 'more')
+              Image.asset(
+                Assets.chartLeftIcMore,
+                height: 30,
+                width: 30,
+              )
+            else
+              ValueBuilder<int?>(
+                initialValue: 0,
+                builder: (value, updater) {
+                  return ImageUtil.networkImage(
+                    key: ValueKey('${item.key}$value'),
+                    'https://cdn01.coinank.com/appicons/${item.key}.png',
                     height: 30,
                     width: 30,
-                  )
-                : ValueBuilder<int?>(
-                    initialValue: 0,
-                    builder: (value, updater) {
-                      return ImageUtil.networkImage(
-                        key: ValueKey('${item.key}$value'),
-                        'https://cdn01.coinank.com/appicons/${item.key}.png',
-                        height: 30,
-                        width: 30,
-                        fadeInDuration: Duration.zero,
-                        progressUseErrorWidget: true,
-                        errorListener: (_) {
-                          Future.delayed(
-                            const Duration(seconds: 5),
-                            () => updater.call((value ?? 0) + 1),
-                          );
-                        },
+                    fadeInDuration: Duration.zero,
+                    progressUseErrorWidget: true,
+                    errorListener: (_) {
+                      Future.delayed(
+                        const Duration(seconds: 5),
+                        () => updater.call((value ?? 0) + 1),
                       );
                     },
-                  ),
+                  );
+                },
+              ),
             const Gap(2),
             Expanded(
               child: Text(

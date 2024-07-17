@@ -26,6 +26,7 @@ class SearchV2Entity {
 }
 
 @JsonSerializable(createToJson: true)
+// ignore: must_be_immutable
 class SearchV2ItemEntity extends Equatable {
   final String? baseCoin;
   final String? exchangeName;

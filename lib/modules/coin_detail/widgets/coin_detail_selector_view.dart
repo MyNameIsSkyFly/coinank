@@ -41,7 +41,7 @@ class _SelectorSheetWithInterceptorState
             child: PointerInterceptor(
               child: GestureDetector(
                 behavior: HitTestBehavior.translucent,
-                onTap: () => Get.back(),
+                onTap: Get.back,
                 child: Container(),
               ),
             ),
@@ -77,7 +77,7 @@ class _SelectorSheetWithInterceptorState
                               ),
                               const Spacer(),
                               IconButton(
-                                onPressed: () => Get.back(),
+                                onPressed: Get.back,
                                 icon: Text(
                                   S.current.s_cancel,
                                   style: Styles.tsSub_16(context),

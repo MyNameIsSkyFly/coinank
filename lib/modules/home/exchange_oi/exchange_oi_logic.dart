@@ -32,7 +32,6 @@ class ExchangeOiLogic extends GetxController {
   String? jsonData;
   InAppWebViewController? webCtrl;
   final itemScrollController = ItemScrollController();
-  final loading = true.obs;
   var refreshing = false;
   ({bool dataReady, bool webReady, String evJS}) readyStatus =
       (dataReady: false, webReady: false, evJS: '');
@@ -40,10 +39,8 @@ class ExchangeOiLogic extends GetxController {
   @override
   void onInit() {
     gridSource.initBaseCoin(menuParamEntity.value.baseCoin);
-    Future.wait([gridSource.loadData(), loadOIData(), loadAllBaseCoins()])
-        .then((value) {
-      loading.value = false;
-    });
+    Loading.wrap(() async =>
+        Future.wait([gridSource.loadData(), loadOIData(), loadAllBaseCoins()]));
     startPolling();
     super.onInit();
   }
@@ -75,7 +72,7 @@ class ExchangeOiLogic extends GetxController {
 
   Future<void> loadAllBaseCoins() async {
     final result = await Apis().getMarketAllCurrencyData();
-    var list = result ?? [];
+    final list = result ?? [];
     selectedCoinIndex =
         list.indexOf(menuParamEntity.value.baseCoin?.toUpperCase() ?? 'BTC');
     if (selectedCoinIndex < 0) {
@@ -83,10 +80,7 @@ class ExchangeOiLogic extends GetxController {
       menuParamEntity.update((val) {
         val?.baseCoin = 'BTC';
       });
-      Future.wait([gridSource.loadData(), loadOIData(), loadAllBaseCoins()])
-          .then((value) {
-        loading.value = false;
-      });
+      Future.wait([gridSource.loadData(), loadOIData()]);
     }
     coinList.assignAll(list);
   }
@@ -119,8 +113,8 @@ class ExchangeOiLogic extends GetxController {
       'locale': AppUtil.shortLanguageName,
       'price': S.current.s_price,
     };
-    var platformString = Platform.isAndroid ? 'android' : 'ios';
-    var jsSource = '''
+    final platformString = Platform.isAndroid ? 'android' : 'ios';
+    final jsSource = '''
 setChartData($jsonData, "$platformString", "openInterest", ${jsonEncode(options)});    
     ''';
     updateReadyStatus(dataReady: true, evJS: jsSource);
@@ -131,7 +125,7 @@ setChartData($jsonData, "$platformString", "openInterest", ${jsonEncode(options)
     final result = await Get.toNamed(RouteConfig.contractMarketSearch,
         arguments: coinList.toList());
     if (result != null) {
-      String type = result as String;
+      final type = result as String;
       selectedCoinIndex = coinList.indexOf(type);
       menuParamEntity.value.baseCoin = type;
       coinList.refresh();
@@ -140,7 +134,7 @@ setChartData($jsonData, "$platformString", "openInterest", ${jsonEncode(options)
         alignment: 0.5,
         duration: const Duration(milliseconds: 500),
       );
-      Loading.wrap(() => onRefresh());
+      Loading.wrap(onRefresh);
     }
   }
 

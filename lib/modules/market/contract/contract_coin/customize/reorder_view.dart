@@ -46,10 +46,10 @@ class ReorderPage extends StatelessWidget {
             logic.list.insert(newIndex, item);
             if (!logic.isCategory) {
               await StoreLogic.to.saveContractCoinSortOrder(
-                  {for (var item in logic.list) item.key: item.value});
+                  {for (final item in logic.list) item.key: item.value});
             } else {
               await StoreLogic.to.saveCategoryContractOrder(
-                  {for (var item in logic.list) item.key: item.value});
+                  {for (final item in logic.list) item.key: item.value});
             }
             AppConst.eventBus
                 .fire(EventCoinOrderChanged(isCategory: logic.isCategory));

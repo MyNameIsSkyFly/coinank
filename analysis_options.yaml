@@ -7,7 +7,7 @@
 
 # The following line activates a set of recommended lints for Flutter apps,
 # packages, and plugins designed to encourage good coding practices.
-include: package:flutter_lints/flutter.yaml
+include: package:very_good_analysis/analysis_options.6.0.0.yaml
 
 linter:
   # The lint rules applied to this project can be customized in the
@@ -96,9 +96,33 @@ linter:
     use_test_throws_matchers: true
     # avoid_print: false  # Uncomment to disable the `avoid_print` rule
     # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
+    #for very good analysis
+    omit_local_variable_types: true
+    cascade_invocations: true
+    prefer_int_literals: true
+    use_raw_strings: true
+    prefer_if_elements_to_conditional_expressions: true
+    avoid_slow_async_io: true
+    no_wildcard_variable_uses: false
+    public_member_api_docs: false
+    always_use_package_imports: false
+    unawaited_futures: false
+    avoid_positional_boolean_parameters: false
+    require_trailing_commas: false
+    use_if_null_to_convert_nulls_to_bools: false
+    flutter_style_todos: false
+    sort_pub_dependencies: false
+    lines_longer_than_80_chars: false
+    comment_references: false
+    prefer_asserts_with_message: false
+    type_annotate_public_apis: false
+    sort_constructors_first: false
+    always_put_required_named_parameters_first: false
 analyzer:
   language:
     strict-casts: false
+    strict-inference: false
+    strict-raw-types: false
   exclude: [ build/**, lib/**.freezed.dart, lib/**.g.dart, lib/generated/** ]
 
 # Additional information about this file can be found at

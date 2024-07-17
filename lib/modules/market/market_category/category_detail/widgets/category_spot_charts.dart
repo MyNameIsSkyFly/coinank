@@ -110,11 +110,11 @@ class _HeatMapViewState extends State<_HeatMapView> {
       'category': logic.tag.value,
       'type': 'turnover24h'
     };
-    var platformString = Platform.isAndroid ? 'android' : 'ios';
-    var dataParamsString = jsonEncode(dataParams);
-    var localeString = jsonEncode(
+    final platformString = Platform.isAndroid ? 'android' : 'ios';
+    final dataParamsString = jsonEncode(dataParams);
+    final localeString = jsonEncode(
         {'locale': AppUtil.shortLanguageName, 'light': !Get.isDarkMode});
-    var jsSource =
+    final jsSource =
         '''setChartData($dataParamsString, "$platformString", "categoryHeatMap", $localeString);''';
     webCtrl?.evaluateJavascript(source: jsSource);
   }
@@ -234,11 +234,11 @@ class _BarChartViewState extends State<_BarChartView> {
       'type': selectedIndex.value == 0 ? 'turnover24h' : 'marketCap'
       // vol: 成交量, oi: 持仓
     };
-    var platformString = Platform.isAndroid ? 'android' : 'ios';
-    var dataParamsString = jsonEncode(dataParams);
-    var localeString = jsonEncode(
+    final platformString = Platform.isAndroid ? 'android' : 'ios';
+    final dataParamsString = jsonEncode(dataParams);
+    final localeString = jsonEncode(
         {'locale': AppUtil.shortLanguageName, 'light': !Get.isDarkMode});
-    var jsSource =
+    final jsSource =
         '''setChartData($dataParamsString, "$platformString", "categoryHeatMap", $localeString);''';
     webCtrl?.evaluateJavascript(source: jsSource);
   }

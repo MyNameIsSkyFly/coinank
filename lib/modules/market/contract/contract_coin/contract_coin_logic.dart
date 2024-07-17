@@ -90,8 +90,9 @@ class ContractCoinLogic extends GetxController
     if (isInitializing.value) isInitializing.value = false;
     data.assignAll(result?.list ?? []);
     dataSource.items.assignAll(data);
-    dataSource.buildDataGridRows();
-    dataSource.getColumns(Get.context!);
+    dataSource
+      ..buildDataGridRows()
+      ..getColumns(Get.context!);
   }
 
   void _addFollowTag(TickersDataEntity? data) {
@@ -107,7 +108,7 @@ class ContractCoinLogic extends GetxController
     if (Get.isBottomSheetOpen == true) return false;
     if (Get.find<MainLogic>().selectedIndex.value != 1) return false;
     if (Get.find<MarketLogic>().tabCtrl.index != 0) return false;
-    var index = Get.find<ContractLogic>().state.tabController?.index;
+    final index = Get.find<ContractLogic>().state.tabController?.index;
     if (index != 1) return false;
     return true;
   }
@@ -135,13 +136,14 @@ class ContractCoinLogic extends GetxController
   void onInit() {
     super.onInit();
     startTimer();
-    dataSource.isCategory = isCategory;
-    dataSource.getColumns(Get.context!);
+    dataSource
+      ..isCategory = isCategory
+      ..getColumns(Get.context!);
     _favoriteChangedSubscription =
         AppConst.eventBus.on<EventCoinMarked>().listen(
       (event) {
         if (event.isSpot) return;
-        for (var e in event.baseCoin) {
+        for (final e in event.baseCoin) {
           final item =
               data.firstWhereOrNull((element) => element.baseCoin == e);
           if (item == null) continue;
@@ -153,8 +155,9 @@ class ContractCoinLogic extends GetxController
         AppConst.eventBus.on<EventCoinOrderChanged>().listen((event) {
       if (event.isSpot) return;
       if (isCategory != event.isCategory) return;
-      dataSource.getColumns(Get.context!);
-      dataSource.buildDataGridRows();
+      dataSource
+        ..getColumns(Get.context!)
+        ..buildDataGridRows();
     });
 
     AppConst.eventBus.on<FGBGType>().listen((event) async {
