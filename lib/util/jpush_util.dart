@@ -86,6 +86,7 @@ class JPushUtil {
     } else {
       final map = message['extras'];
       if (map.containsKey('url')) {
+        AppUtil.showToast('Opened by JPush');
         AppNav.openWebUrl(
           url: map['url'] as String,
           title: 'CoinAnk',

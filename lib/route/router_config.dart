@@ -18,6 +18,7 @@ import 'package:ank_app/modules/market/market_category/category_detail/category_
 import 'package:ank_app/modules/market/spot/customize/edit_customize_spot_view.dart';
 import 'package:ank_app/modules/market/spot/customize/reorder_spot_view.dart';
 import 'package:ank_app/modules/news/news_detail/news_detail_view.dart';
+import 'package:ank_app/modules/notice/record/notice_record_view.dart';
 import 'package:ank_app/modules/setting/about/about_view.dart';
 import 'package:ank_app/modules/setting/contact_us/contact_us_view.dart';
 import 'package:get/get.dart';
@@ -97,6 +98,10 @@ class RouteConfig {
     GetPage(
       name: NewsDetailPage.routeName,
       page: () => const NewsDetailPage(),
+    ),
+    GetPage(
+      name: NoticeRecordPage.routeName,
+      page: NoticeRecordPage.new,
     ),
   ];
 }

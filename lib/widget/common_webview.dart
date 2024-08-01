@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:ank_app/entity/event/theme_event.dart';
 import 'package:ank_app/entity/event/web_js_event.dart';
 import 'package:ank_app/modules/home/exchange_oi/exchange_oi_logic.dart';
-import 'package:ank_app/modules/setting/setting_logic.dart';
+import 'package:ank_app/modules/notice/record/notice_record_view.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -277,17 +277,21 @@ class _CommonWebViewState extends State<CommonWebView>
             if (widget.url.contains('users/noticeConfig') ||
                 widget.urlGetter?.call().contains('users/noticeConfig') == true)
               IconButton(
-                  onPressed: () => AppNav.openWebUrl(
-                      showLoading: true,
-                      title: S.of(context).noticeRecords,
-                      url: Get.find<SettingLogic>()
-                              .state
-                              .settingList
-                              .firstWhereOrNull((element) =>
-                                  element.url?.contains('noticeRecords') ==
-                                  true)
-                              ?.url ??
-                          ''),
+                  onPressed: () {
+                    Get.toNamed(NoticeRecordPage.routeName);
+                  },
+                  // onPressed: () => AppNav.openWebUrl(
+                  //     showLoading: true,
+                  //     title: S.of(context).noticeRecords,
+                  //     url: Get.find<SettingLogic>()
+                  //             .state
+                  //             .settingList
+                  //             .firstWhereOrNull((element) =>
+                  //                 element.url?.contains('noticeRecords') ==
+                  //                 true)
+                  //             ?.url ??
+                  //           'https://coinank.com/zh/m/noticeRecords?pushType=warnSignal&type=signal&lng=${AppUtil.shortLanguageName}',
+                  //     ),
                   icon: const ImageIcon(
                       AssetImage(Assets.commonIcNoticeHistory))),
           ],
@@ -328,6 +332,7 @@ class _CommonWebViewState extends State<CommonWebView>
         handlerName: 'openUrl',
         callback: (arguments) {
           if (arguments.isEmpty) return;
+          AppUtil.showToast('Opened by H5');
           AppNav.openWebUrl(
             url: arguments[0],
             title: '',

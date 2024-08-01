@@ -7,5 +7,6 @@
   "STORE_FILE": "keystore/uukr.key",
   "STORE_PASSWORD": "uukr.com",
   "VERSION_NAME": "3.1.8",
-  "VERSION_CODE": "318"
+  "VERSION_CODE": "318",
+  "cronetHttpNoPlay": true
 }

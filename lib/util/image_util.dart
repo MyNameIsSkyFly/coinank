@@ -1,11 +1,20 @@
 import 'dart:math';
 
 import 'package:ank_app/constants/app_const.dart';
+import 'package:ank_app/res/export.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager_dio/flutter_cache_manager_dio.dart';
+import 'package:native_dio_adapter/native_dio_adapter.dart';
 
 class ImageUtil {
   ImageUtil._();
+
+  static void init() {
+    final dio = Dio()..httpClientAdapter = NativeAdapter();
+    DioCacheManager.initialize(dio);
+  }
 
   static Widget networkImage(
     String url, {
@@ -20,6 +29,7 @@ class ImageUtil {
   }) {
     return CachedNetworkImage(
       key: key,
+      cacheManager: DioCacheManager.instance,
       imageUrl: url,
       width: width,
       height: height,
@@ -52,6 +62,7 @@ class ImageUtil {
     return ClipOval(
       child: CachedNetworkImage(
         imageUrl: AppConst.imageHost(coinName),
+        cacheManager: DioCacheManager.instance,
         width: size,
         height: size,
         fadeInDuration: const Duration(milliseconds: 100),
@@ -74,6 +85,7 @@ class ImageUtil {
     child = CachedNetworkImage(
       imageUrl: 'https://cdn01.coinank.com/image/exchange/64/$exchangeName.png',
       width: size,
+      cacheManager: DioCacheManager.instance,
       height: size,
       fadeInDuration: const Duration(milliseconds: 100),
       errorWidget: (context, url, error) {
@@ -98,6 +110,7 @@ class ImageUtil {
     child = CachedNetworkImage(
       imageUrl: 'https://cdn01.coinank.com/image/news/$sourceName.png',
       width: size,
+      cacheManager: DioCacheManager.instance,
       fit: BoxFit.cover,
       height: size,
       fadeInDuration: const Duration(milliseconds: 100),

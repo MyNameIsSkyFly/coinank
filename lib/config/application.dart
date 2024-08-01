@@ -13,6 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:lottie/lottie.dart';
+import 'package:native_dio_adapter/native_dio_adapter.dart';
 
 import '../constants/urls.dart';
 
@@ -32,6 +33,7 @@ class Application {
     // double? get _value 中添加:
     // if (_mode == IndicatorMode.inactive) return 0;
     initLoading();
+    ImageUtil.init();
     await CommonWebView.setCookieValue();
     if (Platform.isAndroid) {
       await InAppWebViewController.setWebContentsDebuggingEnabled(true);
@@ -65,7 +67,7 @@ class Application {
   }
 
   Future<bool> getConfig() async {
-    final result = await Dio()
+    final result = await (Dio()..httpClientAdapter = NativeAdapter())
         .get('https://coinsoho.s3.us-east-2.amazonaws.com/app/config.txt')
         .catchError((e) {
       return Response(requestOptions: RequestOptions());

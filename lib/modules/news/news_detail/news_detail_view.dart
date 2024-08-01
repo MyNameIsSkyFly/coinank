@@ -117,9 +117,16 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
           ),
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(15, 30, 15, 40),
-            sliver: HtmlWidget(detail.content ?? '',
-                    textStyle: Styles.tsBody_14(context).copyWith(height: 2))
-                .sliverBox,
+            sliver: HtmlWidget(
+              detail.content ?? '',
+              textStyle: Styles.tsBody_14(context).copyWith(height: 2),
+              customWidgetBuilder: (element) {
+                if (element.localName == 'img') {
+                  return ImageUtil.networkImage(
+                      element.attributes['src'] ?? '');
+                }
+              },
+            ).sliverBox,
           ),
           Obx(() {
             return SliverVisibility(

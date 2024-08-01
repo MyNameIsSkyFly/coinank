@@ -2,6 +2,8 @@ PODS:
   - connectivity_plus (0.0.1):
     - Flutter
     - FlutterMacOS
+  - cupertino_http (0.0.1):
+    - Flutter
   - device_info_plus (0.0.1):
     - Flutter
   - ff_native_screenshot (0.0.1):
@@ -23,13 +25,13 @@ PODS:
     - Toast
   - image_gallery_saver (2.0.2):
     - Flutter
-  - JCore (4.4.0)
-  - JPush (5.2.0):
+  - JCore (4.7.1)
+  - JPush (5.3.0):
     - JCore (>= 2.0.0)
   - jpush_google_flutter (0.0.2):
     - Flutter
-    - JCore (= 4.4.0)
-    - JPush (= 5.2.0)
+    - JCore (>= 4.6.2)
+    - JPush (= 5.3.0)
   - native_device_orientation (0.0.1):
     - Flutter
   - OrderedSet (5.0.0)
@@ -60,6 +62,7 @@ PODS:
 
 DEPENDENCIES:
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/darwin`)
+  - cupertino_http (from `.symlinks/plugins/cupertino_http/ios`)
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - ff_native_screenshot (from `.symlinks/plugins/ff_native_screenshot/ios`)
   - Flutter (from `Flutter`)
@@ -91,6 +94,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   connectivity_plus:
     :path: ".symlinks/plugins/connectivity_plus/darwin"
+  cupertino_http:
+    :path: ".symlinks/plugins/cupertino_http/ios"
   device_info_plus:
     :path: ".symlinks/plugins/device_info_plus/ios"
   ff_native_screenshot:
@@ -134,6 +139,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   connectivity_plus: ddd7f30999e1faaef5967c23d5b6d503d10434db
+  cupertino_http: 1a3a0f163c1b26e7f1a293b33d476e0fde7a64ec
   device_info_plus: 97af1d7e84681a90d0693e63169a5d50e0839a0d
   ff_native_screenshot: 7cf56daa930d97daf16e732a27f5e9409e04548c
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
@@ -142,9 +148,9 @@ SPEC CHECKSUMS:
   flutter_native_splash: edf599c81f74d093a4daf8e17bd7a018854bc778
   fluttertoast: e9a18c7be5413da53898f660530c56f35edfba9c
   image_gallery_saver: cb43cc43141711190510e92c460eb1655cd343cb
-  JCore: 05f0f3489672ea3fa55338bae4866224bc092b1f
-  JPush: 76668b765fcfd7c15f86b05ca0e5cdc01945ce23
-  jpush_google_flutter: 0248d7309090a4aa1d06462f0fc09b5e167705ad
+  JCore: 8a8afeb68438b8424864252c7fb4514b8f10135f
+  JPush: b71f497a3c1b825c7843fd97f290b05d5cd75f2e
+  jpush_google_flutter: 2a54c24c62964923537dd6ce15019f805d5344d8
   native_device_orientation: 348b10c346a60ebbc62fb235a4fdb5d1b61a8f55
   OrderedSet: aaeb196f7fef5a9edf55d89760da9176ad40b93c
   package_info_plus: 58f0028419748fad15bf008b270aaa8e54380b1c

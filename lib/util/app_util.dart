@@ -22,6 +22,7 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:native_dio_adapter/native_dio_adapter.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:screenshot_ntv/screenshot_ntv.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -197,7 +198,7 @@ class AppUtil {
     // if (kDebugMode) return;
     final packageInfo = await PackageInfo.fromPlatform();
     if (showLoading) Loading.show();
-    final res = await Dio()
+    final res = await (Dio()..httpClientAdapter = NativeAdapter())
         .get(
             'https://coinsoho.s3.us-east-2.amazonaws.com/app/androidwebversion.txt')
         .whenComplete(Loading.dismiss);

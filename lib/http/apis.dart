@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:ank_app/entity/activity_entity.dart';
 import 'package:ank_app/entity/app_setting_entity.dart';
-import 'package:ank_app/entity/body/test_body.dart';
 import 'package:ank_app/entity/category_info_item_entity.dart';
 import 'package:ank_app/entity/chart_entity.dart';
 import 'package:ank_app/entity/chart_left_entity.dart';
@@ -17,10 +16,10 @@ import 'package:ank_app/entity/oi_entity.dart';
 import 'package:ank_app/entity/order_flow_symbol.dart';
 import 'package:ank_app/entity/search_v2_entity.dart';
 import 'package:ank_app/entity/short_rate_entity.dart';
-import 'package:ank_app/entity/test_entity.dart';
 import 'package:ank_app/entity/user_info_entity.dart';
 import 'package:ank_app/http/base_interceptor.dart';
 import 'package:dio/dio.dart';
+import 'package:native_dio_adapter/native_dio_adapter.dart';
 import 'package:retrofit/retrofit.dart';
 
 // import 'package:talker_dio_logger/talker_dio_logger.dart';
@@ -34,12 +33,14 @@ import '../entity/head_statistics_entity.dart';
 import '../entity/hold_address_entity.dart';
 import '../entity/home_fund_rate_entity.dart';
 import '../entity/market_cap_entity.dart';
+import '../entity/push_record_model.dart';
 
 part 'apis.g.dart';
 
 @RestApi()
 abstract class Apis {
   static final Dio dio = Dio()
+    ..httpClientAdapter = NativeAdapter()
     ..interceptors.addAll([
       // TalkerDioLogger(
       //   settings: const TalkerDioLoggerSettings(
@@ -58,9 +59,6 @@ abstract class Apis {
   factory Apis() => _instance;
 
   static final Apis _instance = _Apis(dio);
-
-  @POST('/api/test1')
-  Future<TestEntity?> testApi(@Body() TestBody body);
 
   @GET('/api/Statistics/all')
   Future<HomeInfoEntity?> getHeadStatistics();
@@ -445,4 +443,22 @@ abstract class Apis {
 
   @GET('/api/news/getNewsDetail')
   Future<NewsEntity?> getNewsDetail({@Query('id') required String id});
+
+  //https://coinank.com/api/push/getUserPushRecords?page=1&size=50&type=signal&language=zh
+  @Extra({'dataKey': 'list'})
+  @GET('/api/push/getUserPushRecords')
+  Future<List<PushRecordModel>?> getUserPushRecords({
+    @Query('type') required NoticeRecordType? type,
+    @Query('language') required String? language,
+    @Query('page') int page = 1,
+    @Query('size') int size = 50,
+  });
+
+  @GET('/api/push/getUserPushRecords')
+  Future<List<PushRecordHugeWaveEntity>?> getUserHugeWavePushRecords({
+    @Query('type') required NoticeRecordType? type,
+    @Query('language') required String? language,
+    @Query('page') int page = 1,
+    @Query('size') int size = 50,
+  });
 }
