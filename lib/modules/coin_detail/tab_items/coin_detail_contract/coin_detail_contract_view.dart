@@ -24,6 +24,8 @@ import 'package:get/get.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '_ls_ratio_view.dart';
+
 part './_chart_weighted_funding_view.dart';
 part './_data_grid_view.dart';
 part './_heat_map_view.dart';
@@ -45,7 +47,7 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
   @override
   void initState() {
     logic.tabCtrl =
-        TabController(length: 7, vsync: this, animationDuration: Duration.zero);
+        TabController(length: 8, vsync: this, animationDuration: Duration.zero);
 
     super.initState();
   }
@@ -266,6 +268,7 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
               Tab(text: S.of(context).heat_map),
               Tab(text: S.of(context).funds),
               Tab(text: S.of(context).tradingPosition),
+              Tab(text: S.of(context).s_longshort_ratio),
               Tab(text: S.of(context).s_24h_turnover),
               Tab(text: S.of(context).s_liquidation_data),
               Tab(text: S.of(context).weightedRate),
@@ -285,6 +288,7 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
                 ),
                 // _ExchangeOiView(logic: logic),
                 const ExchangeOiPage(inCoinDetail: true),
+                CoinDetailContractLSRatioView(type: logic.baseCoin),
                 _Vol24hView(logic: logic),
                 AliveWidget(
                     child: ContractLiqPage(

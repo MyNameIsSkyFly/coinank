@@ -6,7 +6,10 @@ import 'dart:io';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:jpush_google_flutter/jpush_google_flutter.dart';
+
+import '../modules/alert/record/alert_record_view.dart';
 
 class JPushUtil {
   factory JPushUtil() => _instance;
@@ -77,6 +80,13 @@ class JPushUtil {
       final extra = message['extras']['cn.jpush.android.EXTRA'] as String;
       final map = jsonDecode(extra) as Map<String, dynamic>;
       if (map.containsKey('url')) {
+        if ((map['url'] as String).contains('noticeRecords')) {
+          final uri = Uri.parse(map['url'] as String);
+          Get.toNamed(AlertRecordPage.routeName,
+              arguments: {'type': uri.queryParameters['type']},
+              preventDuplicates: false);
+          return;
+        }
         AppNav.openWebUrl(
           url: map['url'] as String,
           title: 'CoinAnk',
@@ -86,7 +96,13 @@ class JPushUtil {
     } else {
       final map = message['extras'];
       if (map.containsKey('url')) {
-        AppUtil.showToast('Opened by JPush');
+        if ((map['url'] as String).contains('noticeRecords')) {
+          final uri = Uri.parse(map['url'] as String);
+          Get.toNamed(AlertRecordPage.routeName,
+              arguments: {'type': uri.queryParameters['type']},
+              preventDuplicates: false);
+          return;
+        }
         AppNav.openWebUrl(
           url: map['url'] as String,
           title: 'CoinAnk',

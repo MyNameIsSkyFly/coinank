@@ -57,7 +57,7 @@
   "s_oi_chg": "OI Chg",
   "s_crypto_coin": "マーケット",
   "s_crypto_coin_short": "マーケット",
-  "s_add_alert": "Create Alert",
+  "s_add_alert": "Create Alerts",
   "s_futures_market": "契約市場",
   "s_cancel": "キャンセル",
   "s_ok": "確認",
@@ -138,7 +138,7 @@
   "searchHistory": "検索履歴",
   "contactUs": "お問い合わせ",
   "plsInputReferral": "招待コードを入力してください（任意）",
-  "noticeRecords": "リマインダー記録",
+  "noticeRecords": "Alert Records",
   "businessTelegram": "ビジネスTelegram",
   "businessEmail": "ビジネスメール",
   "telegramGroup": "Telegramディスカッショングループ",
@@ -262,7 +262,7 @@
   "tryAgain": "Try Again",
   "market": "Market",
   "signal": "Signal",
-  "price": "Signal",
+  "price": "Price",
   "oiAlert": "OI Alert",
   "largeLiquidation": "Large Liquidation",
   "priceWave": "Price Wave",
@@ -288,5 +288,7 @@
   "hugeWaveTypeOi": "{baseCoin} OI Huge Waves. the current OI is ${openInterest} the current price is: ${price} Please pay close attention to the market",
   "hugeWaveTypeMarket": "{baseCoin} Market Huge Waves . the current price is: ${price} Please pay close attention to the market",
   "noticeRecordLongshort": "{exchange} {symbol} long short ratio {upOrDown} {rate} ,Please pay close attention to the market",
-  "tmpToast": "This type is not supported yet, please click to jump to the web page to view"
+  "tmpToast": "This type is not supported yet, please click to jump to the web page to view",
+  "networkErrorHint": "Loading error, click to retry",
+  "fundingRateAlertPattern": "{exchange}-{symbol} funding rate {upOrDown} {value}%, Please pay close attention to market"
 }

@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:ank_app/entity/event/theme_event.dart';
 import 'package:ank_app/entity/event/web_js_event.dart';
 import 'package:ank_app/modules/home/exchange_oi/exchange_oi_logic.dart';
-import 'package:ank_app/modules/notice/record/notice_record_view.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -17,6 +16,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../constants/urls.dart';
 import '../entity/event/fgbg_type.dart';
 import '../entity/event/logged_event.dart';
+import '../modules/alert/record/alert_record_view.dart';
 import '../modules/main/main_logic.dart';
 import '../modules/market/contract/contract_logic.dart';
 import '../modules/market/market_logic.dart';
@@ -247,7 +247,6 @@ class _CommonWebViewState extends State<CommonWebView>
         resizeToAvoidBottomInset: false,
         appBar: AppTitleBar(
           title: title ?? '',
-          onBack: () => navigator?.maybePop(),
           actionWidget: _actionWidget,
         ),
         body: child,
@@ -269,31 +268,11 @@ class _CommonWebViewState extends State<CommonWebView>
   }
 
   Widget? get _actionWidget => widget.enableShare
-      ? Row(
+      ? const Row(
           children: [
-            const IconButton(
+            IconButton(
                 onPressed: AppUtil.shareImage,
                 icon: ImageIcon(AssetImage(Assets.commonIcShare))),
-            if (widget.url.contains('users/noticeConfig') ||
-                widget.urlGetter?.call().contains('users/noticeConfig') == true)
-              IconButton(
-                  onPressed: () {
-                    Get.toNamed(NoticeRecordPage.routeName);
-                  },
-                  // onPressed: () => AppNav.openWebUrl(
-                  //     showLoading: true,
-                  //     title: S.of(context).noticeRecords,
-                  //     url: Get.find<SettingLogic>()
-                  //             .state
-                  //             .settingList
-                  //             .firstWhereOrNull((element) =>
-                  //                 element.url?.contains('noticeRecords') ==
-                  //                 true)
-                  //             ?.url ??
-                  //           'https://coinank.com/zh/m/noticeRecords?pushType=warnSignal&type=signal&lng=${AppUtil.shortLanguageName}',
-                  //     ),
-                  icon: const ImageIcon(
-                      AssetImage(Assets.commonIcNoticeHistory))),
           ],
         )
       : null;
@@ -332,9 +311,15 @@ class _CommonWebViewState extends State<CommonWebView>
         handlerName: 'openUrl',
         callback: (arguments) {
           if (arguments.isEmpty) return;
-          AppUtil.showToast('Opened by H5');
+          final url = arguments[0] as String;
+          final uri = Uri.parse(url);
+          if (uri.path.contains('noticeRecords')) {
+            Get.toNamed(AlertRecordPage.routeName,
+                arguments: {'type': uri.queryParameters['type']});
+            return;
+          }
           AppNav.openWebUrl(
-            url: arguments[0],
+            url: url,
             title: '',
             dynamicTitle: true,
             showLoading: true,

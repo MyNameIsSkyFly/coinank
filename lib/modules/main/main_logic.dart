@@ -112,6 +112,7 @@ class MainLogic extends GetxController {
     });
   }
 
+  bool _haveInitRequest = false;
   Future<void> handleNetwork() async {
     final connectivity = Connectivity();
     if (!AppConst.networkConnected) {
@@ -119,21 +120,22 @@ class MainLogic extends GetxController {
     }
     _connectivitySubscription =
         connectivity.onConnectivityChanged.listen((result) {
-      if (AppConst.networkConnected == true) return;
       AppConst.networkConnected = result.contains(ConnectivityResult.wifi) ||
           result.contains(ConnectivityResult.mobile) ||
           result.contains(ConnectivityResult.other);
-      if (AppConst.networkConnected) {
-        Application.instance.getConfig();
-        getActivity();
-        Get.find<HomeLogic>().onRefresh();
-        Get.find<ContractCoinLogicF>().onRefresh();
-        AppConst.eventBus.fire(ThemeChangeEvent(type: ThemeChangeType.locale));
-        tryLogin();
-        Get.find<ChartLogic>().onRefresh();
-        Get.find<ChartLogic>().initTopData();
-        Get.find<SettingLogic>().getAppSetting();
-      }
+      if (AppConst.networkConnected && !_haveInitRequest) return;
+      if (!AppConst.networkConnected) return;
+      if (_haveInitRequest == true) return;
+      _haveInitRequest = true;
+      Application.instance.getConfig();
+      getActivity();
+      Get.find<HomeLogic>().onRefresh();
+      Get.find<ContractCoinLogicF>().onRefresh();
+      AppConst.eventBus.fire(ThemeChangeEvent(type: ThemeChangeType.locale));
+      tryLogin();
+      Get.find<ChartLogic>().onRefresh();
+      Get.find<ChartLogic>().initTopData();
+      Get.find<SettingLogic>().getAppSetting();
     });
   }
 
@@ -163,7 +165,10 @@ class MainLogic extends GetxController {
     if (userInfo != null && pwd.isNotEmpty) {
       await Apis().login(username, pwd, StoreLogic.to.deviceId).then((value) {
         StoreLogic.to.saveLoginUserInfo(value);
-        AppConst.eventBus.fire(LoginStatusChangeEvent(isLogin: true));
+        Future.delayed(
+            const Duration(milliseconds: 500),
+            () =>
+                AppConst.eventBus.fire(LoginStatusChangeEvent(isLogin: true)));
       });
     }
   }

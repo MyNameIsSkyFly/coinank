@@ -64,6 +64,9 @@ class _MyAppState extends State<MyApp> {
         } else if (locale?.scriptCode == 'Hans') {
           local =
               const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans');
+        } else if (locale?.languageCode == 'zh') {
+          local =
+              const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans');
         } else if (locale?.languageCode == 'ja') {
           local = const Locale('ja');
         } else if (locale?.languageCode == 'ko') {

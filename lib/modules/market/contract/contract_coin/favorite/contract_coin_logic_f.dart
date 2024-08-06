@@ -9,6 +9,7 @@ import 'package:ank_app/modules/market/contract/contract_coin/widgets/contract_c
 import 'package:ank_app/modules/market/contract/contract_logic.dart';
 import 'package:ank_app/modules/market/market_logic.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:ank_app/util/async_value.dart';
 import 'package:get/get.dart';
 
 import '../../../../../entity/event/fgbg_type.dart';
@@ -22,7 +23,8 @@ class ContractCoinLogicF extends GetxController
   final data = RxList<MarkerTickerEntity>();
 
   Timer? _pollingTimer;
-  RxBool isLoading = true.obs;
+  final isLoading = RxnBool(false);
+  final countryCode = Rx<AsyncValue>(const AsyncLoading());
 
   final fixedCoin = ['BTC', 'ETH', 'SOL', 'XRP', 'BNB', 'ORDI', 'DOGE', 'ARB'];
   final selectedFixedCoin = RxList<String>(
@@ -126,33 +128,35 @@ class ContractCoinLogicF extends GetxController
     _fetching = true;
     if (showLoading) Loading.show();
     TickersDataEntity? result;
-    if (StoreLogic.isLogin) {
-      result = await Apis()
-          .postFuturesBigData(
+
+    try {
+      if (StoreLogic.isLogin) {
+        result = await Apis().postFuturesBigData(
+          StoreLogic().contractCoinFilter ?? {},
+          page: 1,
+          size: 500,
+          isFollow: true,
+        );
+      } else {
+        if (StoreLogic.to.favoriteContract.isEmpty) {
+          result = TickersDataEntity(list: []);
+        } else {
+          result = await Apis().postFuturesBigData(
             StoreLogic().contractCoinFilter ?? {},
             page: 1,
             size: 500,
-            isFollow: true,
-          )
-          .whenComplete(() => _fetching = false);
-    } else {
-      if (StoreLogic.to.favoriteContract.isEmpty) {
-        result = TickersDataEntity(list: []);
-      } else {
-        result = await Apis()
-            .postFuturesBigData(
-              StoreLogic().contractCoinFilter ?? {},
-              page: 1,
-              size: 500,
-              baseCoins: StoreLogic.to.favoriteContract.join(','),
-            )
-            .whenComplete(() => _fetching = false);
+            baseCoins: StoreLogic.to.favoriteContract.join(','),
+          );
+        }
       }
-    }
-    _fetching = false;
-    Loading.dismiss();
-    if (isLoading.value) {
-      isLoading.value = false;
+      if (isLoading.value != false) {
+        isLoading.value = false;
+      }
+    } catch (e) {
+      isLoading.value = null;
+    } finally {
+      _fetching = false;
+      Loading.dismiss();
     }
     if (!StoreLogic.isLogin) {
       data.assignAll(result?.list?.where((element) =>
@@ -182,6 +186,7 @@ class ContractCoinLogicF extends GetxController
     _pollingTimer = Timer.periodic(const Duration(seconds: 7), (timer) async {
       if (!AppConst.canRequest) return;
       if (!pageVisible) return;
+      if (isLoading.value == null) return;
       await onRefresh();
     });
   }

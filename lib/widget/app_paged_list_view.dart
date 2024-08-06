@@ -31,8 +31,8 @@ class AppPagedListView<PageKeyType, ItemType> extends StatelessWidget {
         newPageProgressIndicatorBuilder: (context) => const Center(
             child: LottieIndicator(
                 margin: EdgeInsets.symmetric(vertical: 16), height: 60)),
-        noMoreItemsIndicatorBuilder: (context) => Center(
-            child: Image.asset(Assets.commonIcEmptyBox, height: 80, width: 80)),
+        noMoreItemsIndicatorBuilder: (context) =>
+            const Center(child: EmptyView(showText: false, size: 80)),
         newPageErrorIndicatorBuilder: (context) => InkWell(
           onTap: pagingController.retryLastFailedRequest,
           child: Padding(

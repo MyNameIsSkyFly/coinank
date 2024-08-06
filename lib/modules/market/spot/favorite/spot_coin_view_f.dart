@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../widget/empty_view.dart';
 import 'spot_coin_logic_f.dart';
 
 class SpotCoinViewF extends StatefulWidget {
@@ -48,10 +49,7 @@ class _SpotCoinViewFState extends VisibilityState<SpotCoinViewF> {
                           child: SpotCoinGridView(logic: logic))),
                 ],
               ),
-              if (logic.data.isEmpty)
-                Center(
-                    child: Image.asset(Assets.commonIcEmptyBox,
-                        height: 150, width: 150)),
+              if (logic.data.isEmpty) const Center(child: EmptyView(size: 150)),
             ],
           )
         ],

@@ -2,8 +2,8 @@ name: ank_app
 description: ank-app
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-#version: 3.0.7+323 #store
-version: 3.5.0+378 #tf
+version: 3.0.8+325 #store
+#version: 3.5.0+384 #tf
 
 environment:
   sdk: '^3.4.0'
@@ -20,11 +20,11 @@ dependencies:
   #http
   dio: ^5.5.0
   #缓存
-  shared_preferences: ^2.3.0
+  shared_preferences: ^2.3.1
   flutter_easyloading: 3.0.5
   intl: ^0.19.0
   retrofit: ^4.1.0
-  cached_network_image: ^3.3.1
+  cached_network_image: ^3.4.0
   collection: ^1.18.0
   fluttertoast: ^8.2.6
   json_annotation: ^4.9.0

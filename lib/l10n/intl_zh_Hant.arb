@@ -288,5 +288,7 @@
   "hugeWaveTypeOi": "{baseCoin} 持仓出現異動，目前持仓為${openInterest} ,目前價格為：${price} 請密切注意市場",
   "hugeWaveTypeMarket": "{baseCoin} 盤口出現異動，目前價格為：${price} 請密切注意市場",
   "noticeRecordLongshort": "{exchange} {symbol} 多空比{upOrDown} {rate}，請密切注意市場",
-  "tmpToast": "類型暫不支持，請點選跳轉至網頁查看"
+  "tmpToast": "類型暫不支持，請點選跳轉至網頁查看",
+  "networkErrorHint": "加載異常，點擊重試",
+  "fundingRateAlertPattern": "{exchange}-{symbol} 資金費率{upOrDown}{value}%，請密切注意市場"
 }

@@ -1,5 +1,6 @@
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/app_refresh.dart';
+import 'package:ank_app/widget/empty_view.dart';
 import 'package:ank_app/widget/visibility_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,16 +27,26 @@ class _ContractCoinPageFState extends VisibilityState<ContractCoinPageF> {
       children: [
         Expanded(child: Obx(() {
           return IndexedStack(
-            index: logic.isLoading.value
-                ? 0
-                : logic.data.isEmpty
-                    ? StoreLogic().contractCoinFilter == null
-                        ? 1
-                        : 2
-                    : 2,
+            index: switch (logic.isLoading.value) {
+              true => 0,
+              false => logic.data.isEmpty
+                  ? StoreLogic().contractCoinFilter == null
+                      ? 1
+                      : 2
+                  : 2,
+              null => 3,
+            },
+
+            // logic.isLoading.value == true
+            //     ? 0
+            //     : logic.data.isEmpty
+            //         ? StoreLogic().contractCoinFilter == null
+            //             ? 1
+            //             : 2
+            //         : 2,
             children: [
               Visibility(
-                  visible: logic.isLoading.value,
+                  visible: logic.isLoading.value == true,
                   child:
                       const LottieIndicator(margin: EdgeInsets.only(top: 200))),
               _FixedCoins(logic: logic),
@@ -55,11 +66,20 @@ class _ContractCoinPageFState extends VisibilityState<ContractCoinPageF> {
                     ],
                   ),
                   if (logic.data.isEmpty)
-                    Center(
-                        child: Image.asset(Assets.commonIcEmptyBox,
-                            height: 150, width: 150)),
+                    const Center(child: EmptyView(size: 150)),
                 ],
-              )
+              ),
+              Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.error, size: 40),
+                    TextButton(
+                        onPressed: logic.onRefresh,
+                        child: Text(S.of(context).networkErrorHint)),
+                  ],
+                ),
+              ),
             ],
           );
         })),

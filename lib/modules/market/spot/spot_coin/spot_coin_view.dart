@@ -1,7 +1,7 @@
-import 'package:ank_app/generated/assets.dart';
 import 'package:ank_app/modules/market/contract/contract_coin/widgets/customize_filter_header_view.dart';
 import 'package:ank_app/modules/market/spot/widgets/spot_coin_data_grid_view.dart';
 import 'package:ank_app/widget/app_refresh.dart';
+import 'package:ank_app/widget/empty_view.dart';
 import 'package:ank_app/widget/visibility_state.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -33,9 +33,7 @@ class _SpotCoinViewState extends VisibilityState<SpotCoinView> {
                   onRefresh: () async => logic.onRefresh(),
                   child: SpotCoinGridView(logic: logic)),
               if (logic.data.isEmpty && !logic.isInitializing.value)
-                Center(
-                    child: Image.asset(Assets.commonIcEmptyBox,
-                        height: 150, width: 150)),
+                const Center(child: EmptyView(size: 150)),
             ],
           );
         })),

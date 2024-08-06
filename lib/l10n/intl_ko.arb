@@ -57,7 +57,7 @@
   "s_oi_chg": "OI Chg",
   "s_crypto_coin": "거래소",
   "s_crypto_coin_short": "거래소",
-  "s_add_alert": "Create Alert",
+  "s_add_alert": "Create Alerts",
   "s_futures_market": "선물 시장",
   "s_ok": "확인",
   "s_cancel": "취소",
@@ -138,7 +138,7 @@
   "searchHistory": "검색 기록",
   "contactUs": "문의하기",
   "plsInputReferral": "초대 코드 입력 (선택 사항)",
-  "noticeRecords": "알림 기록",
+  "noticeRecords": "Alert Records",
   "businessTelegram": "비즈니스 Telegram",
   "businessEmail": "비즈니스 이메일",
   "telegramGroup": "Telegram 토론 그룹",
@@ -262,7 +262,7 @@
   "tryAgain": "Try Again",
   "market": "Market",
   "signal": "Signal",
-  "price": "Signal",
+  "price": "Price",
   "oiAlert": "OI Alert",
   "largeLiquidation": "Large Liquidation",
   "priceWave": "Price Wave",
@@ -288,5 +288,7 @@
   "hugeWaveTypeOi": "{baseCoin} OI Huge Waves. the current OI is ${openInterest} the current price is: ${price} Please pay close attention to the market",
   "hugeWaveTypeMarket": "{baseCoin} Market Huge Waves . the current price is: ${price} Please pay close attention to the market",
   "noticeRecordLongshort": "{exchange} {symbol} long short ratio {upOrDown} {rate} ,Please pay close attention to the market",
-  "tmpToast": "This type is not supported yet, please click to jump to the web page to view"
+  "tmpToast": "This type is not supported yet, please click to jump to the web page to view",
+  "networkErrorHint": "Loading error, click to retry",
+  "fundingRateAlertPattern": "{exchange}-{symbol} funding rate {upOrDown} {value}%, Please pay close attention to market"
 }

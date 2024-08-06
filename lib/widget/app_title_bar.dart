@@ -1,7 +1,6 @@
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 
 /// 标题栏
 class AppTitleBar extends StatelessWidget implements PreferredSizeWidget {
@@ -13,7 +12,6 @@ class AppTitleBar extends StatelessWidget implements PreferredSizeWidget {
     this.actionIconName = '', //右边（仅限单个icon）按钮
     this.backImg, //返回按钮图片
     this.leadingWidth,
-    this.onBack, //返回按钮点击事件
     this.onActionPressed, //右边（仅限单个文字）的点击事件
     this.titleColor, //标题颜色
     this.titleFontSize, //标题字号
@@ -32,7 +30,6 @@ class AppTitleBar extends StatelessWidget implements PreferredSizeWidget {
   final double? leadingWidth;
   final String actionTextName;
   final String actionIconName;
-  final VoidCallback? onBack;
   final VoidCallback? onActionPressed;
   final Color? titleColor;
   final double? titleFontSize;
@@ -62,20 +59,7 @@ class AppTitleBar extends StatelessWidget implements PreferredSizeWidget {
             leading: leftWidget != null
                 ? leftWidget!
                 : Navigator.canPop(context) && !hideBackBtn
-                    ? InkWell(
-                        onTap: onBack ?? Get.back,
-                        child: Container(
-                          height: double.infinity,
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          child: backImg ??
-                              Image.asset(
-                                Assets.commonIconArrowLeft,
-                                width: 20,
-                                height: 20,
-                                color: Theme.of(context).iconTheme.color,
-                              ),
-                        ),
-                      )
+                    ? const BackButton()
                     : null,
             title: Text(
               title,

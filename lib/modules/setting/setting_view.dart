@@ -12,6 +12,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../constants/urls.dart';
+import '../alert/record/alert_record_view.dart';
 import 'setting_logic.dart';
 
 class SettingPage extends StatefulWidget {
@@ -45,11 +46,7 @@ class _SettingPageState extends State<SettingPage> {
           IconButton(
               visualDensity: VisualDensity.compact,
               onPressed: () => StoreLogic.isLogin
-                  ? AppNav.openWebUrl(
-                      title: S.current.s_add_alert,
-                      url: Urls.urlNotification,
-                      showLoading: true,
-                    )
+                  ? Get.toNamed(AlertRecordPage.routeName)
                   : AppNav.toLogin(),
               icon:
                   const ImageIcon(AssetImage(Assets.settingIcBell), size: 20)),

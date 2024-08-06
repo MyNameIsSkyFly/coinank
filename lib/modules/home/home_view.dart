@@ -20,6 +20,7 @@ import 'package:get/get.dart';
 
 import '../../entity/chart_entity.dart';
 import '../../widget/rate_with_arrow.dart';
+import '../alert/record/alert_record_view.dart';
 import '../chart/chart_logic.dart';
 import 'home_logic.dart';
 import 'long_short_ratio/long_short_person_ratio/long_short_person_ratio_view.dart';
@@ -81,11 +82,7 @@ class _HomePageState extends State<HomePage>
           IconButton(
               visualDensity: VisualDensity.compact,
               onPressed: () => StoreLogic.isLogin
-                  ? AppNav.openWebUrl(
-                      title: S.current.s_add_alert,
-                      url: Urls.urlNotification,
-                      showLoading: true,
-                    )
+                  ? Get.toNamed(AlertRecordPage.routeName)
                   : AppNav.toLogin(),
               icon: Stack(
                 children: [

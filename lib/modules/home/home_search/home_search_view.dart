@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:ank_app/entity/search_v2_entity.dart';
 import 'package:ank_app/modules/market/contract/contract_coin/contract_coin_logic.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:ank_app/widget/empty_view.dart';
 import 'package:ank_app/widget/rate_with_sign.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -359,14 +360,10 @@ class _TabItemViewState extends State<_TabItemView>
   Widget build(BuildContext context) {
     super.build(context);
     if (list.isEmpty) {
-      return Column(
+      return const Column(
         children: [
-          const Gap(170),
-          Image.asset(Assets.commonIcEmptyBox, height: 68, width: 68),
-          Opacity(
-              opacity: 0.3,
-              child: Text(S.of(context).s_none_data,
-                  style: Styles.tsSub_14(context)))
+          Gap(170),
+          EmptyView(),
         ],
       );
     }

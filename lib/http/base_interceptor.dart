@@ -7,6 +7,7 @@ import 'package:ank_app/constants/app_const.dart';
 import 'package:ank_app/route/app_nav.dart';
 import 'package:ank_app/util/store.dart';
 import 'package:dio/dio.dart';
+import 'package:http/http.dart' show ClientException;
 
 import '../generated/l10n.dart';
 import '../util/app_util.dart';
@@ -112,7 +113,12 @@ class BaseInterceptor extends Interceptor {
           case DioExceptionType.connectionError:
             errorMessage = S.current.error_network;
           case DioExceptionType.unknown:
-            errorMessage = err.error.toString();
+            if (err.error is ClientException) {
+              errorMessage =
+                  (err.error as ClientException?)?.message ?? 'unknown error';
+            } else {
+              errorMessage = err.error.toString();
+            }
         }
     }
 
