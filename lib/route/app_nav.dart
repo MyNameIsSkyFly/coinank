@@ -4,6 +4,7 @@ import 'package:ank_app/modules/login/register_view.dart';
 import 'package:ank_app/modules/market/market_category/category_detail/category_detail_view.dart';
 import 'package:ank_app/modules/setting/about/about_view.dart';
 import 'package:ank_app/modules/setting/contact_us/contact_us_view.dart';
+import 'package:flutter/animation.dart';
 import 'package:get/get.dart';
 
 import '../entity/news_entity.dart';
@@ -22,6 +23,7 @@ class AppNav {
     await CommonWebView.setCookieValue();
     Get.to(
       preventDuplicates: false,
+      curve: Curves.linear,
       () => CommonWebView(
         title: title,
         url: url,

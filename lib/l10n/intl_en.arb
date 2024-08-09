@@ -290,5 +290,11 @@
   "noticeRecordLongshort": "{exchange} {symbol} long short ratio {upOrDown} {rate} ,Please pay close attention to the market",
   "tmpToast": "This type is not supported yet, please click to jump to the web page to view",
   "networkErrorHint": "Loading error, click to retry",
-  "fundingRateAlertPattern": "{exchange}-{symbol} funding rate {upOrDown} {value}%, Please pay close attention to market"
+  "fundingRateAlertPattern": "{exchange}-{symbol} funding rate {upOrDown} {value}%, Please pay close attention to market",
+  "alert": "Alert",
+  "add": "Add",
+  "delete": "Delete",
+  "superTrend": "Super Trend",
+  "goldDeadCross": "Cross",
+  "unbalance": "Imbalance"
 }

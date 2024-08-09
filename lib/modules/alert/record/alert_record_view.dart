@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:ank_app/constants/urls.dart';
-import 'package:ank_app/entity/push_record_model.dart';
+import 'package:ank_app/entity/push_record_entity.dart';
+import 'package:ank_app/modules/alert/alert_manage_view.dart';
 import 'package:ank_app/modules/setting/setting_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/app_refresh.dart';
@@ -57,11 +57,12 @@ class _AlertRecordPageState extends State<AlertRecordPage>
         actions: [
           IconButton(
               onPressed: () {
-                AppNav.openWebUrl(
-                  title: S.current.s_add_alert,
-                  url: Urls.urlNotification,
-                  showLoading: true,
-                );
+                Get.to(AlertManagePage.new);
+                // AppNav.openWebUrl(
+                //   title: S.current.s_add_alert,
+                //   url: Urls.urlNotification,
+                //   showLoading: true,
+                // );
               },
               icon: Icon(Icons.settings, color: Styles.cSub(context)))
         ],
@@ -93,7 +94,10 @@ class _AlertRecordPageState extends State<AlertRecordPage>
           Expanded(
             child: TabBarView(
               controller: _tabController,
-              children: NoticeRecordType.values.map(_TabItemView.new).toList(),
+              children: NoticeRecordType.values
+                  .where((p0) => p0 != NoticeRecordType.unknown)
+                  .map(_TabItemView.new)
+                  .toList(),
             ),
           ),
         ],
@@ -113,7 +117,7 @@ class _TabItemView extends StatefulWidget {
 
 class _TabItemViewState extends State<_TabItemView>
     with AutomaticKeepAliveClientMixin {
-  final list = RxList<PushRecordModel>();
+  final list = RxList<PushRecordEntity>();
   final hugeWaveList = RxList<PushRecordHugeWaveEntity>();
   final _loading = true.obs;
 

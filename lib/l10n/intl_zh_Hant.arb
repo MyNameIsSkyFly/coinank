@@ -290,5 +290,11 @@
   "noticeRecordLongshort": "{exchange} {symbol} 多空比{upOrDown} {rate}，請密切注意市場",
   "tmpToast": "類型暫不支持，請點選跳轉至網頁查看",
   "networkErrorHint": "加載異常，點擊重試",
-  "fundingRateAlertPattern": "{exchange}-{symbol} 資金費率{upOrDown}{value}%，請密切注意市場"
+  "fundingRateAlertPattern": "{exchange}-{symbol} 資金費率{upOrDown}{value}%，請密切注意市場",
+  "alert": "提醒",
+  "add": "Add",
+  "delete": "Delete",
+  "superTrend": "超级趋势",
+  "goldDeadCross": "金叉死叉",
+  "unbalance": "失衡"
 }

@@ -111,18 +111,19 @@ class _HomePageState extends State<HomePage>
         children: [_tabMarket(), _tabChart()],
       ),
     );
-    return WillPopScope(
-      onWillPop: () async {
-        if (!Platform.isAndroid) return true;
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (!Platform.isAndroid) return;
         if (!canQuit) {
           canQuit = true;
           AppUtil.showToast(S.of(context).tapAgainToExit);
           Future.delayed(const Duration(seconds: 2), () {
             canQuit = false;
           });
-          return false;
+          return;
         } else {
-          return true;
+          Get.back();
         }
       },
       child: child,

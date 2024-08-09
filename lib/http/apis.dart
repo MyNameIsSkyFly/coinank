@@ -33,7 +33,7 @@ import '../entity/head_statistics_entity.dart';
 import '../entity/hold_address_entity.dart';
 import '../entity/home_fund_rate_entity.dart';
 import '../entity/market_cap_entity.dart';
-import '../entity/push_record_model.dart';
+import '../entity/push_record_entity.dart';
 
 part 'apis.g.dart';
 
@@ -444,10 +444,9 @@ abstract class Apis {
   @GET('/api/news/getNewsDetail')
   Future<NewsEntity?> getNewsDetail({@Query('id') required String id});
 
-  //https://coinank.com/api/push/getUserPushRecords?page=1&size=50&type=signal&language=zh
   @Extra({'dataKey': 'list'})
   @GET('/api/push/getUserPushRecords')
-  Future<List<PushRecordModel>?> getUserPushRecords({
+  Future<List<PushRecordEntity>?> getUserPushRecords({
     @Query('type') required NoticeRecordType? type,
     @Query('language') required String? language,
     @Query('page') int page = 1,
@@ -460,5 +459,36 @@ abstract class Apis {
     @Query('language') required String? language,
     @Query('page') int page = 1,
     @Query('size') int size = 50,
+  });
+
+  @GET('/api/userSignal/queryConfig')
+  Future<List<WarningTypesEntity>?> getAlertUserSignalConfig();
+
+  @GET('/api/userSignal/queryList')
+  Future<List<UserAlertSignalConfigEntity>?> getAlertUserSignalList();
+
+  @POST('/api/UserSub/getNoticeConfig')
+  Future<List<AlertTypeEntity>?> getAlertConfig();
+
+  @POST('/api/UserSub/getUserNotice')
+  Future<List<AlertUserNoticeEntity>?> getUserAlertConfigs();
+
+  // /api/userSignal/saveOrUpdate
+
+  //exName: Okex
+  // symbol: BTC-USDT-SWAP
+  // interval: 5m
+  // type: macd
+  // warningType: macdCross
+  // warningParam: 12,26,9
+  @POST('/api/userSignal/saveOrUpdate')
+  @MultiPart()
+  Future<void> saveOrUpdateUserSignalConfig({
+    @Part(name: 'exName') String? exName,
+    @Part(name: 'symbol') String? symbol,
+    @Part(name: 'interval') String? interval,
+    @Part(name: 'type') String? type,
+    @Part(name: 'warningType') String? warningType,
+    @Part(name: 'warningParam') String? warningParam,
   });
 }

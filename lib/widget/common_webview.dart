@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:ank_app/entity/event/theme_event.dart';
 import 'package:ank_app/entity/event/web_js_event.dart';
+import 'package:ank_app/modules/alert/record/alert_record_view.dart';
 import 'package:ank_app/modules/home/exchange_oi/exchange_oi_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/foundation.dart';
@@ -11,12 +12,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
+import 'package:throttling/throttling.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../constants/urls.dart';
 import '../entity/event/fgbg_type.dart';
 import '../entity/event/logged_event.dart';
-import '../modules/alert/record/alert_record_view.dart';
 import '../modules/main/main_logic.dart';
 import '../modules/market/contract/contract_logic.dart';
 import '../modules/market/market_logic.dart';
@@ -96,12 +97,14 @@ class _CommonWebViewState extends State<CommonWebView>
   StreamSubscription? _loginStatusSubscription;
   StreamSubscription? _evJsSubscription;
   var terminated = false;
+  final thr = Throttling<void>(duration: const Duration(milliseconds: 500));
 
   // DateTime? lastLeftTime;
   StreamSubscription<FGBGType>? _fgbgSubscription;
   int _progress = 0;
   String _evJs = '';
   late String? title = widget.title;
+  var _canPop = true;
 
   @override
   void initState() {
@@ -174,6 +177,7 @@ class _CommonWebViewState extends State<CommonWebView>
     _loginStatusSubscription?.cancel();
     _fgbgSubscription?.cancel();
     _evJsSubscription?.cancel();
+    thr.close();
     super.dispose();
   }
 
@@ -208,6 +212,7 @@ class _CommonWebViewState extends State<CommonWebView>
           ),
           onWebViewCreated: _onWebViewCreated,
           onLoadStop: (controller, url) => _onLoadStop(controller),
+          onLoadStart: (controller, url) => _checkCanPop(),
           onConsoleMessage: (controller, consoleMessage) =>
               debugPrint(consoleMessage.toString()),
           onProgressChanged: (controller, progress) {
@@ -253,17 +258,31 @@ class _CommonWebViewState extends State<CommonWebView>
       );
     }
     if (widget.canPop) return child;
-    return WillPopScope(
-      onWillPop: () async {
-        final canGoBack = await webCtrl?.canGoBack();
+    return PopScope(
+      canPop: _canPop,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) return;
+        final canGoBack = await webCtrl?.canGoBack() ?? false;
         if (canGoBack == true) {
           webCtrl?.goBack();
-          return false;
         } else {
-          return true;
+          Get.back();
         }
+        _checkCanPop();
       },
       child: child,
+    );
+  }
+
+  Future<void> _checkCanPop() async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    thr.throttle(
+      () async {
+        if (!mounted) return;
+        _canPop = !(await webCtrl?.canGoBack() ?? false);
+        if (!mounted) return;
+        setState(() {});
+      },
     );
   }
 
@@ -278,6 +297,7 @@ class _CommonWebViewState extends State<CommonWebView>
       : null;
 
   void _onLoadStop(InAppWebViewController controller) {
+    _checkCanPop();
     widget.onLoadStop?.call(controller);
     if (widget.url.contains('proChart') ||
         widget.urlGetter?.call().contains('proChart') == true) {

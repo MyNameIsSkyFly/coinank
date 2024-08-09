@@ -4,8 +4,8 @@ import 'package:ank_app/config/application.dart';
 import 'package:ank_app/res/app_theme.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/util/jpush_util.dart';
+import 'package:app_badge_plus/app_badge_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -104,12 +104,12 @@ class _MyAppState extends State<MyApp> {
     JPushUtil().initPlatformState();
     AppConst.eventBus.on<FGBGType>().listen((event) async {
       if (event == FGBGType.foreground) {
-        final isSupported = await FlutterAppBadger.isAppBadgeSupported();
+        final isSupported = Platform.isAndroid || Platform.isIOS;
         if (isSupported) {
           if (Platform.isAndroid) {
-            FlutterAppBadger.removeBadge();
+            AppBadgePlus.updateBadge(0);
           } else {
-            FlutterAppBadger.updateBadgeCount(-1);
+            AppBadgePlus.updateBadge(0);
           }
         }
       }

@@ -1,4 +1,4 @@
-import 'package:ank_app/entity/push_record_model.dart';
+import 'package:ank_app/entity/push_record_entity.dart';
 import 'package:ank_app/modules/setting/setting_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
@@ -155,7 +155,7 @@ final PushLanguageCont = {
   'brc20Minted': 'brc20Minted',
 };
 
-Widget getRecordText(PushRecordModel pushRecord, BuildContext context) {
+Widget getRecordText(PushRecordEntity pushRecord, BuildContext context) {
   final locale = AppUtil.shortLanguageName;
   if (locale == 'zh') {
     return _getRecordTextZh(pushRecord, context, locale);
@@ -167,7 +167,7 @@ Widget getRecordText(PushRecordModel pushRecord, BuildContext context) {
 }
 
 Widget _getRecordTextZh(
-    PushRecordModel m, BuildContext context, String locale) {
+    PushRecordEntity m, BuildContext context, String locale) {
   final type = m.type;
   final pushType = m.pushType;
   final exName = m.exchange;
@@ -461,7 +461,7 @@ String? maskString(String? str) {
 }
 
 Widget _getRecordTextZhTw(
-    PushRecordModel m, BuildContext context, String locale) {
+    PushRecordEntity m, BuildContext context, String locale) {
   final type = m.type;
   final pushType = m.pushType;
   final exName = m.exchange;
@@ -752,7 +752,7 @@ Widget _getRecordTextZhTw(
 }
 
 Widget _getRecordTextEn(
-    PushRecordModel m, BuildContext context, String locale) {
+    PushRecordEntity m, BuildContext context, String locale) {
   final type = m.type;
   final pushType = m.pushType;
   final exName = m.exchange;
