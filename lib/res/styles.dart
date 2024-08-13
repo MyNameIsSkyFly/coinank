@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:ank_app/constants/app_const.dart';
 import 'package:flutter/material.dart';
 
 import 'app_theme.dart';
@@ -30,7 +33,14 @@ class Styles {
   static Color cTextFieldFill(BuildContext context) =>
       Theme.of(context).inputDecorationTheme.fillColor!;
 
-  static const fontMedium = FontWeight.w600;
+  static FontWeight fontMedium = Platform.isIOS ||
+          AppConst.brand == 'xiaomi' ||
+          AppConst.brand == 'redmi' ||
+          AppConst.brand == 'oppo' ||
+          AppConst.brand == 'vivo' ||
+          AppConst.brand == 'huawei'
+      ? FontWeight.w500
+      : FontWeight.w600;
 
   // Platform.isAndroid ? FontWeight.w600 : FontWeight.w500;
 
@@ -147,7 +157,7 @@ class Styles {
 //====================主色======================
   static const tsMain_12 = TextStyle(fontSize: 12, color: cMain, height: 1.4);
   static const tsMain_14 = TextStyle(fontSize: 14, color: cMain, height: 1.4);
-  static const tsMain_14m = TextStyle(
+  static final tsMain_14m = TextStyle(
       fontSize: 14, color: cMain, fontWeight: fontMedium, height: 1.4);
   static const tsMain_15 = TextStyle(fontSize: 15, color: cMain, height: 1.4);
   static const tsMain_16 = TextStyle(fontSize: 16, color: cMain, height: 1.4);

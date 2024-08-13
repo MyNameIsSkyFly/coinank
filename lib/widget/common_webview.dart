@@ -51,6 +51,7 @@ class CommonWebView extends StatefulWidget {
   final Set<Factory<OneSequenceGestureRecognizer>>? gestureRecognizers;
 
   static Future<void> setCookieValue() async {
+    if (kIsWeb) return;
     final cookieManager = CookieManager.instance();
 
     final cookieList = <(String, String)>[

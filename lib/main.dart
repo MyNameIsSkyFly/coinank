@@ -5,6 +5,7 @@ import 'package:ank_app/res/app_theme.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/util/jpush_util.dart';
 import 'package:app_badge_plus/app_badge_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -17,10 +18,11 @@ import 'entity/event/fgbg_type.dart';
 Future<void> main() async {
   /// 确保初始化完成
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  Future.delayed(const Duration(milliseconds: 2000))
-      .then((value) => FlutterNativeSplash.remove());
-
+  if (!kIsWeb) {
+    FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+    Future.delayed(const Duration(milliseconds: 2000))
+        .then((value) => FlutterNativeSplash.remove());
+  }
   await Application.instance.init();
   Application.setSystemUiMode();
   runApp(const MyApp());

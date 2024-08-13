@@ -296,5 +296,15 @@
   "delete": "删除",
   "superTrend": "超级趋势",
   "goldDeadCross": "金叉死叉",
-  "unbalance": "失衡"
+  "unbalance": "失衡",
+  "chooseTradingPair": "选择交易对",
+  "signalType": "信号类型",
+  "warningType": "提醒类型",
+  "period": "周期",
+  "bandWidth": "带宽",
+  "bandWidthFactor": "带宽倍数",
+  "imbalanceMulti": "失衡倍数",
+  "stackedCount": "失衡条数",
+  "tickCount": "Tick Count",
+  "save": "保存"
 }

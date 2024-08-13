@@ -25,6 +25,8 @@ class AppConst {
       MediaQuery.of(Get.context!).padding.bottom;
   static PackageInfo? packageInfo;
   static AndroidDeviceInfo? deviceInfo;
+
+  static String? get brand => deviceInfo?.brand.toLowerCase();
   static bool appVisible = true;
 
   static bool get canRequest => appVisible && networkConnected;

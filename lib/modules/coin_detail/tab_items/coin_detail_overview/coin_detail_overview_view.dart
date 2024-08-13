@@ -43,7 +43,7 @@ class _CoinDetailOverviewViewState extends State<CoinDetailOverviewView> {
                         AnimatedColorText(
                           text: '\$${coinInfo?.lastPrice ?? 0}',
                           value: coinInfo?.lastPrice ?? 0,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontWeight: Styles.fontMedium, fontSize: 18),
                         ),
                         RateWithSign(rate: coinInfo?.priceChange24h),

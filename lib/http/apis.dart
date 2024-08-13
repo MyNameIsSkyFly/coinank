@@ -18,8 +18,11 @@ import 'package:ank_app/entity/search_v2_entity.dart';
 import 'package:ank_app/entity/short_rate_entity.dart';
 import 'package:ank_app/entity/user_info_entity.dart';
 import 'package:ank_app/http/base_interceptor.dart';
+import 'package:ank_app/util/http_adapter/_http_adapter_api.dart'
+    if (dart.library.io) 'package:ank_app/util/http_adapter/_http_adapter_io.dart'
+    if (dart.library.html) 'package:ank_app/util/http_adapter/_http_adapter_html.dart'
+    as native_adapter;
 import 'package:dio/dio.dart';
-import 'package:native_dio_adapter/native_dio_adapter.dart';
 import 'package:retrofit/retrofit.dart';
 
 // import 'package:talker_dio_logger/talker_dio_logger.dart';
@@ -40,7 +43,7 @@ part 'apis.g.dart';
 @RestApi()
 abstract class Apis {
   static final Dio dio = Dio()
-    ..httpClientAdapter = NativeAdapter()
+    ..httpClientAdapter = native_adapter.getNativeAdapter()
     ..interceptors.addAll([
       // TalkerDioLogger(
       //   settings: const TalkerDioLoggerSettings(
@@ -473,14 +476,12 @@ abstract class Apis {
   @POST('/api/UserSub/getUserNotice')
   Future<List<AlertUserNoticeEntity>?> getUserAlertConfigs();
 
-  // /api/userSignal/saveOrUpdate
+  @POST('/api/userSignal/delete')
+  @MultiPart()
+  Future<void> deleteUserSignalConfig({
+    @Part(name: 'id') String? id,
+  });
 
-  //exName: Okex
-  // symbol: BTC-USDT-SWAP
-  // interval: 5m
-  // type: macd
-  // warningType: macdCross
-  // warningParam: 12,26,9
   @POST('/api/userSignal/saveOrUpdate')
   @MultiPart()
   Future<void> saveOrUpdateUserSignalConfig({

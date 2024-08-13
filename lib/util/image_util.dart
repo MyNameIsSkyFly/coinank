@@ -2,17 +2,20 @@ import 'dart:math';
 
 import 'package:ank_app/constants/app_const.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:ank_app/util/http_adapter/_http_adapter_api.dart'
+    if (dart.library.io) 'package:ank_app/util/http_adapter/_http_adapter_io.dart'
+    if (dart.library.html) 'package:ank_app/util/http_adapter/_http_adapter_html.dart'
+    as native_adapter;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager_dio/flutter_cache_manager_dio.dart';
-import 'package:native_dio_adapter/native_dio_adapter.dart';
 
 class ImageUtil {
   ImageUtil._();
 
   static void init() {
-    final dio = Dio()..httpClientAdapter = NativeAdapter();
+    final dio = Dio()..httpClientAdapter = native_adapter.getNativeAdapter();
     DioCacheManager.initialize(dio);
   }
 

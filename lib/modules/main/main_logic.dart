@@ -18,12 +18,10 @@ import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/activity_dialog.dart';
 import 'package:async/async.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:screenshot_callback/screenshot_callback.dart';
 
 import '../../entity/event/fgbg_type.dart';
@@ -65,7 +63,6 @@ class MainLogic extends GetxController {
     tryLogin();
     checkIfNeedOpenOrderFlow();
     getActivity();
-    initPackageInfo();
     listenAppVisibility();
     listenScreenshot();
     _listenFullscreenEvent();
@@ -196,13 +193,6 @@ class MainLogic extends GetxController {
     if (result == null) return;
     AppUtil.toKLine(
         result[0] ?? '', result[1] ?? '', result[2] ?? '', result[3] ?? '');
-  }
-
-  Future<void> initPackageInfo() async {
-    AppConst.packageInfo = await PackageInfo.fromPlatform();
-    if (Platform.isAndroid) {
-      AppConst.deviceInfo = await DeviceInfoPlugin().androidInfo;
-    }
   }
 
   var lastImageId = '';

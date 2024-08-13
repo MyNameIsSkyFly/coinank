@@ -1,6 +1,5 @@
 import 'package:ank_app/entity/order_flow_symbol.dart';
-import 'package:ank_app/generated/l10n.dart';
-import 'package:ank_app/http/apis.dart';
+import 'package:ank_app/res/export.dart';
 import 'package:get/get.dart';
 
 import '../../entity/push_record_entity.dart';
@@ -30,9 +29,11 @@ class AlertManageLogic extends GetxController {
 
   Future<void> getSymbol() async {
     if (symbols.isNotEmpty) return;
-    await Apis()
-        .getOrderFlowSymbols()
-        .then((value) => symbols.assignAll(value ?? []));
+    await Loading.wrap(() async {
+      await Apis()
+          .getOrderFlowSymbols()
+          .then((value) => symbols.assignAll(value ?? []));
+    });
   }
 
   String getTitle(NoticeRecordType type) {
@@ -51,6 +52,42 @@ class AlertManageLogic extends GetxController {
       NoticeRecordType.lsAlert => s.longShortAlert,
       NoticeRecordType.advanced => s.advanced,
       NoticeRecordType.unknown => 'unknown',
+    };
+  }
+
+  String getTypeText(String type) {
+    return switch (type.toLowerCase()) {
+      'orderflow' => S.current.s_order_flow,
+      'st' => S.current.superTrend,
+      'rsi' => 'RSI',
+      'macd' => 'MACD',
+      'kdj' => 'KDJ',
+      'td' => 'TD',
+      'boll' => 'BOLL',
+      'bbi' => 'BBI',
+      'ma' => 'MA',
+      'ema' => 'EMA',
+      _ => '',
+    };
+  }
+
+  String getWarningTypeText(String warningType) {
+    return switch (warningType.toLowerCase()) {
+      'unbalance' => S.current.unbalance,
+      'buy_sell_point' => S.current.superTrend,
+      'rsicross' => 'RSI ${S.current.goldDeadCross}',
+      'macdcross' => 'MACD ${S.current.goldDeadCross}',
+      'kdjcross' => 'KDJ ${S.current.goldDeadCross}',
+      'tdsignal' => 'TD ${S.current.signal}',
+      'bollcross' => switch (AppUtil.shortLanguageName) {
+          'zh' => 'BOLL 中轨金叉死叉，超买超卖',
+          'zh-tw' => 'BOLL 中軌金叉死叉，超買超賣',
+          _ => 'BOLL Cross, Overbought and Oversold'
+        },
+      'bbicross' => 'BBI ${S.current.goldDeadCross}',
+      'macross' => 'MA ${S.current.goldDeadCross}',
+      'emacross' => 'EMA ${S.current.goldDeadCross}',
+      _ => '',
     };
   }
 }

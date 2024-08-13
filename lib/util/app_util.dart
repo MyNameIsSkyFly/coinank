@@ -13,6 +13,10 @@ import 'package:ank_app/modules/setting/setting_logic.dart';
 import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/util/format_util.dart';
+import 'package:ank_app/util/http_adapter/_http_adapter_api.dart'
+    if (dart.library.io) 'package:ank_app/util/http_adapter/_http_adapter_io.dart'
+    if (dart.library.html) 'package:ank_app/util/http_adapter/_http_adapter_html.dart'
+    as native_adapter;
 import 'package:decimal/decimal.dart';
 import 'package:dio/dio.dart';
 import 'package:ff_native_screenshot/ff_native_screenshot.dart';
@@ -22,7 +26,6 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:native_dio_adapter/native_dio_adapter.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:screenshot_ntv/screenshot_ntv.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -198,7 +201,8 @@ class AppUtil {
     // if (kDebugMode) return;
     final packageInfo = await PackageInfo.fromPlatform();
     if (showLoading) Loading.show();
-    final res = await (Dio()..httpClientAdapter = NativeAdapter())
+    final res = await (Dio()
+          ..httpClientAdapter = native_adapter.getNativeAdapter())
         .get(
             'https://coinsoho.s3.us-east-2.amazonaws.com/app/androidwebversion.txt')
         .whenComplete(Loading.dismiss);

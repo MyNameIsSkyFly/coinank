@@ -296,5 +296,15 @@
   "delete": "Delete",
   "superTrend": "Super Trend",
   "goldDeadCross": "Cross",
-  "unbalance": "Imbalance"
+  "unbalance": "Imbalance",
+  "chooseTradingPair": "选择交易对",
+  "signalType": "信号类型",
+  "warningType": "提醒类型",
+  "period": "Period",
+  "bandWidth": "Band Width",
+  "bandWidthFactor": "Band Width Factor",
+  "imbalanceMulti": "ImBalance Multi",
+  "stackedCount": "Stacked Count",
+  "tickCount": "Tick Count",
+  "save": "保存"
 }

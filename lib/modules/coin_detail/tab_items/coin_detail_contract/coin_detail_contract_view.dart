@@ -77,7 +77,7 @@ class _CoinDetailContractViewState extends State<CoinDetailContractView>
                             text:
                                 '\$${Decimal.parse('${logic.coin24hInfo.value?.lastPrice ?? 0}')}',
                             value: logic.coin24hInfo.value?.lastPrice ?? 0,
-                            style: const TextStyle(
+                            style: TextStyle(
                                 fontWeight: Styles.fontMedium, fontSize: 18),
                           ),
                           RateWithSign(

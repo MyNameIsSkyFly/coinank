@@ -20,6 +20,7 @@ class JPushUtil {
   final JPush _jpush = JPush();
 
   Future<void> initPlatformState() async {
+    if (kIsWeb) return;
     try {
       _jpush
         ..requestRequiredPermission()

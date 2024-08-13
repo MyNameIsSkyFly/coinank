@@ -674,7 +674,7 @@ class _ContractLiqPageState extends State<ContractLiqPage> {
                           ]),
                         ),
                         child: DefaultTextStyle(
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontWeight: Styles.fontMedium,
                               fontSize: 12,
                               color: Colors.white),
@@ -684,12 +684,10 @@ class _ContractLiqPageState extends State<ContractLiqPage> {
                               children: [
                                 Expanded(
                                   child: Text(
-                                    '${((item.longRatio ?? 0) * 100).toStringAsFixed(2)}%',
-                                  ),
+                                      '${((item.longRatio ?? 0) * 100).toStringAsFixed(2)}%'),
                                 ),
                                 Text(
-                                  '${((item.shortRatio ?? 0) * 100).toStringAsFixed(2)}%',
-                                )
+                                    '${((item.shortRatio ?? 0) * 100).toStringAsFixed(2)}%')
                               ],
                             ),
                           ),

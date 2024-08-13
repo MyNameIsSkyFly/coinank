@@ -86,7 +86,7 @@ class DataGridPriceText extends StatelessWidget {
         child: AnimatedColorText(
           text: text,
           value: value ?? 0,
-          style: const TextStyle(fontSize: 16, fontWeight: Styles.fontMedium),
+          style: TextStyle(fontSize: 16, fontWeight: Styles.fontMedium),
           recyclable: true,
         ),
       ),

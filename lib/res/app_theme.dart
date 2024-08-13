@@ -14,7 +14,7 @@ class AppThemes {
           refreshBackgroundColor: Colors.white,
           color: Styles.cMain,
         ),
-        appBarTheme: const AppBarTheme(
+        appBarTheme: AppBarTheme(
           backgroundColor: Colors.white,
           centerTitle: true,
           titleTextStyle: TextStyle(
@@ -24,7 +24,7 @@ class AppThemes {
             fontFamily: 'PingFang SC',
           ),
           scrolledUnderElevation: 0,
-          systemOverlayStyle: SystemUiOverlayStyle(
+          systemOverlayStyle: const SystemUiOverlayStyle(
             systemNavigationBarColor: Colors.transparent,
             statusBarColor: Colors.transparent,
             systemNavigationBarIconBrightness: Brightness.dark,
@@ -71,7 +71,7 @@ class AppThemes {
           refreshBackgroundColor: Color(0xffA1A7BB),
           color: Styles.cMain,
         ),
-        appBarTheme: const AppBarTheme(
+        appBarTheme: AppBarTheme(
             backgroundColor: Color(0xff171823),
             centerTitle: true,
             titleTextStyle: TextStyle(
@@ -81,7 +81,7 @@ class AppThemes {
               fontFamily: 'PingFang SC',
             ),
             scrolledUnderElevation: 0,
-            systemOverlayStyle: SystemUiOverlayStyle(
+            systemOverlayStyle: const SystemUiOverlayStyle(
               systemNavigationBarColor: Colors.transparent,
               systemNavigationBarIconBrightness: Brightness.light,
               statusBarColor: Colors.transparent,

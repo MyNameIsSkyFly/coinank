@@ -5,29 +5,35 @@ import 'dart:io';
 
 import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:ank_app/util/http_adapter/_http_adapter_api.dart'
+    if (dart.library.io) 'package:ank_app/util/http_adapter/_http_adapter_io.dart'
+    if (dart.library.html) 'package:ank_app/util/http_adapter/_http_adapter_html.dart'
+    as native_adapter;
 import 'package:ank_app/widget/common_webview.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:lottie/lottie.dart';
-import 'package:native_dio_adapter/native_dio_adapter.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../constants/urls.dart';
 
 class Application {
-  Application._privateConstructor();
+  Application._();
 
-  static final Application _instance = Application._privateConstructor();
+  static final Application _instance = Application._();
 
   static Application get instance {
     return _instance;
   }
 
   Future<void> init() async {
-    await Future.wait([StoreLogic.init(), checkNetwork()]);
+    await Future.wait([StoreLogic.init(), _checkNetwork(), _initPackageInfo()]);
     MessageFlutterApi.setUp(FlutterApiManager());
     // material_indicator.dart 中修改以解决rebuild的问题
     // double? get _value 中添加:
@@ -35,12 +41,19 @@ class Application {
     initLoading();
     ImageUtil.init();
     await CommonWebView.setCookieValue();
-    if (Platform.isAndroid) {
+    if (!kIsWeb && Platform.isAndroid) {
       await InAppWebViewController.setWebContentsDebuggingEnabled(true);
     }
     PlatformInAppWebViewController.debugLoggingSettings =
         DebugLoggingSettings(enabled: false);
     initConfig();
+  }
+
+  Future<void> _initPackageInfo() async {
+    AppConst.packageInfo = await PackageInfo.fromPlatform();
+    if (!kIsWeb && Platform.isAndroid) {
+      AppConst.deviceInfo = await DeviceInfoPlugin().androidInfo;
+    }
   }
 
   void initLoading() {
@@ -67,7 +80,8 @@ class Application {
   }
 
   Future<bool> getConfig() async {
-    final result = await (Dio()..httpClientAdapter = NativeAdapter())
+    final result = await (Dio()
+          ..httpClientAdapter = native_adapter.getNativeAdapter())
         .get('https://coinsoho.s3.us-east-2.amazonaws.com/app/config.txt')
         .catchError((e) {
       return Response(requestOptions: RequestOptions());
@@ -94,7 +108,7 @@ class Application {
     return true;
   }
 
-  static Future<void> checkNetwork() async {
+  Future<void> _checkNetwork() async {
     final connectivity = Connectivity();
     final result = await connectivity.checkConnectivity();
     AppConst.networkConnected = result.contains(ConnectivityResult.wifi) ||
