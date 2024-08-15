@@ -47,7 +47,7 @@ class _AlertConfigsViewState extends State<AlertConfigsView> {
       appBar: AppBar(
         title: Text(logic.getTitle(widget.type)),
         actions: [
-          if (!isListEmpty)
+          if (!isListEmpty && widget.type != NoticeRecordType.fundingRate)
             IconButton(onPressed: _toAddAlert, icon: const Icon(Icons.add))
         ],
       ),
@@ -83,7 +83,7 @@ class _AlertConfigsViewState extends State<AlertConfigsView> {
   }
 
   Widget get getBody {
-    if (isListEmpty) {
+    if (isListEmpty && widget.type != NoticeRecordType.fundingRate) {
       return Center(
         child: Column(
           children: [
@@ -103,7 +103,7 @@ class _AlertConfigsViewState extends State<AlertConfigsView> {
       NoticeRecordType.signal => _SignalView(logic),
       NoticeRecordType.price => _PriceView(logic),
       NoticeRecordType.oiAlert => _OiView(logic),
-      NoticeRecordType.fundingRate => const SizedBox(),
+      NoticeRecordType.fundingRate => _FundingRateView(logic),
       NoticeRecordType.liquidation => const SizedBox(),
       NoticeRecordType.priceWave => const SizedBox(),
       NoticeRecordType.transaction => const SizedBox(),
