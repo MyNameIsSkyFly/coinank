@@ -150,7 +150,6 @@ class PriceChangeLogic extends GetxController {
 
   @override
   void onReady() {
-    super.onReady();
     onRefresh(true);
   }
 

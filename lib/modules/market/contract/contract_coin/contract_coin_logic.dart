@@ -172,7 +172,6 @@ class ContractCoinLogic extends GetxController
   @override
   void onReady() {
     onRefresh(showLoading: true);
-    super.onReady();
   }
 
   @override

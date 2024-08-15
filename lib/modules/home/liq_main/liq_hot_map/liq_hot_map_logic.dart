@@ -117,8 +117,7 @@ setChartData(${jsonEncode(dataParams)}, "$platformString", "liqHeatMap", ${jsonE
   }
 
   @override
-  Future<void> onInit() async {
-    super.onInit();
-    await getSymbolsData();
+  void onReady() {
+    getSymbolsData();
   }
 }

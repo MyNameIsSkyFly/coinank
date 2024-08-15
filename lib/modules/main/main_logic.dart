@@ -66,7 +66,6 @@ class MainLogic extends GetxController {
     listenAppVisibility();
     listenScreenshot();
     _listenFullscreenEvent();
-    super.onReady();
   }
 
   void _listenFullscreenEvent() {

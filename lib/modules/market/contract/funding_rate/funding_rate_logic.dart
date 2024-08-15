@@ -137,7 +137,6 @@ class FundingRateLogic extends FullLifeCycleController with FullLifeCycleMixin {
 
   @override
   void onReady() {
-    super.onReady();
     onRefresh();
   }
 

@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:ank_app/entity/event/event_alert_added.dart';
 import 'package:ank_app/entity/order_flow_symbol.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:get/get.dart';
@@ -9,19 +12,30 @@ class AlertManageLogic extends GetxController {
   final userAlerts = RxList<AlertUserNoticeEntity>();
   final userSignalAlerts = RxList<UserAlertSignalConfigEntity>();
   final symbols = RxList<OrderFlowSymbolEntity>();
-
+  StreamSubscription? _subscription;
   @override
   void onInit() {
-    getData();
+    _subscription = AppConst.eventBus.on<EventAlertAdded>().listen((event) {
+      _getAllAlerts();
+    });
     super.onInit();
+  }
+
+  void _getAllAlerts() {
+    Apis()
+        .getUserAlertConfigs()
+        .then((value) => userAlerts.assignAll(value ?? []));
+  }
+
+  @override
+  void onReady() {
+    getData();
   }
 
   void getData() {
     Apis().getAlertConfig().then((value) => alertConfigs.assignAll((value ?? [])
       ..insert(0, const AlertTypeEntity(type: NoticeRecordType.signal))));
-    Apis()
-        .getUserAlertConfigs()
-        .then((value) => userAlerts.assignAll(value ?? []));
+    _getAllAlerts();
     Apis()
         .getAlertUserSignalList()
         .then((value) => userSignalAlerts.assignAll(value ?? []));
@@ -89,5 +103,11 @@ class AlertManageLogic extends GetxController {
       'emacross' => 'EMA ${S.current.goldDeadCross}',
       _ => '',
     };
+  }
+
+  @override
+  void onClose() {
+    _subscription?.cancel();
+    super.onClose();
   }
 }

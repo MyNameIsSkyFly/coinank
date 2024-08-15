@@ -208,10 +208,15 @@ class _SignalSettingViewState extends State<_SignalSettingView> {
                 ),
               ),
               onTap: () async {
-                final result = await showCupertinoModalPopup(
-                  context: context,
-                  builder: (context) => _IntervalDialog(interval.value),
-                );
+                final result = await showAppStringPicker(context,
+                    data: const [
+                      '3m', '5m', '15m', '30m', '1h', '2h', //1
+                      '4h', '6h', '12h', '1d', '1W', '1M', //2
+                    ],
+                    title: S.of(context).s_choose_time,
+                    initialValue: interval.value);
+
+                if (result == null) return;
                 interval.value = result;
               },
             ),
@@ -553,51 +558,6 @@ class _SymbolsDialogState extends State<_SymbolsDialog> {
                           style: Styles.tsSub_14(context),
                         ),
                       ]),
-                      onTap: () => Navigator.pop(context, item),
-                    );
-                  },
-                );
-              }),
-            ),
-          ]),
-        ),
-      ),
-    ]);
-  }
-}
-
-class _IntervalDialog extends StatelessWidget {
-  _IntervalDialog(this.initialValue);
-
-  final String initialValue;
-  final _list = [
-    '3m', '5m', '15m', '30m', '1h', '2h', //1
-    '4h', '6h', '12h', '1d', '1W', '1M', //2
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(children: [
-      Gap(MediaQuery.of(context).viewPadding.top + kToolbarHeight),
-      Expanded(
-        child: Container(
-          decoration: BoxDecoration(
-            color: Styles.cScaffoldBackground(context),
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
-          ),
-          child: Column(children: [
-            Expanded(
-              child: Builder(builder: (context) {
-                return ListView.builder(
-                  padding: EdgeInsets.zero,
-                  itemCount: _list.length,
-                  itemBuilder: (context, index) {
-                    final item = _list[index];
-                    return ListTile(
-                      title: Text(item),
-                      trailing: initialValue == item
-                          ? const Icon(Icons.check, color: Styles.cMain)
-                          : null,
                       onTap: () => Navigator.pop(context, item),
                     );
                   },

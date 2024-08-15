@@ -34,7 +34,6 @@ class CoinDetailContractLogic extends GetxController {
       if (tabCtrl.index == 0) getGridData();
       getCoinInfo24h();
     });
-    super.onReady();
   }
 
   Future<void> initMarked() async {

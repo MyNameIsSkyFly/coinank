@@ -69,7 +69,6 @@ class SpotCoinLogicF extends GetxController implements SpotCoinBaseLogic {
       onRefresh();
       startTimer();
     }
-    super.onReady();
   }
 
   @override

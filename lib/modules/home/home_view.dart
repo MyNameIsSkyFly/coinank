@@ -1296,7 +1296,6 @@ class _ChartItem extends StatelessWidget {
                     height: 30,
                     width: 30,
                     fadeInDuration: Duration.zero,
-                    progressUseErrorWidget: true,
                     errorListener: (_) {
                       Future.delayed(
                         const Duration(seconds: 5),

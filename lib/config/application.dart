@@ -47,6 +47,9 @@ class Application {
     PlatformInAppWebViewController.debugLoggingSettings =
         DebugLoggingSettings(enabled: false);
     initConfig();
+    if (Platform.isAndroid) {
+      await Future.delayed(const Duration(milliseconds: 50));
+    }
   }
 
   Future<void> _initPackageInfo() async {

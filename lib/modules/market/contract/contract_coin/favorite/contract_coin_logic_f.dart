@@ -34,7 +34,6 @@ class ContractCoinLogicF extends GetxController
 
   @override
   void onReady() {
-    super.onReady();
     if (!StoreLogic.isLogin) {
       onRefresh();
       startTimer();

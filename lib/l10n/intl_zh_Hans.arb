@@ -306,5 +306,22 @@
   "imbalanceMulti": "失衡倍数",
   "stackedCount": "失衡条数",
   "tickCount": "Tick Count",
-  "save": "保存"
+  "save": "保存",
+  "lowerThan": "低于",
+  "higherThan": "高于",
+  "alertOnce": "提醒一次",
+  "alertOnceEveryday": "每日提醒一次",
+  "circularAlert": "循环提醒",
+  "xAlert": "{type}提醒",
+  "addXAlert": "添加{type}提醒",
+  "setAlertPrice": "设置提醒价格",
+  "alertCount": "提醒次数",
+  "inputAlertPrice": "输入提醒价格",
+  "alertPrice": "提醒价格",
+  "oiWaves": "持仓波动",
+  "oiChanges": "持仓变动",
+  "accumulatedOiChange": "持仓累积变动",
+  "selectCoin": "选择货币",
+  "alertValue": "提醒值",
+  "optional": "可选"
 }

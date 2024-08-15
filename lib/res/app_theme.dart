@@ -17,6 +17,7 @@ class AppThemes {
         appBarTheme: AppBarTheme(
           backgroundColor: Colors.white,
           centerTitle: true,
+          toolbarHeight: 44,
           titleTextStyle: TextStyle(
             color: Styles.cTextBlack,
             fontSize: 18,
@@ -72,10 +73,11 @@ class AppThemes {
           color: Styles.cMain,
         ),
         appBarTheme: AppBarTheme(
-            backgroundColor: Color(0xff171823),
+            backgroundColor: const Color(0xff171823),
             centerTitle: true,
+            toolbarHeight: 44,
             titleTextStyle: TextStyle(
-              color: Color(0xffEFF2F5),
+              color: const Color(0xffEFF2F5),
               fontSize: 18,
               fontWeight: Styles.fontMedium,
               fontFamily: 'PingFang SC',
@@ -119,6 +121,20 @@ class AppThemes {
   static ThemeData get baseTheme => ThemeData(
         useMaterial3: true,
         fontFamily: 'PingFang SC',
+        switchTheme: SwitchThemeData(
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          trackOutlineWidth: WidgetStateProperty.all(5),
+          trackOutlineColor: WidgetStateProperty.all(
+              StoreLogic().isDarkMode ? const Color(0xff171823) : Colors.white),
+          splashRadius: 0,
+          trackColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.selected)) {
+              return Styles.cMain;
+            }
+            return const Color(0xffA1A7BB);
+          }),
+          thumbColor: WidgetStateProperty.all(Colors.white),
+        ),
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
         splashFactory: NoSplash.splashFactory,

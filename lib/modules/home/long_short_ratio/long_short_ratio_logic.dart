@@ -155,7 +155,6 @@ setChartData(${jsonEncode(json)}, "$platformString", "realtimeLongShort", ${json
 
   @override
   void onReady() {
-    super.onReady();
     getAllData();
   }
 

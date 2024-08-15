@@ -26,7 +26,6 @@ class CoinDetailOverviewLogic extends GetxController {
       if (!AppConst.canRequest) return;
       getCoinInfo24h();
     });
-    super.onReady();
   }
 
   Future<void> getCoinInfo24h() async {

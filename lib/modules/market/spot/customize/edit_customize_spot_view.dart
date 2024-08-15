@@ -77,7 +77,7 @@ class _EditCustomizeSpotPageState extends State<EditCustomizeSpotPage> {
           ),
           Container(
             padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewPadding.bottom,
+                bottom: MediaQuery.viewPaddingOf(context).bottom,
                 top: 10,
                 left: 15,
                 right: 15),

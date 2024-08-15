@@ -200,7 +200,7 @@ class AlertTypeEntity {
 
 @JsonSerializable()
 class AlertUserNoticeEntity {
-  final String? id;
+  final String id;
   final String? baseCoin;
   final String? symbol;
   final String? userId;
@@ -216,10 +216,10 @@ class AlertUserNoticeEntity {
   final String? exchange;
   final List<double>? noticeValues;
   final dynamic pushType;
-  final bool? on;
+  bool? on;
 
   AlertUserNoticeEntity({
-    this.id,
+    required this.id,
     this.baseCoin,
     this.symbol,
     this.userId,

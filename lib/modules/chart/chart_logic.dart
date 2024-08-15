@@ -56,7 +56,6 @@ class ChartLogic extends GetxController {
 
   @override
   void onReady() {
-    super.onReady();
     onRefresh();
     initTopData();
     initRecentList();

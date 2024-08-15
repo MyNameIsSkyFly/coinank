@@ -20,7 +20,7 @@ Future<void> main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   if (!kIsWeb) {
     FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-    Future.delayed(const Duration(milliseconds: 2000))
+    Future.delayed(const Duration(milliseconds: 1000))
         .then((value) => FlutterNativeSplash.remove());
   }
   await Application.instance.init();

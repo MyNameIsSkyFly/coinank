@@ -27,7 +27,6 @@ class CoinDetailSpotLogic extends GetxController {
       getGridData();
       getCoinInfo24h();
     });
-    super.onReady();
   }
 
   Future<void> initMarked() async {

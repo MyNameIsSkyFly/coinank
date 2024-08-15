@@ -87,8 +87,10 @@ abstract class Apis {
     @Query('sortType') String? sortType,
     @Query('sort') String? sort,
     @Query('isFollow') bool? isFollow,
+    @Query('baseCoin') String? baseCoin,
     @Query('baseCoins') String? baseCoins,
     @Query('tag') String? tag,
+    @Query('like') bool? like,
   });
 
   @GET('/api/fundingRate/top?type=LAST&size=3')
@@ -475,6 +477,32 @@ abstract class Apis {
 
   @POST('/api/UserSub/getUserNotice')
   Future<List<AlertUserNoticeEntity>?> getUserAlertConfigs();
+
+  @POST('/api/UserSub/saveOrUpdateUserNoticeSub')
+  @MultiPart()
+  Future saveOrUpdateUserAlertConfigs({
+    @Part(name: 'id') String? id,
+    @Part(name: 'baseCoin') String? baseCoin,
+    @Part(name: 'symbol') String? symbol,
+    @Part(name: 'userId') String? userId,
+    @Part(name: 'type') NoticeRecordType? type,
+    @Part(name: 'subType') String? subType,
+    @Part(name: 'noticeValue') double? noticeValue,
+    @Part(name: 'noticeType') String? noticeType,
+    @Part(name: 'noticeTypes') String? noticeTypes,
+    @Part(name: 'noticeTime') int? noticeTime,
+    @Part(name: 'ts') int? ts,
+    @Part(name: 'interval') String? interval,
+    @Part(name: 'exchange') String? exchange,
+    @Part(name: 'noticeValues') String? noticeValues,
+    @Part(name: 'on') bool? on,
+  });
+
+  @POST('/api/UserSub/deleteUserNoticeSub')
+  @MultiPart()
+  Future<void> deleteUserAlertConfigs({
+    @Part(name: 'id') String? id,
+  });
 
   @POST('/api/userSignal/delete')
   @MultiPart()

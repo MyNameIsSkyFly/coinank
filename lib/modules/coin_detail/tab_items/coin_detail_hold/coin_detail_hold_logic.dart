@@ -18,7 +18,6 @@ class CoinDetailHoldLogic extends GetxController {
   @override
   void onReady() {
     getMarketCapTopList();
-    super.onReady();
   }
 
   void getMarketCapTopList() {

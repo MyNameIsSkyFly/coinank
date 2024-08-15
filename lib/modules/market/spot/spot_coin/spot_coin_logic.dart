@@ -67,7 +67,6 @@ class SpotCoinLogic extends GetxController implements SpotCoinBaseLogic {
   @override
   void onReady() {
     onRefresh(showLoading: true);
-    super.onReady();
   }
 
   bool _fetching = false;

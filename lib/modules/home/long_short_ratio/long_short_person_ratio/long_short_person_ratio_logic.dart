@@ -30,10 +30,8 @@ class LongShortPersonRatioLogic extends GetxController {
       (dataReady: false, webReady: false, evJS: '');
 
   @override
-  void onInit() {
-    // _startPolling();
+  void onReady() {
     onRefresh();
-    super.onInit();
   }
 
   Future<void> onRefresh() async {

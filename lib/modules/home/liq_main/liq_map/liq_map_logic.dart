@@ -102,10 +102,11 @@ class LiqMapLogic extends GetxController {
     if (showLoading) {
       Loading.show();
     }
-    final data = await Apis().getLiqMapJsonData(
-      interval: state.interval.value,
-      symbol: state.symbol.value.split('/').last,
-      exchange: state.symbol.value.split('/').first,
+    final data = await Apis()
+        .getLiqMapJsonData(
+          interval: state.interval.value,
+          symbol: state.symbol.value.split('/').last,
+          exchange: state.symbol.value.split('/').first,
         )
         .whenComplete(Loading.dismiss);
     final json = {'code': '1', 'success': true, 'data': data};
@@ -191,7 +192,6 @@ setChartData($jsData, "$platformString", "$type", ${jsonEncode(options)});
 
   @override
   Future<void> onReady() async {
-    super.onReady();
     await Future.wait([getSymbolsData(), getAggCoinData()]);
     await Future.wait(
         [getJsonData(showLoading: false), getAggJsonData(showLoading: false)]);
