@@ -422,8 +422,10 @@ class _SignalSettingViewState extends State<_SignalSettingView> {
       'rsicross' ||
       'emacross' ||
       'bbicross' ||
+      'macross' ||
+      'tdsignal' ||
       'tdcross' =>
-        '${selectedWaringType.value} $index',
+        '${selectedSignalConfig.value} $index',
       'bollcross' =>
         index == 0 ? S.of(context).period : S.of(context).bandWidth,
       'buy_sell_point' =>

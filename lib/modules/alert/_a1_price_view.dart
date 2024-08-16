@@ -119,12 +119,14 @@ class _PriceSettingView extends StatefulWidget {
 class _PriceSettingViewState extends State<_PriceSettingView> {
   final _list = RxList<MarkerTickerEntity>();
   final tCtrl = TextEditingController();
+  var _loading = true;
 
   @override
   void initState() {
-    Apis()
-        .getFuturesBigData(page: 1, size: 200)
-        .then((value) => _list.assignAll(value?.list ?? []));
+    Apis().getFuturesBigData(page: 1, size: 200).then((value) {
+      _list.assignAll(value?.list ?? []);
+      setState(() => _loading = false);
+    });
     super.initState();
   }
 
@@ -155,97 +157,106 @@ class _PriceSettingViewState extends State<_PriceSettingView> {
         appBar: AppBar(
           title: Text(S.of(context).addXAlert(S.of(context).price)),
         ),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-              child: TextField(
-                controller: tCtrl,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'^-?\d*\.?\d*'))
-                ],
-                keyboardType:
-                    const TextInputType.numberWithOptions(decimal: true),
-                decoration: InputDecoration(
-                    prefixIcon: const Icon(CupertinoIcons.search),
-                    hintText: S.of(context).s_search,
-                    contentPadding: EdgeInsets.zero,
-                    suffixIcon: tCtrl.text.isEmpty
-                        ? null
-                        : GestureDetector(
-                            onTap: () {
-                              tCtrl.clear();
-                              search();
-                              setState(() {});
-                            },
-                            child:
-                                const Icon(CupertinoIcons.xmark_circle_fill))),
-                textInputAction: TextInputAction.search,
-                onSubmitted: (value) {
-                  search();
-                  setState(() {});
-                },
-              ),
-            ),
-            Expanded(
-              child: Obx(() {
-                return ListView.builder(
-                  itemCount: _list.length,
-                  itemBuilder: (context, index) {
-                    final item = _list[index];
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 13),
-                      child: Row(
-                        children: [
-                          ImageUtil.coinImage(item.baseCoin ?? '', size: 24),
-                          const Gap(10),
-                          Expanded(
-                              flex: 3,
-                              child: Text(item.baseCoin ?? '',
-                                  style: Styles.tsBody_12m(context))),
-                          Expanded(
-                              flex: 3,
-                              child: Text('${item.price}',
-                                  style: Styles.tsBody_12m(context))),
-                          Expanded(
-                              flex: 2,
-                              child: Text(
-                                  '${item.priceChangeH24?.toStringAsFixed(2)}%',
-                                  style: Styles.tsBody_12m(context).copyWith(
-                                      color: (item.priceChangeH24 ?? 0) >= 0
-                                          ? Styles.cUp(context)
-                                          : Styles.cDown(context)))),
-                          Expanded(
-                              child: SizedBox.square(
-                            dimension: 24,
-                            child: IconButton(
-                              style: IconButton.styleFrom(
-                                visualDensity: VisualDensity.compact,
-                                shape: const CircleBorder(),
-                                side: BorderSide(
-                                  color: Styles.cLine(context),
-                                ),
-                              ),
-                              onPressed: () {
-                                showCupertinoModalPopup(
-                                  context: context,
-                                  builder: (context) =>
-                                      _PriceAlertDialog(item: item),
-                                );
-                              },
-                              icon: const Icon(CupertinoIcons.gear, size: 16),
+        body: _loading
+            ? const LottieIndicator()
+            : Column(
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                    child: TextField(
+                      controller: tCtrl,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(
+                            RegExp(r'^-?\d*\.?\d*'))
+                      ],
+                      keyboardType:
+                          const TextInputType.numberWithOptions(decimal: true),
+                      decoration: InputDecoration(
+                          prefixIcon: const Icon(CupertinoIcons.search),
+                          hintText: S.of(context).s_search,
+                          contentPadding: EdgeInsets.zero,
+                          suffixIcon: tCtrl.text.isEmpty
+                              ? null
+                              : GestureDetector(
+                                  onTap: () {
+                                    tCtrl.clear();
+                                    search();
+                                    setState(() {});
+                                  },
+                                  child: const Icon(
+                                      CupertinoIcons.xmark_circle_fill))),
+                      textInputAction: TextInputAction.search,
+                      onSubmitted: (value) {
+                        search();
+                        setState(() {});
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: Obx(() {
+                      return ListView.builder(
+                        itemCount: _list.length,
+                        itemBuilder: (context, index) {
+                          final item = _list[index];
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 13),
+                            child: Row(
+                              children: [
+                                ImageUtil.coinImage(item.baseCoin ?? '',
+                                    size: 24),
+                                const Gap(10),
+                                Expanded(
+                                    flex: 3,
+                                    child: Text(item.baseCoin ?? '',
+                                        style: Styles.tsBody_12m(context))),
+                                Expanded(
+                                    flex: 3,
+                                    child: Text('${item.price}',
+                                        style: Styles.tsBody_12m(context))),
+                                Expanded(
+                                    flex: 2,
+                                    child: Text(
+                                        '${item.priceChangeH24?.toStringAsFixed(2)}%',
+                                        style: Styles.tsBody_12m(context)
+                                            .copyWith(
+                                                color: (item.priceChangeH24 ??
+                                                            0) >=
+                                                        0
+                                                    ? Styles.cUp(context)
+                                                    : Styles.cDown(context)))),
+                                Expanded(
+                                    child: SizedBox.square(
+                                  dimension: 24,
+                                  child: IconButton(
+                                    style: IconButton.styleFrom(
+                                      visualDensity: VisualDensity.compact,
+                                      shape: const CircleBorder(),
+                                      side: BorderSide(
+                                        color: Styles.cLine(context),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      showCupertinoModalPopup(
+                                        context: context,
+                                        builder: (context) =>
+                                            _PriceAlertDialog(item: item),
+                                      );
+                                    },
+                                    icon: const Icon(CupertinoIcons.gear,
+                                        size: 16),
+                                  ),
+                                )),
+                              ],
                             ),
-                          )),
-                        ],
-                      ),
-                    );
-                  },
-                );
-              }),
-            ),
-          ],
-        ),
+                          );
+                        },
+                      );
+                    }),
+                  ),
+                ],
+              ),
       ),
     );
   }

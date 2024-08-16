@@ -135,7 +135,7 @@ flutter_intl:
 
 #dart pub global activate rps
 scripts:
-  gen: dart run build_runner bu  ild --delete-conflicting-outputs
+  gen: dart run build_runner build
   watch: dart run build_runner watch
   build:
     apk:

@@ -8,6 +8,7 @@ import 'package:ank_app/entity/push_record_entity.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/util/app_picker.dart';
 import 'package:ank_app/widget/empty_view.dart';
+import 'package:decimal/decimal.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -47,7 +48,7 @@ class _AlertConfigsViewState extends State<AlertConfigsView> {
       appBar: AppBar(
         title: Text(logic.getTitle(widget.type)),
         actions: [
-          if (!isListEmpty && widget.type != NoticeRecordType.fundingRate)
+          if (!isListEmpty && showAddBtn)
             IconButton(onPressed: _toAddAlert, icon: const Icon(Icons.add))
         ],
       ),
@@ -67,8 +68,8 @@ class _AlertConfigsViewState extends State<AlertConfigsView> {
         NoticeRecordType.transaction => SizedBox(),
         NoticeRecordType.announcement => SizedBox(),
         NoticeRecordType.hugeWaves => SizedBox(),
-        NoticeRecordType.frAlert => SizedBox(),
-        NoticeRecordType.lsAlert => SizedBox(),
+        NoticeRecordType.frAlert => _FrAlertSettingView(logic),
+        NoticeRecordType.lsAlert => _LsAlertSettingView(logic),
         NoticeRecordType.advanced => SizedBox(),
         NoticeRecordType.unknown => SizedBox(),
       };
@@ -82,8 +83,16 @@ class _AlertConfigsViewState extends State<AlertConfigsView> {
     return logic.userAlerts.where((p0) => p0.type == widget.type).isEmpty;
   }
 
+  bool get showAddBtn =>
+      widget.type != NoticeRecordType.fundingRate &&
+      widget.type != NoticeRecordType.liquidation &&
+      widget.type != NoticeRecordType.priceWave &&
+      widget.type != NoticeRecordType.transaction &&
+      widget.type != NoticeRecordType.announcement &&
+      widget.type != NoticeRecordType.hugeWaves;
+
   Widget get getBody {
-    if (isListEmpty && widget.type != NoticeRecordType.fundingRate) {
+    if (isListEmpty && showAddBtn) {
       return Center(
         child: Column(
           children: [
@@ -104,13 +113,13 @@ class _AlertConfigsViewState extends State<AlertConfigsView> {
       NoticeRecordType.price => _PriceView(logic),
       NoticeRecordType.oiAlert => _OiView(logic),
       NoticeRecordType.fundingRate => _FundingRateView(logic),
-      NoticeRecordType.liquidation => const SizedBox(),
-      NoticeRecordType.priceWave => const SizedBox(),
-      NoticeRecordType.transaction => const SizedBox(),
-      NoticeRecordType.announcement => const SizedBox(),
-      NoticeRecordType.hugeWaves => const SizedBox(),
-      NoticeRecordType.frAlert => const SizedBox(),
-      NoticeRecordType.lsAlert => const SizedBox(),
+      NoticeRecordType.liquidation => _LiquidationView(logic),
+      NoticeRecordType.priceWave => _PriceWaveView(logic),
+      NoticeRecordType.transaction => _TransactionView(logic),
+      NoticeRecordType.announcement => _AnnouncementView(logic),
+      NoticeRecordType.hugeWaves => _HugeWavesView(logic),
+      NoticeRecordType.frAlert => _FrAlertView(logic),
+      NoticeRecordType.lsAlert => _LsAlertView(logic),
       NoticeRecordType.advanced => const SizedBox(),
       NoticeRecordType.unknown => const SizedBox(),
     };

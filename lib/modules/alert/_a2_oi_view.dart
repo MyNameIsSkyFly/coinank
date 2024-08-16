@@ -336,6 +336,10 @@ class _OiSettingViewState extends State<_OiSettingView> {
                     ),
                   ),
                   onTap: () async {
+                    if (_coin.value == null) {
+                      AppUtil.showToast('请先选择货币');
+                      return;
+                    }
                     final result = await showCupertinoModalPopup(
                       context: context,
                       builder: (context) => _OiSymbolSelector(

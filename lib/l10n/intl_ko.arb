@@ -323,5 +323,9 @@
   "accumulatedOiChange": "持仓累积变动",
   "selectCoin": "选择货币",
   "alertValue": "提醒值",
-  "optional": "可选"
+  "optional": "可选",
+  "liqStat": "爆仓统计",
+  "priceWave5minX": "{coin}五分钟价格波动",
+  "off": "关",
+  "chooseType": "选择类型"
 }

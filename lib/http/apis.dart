@@ -337,6 +337,7 @@ abstract class Apis {
   Future<List<OrderFlowSymbolEntity>?> getOrderFlowSymbols({
     @Query('productType') String? productType,
     @Query('follow') bool follow = false,
+    @Query('exchangeName') String? exchangeName,
   });
 
   @GET('/api/instruments/spotAgg')
