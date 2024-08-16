@@ -263,7 +263,7 @@ class _PriceSettingViewState extends State<_PriceSettingView> {
 }
 
 class _PriceAlertDialog extends StatefulWidget {
-  const _PriceAlertDialog({super.key, required this.item});
+  const _PriceAlertDialog({required this.item});
 
   final MarkerTickerEntity item;
 
@@ -322,8 +322,7 @@ class _PriceAlertDialogState extends State<_PriceAlertDialog> {
             controller: tCtrl,
             decoration: InputDecoration(
               filled: true,
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 10),
               hintText: S.of(context).inputAlertPrice,
             ),
           ),

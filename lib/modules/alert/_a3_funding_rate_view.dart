@@ -43,12 +43,7 @@ class _FundingRateViewState extends State<_FundingRateView> {
                     Text('BTC ${S.of(context).s_funding_rate}',
                         style: Styles.tsBody_12m(context)),
                     const Gap(5),
-                    Text('大于0.03% 或小于-0.03%',
-                        // switch (item.baseCoin) {
-                        //   'BTC' => '',
-                        //   'ETH' => '大于0.03% 或小于-0.03%',
-                        //   _ => '资金费率前三和后三',
-                        // },
+                    Text(S.of(context).frAlertLargerLowerHint,
                         style: Styles.tsSub_12(context))
                   ],
                 ),
@@ -78,12 +73,7 @@ class _FundingRateViewState extends State<_FundingRateView> {
                     Text('ETH ${S.of(context).s_funding_rate}',
                         style: Styles.tsBody_12m(context)),
                     const Gap(5),
-                    Text('大于0.03% 或小于-0.03%',
-                        // switch (item.baseCoin) {
-                        //   'BTC' => '',
-                        //   'ETH' => '大于0.03% 或小于-0.03%',
-                        //   _ => '资金费率前三和后三',
-                        // },
+                    Text(S.of(context).frAlertLargerLowerHint,
                         style: Styles.tsSub_12(context))
                   ],
                 ),
@@ -112,7 +102,8 @@ class _FundingRateViewState extends State<_FundingRateView> {
                   children: [
                     Text('TOP 3 & LAST 3', style: Styles.tsBody_12m(context)),
                     const Gap(5),
-                    Text('资金费率前三和后三', style: Styles.tsSub_12(context))
+                    Text(S.of(context).frTopOrLast3,
+                        style: Styles.tsSub_12(context))
                   ],
                 ),
               ),

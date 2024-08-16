@@ -327,5 +327,16 @@
   "liqStat": "爆仓统计",
   "priceWave5minX": "{coin}五分钟价格波动",
   "off": "关",
-  "chooseType": "选择类型"
+  "frAlertLargerLowerHint": "大于0.03% 或小于-0.03%",
+  "frTopOrLast3": "资金费率前三和后三",
+  "plsSelectTradingPair": "请选择交易对",
+  "plsInputAlertValue": "请输入提醒值",
+  "lsAlertValueRangeHint": "提醒值需在0 ~ 20之间",
+  "marketHugeWaves": "盘口异动",
+  "oiHugeWaves": "持仓异动",
+  "plsSelectCoin": "请选择币种",
+  "plsSelectWarningType": "请选择提醒类型",
+  "alertCantLowerThanX": "提醒值不能小于{value}",
+  "priceThreshold": "价格关口",
+  "frAlertValueRangeHint": "提醒值需在-5% ~ 5%之间"
 }

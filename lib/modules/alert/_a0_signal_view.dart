@@ -146,10 +146,10 @@ class _SignalSettingViewState extends State<_SignalSettingView> {
   }
 
   void _setTextControllers() {
-    if (defaultParams.isNotEmpty) tCtrl1.text = defaultParams[0] ?? '';
-    if (defaultParams.length > 1) tCtrl2.text = defaultParams[1] ?? '';
-    if (defaultParams.length > 2) tCtrl3.text = defaultParams[2] ?? '';
-    if (defaultParams.length > 3) tCtrl4.text = defaultParams[3] ?? '';
+    if (defaultParams.isNotEmpty) tCtrl1.text = defaultParams[0];
+    if (defaultParams.length > 1) tCtrl2.text = defaultParams[1];
+    if (defaultParams.length > 2) tCtrl3.text = defaultParams[2];
+    if (defaultParams.length > 3) tCtrl4.text = defaultParams[3];
   }
 
   @override
@@ -168,8 +168,7 @@ class _SignalSettingViewState extends State<_SignalSettingView> {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         appBar: AppBar(
-          //todo intl
-          title: Text('添加信号提醒'),
+          title: Text(S.of(context).addXAlert(S.of(context).signal)),
         ),
         body: ListView(padding: const EdgeInsets.all(15), children: [
           Text(S.of(context).tradingPair),
@@ -387,7 +386,7 @@ class _SignalSettingViewState extends State<_SignalSettingView> {
 
   void _save() {
     if (symbol.value == null) {
-      AppUtil.showToast('请选择交易对');
+      AppUtil.showToast(S.of(context).plsSelectTradingPair);
       return;
     }
     if (_list.isEmpty) {
@@ -453,10 +452,9 @@ class _SignalSettingViewState extends State<_SignalSettingView> {
           color: Styles.cTextFieldFill(context),
           borderRadius: BorderRadius.circular(8),
         ),
-        //todo intl
         child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [text, Icon(Icons.keyboard_arrow_down, size: 20)]),
+            children: [text, const Icon(Icons.keyboard_arrow_down, size: 20)]),
       ),
     );
   }

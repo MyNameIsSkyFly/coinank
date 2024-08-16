@@ -1,3 +1,4 @@
+import 'package:ank_app/modules/alert/alert_manage_view.dart';
 import 'package:ank_app/modules/coin_detail/coin_detail_view.dart';
 import 'package:ank_app/modules/home/liq_main/liq_main_binding.dart';
 import 'package:ank_app/modules/home/liq_main/liq_main_view.dart';
@@ -102,6 +103,10 @@ class RouteConfig {
     GetPage(
       name: AlertRecordPage.routeName,
       page: AlertRecordPage.new,
+    ),
+    GetPage(
+      name: AlertManagePage.routeName,
+      page: AlertManagePage.new,
     ),
   ];
 }

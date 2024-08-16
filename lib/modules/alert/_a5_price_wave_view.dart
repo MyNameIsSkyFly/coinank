@@ -107,7 +107,7 @@ class _PriceWaveViewState extends State<_PriceWaveView> {
                       child: Container(
                         alignment: Alignment.center,
                         padding: const EdgeInsets.symmetric(vertical: 10),
-                        margin: EdgeInsets.only(right: 10),
+                        margin: const EdgeInsets.only(right: 10),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(
@@ -131,7 +131,7 @@ class _PriceWaveViewState extends State<_PriceWaveView> {
                     child: Container(
                       alignment: Alignment.center,
                       padding: const EdgeInsets.symmetric(vertical: 10),
-                      margin: EdgeInsets.only(right: 10),
+                      margin: const EdgeInsets.only(right: 10),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(
@@ -166,7 +166,7 @@ class _PriceWaveViewState extends State<_PriceWaveView> {
                       child: Container(
                         alignment: Alignment.center,
                         padding: const EdgeInsets.symmetric(vertical: 10),
-                        margin: EdgeInsets.only(right: 10),
+                        margin: const EdgeInsets.only(right: 10),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(
@@ -190,7 +190,7 @@ class _PriceWaveViewState extends State<_PriceWaveView> {
                     child: Container(
                       alignment: Alignment.center,
                       padding: const EdgeInsets.symmetric(vertical: 10),
-                      margin: EdgeInsets.only(right: 10),
+                      margin: const EdgeInsets.only(right: 10),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(
@@ -211,7 +211,8 @@ class _PriceWaveViewState extends State<_PriceWaveView> {
           const Gap(15),
           Row(
             children: [
-              Text('价格关口', style: Styles.tsBody_14m(context)),
+              Text(S.of(context).priceThreshold,
+                  style: Styles.tsBody_14m(context)),
               Switch(
                   value: thresholdOn.value,
                   onChanged: (value) {

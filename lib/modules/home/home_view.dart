@@ -16,6 +16,7 @@ import 'package:ank_app/widget/app_refresh.dart';
 import 'package:ank_app/widget/rate_with_sign.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../entity/chart_entity.dart';
@@ -123,7 +124,7 @@ class _HomePageState extends State<HomePage>
           });
           return;
         } else {
-          Get.back();
+          SystemNavigator.pop();
         }
       },
       child: child,

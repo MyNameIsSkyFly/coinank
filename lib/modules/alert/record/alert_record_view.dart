@@ -57,12 +57,7 @@ class _AlertRecordPageState extends State<AlertRecordPage>
         actions: [
           IconButton(
               onPressed: () {
-                Get.to(AlertManagePage.new);
-                // AppNav.openWebUrl(
-                //   title: S.current.s_add_alert,
-                //   url: Urls.urlNotification,
-                //   showLoading: true,
-                // );
+                Get.toNamed(AlertManagePage.routeName);
               },
               icon: Icon(Icons.settings, color: Styles.cSub(context)))
         ],

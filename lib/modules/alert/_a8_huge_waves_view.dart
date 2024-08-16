@@ -33,7 +33,8 @@ class _HugeWavesViewState extends State<_HugeWavesView> {
           child: Row(
             children: [
               Expanded(
-                child: Text('盘口异动', style: Styles.tsBody_18m(context)),
+                child: Text(S.of(context).marketHugeWaves,
+                    style: Styles.tsBody_18m(context)),
               ),
               Obx(() {
                 return Switch(
@@ -52,7 +53,8 @@ class _HugeWavesViewState extends State<_HugeWavesView> {
           child: Row(
             children: [
               Expanded(
-                child: Text('持仓异动', style: Styles.tsBody_18m(context)),
+                child: Text(S.of(context).oiHugeWaves,
+                    style: Styles.tsBody_18m(context)),
               ),
               Obx(() {
                 return Switch(

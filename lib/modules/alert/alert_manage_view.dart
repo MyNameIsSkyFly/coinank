@@ -8,6 +8,8 @@ import 'alert_manage_logic.dart';
 class AlertManagePage extends StatefulWidget {
   const AlertManagePage({super.key});
 
+  static const String routeName = '/alertManage';
+
   @override
   State<AlertManagePage> createState() => _AlertManagePageState();
 }

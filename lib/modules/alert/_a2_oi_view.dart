@@ -167,17 +167,17 @@ class _OiSettingViewState extends State<_OiSettingView> {
   void _save() {
     FocusManager.instance.primaryFocus?.unfocus();
     if (_coin.value == null) {
-      AppUtil.showToast('请选择币种');
+      AppUtil.showToast(S.of(context).plsSelectCoin);
       return;
     }
 
     if (_alertValueCtrl.text.isEmpty) {
-      AppUtil.showToast('请输入提醒值');
+      AppUtil.showToast(S.of(context).plsInputAlertValue);
       return;
     }
 
     if (_subType.value.isEmpty) {
-      AppUtil.showToast('请选择提醒类型');
+      AppUtil.showToast(S.of(context).plsSelectWarningType);
       return;
     }
 
@@ -190,7 +190,7 @@ class _OiSettingViewState extends State<_OiSettingView> {
     };
 
     if (minValue != null && alertValue < minValue) {
-      AppUtil.showToast('提醒值不能小于$minValue');
+      AppUtil.showToast(S.of(context).alertCantLowerThanX(minValue));
       return;
     }
     Apis()
@@ -216,8 +216,7 @@ class _OiSettingViewState extends State<_OiSettingView> {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         appBar: AppBar(
-          //todo intl
-          title: Text('添加信号提醒'),
+          title: Text(S.of(context).addXAlert(S.of(context).s_oi)),
         ),
         body: ListView(padding: const EdgeInsets.all(15), children: [
           Text(S.of(context).symbol),
@@ -236,7 +235,7 @@ class _OiSettingViewState extends State<_OiSettingView> {
                   onTap: () async {
                     final result = await showCupertinoModalPopup(
                       context: context,
-                      builder: (context) => _OiBaseCoinSelector(),
+                      builder: (context) => const _OiBaseCoinSelector(),
                     );
                     if (result == null) return;
                     _coin.value = result;
@@ -329,15 +328,15 @@ class _OiSettingViewState extends State<_OiSettingView> {
                         if (_marketEntity.value != null)
                           InkWell(
                               onTap: () => _marketEntity.value = null,
-                              child:
-                                  Icon(CupertinoIcons.xmark_circle, size: 20)),
+                              child: const Icon(CupertinoIcons.xmark_circle,
+                                  size: 20)),
                         const Gap(15),
                       ],
                     ),
                   ),
                   onTap: () async {
                     if (_coin.value == null) {
-                      AppUtil.showToast('请先选择货币');
+                      AppUtil.showToast(S.of(context).plsSelectCoin);
                       return;
                     }
                     final result = await showCupertinoModalPopup(

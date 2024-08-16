@@ -133,19 +133,19 @@ class _FrAlertSettingViewState extends State<_FrAlertSettingView> {
   void _save() {
     FocusManager.instance.primaryFocus?.unfocus();
     if (_symbol.value == null) {
-      AppUtil.showToast('请选择交易对');
+      AppUtil.showToast(S.of(context).plsSelectTradingPair);
       return;
     }
 
     if (_alertValueCtrl.text.isEmpty) {
-      AppUtil.showToast('请输入提醒值');
+      AppUtil.showToast(S.of(context).plsInputAlertValue);
       return;
     }
 
     final alertValue = Decimal.parse(_alertValueCtrl.text);
 
     if (alertValue > Decimal.fromInt(5) || alertValue < Decimal.fromInt(-5)) {
-      AppUtil.showToast('提醒值需在-5% ~ 5%之间');
+      AppUtil.showToast(S.of(context).frAlertValueRangeHint);
       return;
     }
     Apis()
@@ -169,8 +169,7 @@ class _FrAlertSettingViewState extends State<_FrAlertSettingView> {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         appBar: AppBar(
-          //todo intl
-          title: Text('添加信号提醒'),
+          title: Text(S.of(context).addXAlert(S.of(context).s_funding_rate)),
         ),
         body: ListView(padding: const EdgeInsets.all(15), children: [
           Text(S.of(context).tradingPair),
@@ -215,7 +214,7 @@ class _FrAlertSettingViewState extends State<_FrAlertSettingView> {
                     AppPickerNode(S.of(context).breakthrough, customData: true),
                     AppPickerNode(S.of(context).fallingBelow, customData: false)
                   ],
-                  title: S.of(context).chooseType);
+                  title: S.of(context).warningType);
               if (result == null) return;
               _isUp.value = result;
             },

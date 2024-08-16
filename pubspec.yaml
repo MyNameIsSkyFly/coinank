@@ -2,8 +2,8 @@ name: ank_app
 description: ank-app
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 3.0.8+325 #store
-#version: 3.5.0+384 #tf
+#version: 3.0.8+325 #store
+version: 3.5.0+385 #tf
 
 environment:
   sdk: '^3.4.0'
@@ -20,7 +20,7 @@ dependencies:
   #http
   dio: ^5.6.0
   #缓存
-  shared_preferences: ^2.3.1
+  shared_preferences: ^2.3.2
   flutter_easyloading: 3.0.5
   intl: ^0.19.0
   retrofit: ^4.2.0
@@ -49,14 +49,14 @@ dependencies:
   screenshot: ^3.0.0
   pointer_interceptor: ^0.10.1+2
   ff_native_screenshot: ^1.0.0
-  share_plus: ^10.0.1
+  share_plus: ^10.0.2
   image_gallery_saver: ^2.0.3
   path_provider: ^2.1.4
   equatable: ^2.0.5
   device_info_plus: ^10.1.2
-  syncfusion_flutter_core: ^26.2.7
-  syncfusion_flutter_datagrid: ^26.2.7
-  syncfusion_flutter_charts: ^26.2.7
+  syncfusion_flutter_core: ^26.2.9
+  syncfusion_flutter_datagrid: ^26.2.9
+  syncfusion_flutter_charts: ^26.2.9
   expandable_text: ^2.3.0
   dart_scope_functions: ^0.1.8
   screenshot_callback:
@@ -88,7 +88,6 @@ dev_dependencies:
   very_good_analysis: ^6.0.0
 dependency_overrides:
   webview_flutter_android: 3.16.1
-  web: ^1.0.0
 #dependency_overrides:
 #  package_info_plus: ^7.0.0
 

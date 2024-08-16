@@ -133,19 +133,19 @@ class _LsAlertSettingViewState extends State<_LsAlertSettingView> {
   void _save() {
     FocusManager.instance.primaryFocus?.unfocus();
     if (_symbol.value == null) {
-      AppUtil.showToast('请选择交易对');
+      AppUtil.showToast(S.of(context).plsSelectTradingPair);
       return;
     }
 
     if (_alertValueCtrl.text.isEmpty) {
-      AppUtil.showToast('请输入提醒值');
+      AppUtil.showToast(S.of(context).plsInputAlertValue);
       return;
     }
 
     final alertValue = double.parse(_alertValueCtrl.text);
 
     if (alertValue < 0 || alertValue > 20) {
-      AppUtil.showToast('提醒值需在0 ~ 20之间');
+      AppUtil.showToast(S.of(context).lsAlertValueRangeHint);
       return;
     }
     Apis()
@@ -169,8 +169,7 @@ class _LsAlertSettingViewState extends State<_LsAlertSettingView> {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         appBar: AppBar(
-          //todo intl
-          title: Text('添加信号提醒'),
+          title: Text(S.of(context).addXAlert(S.of(context).s_longshort_ratio)),
         ),
         body: ListView(padding: const EdgeInsets.all(15), children: [
           Text(S.of(context).tradingPair),
@@ -215,7 +214,7 @@ class _LsAlertSettingViewState extends State<_LsAlertSettingView> {
                     AppPickerNode(S.of(context).breakthrough, customData: true),
                     AppPickerNode(S.of(context).fallingBelow, customData: false)
                   ],
-                  title: S.of(context).chooseType);
+                  title: S.of(context).warningType);
               if (result == null) return;
               _isUp.value = result;
             },
