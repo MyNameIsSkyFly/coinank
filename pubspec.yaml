@@ -3,7 +3,7 @@ description: ank-app
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 #version: 3.0.8+325 #store
-version: 3.5.0+385 #tf
+version: 3.5.0+386 #tf
 
 environment:
   sdk: '^3.4.0'
@@ -88,6 +88,12 @@ dev_dependencies:
   very_good_analysis: ^6.0.0
 dependency_overrides:
   webview_flutter_android: 3.16.1
+  flutter_inappwebview_web:
+    git:
+      url: https://github.com/p-mazhnik/flutter_inappwebview.git
+      path: flutter_inappwebview_web
+      ref: 7cac4c3c0ce50302cb9144901f425d00e4bf4870
+      # or ref: web-fix
 #dependency_overrides:
 #  package_info_plus: ^7.0.0
 

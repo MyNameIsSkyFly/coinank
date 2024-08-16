@@ -34,7 +34,7 @@ class Application {
 
   Future<void> init() async {
     await Future.wait([StoreLogic.init(), _checkNetwork(), _initPackageInfo()]);
-    MessageFlutterApi.setUp(FlutterApiManager());
+    if (!kIsWeb) MessageFlutterApi.setUp(FlutterApiManager());
     // material_indicator.dart 中修改以解决rebuild的问题
     // double? get _value 中添加:
     // if (_mode == IndicatorMode.inactive) return 0;
@@ -47,7 +47,7 @@ class Application {
     PlatformInAppWebViewController.debugLoggingSettings =
         DebugLoggingSettings(enabled: false);
     initConfig();
-    if (Platform.isAndroid) {
+    if (!kIsWeb && Platform.isAndroid) {
       await Future.delayed(const Duration(milliseconds: 50));
     }
   }

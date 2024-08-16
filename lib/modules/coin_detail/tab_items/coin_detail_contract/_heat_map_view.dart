@@ -115,7 +115,11 @@ class _HeatMapViewState extends State<_HeatMapView> {
       'type': isOi.value ? 'oi' : 'vol'
       // vol: 成交量, oi: 持仓
     };
-    final platformString = Platform.isAndroid ? 'android' : 'ios';
+    final platformString = kIsWeb
+        ? 'web'
+        : Platform.isAndroid
+            ? 'android'
+            : 'ios';
     final dataParamsString = jsonEncode(dataParams);
     final localeString = jsonEncode({'locale': AppUtil.shortLanguageName});
     final jsSource = '''

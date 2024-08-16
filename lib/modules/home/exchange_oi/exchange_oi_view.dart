@@ -5,6 +5,7 @@ import 'package:ank_app/modules/market/contract/contract_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/app_refresh.dart';
 import 'package:ank_app/widget/common_webview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -202,7 +203,8 @@ class ExchangeOiPage extends StatelessWidget {
                       margin: const EdgeInsets.all(15),
                       child: CommonWebView(
                         url: Urls.chartUrl,
-                        enableZoom: Platform.isAndroid, //? true : false
+                        enableZoom:
+                            kIsWeb || Platform.isAndroid, //? true : false
                         onLoadStop: (controller) =>
                             logic.updateReadyStatus(webReady: true),
                         onWebViewCreated: (controller) {

@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:ank_app/entity/oi_chart_menu_param_entity.dart';
 import 'package:ank_app/modules/market/contract/contract_logic.dart';
 import 'package:ank_app/res/export.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -113,7 +114,11 @@ class ExchangeOiLogic extends GetxController {
       'locale': AppUtil.shortLanguageName,
       'price': S.current.s_price,
     };
-    final platformString = Platform.isAndroid ? 'android' : 'ios';
+    final platformString = kIsWeb
+        ? 'web'
+        : Platform.isAndroid
+            ? 'android'
+            : 'ios';
     final jsSource = '''
 setChartData($jsonData, "$platformString", "openInterest", ${jsonEncode(options)});    
     ''';

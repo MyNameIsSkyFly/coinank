@@ -113,7 +113,7 @@ class _CoinDialogWithInterceptorState extends State<_CoinDialogWithInterceptor>
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        if (Platform.isIOS)
+        if (!kIsWeb && Platform.isIOS)
           Container(
             constraints: BoxConstraints(
                 minHeight: AppConst.height, maxHeight: AppConst.height),

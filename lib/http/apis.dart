@@ -23,6 +23,7 @@ import 'package:ank_app/util/http_adapter/_http_adapter_api.dart'
     if (dart.library.html) 'package:ank_app/util/http_adapter/_http_adapter_html.dart'
     as native_adapter;
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:retrofit/retrofit.dart';
 
 // import 'package:talker_dio_logger/talker_dio_logger.dart';
@@ -53,7 +54,12 @@ abstract class Apis {
       // ),
       BaseInterceptor(),
     ])
-    ..options.headers.addAll({'client': Platform.isAndroid ? 'android' : 'ios'})
+    ..options.headers.addAll({
+      if (!kIsWeb)
+        'client': Platform.isAndroid ? 'android' : 'ios'
+      else
+        'client': 'android',
+    })
     ..options.baseUrl = Urls.apiPrefix
     ..options.connectTimeout = const Duration(seconds: 10)
     ..options.receiveTimeout = const Duration(seconds: 30)

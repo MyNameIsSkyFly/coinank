@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:ank_app/res/export.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
@@ -30,7 +31,7 @@ class _SelectorSheetWithInterceptorState
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        if (Platform.isIOS)
+        if (!kIsWeb && Platform.isIOS)
           Container(
             constraints: BoxConstraints(
                 minHeight:

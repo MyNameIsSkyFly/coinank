@@ -18,6 +18,7 @@ import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/activity_dialog.dart';
 import 'package:async/async.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -186,7 +187,7 @@ class MainLogic extends GetxController {
   }
 
   Future<void> checkIfNeedOpenOrderFlow() async {
-    if (Platform.isIOS) return;
+    if (kIsWeb || Platform.isIOS) return;
     final result = await MessageHostApi().getToKlineParams();
     // AppUtil.showToast(result?.toString() ?? 'nu');
     if (result == null) return;
@@ -199,6 +200,7 @@ class MainLogic extends GetxController {
 
   void listenScreenshot() {
     screenshotCallback.addListener(() {
+      if (kIsWeb) return;
       if (!AppConst.appVisible) return;
       if (Platform.isAndroid && AppGlobal.justSavedImage) return;
       if (DateTime.now().difference(_lastScreenshotTime).inSeconds < 6) return;

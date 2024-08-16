@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:ank_app/res/export.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 
@@ -71,7 +72,11 @@ class LongShortPersonRatioLogic extends GetxController {
       'seriesShortName': S.current.s_shorts,
       'ratioName': S.current.s_longshort_ratio,
     };
-    final platformString = Platform.isAndroid ? 'android' : 'ios';
+    final platformString = kIsWeb
+        ? 'web'
+        : Platform.isAndroid
+            ? 'android'
+            : 'ios';
     final jsSource = '''
     setChartData($jsonData1, "$platformString", "longShortChart", ${jsonEncode(options)});    
     ''';
@@ -100,7 +105,11 @@ class LongShortPersonRatioLogic extends GetxController {
       'seriesShortName': S.current.s_shorts,
       'ratioName': S.current.s_longshort_ratio,
     };
-    final platformString = Platform.isAndroid ? 'android' : 'ios';
+    final platformString = kIsWeb
+        ? 'web'
+        : Platform.isAndroid
+            ? 'android'
+            : 'ios';
     final jsSource = '''
     setChartData($jsonData2, "$platformString", "longShortChart", ${jsonEncode(options)});    
     ''';

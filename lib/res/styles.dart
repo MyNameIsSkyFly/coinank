@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:ank_app/constants/app_const.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'app_theme.dart';
@@ -33,7 +34,8 @@ class Styles {
   static Color cTextFieldFill(BuildContext context) =>
       Theme.of(context).inputDecorationTheme.fillColor!;
 
-  static FontWeight fontMedium = Platform.isIOS ||
+  static FontWeight fontMedium = kIsWeb ||
+          Platform.isIOS ||
           AppConst.brand == 'xiaomi' ||
           AppConst.brand == 'redmi' ||
           AppConst.brand == 'oppo' ||

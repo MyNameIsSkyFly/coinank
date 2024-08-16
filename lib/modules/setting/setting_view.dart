@@ -6,6 +6,7 @@ import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/adaptive_dialog_action.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
@@ -156,10 +157,10 @@ class _SettingPageState extends State<SettingPage> {
                     },
                   );
                 }),
-                if (Platform.isAndroid)
+                if (!kIsWeb && Platform.isAndroid)
                   _SettingLine(
                     onTap: () {
-                      MessageHostApi().toAndroidFloatingWindow();
+                      if (!kIsWeb) MessageHostApi().toAndroidFloatingWindow();
                     },
                     title: S.of(context).s_floatviewsetting,
                   ),

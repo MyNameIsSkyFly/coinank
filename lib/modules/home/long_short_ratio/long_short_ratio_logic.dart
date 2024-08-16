@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/custom_bottom_sheet/custom_bottom_sheet_view.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 import 'long_short_ratio_state.dart';
@@ -126,7 +127,11 @@ class LongShortRatioLogic extends GetxController {
       'seriesShortName': S.current.s_shorts,
       'ratioName': S.current.s_longshort_ratio,
     };
-    final platformString = Platform.isAndroid ? 'android' : 'ios';
+    final platformString = kIsWeb
+        ? 'web'
+        : Platform.isAndroid
+            ? 'android'
+            : 'ios';
     final jsSource = '''
 setChartData(${jsonEncode(json)}, "$platformString", "realtimeLongShort", ${jsonEncode(options)});    
     ''';

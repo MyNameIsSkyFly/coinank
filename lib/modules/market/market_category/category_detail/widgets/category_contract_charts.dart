@@ -5,6 +5,7 @@ import 'package:ank_app/constants/urls.dart';
 import 'package:ank_app/modules/market/contract/contract_coin/contract_coin_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/common_webview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
@@ -147,7 +148,11 @@ class _HeatMapViewState extends State<_HeatMapView> {
       'type': isOi.value ? 'openInterest' : 'turnover24h'
       // vol: 成交量, oi: 持仓
     };
-    final platformString = Platform.isAndroid ? 'android' : 'ios';
+    final platformString = kIsWeb
+        ? 'web'
+        : Platform.isAndroid
+            ? 'android'
+            : 'ios';
     final dataParamsString = jsonEncode(dataParams);
     final localeString = jsonEncode(
         {'locale': AppUtil.shortLanguageName, 'light': !Get.isDarkMode});
@@ -311,7 +316,11 @@ class _BarChartViewState extends State<_BarChartView> {
               : 'fundingRate'
       // vol: 成交量, oi: 持仓
     };
-    final platformString = Platform.isAndroid ? 'android' : 'ios';
+    final platformString = kIsWeb
+        ? 'web'
+        : Platform.isAndroid
+            ? 'android'
+            : 'ios';
     final dataParamsString = jsonEncode(dataParams);
     final localeString = jsonEncode(
         {'locale': AppUtil.shortLanguageName, 'light': !Get.isDarkMode});

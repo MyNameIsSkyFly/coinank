@@ -51,7 +51,6 @@ class CommonWebView extends StatefulWidget {
   final Set<Factory<OneSequenceGestureRecognizer>>? gestureRecognizers;
 
   static Future<void> setCookieValue() async {
-    if (kIsWeb) return;
     final cookieManager = CookieManager.instance();
 
     final cookieList = <(String, String)>[
@@ -65,7 +64,7 @@ class CommonWebView extends StatefulWidget {
       ('green-up', StoreLogic.to.isUpGreen ? 'true' : 'false'),
       ('i18n_redirected', AppUtil.shortLanguageName),
     ];
-    await cookieManager.deleteAllCookies();
+    if (!kIsWeb) await cookieManager.deleteAllCookies();
     await _syncCookie(domain: Urls.h5Prefix, cookies: cookieList);
     //实时挂单数据url cookie
     await _syncCookie(domain: Urls.depthOrderDomain, cookies: cookieList);
@@ -143,6 +142,7 @@ class _CommonWebViewState extends State<CommonWebView>
   Timer? _titleTimer;
 
   void startWebRefreshCounter() {
+    if (kIsWeb) return;
     if (!Platform.isIOS) return;
     if (!(widget.url.contains('proChart') == true ||
         widget.urlGetter?.call().contains('proChart') == true)) return;
@@ -203,9 +203,11 @@ class _CommonWebViewState extends State<CommonWebView>
               : null,
           initialSettings: InAppWebViewSettings(
             isInspectable: true,
-            userAgent: Platform.isAndroid
+            userAgent: kIsWeb
                 ? 'CoinsohoWeb-flutter-Android'
-                : 'CoinsohoWeb-flutter-IOS',
+                : Platform.isAndroid
+                    ? 'CoinsohoWeb-flutter-Android'
+                    : 'CoinsohoWeb-flutter-IOS',
             // hardwareAcceleration: !widget.enableShare,
             transparentBackground: true,
             javaScriptCanOpenWindowsAutomatically: true,

@@ -4,6 +4,7 @@ import 'package:ank_app/entity/event/logged_event.dart';
 import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 import '../../widget/common_webview.dart';
@@ -32,13 +33,14 @@ class LoginLogic extends GetxController {
         .timeout(const Duration(seconds: 3))
         .catchError((_) {});
     StoreLogic.updateLoginStatus();
+    Get.forceAppUpdate();
     AppConst.eventBus.fire(LoginStatusChangeEvent(isLogin: true));
     final json = {
       'success': true,
       'code': 1,
       'data': userInfo?.toJson(),
     };
-    MessageHostApi().saveLoginInfo(jsonEncode(json));
+    if (!kIsWeb) MessageHostApi().saveLoginInfo(jsonEncode(json));
     Get.back();
   }
 }

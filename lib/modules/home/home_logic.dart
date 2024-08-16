@@ -6,7 +6,6 @@ import 'package:ank_app/entity/head_statistics_entity.dart';
 import 'package:ank_app/entity/home_fund_rate_entity.dart';
 import 'package:ank_app/modules/market/contract/contract_logic.dart';
 import 'package:ank_app/modules/market/market_logic.dart';
-import 'package:ank_app/pigeon/host_api.g.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,7 +20,6 @@ class HomeLogic extends GetxController {
   final homeInfoData = Rxn<HomeInfoEntity>();
   final fundRateList = RxList<HomeFundRateEntity>();
   final btcReduceData = Rxn<BtcReduceEntity>();
-  final hostApi = MessageHostApi();
   final newsList = RxList<NewsEntity>();
   late TabController tabCtrl;
 

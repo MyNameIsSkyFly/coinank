@@ -8,6 +8,7 @@ import 'package:ank_app/widget/rate_with_sign.dart';
 import 'package:ank_app/widget/triple_state_sort_button.dart';
 import 'package:dart_scope_functions/dart_scope_functions.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';

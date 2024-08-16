@@ -34,10 +34,9 @@ class StoreLogic extends GetxController {
 
   static Future<void> clearUserInfo() async {
     await to.removeLoginUserInfo();
-    // await to.removeLoginPassword();
-    // await to.removeLoginUsername();
     MessageHostApi().saveLoginInfo('');
     StoreLogic.updateLoginStatus();
+    Get.forceAppUpdate();
     await CommonWebView.setCookieValue();
     AppConst.eventBus.fire(LoginStatusChangeEvent(isLogin: false));
   }
@@ -45,7 +44,6 @@ class StoreLogic extends GetxController {
   static void updateLoginStatus() {
     isLogin =
         to.loginUserInfo?.token != null && to.loginUserInfo!.token!.isNotEmpty;
-    Get.forceAppUpdate();
   }
 
   Future<bool> saveLocale(Locale? locale) {

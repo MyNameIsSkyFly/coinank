@@ -39,7 +39,11 @@ class _ChartWeightedFundingViewState extends State<_ChartWeightedFundingView> {
       'theme': StoreLogic.to.isDarkMode ? 'night' : 'light',
       'frType': typeMap[type.value], //fr-oi 持仓加权, fr-vol 成交量加权
     };
-    final platformString = Platform.isAndroid ? 'android' : 'ios';
+    final platformString = kIsWeb
+        ? 'web'
+        : Platform.isAndroid
+            ? 'android'
+            : 'ios';
     final jsSource = '''
 setChartData($jsonData, "$platformString", "weightFundingRate", ${jsonEncode(options)});    
     ''';

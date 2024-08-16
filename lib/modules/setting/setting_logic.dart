@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:ank_app/res/export.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -17,6 +18,10 @@ class SettingLogic extends GetxController {
   }
 
   Future<void> getVersionName() async {
+    if (kIsWeb) {
+      versionName.value = 'web';
+      return;
+    }
     final pInfo = await PackageInfo.fromPlatform();
     if (Platform.isAndroid) {
       versionName.value =

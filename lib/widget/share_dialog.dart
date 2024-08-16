@@ -1,8 +1,8 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:ank_app/constants/app_global.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
@@ -185,7 +185,7 @@ class _ShareDialogState extends State<ShareDialog> {
                     Row(
                       children: [
                         const Gap(26),
-                        if (Platform.isIOS ||
+                        if (!kIsWeb && Platform.isIOS ||
                             (AppConst.deviceInfo?.version.sdkInt ?? 0) >=
                                 29) ...[
                           Column(

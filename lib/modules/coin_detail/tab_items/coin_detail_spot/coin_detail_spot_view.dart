@@ -12,6 +12,7 @@ import 'package:ank_app/widget/rate_with_sign.dart';
 import 'package:dart_scope_functions/dart_scope_functions.dart';
 import 'package:decimal/decimal.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';

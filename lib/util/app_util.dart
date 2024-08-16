@@ -43,7 +43,11 @@ class AppUtil {
       deviceId: StoreLogic.to.deviceId,
       language: shortLanguageName,
       offset: DateTime.now().timeZoneOffset.inMilliseconds,
-      deviceType: Platform.isAndroid ? 'android' : 'ios',
+      deviceType: kIsWeb
+          ? 'web'
+          : Platform.isAndroid
+              ? 'android'
+              : 'ios',
       pushPlatform: 'jpush',
       version: info.version,
     );
@@ -80,7 +84,8 @@ class AppUtil {
         S.load(const Locale('en'));
       }
     }
-    MessageHostApi().changeLanguage((locale ?? Get.deviceLocale).toString());
+    if (!kIsWeb)
+      MessageHostApi().changeLanguage((locale ?? Get.deviceLocale).toString());
     AppConst.eventBus.fire(ThemeChangeEvent(type: ThemeChangeType.locale));
     AppUtil.updateAppInfo();
     StoreLogic.to.saveLocale(locale);
@@ -102,8 +107,9 @@ class AppUtil {
             ? ThemeMode.dark
             : ThemeMode.light);
     Application.instance.initLoading();
-    MessageHostApi().changeDarkMode(
-        isDarkMode ?? Get.mediaQuery.platformBrightness == Brightness.dark);
+    if (!kIsWeb)
+      MessageHostApi().changeDarkMode(
+          isDarkMode ?? Get.mediaQuery.platformBrightness == Brightness.dark);
     AppConst.eventBus.fire(ThemeChangeEvent(type: ThemeChangeType.dark));
     CommonWebView.setCookieValue();
   }
@@ -111,7 +117,7 @@ class AppUtil {
   static void toggleUpColor() {
     final original = StoreLogic.to.isUpGreen;
     StoreLogic.to.saveUpGreen(!original);
-    MessageHostApi().changeUpColor(!original);
+    if (!kIsWeb) MessageHostApi().changeUpColor(!original);
     AppConst.eventBus.fire(ThemeChangeEvent(type: ThemeChangeType.upColor));
     Get.forceAppUpdate();
     CommonWebView.setCookieValue();
@@ -208,7 +214,7 @@ class AppUtil {
         .whenComplete(Loading.dismiss);
     final data = jsonDecode(res.data as String? ?? '{}');
     var isNeed = false;
-    if (Platform.isIOS) {
+    if (!kIsWeb && Platform.isIOS) {
       isNeed = (int.tryParse(packageInfo.buildNumber) ?? 100) <
           (int.tryParse('${data['data']['iosVersionCode']}') ?? 0);
     } else {
@@ -219,7 +225,7 @@ class AppUtil {
     }
     final result = (
       isNeed: isNeed,
-      jumpUrl: Platform.isIOS
+      jumpUrl: !kIsWeb && Platform.isIOS
           ? '${data['data']['iosurl']}'
           : '${data['data']['ank_url']}'
     );
@@ -295,6 +301,7 @@ class AppUtil {
   }
 
   static void syncSettingToHost() {
+    if (kIsWeb) return;
     MessageHostApi()
         .changeLanguage((StoreLogic.to.locale ?? Get.deviceLocale).toString());
     MessageHostApi().changeDarkMode(StoreLogic.to.isDarkMode);
@@ -333,6 +340,7 @@ class AppUtil {
   }
 
   static Future<void> shareImage() async {
+    if (kIsWeb) return;
     late Uint8List clippedImage;
     await Loading.wrap(
       () async {

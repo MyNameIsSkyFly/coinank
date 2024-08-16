@@ -5,6 +5,7 @@ import 'package:ank_app/constants/urls.dart';
 import 'package:ank_app/modules/market/spot/spot_coin/spot_coin_logic.dart';
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/common_webview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
@@ -110,7 +111,11 @@ class _HeatMapViewState extends State<_HeatMapView> {
       'category': logic.tag.value,
       'type': 'turnover24h'
     };
-    final platformString = Platform.isAndroid ? 'android' : 'ios';
+    final platformString = kIsWeb
+        ? 'web'
+        : Platform.isAndroid
+            ? 'android'
+            : 'ios';
     final dataParamsString = jsonEncode(dataParams);
     final localeString = jsonEncode(
         {'locale': AppUtil.shortLanguageName, 'light': !Get.isDarkMode});
@@ -234,7 +239,11 @@ class _BarChartViewState extends State<_BarChartView> {
       'type': selectedIndex.value == 0 ? 'turnover24h' : 'marketCap'
       // vol: 成交量, oi: 持仓
     };
-    final platformString = Platform.isAndroid ? 'android' : 'ios';
+    final platformString = kIsWeb
+        ? 'web'
+        : Platform.isAndroid
+            ? 'android'
+            : 'ios';
     final dataParamsString = jsonEncode(dataParams);
     final localeString = jsonEncode(
         {'locale': AppUtil.shortLanguageName, 'light': !Get.isDarkMode});

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/custom_search_bottom_sheet/custom_search_bottom_sheet_view.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
@@ -16,7 +17,7 @@ class LiqMapLogic extends GetxController {
     final result = await showModalBottomSheet(
       context: Get.context!,
       builder: (_) {
-        if (Platform.isIOS) {
+        if (!kIsWeb && Platform.isIOS) {
           return PointerInterceptor(child: const CustomSearchBottomSheetPage());
         } else {
           return const CustomSearchBottomSheetPage();
@@ -52,7 +53,7 @@ class LiqMapLogic extends GetxController {
       context: Get.context!,
       isScrollControlled: true,
       builder: (context) {
-        if (Platform.isIOS) {
+        if (!kIsWeb && Platform.isIOS) {
           return PointerInterceptor(child: const CustomSearchBottomSheetPage());
         } else {
           return const CustomSearchBottomSheetPage();
@@ -124,7 +125,11 @@ class LiqMapLogic extends GetxController {
       'mid': S.current.s_liq_map_mid,
       'high': S.current.s_liq_map_high,
     };
-    final platformString = Platform.isAndroid ? 'android' : 'ios';
+    final platformString = kIsWeb
+        ? 'web'
+        : Platform.isAndroid
+            ? 'android'
+            : 'ios';
     final jsSource = '''
 setChartData($jsData, "$platformString", "$type", ${jsonEncode(options)});    
     ''';

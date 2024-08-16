@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/custom_search_bottom_sheet/custom_search_bottom_sheet_view.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
@@ -17,7 +18,7 @@ class LiqHotMapLogic extends GetxController {
     final result = await showModalBottomSheet(
       context: Get.context!,
       builder: (_) {
-        if (Platform.isIOS) {
+        if (!kIsWeb && Platform.isIOS) {
           return PointerInterceptor(child: const CustomSearchBottomSheetPage());
         } else {
           return const CustomSearchBottomSheetPage();
@@ -44,7 +45,7 @@ class LiqHotMapLogic extends GetxController {
     final result = await showModalBottomSheet(
       context: Get.context!,
       builder: (_) {
-        if (Platform.isIOS) {
+        if (!kIsWeb && Platform.isIOS) {
           return PointerInterceptor(child: const CustomSearchBottomSheetPage());
         } else {
           return const CustomSearchBottomSheetPage();
@@ -97,7 +98,11 @@ class LiqHotMapLogic extends GetxController {
       'liqHeat': S.current.liqHeat,
       'liqHeatMap': S.current.s_liq_hot_map,
     };
-    final platformString = Platform.isAndroid ? 'android' : 'ios';
+    final platformString = kIsWeb
+        ? 'web'
+        : Platform.isAndroid
+            ? 'android'
+            : 'ios';
     final jsSource = '''
 setChartData(${jsonEncode(dataParams)}, "$platformString", "liqHeatMap", ${jsonEncode(options)});    
     ''';

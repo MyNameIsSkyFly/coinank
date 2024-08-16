@@ -40,7 +40,11 @@ class _Vol24hViewState extends State<_Vol24hView> {
       //Bar/Line
       'viewType': chartIndex.value == 0 ? 'Line' : 'Bar'
     };
-    final platformString = Platform.isAndroid ? 'android' : 'ios';
+    final platformString = kIsWeb
+        ? 'web'
+        : Platform.isAndroid
+            ? 'android'
+            : 'ios';
     final jsSource = '''
 setChartData($jsonData, "$platformString", "volChart", ${jsonEncode(options)});    
     ''';

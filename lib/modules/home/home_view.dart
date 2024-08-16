@@ -15,6 +15,7 @@ import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/app_refresh.dart';
 import 'package:ank_app/widget/rate_with_sign.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -115,7 +116,7 @@ class _HomePageState extends State<HomePage>
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
-        if (!Platform.isAndroid) return;
+        if (kIsWeb || !Platform.isAndroid) return;
         if (!canQuit) {
           canQuit = true;
           AppUtil.showToast(S.of(context).tapAgainToExit);

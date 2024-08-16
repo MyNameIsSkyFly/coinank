@@ -106,7 +106,7 @@ class _MyAppState extends State<MyApp> {
     JPushUtil().initPlatformState();
     AppConst.eventBus.on<FGBGType>().listen((event) async {
       if (event == FGBGType.foreground) {
-        final isSupported = Platform.isAndroid || Platform.isIOS;
+        final isSupported = !kIsWeb && (Platform.isAndroid || Platform.isIOS);
         if (isSupported) {
           if (Platform.isAndroid) {
             AppBadgePlus.updateBadge(0);

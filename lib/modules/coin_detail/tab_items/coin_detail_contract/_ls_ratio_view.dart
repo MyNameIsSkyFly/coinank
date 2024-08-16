@@ -8,6 +8,7 @@ import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/app_refresh.dart';
 import 'package:ank_app/widget/common_webview.dart';
 import 'package:ank_app/widget/custom_bottom_sheet/custom_bottom_sheet_view.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
@@ -146,7 +147,11 @@ class _CoinDetailContractLSRatioViewState
       'seriesShortName': S.current.s_shorts,
       'ratioName': S.current.s_longshort_ratio,
     };
-    final platformString = Platform.isAndroid ? 'android' : 'ios';
+    final platformString = kIsWeb
+        ? 'web'
+        : Platform.isAndroid
+            ? 'android'
+            : 'ios';
     final jsSource = '''
 setChartData(${jsonEncode(json)}, "$platformString", "realtimeLongShort", ${jsonEncode(options)});    
     ''';

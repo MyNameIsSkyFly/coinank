@@ -8,6 +8,7 @@ import 'package:ank_app/modules/coin_detail/tab_items/coin_detail_hold/coin_deta
 import 'package:ank_app/res/export.dart';
 import 'package:ank_app/widget/common_webview.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
@@ -58,7 +59,11 @@ class _HoldChartViewState extends State<HoldChartView> {
       'locale': AppUtil.shortLanguageName,
       'theme': StoreLogic.to.isDarkMode ? 'night' : 'light'
     };
-    final platformString = Platform.isAndroid ? 'android' : 'ios';
+    final platformString = kIsWeb
+        ? 'web'
+        : Platform.isAndroid
+            ? 'android'
+            : 'ios';
     final jsSource = '''
 setChartData($jsonData, "$platformString", "holderAddress", ${jsonEncode(options)});    
     ''';
